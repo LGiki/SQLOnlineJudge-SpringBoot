@@ -1,4 +1,5 @@
 package cn.edu.jmu.sqlonlinejudge.service;
+import java.util.List;
 
 import cn.edu.jmu.sqlonlinejudge.model.User;
     /**
@@ -50,10 +51,16 @@ public interface UserService{
     Boolean updateByIdSelective(User record);
 
     /**
-     * 更新用户
+     * 通过用户ID更新用户
      *
      * @param record 用户信息
      * @return int 更新成功数量
      */
     Boolean updateById(User record);
+
+    /**
+     * 查询所有用户
+     * @return List<User> 用户列表
+     */
+    List<User> selectAll();
 }

@@ -19,11 +19,6 @@ public class BasicResponse<T> {
     private Integer code;
 
     /**
-     * http状态
-     */
-    private HttpStatus status;
-
-    /**
      * 消息内容
      */
     private String message;
@@ -38,22 +33,19 @@ public class BasicResponse<T> {
      */
     private String exception;
 
-    public void set(Integer code, HttpStatus status, String message) {
+    public void set(Integer code, String message) {
         this.code = code;
-        this.status = status;
         this.message = message;
     }
 
-    public void set(Integer code, HttpStatus status, String message, T data) {
+    public void set(Integer code, String message, T data) {
         this.code = code;
-        this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public void setExceptionMessage(Integer code, HttpStatus status, String exception) {
+    public void setExceptionMessage(Integer code, String exception) {
         this.code = code;
-        this.status = status;
         this.exception = exception;
     }
 

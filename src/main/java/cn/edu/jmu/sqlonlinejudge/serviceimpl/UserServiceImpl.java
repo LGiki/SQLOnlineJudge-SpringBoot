@@ -1,5 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,4 +50,8 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateById(record) == 1;
     }
 
+    @Override
+    public List<User> selectAll() {
+        return userMapper.selectAll();
+    }
 }
