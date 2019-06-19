@@ -197,7 +197,7 @@ export default {
         },
         {
           field: "solve",
-          title: "提交数",
+          title: "通过数",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -205,7 +205,7 @@ export default {
         },
         {
           field: "submit",
-          title: "通过数",
+          title: "提交数",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",

@@ -8,7 +8,9 @@
   >
     <div class="md-toolbar-row md-collapse-lateral">
       <div class="md-toolbar-section-start">
-        <h3 class="md-title">SQL在线考试系统</h3>
+        <h3 class="md-title">
+          SQL在线考试系统
+        </h3>
       </div>
       <div class="md-toolbar-section-end">
         <md-button
@@ -27,7 +29,7 @@
               <!-- Here you can add your items from the section-start of your toolbar -->
             </mobile-menu>
             <md-list>
-              <li class="md-list-item" v-if="!showDownload">
+              <!-- <li class="md-list-item" v-if="!showDownload">
                 <a
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
@@ -59,42 +61,29 @@
                     </drop-down>
                   </div>
                 </a>
-              </li>
+              </li>-->
 
-              <md-list-item
-                href="https://demos.creative-tim.com/vue-material-kit/documentation/"
-                target="_blank"
-                v-if="showDownload"
-              >
+              <md-list-item href="#/problem">
                 <i class="material-icons">content_paste</i>
                 <p>
-                  <a href="#/problem"><b>题库</b></a>
+                  <b>题库</b>
                 </p>
               </md-list-item>
 
-              <md-list-item
-                href="https://demos.creative-tim.com/vue-material-kit/documentation/"
-                target="_blank"
-                v-if="showDownload"
-              >
+              <md-list-item href="#/ranklist">
                 <i class="material-icons">assessment</i>
                 <p>
-                  <a href="#/ranklist"><b>排行榜</b></a>
+                  <b>排行榜</b>
                 </p>
               </md-list-item>
 
-              <md-list-item
-                href="https://demos.creative-tim.com/vue-material-kit/documentation/"
-                target="_blank"
-                v-if="showDownload"
-              >
+              <md-list-item href="#">
                 <i class="material-icons">info</i>
                 <p>
                   <b>提交状态</b>
                 </p>
               </md-list-item>
-
-              <li class="md-list-item" v-else>
+              <!-- <li class="md-list-item" v-else>
                 <a
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
@@ -132,7 +121,7 @@
                     </drop-down>
                   </div>
                 </a>
-              </li>
+              </li>-->
             </md-list>
           </div>
         </div>
@@ -247,3 +236,5 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+</style>
