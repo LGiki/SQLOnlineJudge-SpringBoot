@@ -4,36 +4,11 @@
     :class="{ [`footer-${type}`]: type }"
     :data-background-color="backgroundColor"
   >
-    <div class="container">
-      <nav>
-        <ul>
-          <li>
-            <a href="https://www.creative-tim.com">
-              Creative Tim
-            </a>
-          </li>
-          <li>
-            <a href="https:///presentation.creative-tim.com">
-              About Us
-            </a>
-          </li>
-          <li>
-            <a href="https:///blog.creative-tim.com">
-              Blog
-            </a>
-          </li>
-          <li>
-            <a href="https://www.creative-tim.com/license">
-              Licenses
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="copyright">
-        &copy; {{ year }}, made with <md-icon>favorite</md-icon> by
-        <a href="https://www.creative-tim.com/" target="_blank">Creative Tim</a>
-        for a better web.
-      </div>
+    <div class="copyright justify-content-center ft" align="center">
+      &copy; {{ year }}, made with
+      <md-icon>favorite</md-icon>by
+      <a href="https://www.creative-tim.com/" target="_blank">Creative Tim</a>
+      for a better web.
     </div>
   </footer>
 </template>
@@ -50,4 +25,12 @@ export default {
   }
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.justify-content-center {
+  justify-content: center !important;
+}
+.ft {
+  width: 100%;
+}
+</style>
+
