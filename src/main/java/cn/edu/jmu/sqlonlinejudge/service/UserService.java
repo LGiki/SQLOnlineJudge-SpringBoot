@@ -32,7 +32,7 @@ public interface UserService{
      * @param record 用户信息
      * @return int 插入成功数量
      */
-    int insertSelective(User record);
+    Boolean insertSelective(User record);
 
     /**
      * 通过id选择用户
