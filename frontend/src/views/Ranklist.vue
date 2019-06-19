@@ -80,133 +80,105 @@ export default {
       message: null,
       tableData: [
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
         {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
+          rank: "6",
+          username: "Admin",
           solve: "52",
           submit: "66",
           accept_rate: 0.6
         },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        }
       ],
       columns: [
         {
-          field: "id",
-          title: "题目ID",
-          width: 80,
+          field: "rank",
+          title: "排名",
+          width: 30,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "title",
-          title: "标题",
-          width: 280,
+          field: "username",
+          title: "用户名",
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
           field: "solve",
-          title: "提交数",
-          width: 80,
+          title: "通过数",
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
           field: "submit",
-          title: "通过数",
-          width: 80,
+          title: "提交数",
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -214,7 +186,7 @@ export default {
         {
           field: "accept_rate",
           title: "通过率",
-          width: 80,
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
