@@ -55,6 +55,12 @@
                   <b>提交状态</b>
                 </p>
               </md-list-item>
+              <md-list-item href="#/login">
+                <i class="material-icons">assignment_ind</i>
+                <p>
+                  <b>登录</b>
+                </p>
+              </md-list-item>
             </md-list>
           </div>
         </div>

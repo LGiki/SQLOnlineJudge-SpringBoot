@@ -7,8 +7,8 @@
             class="md-layout-item md-size-33 md-small-size-66 md-xsmall-size-100 md-medium-size-40 mx-auto"
           >
             <login-card header-color="green">
-              <h4 slot="title" class="card-title">Login</h4>
-              <md-button
+              <h2 slot="title" class="card-title">用户登录</h2>
+              <!-- <md-button
                 slot="buttons"
                 href="javascript:void(0)"
                 class="md-just-icon md-simple md-white"
@@ -28,25 +28,25 @@
                 class="md-just-icon md-simple md-white"
               >
                 <i class="fab fa-google-plus-g"></i>
-              </md-button>
-              <p slot="description" class="description">Or Be Classical</p>
+              </md-button> -->
+              <p slot="description" class="description">&nbsp;</p>
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>face</md-icon>
-                <label>First Name...</label>
-                <md-input v-model="firstname"></md-input>
+                <label>用户名</label>
+                <md-input v-model="username"></md-input>
               </md-field>
-              <md-field class="md-form-group" slot="inputs">
+              <!-- <md-field class="md-form-group" slot="inputs">
                 <md-icon>email</md-icon>
                 <label>Email...</label>
                 <md-input v-model="email" type="email"></md-input>
-              </md-field>
+              </md-field> -->
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>lock_outline</md-icon>
-                <label>Password...</label>
-                <md-input v-model="password"></md-input>
+                <label>密码</label>
+                <md-input v-model="password" type="password"></md-input>
               </md-field>
               <md-button slot="footer" class="md-simple md-success md-lg">
-                Get Started
+                登录
               </md-button>
             </login-card>
           </div>
@@ -66,7 +66,7 @@ export default {
   bodyClass: "login-page",
   data() {
     return {
-      firstname: null,
+      username: null,
       email: null,
       password: null
     };
