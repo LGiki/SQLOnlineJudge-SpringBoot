@@ -15,7 +15,7 @@ public interface UserService{
      * @param id 用户id
      * @return 删除个数
      */
-    int deleteById(Integer id);
+    Boolean deleteById(Integer id);
 
     /**
      * 插入用户
@@ -47,7 +47,7 @@ public interface UserService{
      * @param record 用户信息
      * @return int 更新成功数量
      */
-    int updateByIdSelective(User record);
+    Boolean updateByIdSelective(User record);
 
     /**
      * 更新用户
@@ -55,5 +55,5 @@ public interface UserService{
      * @param record 用户信息
      * @return int 更新成功数量
      */
-    int updateById(User record);
+    Boolean updateById(User record);
 }
