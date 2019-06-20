@@ -1,5 +1,5 @@
 -- Dumping database structure for sqlonlinejudge
-CREATE DATABASE IF NOT EXISTS `sqlonlinejudge` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE IF NOT EXISTS `sqlonlinejudge` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `sqlonlinejudge`;
 
 -- Dumping structure for table sqlonlinejudge.user
@@ -12,14 +12,15 @@ CREATE TABLE IF NOT EXISTS `user` (
   `submit` int(11) NOT NULL DEFAULT '0' COMMENT '提交数',
   `solved` int(11) NOT NULL DEFAULT '0' COMMENT '通过数',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
-  `status` smallint(6) NOT NULL DEFAULT '10' COMMENT '状态',
-  `role` tinyint(4) NOT NULL DEFAULT '0' COMMENT '用户角色',
+  `status` char(2) NOT NULL DEFAULT '1' COMMENT '状态',
+  `role` char(2) NOT NULL DEFAULT '0' COMMENT '用户角色',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
+-- Dumping data for table sqlonlinejudge.user: ~0 rows (大约)
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
 
 -- Dumping structure for table sqlonlinejudge.database
 CREATE TABLE IF NOT EXISTS `database` (
@@ -29,9 +30,11 @@ CREATE TABLE IF NOT EXISTS `database` (
   `test_data` text COMMENT '数据插入语句',
   `is_created` bit(1) NOT NULL DEFAULT b'0' COMMENT '数据库是否已创建',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table sqlonlinejudge.database: ~0 rows (大约)
+/*!40000 ALTER TABLE `database` DISABLE KEYS */;
+/*!40000 ALTER TABLE `database` ENABLE KEYS */;
 
 -- Dumping structure for table sqlonlinejudge.problem
 CREATE TABLE IF NOT EXISTS `problem` (
@@ -54,7 +57,9 @@ CREATE TABLE IF NOT EXISTS `problem` (
   CONSTRAINT `FK_problem_database` FOREIGN KEY (`database_id`) REFERENCES `database` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
+-- Dumping data for table sqlonlinejudge.problem: ~0 rows (大约)
+/*!40000 ALTER TABLE `problem` DISABLE KEYS */;
+/*!40000 ALTER TABLE `problem` ENABLE KEYS */;
 
 -- Dumping structure for table sqlonlinejudge.solution
 CREATE TABLE IF NOT EXISTS `solution` (
@@ -72,4 +77,15 @@ CREATE TABLE IF NOT EXISTS `solution` (
   CONSTRAINT `solution_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `problem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Data exporting was unselected.
+-- Dumping data for table sqlonlinejudge.solution: ~0 rows (大约)
+/*!40000 ALTER TABLE `solution` DISABLE KEYS */;
+/*!40000 ALTER TABLE `solution` ENABLE KEYS */;
+
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `is_email_valid`, `submit`, `solved`, `avatar`, `status`, `role`) VALUES
+	(1, '1', '1', '1', b'0', 0, 0, NULL, '0', '0'),
+	(3, '2', '2', '2', b'0', 0, 0, NULL, '1', '0');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

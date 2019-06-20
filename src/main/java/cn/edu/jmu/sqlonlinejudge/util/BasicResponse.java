@@ -28,11 +28,6 @@ public class BasicResponse<T> {
      */
     private T data;
 
-    /**
-     * 异常信息
-     */
-    private String exception;
-
     public void set(Integer code, String message) {
         this.code = code;
         this.message = message;
@@ -42,11 +37,6 @@ public class BasicResponse<T> {
         this.code = code;
         this.message = message;
         this.data = data;
-    }
-
-    public void setExceptionMessage(Integer code, String exception) {
-        this.code = code;
-        this.exception = exception;
     }
 
 }

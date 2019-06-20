@@ -1,18 +1,17 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
-import org.apache.ibatis.annotations.Param;
-
-import cn.edu.jmu.sqlonlinejudge.model.User;
-
-import java.util.List;
+import cn.edu.jmu.sqlonlinejudge.model.User;import java.util.List;
 
 /**
- * 用户映射器
- *
  * @author sgh
- * @date 2019/6/18 18:55
+ * @date 2019/6/20 18:35
  */
 public interface UserMapper {
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
     /**
      * 通过id删除用户
      *
@@ -20,22 +19,6 @@ public interface UserMapper {
      * @return 删除个数
      */
     int deleteById(Integer id);
-
-    /**
-     * 插入用户
-     *
-     * @param record 用户信息
-     * @return int 插入成功数量
-     */
-    int insert(User record);
-
-    /**
-     * 插入用户
-     *
-     * @param record 用户信息
-     * @return int 插入成功数量
-     */
-    int insertSelective(User record);
 
     /**
      * 通过id选择用户
@@ -67,5 +50,4 @@ public interface UserMapper {
      * @return List<User> 用户列表
      */
     List<User> selectAll();
-
 }

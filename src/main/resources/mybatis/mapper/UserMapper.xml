@@ -11,8 +11,8 @@
     <result column="submit" jdbcType="INTEGER" property="submit" />
     <result column="solved" jdbcType="INTEGER" property="solved" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="status" jdbcType="SMALLINT" property="status" />
-    <result column="role" jdbcType="TINYINT" property="role" />
+    <result column="status" jdbcType="VARCHAR" property="status" typeHandler="cn.edu.jmu.sqlonlinejudge.handler.UniversalEnumHandler" />
+    <result column="role" jdbcType="VARCHAR" property="role" typeHandler="cn.edu.jmu.sqlonlinejudge.handler.UniversalEnumHandler" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -39,7 +39,7 @@
       )
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{isEmailValid,jdbcType=BIT}, #{submit,jdbcType=INTEGER}, #{solved,jdbcType=INTEGER}, 
-      #{avatar,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{role,jdbcType=TINYINT}
+      #{avatar,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.User" useGeneratedKeys="true">
@@ -97,10 +97,10 @@
         #{avatar,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=SMALLINT},
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
-        #{role,jdbcType=TINYINT},
+        #{role,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -130,10 +130,10 @@
         avatar = #{avatar,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        `status` = #{status,jdbcType=SMALLINT},
+        `status` = #{status,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
-        `role` = #{role,jdbcType=TINYINT},
+        `role` = #{role,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -148,12 +148,13 @@
       submit = #{submit,jdbcType=INTEGER},
       solved = #{solved,jdbcType=INTEGER},
       avatar = #{avatar,jdbcType=VARCHAR},
-      `status` = #{status,jdbcType=SMALLINT},
-      `role` = #{role,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=VARCHAR},
+      `role` = #{role}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
-    select *
+    select
+    <include refid="Base_Column_List" />
     from `user`
     order by `id` desc
   </select>

@@ -27,7 +27,7 @@ public class UserController {
             PageHelper.startPage(page, limit);
             response.set(200, null, new PageInfo<>(userService.selectAll()));
         } catch (Exception e) {
-            response.setExceptionMessage(412, e.getMessage());
+            response.set(503, e.getCause().toString());
         }
         return response;
     }
@@ -39,10 +39,10 @@ public class UserController {
             if (userService.deleteById(id)) {
                 response.set(200, "删除ID为" + id + "的用户成功");
             } else {
-                response.set(417, "删除用户失败，无ID为" + id + "的用户");
+                response.set(400, "删除用户失败，无ID为" + id + "的用户");
             }
         } catch (Exception e) {
-            response.setExceptionMessage(412, e.getMessage());
+            response.set(503, e.getCause().toString());
         }
         return response;
     }
@@ -56,10 +56,10 @@ public class UserController {
             if(userService.updateByIdSelective(user)) {
                 response.set(200, "成功修改ID为" + id + "的用户资料");
             }else {
-                response.set(417, "用户资料修改失败");
+                response.set(400, "用户资料修改失败");
             }
         }catch (Exception e) {
-            response.setExceptionMessage(412, e.getMessage());
+            response.set(503, e.getCause().toString());
         }
         return response;
     }
@@ -72,10 +72,10 @@ public class UserController {
             if(userService.insertSelective(user)) {
                 response.set(200, "增加用户成功", userService.selectById(user.getId()));
             }else {
-                response.set(417, "增加用户失败");
+                response.set(400, "增加用户失败");
             }
         }catch (Exception e) {
-            response.setExceptionMessage(412, e.getMessage());
+            response.set(503, e.getCause().toString());
         }
         return response;
     }
