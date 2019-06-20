@@ -3,10 +3,12 @@ import App from "./App.vue";
 import router from "./router";
 
 import MaterialKit from "./plugins/material-kit";
+import VueHighlightJS from 'vue-highlight.js';
 
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
+Vue.use(VueHighlightJS);
 
 const NavbarStore = {
   showNavbar: false

@@ -35,6 +35,7 @@
                   :table-data="tableData"
                   row-hover-color="#eee"
                   row-click-color="#edf7ff"
+                  :row-click="rowClick"
                 ></v-table>
               </template>
               <div class="bd">
@@ -71,7 +72,7 @@ export default {
     header: {
       type: String,
       default: require("@/assets/img/city-profile.jpg")
-    },
+    }
   },
   data() {
     return {
@@ -221,6 +222,11 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    rowClick(rowIndex, rowData, column) {
+      this.$router.push({ path: '/problem/' + rowData.id })
+    }
   },
   computed: {
     headerStyle() {

@@ -12,7 +12,7 @@
               <h1>SQL Online Judge</h1>
             </div>
             <div class="brand">
-              <md-button href="#" class="md-success md-lg">
+              <md-button href="#/problem" class="md-success md-lg">
                 <font size="5em">即刻开始刷题</font>
               </md-button>
             </div>

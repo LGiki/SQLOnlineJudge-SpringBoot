@@ -9,6 +9,7 @@ import MainFooter from "./layout/MainFooter.vue";
 import Problem from "./views/Problem.vue";
 import Ranklist from "./views/Ranklist.vue"
 import Solution from "./views/Solution.vue"
+import ProblemDetail from "./views/ProblemDetail.vue"
 
 Vue.use(Router);
 
@@ -30,7 +31,15 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" },
-        title: "Problem",
+      }
+    },
+    {
+      path: "/problem/:id",
+      name: "problemDetail",
+      components: { default: ProblemDetail, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 400 },
+        footer: { backgroundColor: "black" },
       }
     },
     {
@@ -40,7 +49,6 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" },
-        title: "Ranklist",
       }
     },
     {
