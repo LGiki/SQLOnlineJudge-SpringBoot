@@ -8,6 +8,7 @@ import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 import Problem from "./views/Problem.vue";
 import Ranklist from "./views/Ranklist.vue"
+import Solution from "./views/Solution.vue"
 
 Vue.use(Router);
 
@@ -43,12 +44,12 @@ export default new Router({
       }
     },
     {
-      path: "/landing",
-      name: "landing",
-      components: { default: Landing, header: MainNavbar, footer: MainFooter },
+      path: "/solution",
+      name: "solution",
+      components: { default: Solution, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
+        footer: { backgroundColor: "black" }
       }
     },
     {
@@ -57,6 +58,15 @@ export default new Router({
       components: { default: Login, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 }
+      }
+    },
+    {
+      path: "/landing",
+      name: "landing",
+      components: { default: Landing, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 400 },
+        footer: { backgroundColor: "black" },
       }
     },
     {

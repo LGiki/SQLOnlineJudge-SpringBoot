@@ -49,7 +49,7 @@
                 </p>
               </md-list-item>
 
-              <md-list-item href="#">
+              <md-list-item href="#/solution">
                 <i class="material-icons">info</i>
                 <p>
                   <b>提交状态</b>

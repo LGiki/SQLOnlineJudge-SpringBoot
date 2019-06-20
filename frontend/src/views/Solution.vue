@@ -8,15 +8,15 @@
             <div class="md-layout-item md-size-50 mx-auto">
               <div class="profile">
                 <div class="avatar">
-                  <div class="icon icon-danger">
+                  <div class="icon icon-info">
                     <md-icon
                       alt="Circle Image"
                       class="md-size-6x img-raised rounded-circle img-fluid img-middle"
-                    >assessment</md-icon>
+                    >info</md-icon>
                   </div>
                 </div>
                 <div class="name">
-                  <h3 class="title">排行榜</h3>
+                  <h3 class="title">提交状态</h3>
                 </div>
               </div>
             </div>
@@ -35,6 +35,7 @@
                   :table-data="tableData"
                   row-hover-color="#eee"
                   row-click-color="#edf7ff"
+                  :row-click="rowClick"
                 ></v-table>
               </template>
               <div class="bd">
@@ -52,6 +53,25 @@
         </div>
       </div>
     </div>
+    <modal v-if="codeModal" @close="codeModalHide">
+      <template slot="header">
+        <h4 class="modal-title">代码</h4>
+        <md-button
+          class="md-simple md-just-icon md-round modal-default-button"
+          @click="codeModalHide"
+        >
+          <md-icon>clear</md-icon>
+        </md-button>
+      </template>
+
+      <template slot="body">
+        <p>SELECT * FROM `TEST`</p>
+      </template>
+
+      <template slot="footer">
+        <md-button class="md-danger md-simple" @click="codeModalHide">Close</md-button>
+      </template>
+    </modal>
   </div>
 </template>
 
@@ -60,8 +80,10 @@
 import "vue-easytable/libs/themes-base/index.css";
 import { VTable, VPagination } from "vue-easytable";
 import { Pagination } from "@/components";
+import { Modal } from "@/components";
 export default {
   components: {
+    Modal,
     VTable,
     VPagination,
     Pagination
@@ -71,90 +93,95 @@ export default {
     header: {
       type: String,
       default: require("@/assets/img/city-profile.jpg")
-    },
+    }
   },
   data() {
     return {
-      name: null,
-      email: null,
-      message: null,
+      codeModal: false,
       tableData: [
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
         {
-          rank: "6",
+          solutionId: "1",
           username: "Admin",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
         },
+        {
+          solutionId: "1",
+          username: "Admin",
+          problemId: "52",
+          submitTime: "2019-06-20 08:00:00",
+          result: "Accept"
+        }
       ],
       columns: [
         {
-          field: "rank",
-          title: "排名",
-          width: 30,
+          field: "solutionId",
+          title: "ID",
+          width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
@@ -168,24 +195,24 @@ export default {
           isResize: true
         },
         {
-          field: "solve",
-          title: "通过数",
+          field: "problemId",
+          title: "题目ID",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "submit",
-          title: "提交数",
+          field: "submitTime",
+          title: "提交时间",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true
         },
         {
-          field: "accept_rate",
-          title: "通过率",
+          field: "result",
+          title: "结果",
           width: 100,
           titleAlign: "center",
           columnAlign: "center",
@@ -193,6 +220,17 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    codeModalHide() {
+      this.codeModal = false;
+    },
+    codeModalShow() {
+      this.codeModal = true;
+    },
+    rowClick(rowIndex, rowData, column) {
+      this.codeModal = true;
+    }
   },
   computed: {
     headerStyle() {
@@ -203,7 +241,6 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
 .section {
   padding: 0;
