@@ -14,19 +14,11 @@
           <h3>建表语句</h3>
           <highlight-code lang="sql">
             CREATE TABLE `employee` {
-                `emp_no` int(11) NOT NULL,
+            `emp_no` int(11) NOT NULL,
             }
           </highlight-code>
-          <!-- <pre v-highlightjs>
-            <code class="javascript">
-            
-            </code>
-          </pre>-->
           <h3>提交代码</h3>
-          <md-field>
-            <label>Coding here</label>
-            <md-textarea></md-textarea>
-          </md-field>
+          <codemirror v-model="code" :options="cmOptions" @ready="onCmReady"></codemirror>
           <div style="width:100%;padding-top:20px">
             <div class="md-layout text-center justify-content-center">
               <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp;
@@ -50,11 +42,20 @@
 <script>
 import VueHighlightJS from "vue-highlight.js";
 import "vue-highlight.js/lib/allLanguages";
-// import "highlight.js/styles/vs.css";
 import "highlight.js/styles/atom-one-light.css";
+import { codemirror } from "vue-codemirror";
+import "codemirror/lib/codemirror.css";
+import "codemirror/mode/sql/sql.js";
+import "codemirror/theme/solarized.css";
+import "codemirror/addon/hint/show-hint.js";
+import "codemirror/addon/hint/sql-hint.js";
+import "codemirror/addon/edit/matchbrackets.js";
+import "codemirror/addon/hint/show-hint.css";
+
 export default {
   components: {
-    VueHighlightJS
+    VueHighlightJS,
+    codemirror
   },
   bodyClass: "profile-page",
   props: {
@@ -64,13 +65,47 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      code: "select * from `test`",
+      cmOptions: {
+        tabSize: 4,
+        mode: "text/x-mysql",
+        theme: "solarized light",
+        lineNumbers: true,
+        styleActiveLine: true,
+        lineWrapping: true,
+        // autofocus: true,
+        indentWithTabs: true,
+        hintOptions: {
+          completeSingle: false
+        },
+        line: true
+      }
+    };
+  },
+  methods: {
+    onInputRead(instance) {
+      if (instance.state.completionActive) return;
+      var cur = instance.getCursor();
+      var str = instance.getTokenAt(cur).string;
+      if (str.length > 0 && str.match(/^[.`\w@]\w*$/)) {
+        this.codemirror.commands.autocomplete(instance);
+      }
+    },
+    onCmReady(cm) {
+      cm.on("keypress", () => {
+        cm.showHint();
+      });
+    }
   },
   computed: {
     headerStyle() {
       return {
         backgroundImage: `url(${this.header})`
       };
+    },
+    codemirror() {
+      return this.$refs.myCm.codemirror;
     }
   }
 };
@@ -82,7 +117,6 @@ export default {
 }
 
 .section-with-padding {
-  //   padding: 40px 0;
   padding-bottom: 40px;
 }
 
