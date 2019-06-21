@@ -31,23 +31,24 @@
                 <v-table
                   is-horizontal-resize
                   style="width:100%"
-                  :columns="columns"
-                  :table-data="tableData"
+                  :columns="tableConfig.columns"
+                  :table-data="tableConfig.tableData"
                   row-hover-color="#eee"
                   row-click-color="#edf7ff"
                   :row-click="rowClick"
                 ></v-table>
               </template>
-              <div class="bd">
-                <template>
-                  <pagination
-                    class="justify-content-center"
-                    type="info"
-                    v-model="infoPagination"
-                    :page-count="3"
-                  ></pagination>
-                </template>
-              </div>
+              <template>
+                <div class="bd">
+                  <v-pagination
+                    @page-change="pageChange"
+                    @page-size-change="pageSizeChange"
+                    :showPagingCount="3"
+                    :total="totalItems"
+                    :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+                  ></v-pagination>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -76,156 +77,90 @@ export default {
   },
   data() {
     return {
-      name: null,
-      email: null,
-      message: null,
-      tableData: [
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        },
-        {
-          id: "6",
-          title: "查找最晚入职员工的所有信息",
-          solve: "52",
-          submit: "66",
-          accept_rate: 0.6
-        }
-      ],
-      columns: [
-        {
-          field: "id",
-          title: "题目ID",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "title",
-          title: "标题",
-          width: 280,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "solve",
-          title: "通过数",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "submit",
-          title: "提交数",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "accept_rate",
-          title: "通过率",
-          width: 80,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
-      ]
+      pageIndex: 1,
+      pageSize: 10,
+      totalItems: 0,
+      tableConfig: {
+        tableData: [],
+        columns: [
+          {
+            field: "id",
+            title: "题目ID",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "title",
+            title: "标题",
+            width: 280,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "solve",
+            title: "通过数",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "submit",
+            title: "提交数",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "accept_rate",
+            title: "通过率",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return rowData.submit == 0 ? 0 : rowData.solve / rowData.submit;
+            }
+          }
+        ]
+      }
     };
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: '/problem/' + rowData.id })
+      this.$router.push({ path: "/problem/" + rowData.id });
+    },
+    getProblemList() {
+      this.$axios
+        .get(this.Url.getProblem, {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          }
+        })
+        .then(res => {
+          let resData = res.data;
+          console.log(resData);
+          if (resData.code === 200) {
+            this.tableConfig.tableData = resData.data.list;
+            this.totalItems = resData.data.total;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    pageChange(pageIndex) {
+      this.pageNum = pageIndex;
+      this.getProblemList();
+    },
+    pageSizeChange(newPageSize) {
+      this.pageSize = newPageSize;
+      this.getProblemList();
     }
   },
   computed: {
@@ -234,6 +169,9 @@ export default {
         backgroundImage: `url(${this.header})`
       };
     }
+  },
+  mounted: function() {
+    this.getProblemList();
   }
 };
 </script>
@@ -269,6 +207,10 @@ export default {
 .bd {
   padding-top: 10px;
   width: 100%;
+}
+
+.bd /deep/ a {
+  color: #333 !important;
 }
 
 .justify-content-center {

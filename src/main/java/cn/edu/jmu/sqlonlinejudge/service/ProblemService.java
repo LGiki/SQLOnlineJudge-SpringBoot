@@ -1,5 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
+import java.util.List;
+
 import cn.edu.jmu.sqlonlinejudge.model.Problem;
 
 /**
@@ -56,4 +58,10 @@ public interface ProblemService {
      */
     int updateById(Problem record);
 
+    /**
+     * 查询所有题目
+     *
+     * @return List<Problem> 题目列表
+     */
+    List<Problem> selectAll();
 }

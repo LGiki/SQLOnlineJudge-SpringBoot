@@ -21,10 +21,10 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public BasicResponse selectAll(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+    public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse response = new BasicResponse();
         try {
-            PageHelper.startPage(page, limit);
+            PageHelper.startPage(pageNum, pageSize);
             response.set(200, null, new PageInfo<>(userService.selectAll()));
         } catch (Exception e) {
             response.set(503, e.getCause().toString());

@@ -1,7 +1,11 @@
 package cn.edu.jmu.sqlonlinejudge.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+
 import cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper;
 import cn.edu.jmu.sqlonlinejudge.model.Problem;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
@@ -12,7 +16,7 @@ import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
  */
 
 @Service
-public class ProblemServiceImpl implements ProblemService{
+public class ProblemServiceImpl implements ProblemService {
 
     @Resource
     private ProblemMapper problemMapper;
@@ -47,4 +51,8 @@ public class ProblemServiceImpl implements ProblemService{
         return problemMapper.updateById(record);
     }
 
+    @Override
+    public List<Problem> selectAll() {
+        return problemMapper.selectAll();
+    }
 }

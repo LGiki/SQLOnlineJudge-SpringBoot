@@ -1,6 +1,10 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.edu.jmu.sqlonlinejudge.model.Problem;
+
+import java.util.List;
 
 /**
  * @author LGiki
@@ -55,4 +59,11 @@ public interface ProblemMapper {
      * @return 更新成功的记录条数
      */
     int updateById(Problem record);
+
+    /**
+     * 查询所有题目
+     *
+     * @return List<Problem> 题目列表
+     */
+    List<Problem> selectAll();
 }
