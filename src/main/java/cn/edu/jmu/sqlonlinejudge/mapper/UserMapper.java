@@ -1,7 +1,10 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
+
 import org.apache.ibatis.annotations.Param;
 
-import cn.edu.jmu.sqlonlinejudge.model.User;import java.util.List;
+import cn.edu.jmu.sqlonlinejudge.model.User;
+
+import java.util.List;
 
 /**
  * @author sgh
@@ -14,7 +17,7 @@ public interface UserMapper {
      *
      * @param record 用户信息
      * @return int 插入个数
-    */
+     */
     int insert(User record);
 
     /**
@@ -53,7 +56,7 @@ public interface UserMapper {
      *
      * @param record 用户信息
      * @return List<User> 用户列表
-    */
+     */
     List<User> selectBySelective(User record);
 
     /**
@@ -62,6 +65,6 @@ public interface UserMapper {
      * @param username 用户名
      * @param password 用户密码
      * @return User 用户
-    */
-    User verify(@Param("username")String username, @Param("password")String password);
+     */
+    User verify(@Param("username") String username, @Param("password") String password);
 }

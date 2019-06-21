@@ -28,13 +28,13 @@ public class UserController {
     /**
      * 查询所有用户
      *
-     * @param pageNum 页码
+     * @param pageNum  页码
      * @param pageSize 每页大小
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
-    */
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public BasicResponse getAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse response = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
@@ -53,7 +53,7 @@ public class UserController {
     /**
      * 模糊查询用户
      *
-     * @param pageNum 页码
+     * @param pageNum  页码
      * @param pageSize 每页大小
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
@@ -76,6 +76,12 @@ public class UserController {
         return response;
     }
 
+    /**
+     * 通过用户ID删除用户
+     *
+     * @param id 用户ID
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public BasicResponse delete(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
@@ -91,49 +97,67 @@ public class UserController {
         return response;
     }
 
+    /**
+     * 更新用户
+     *
+     * @param user 新的用户信息
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public BasicResponse update(@RequestBody User user) {
         BasicResponse response = new BasicResponse();
         try {
             // 确保用户ID是URL中的ID
-            if(userService.updateById(user)) {
+            if (userService.updateById(user)) {
                 response.set(200, "成功修改ID为" + user.getId() + "的用户资料");
-            }else {
+            } else {
                 response.set(400, "用户资料修改失败");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.set(503, e.getCause().toString());
         }
         return response;
     }
 
+    /**
+     * 添加用户
+     *
+     * @param user 新的用户
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BasicResponse insert(@RequestBody User user) {
         BasicResponse response = new BasicResponse();
         try {
-            if(userService.insert(user)) {
+            if (userService.insert(user)) {
                 response.set(200, "增加用户成功", userService.selectById(user.getId()));
-            }else {
+            } else {
                 response.set(400, "增加用户失败");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.set(503, e.getCause().toString());
         }
         return response;
     }
 
+    /**
+     * 用户登录
+     *
+     * @param user 登录的用户
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public BasicResponse login(@RequestBody User u) {
+    public BasicResponse login(@RequestBody User user) {
         BasicResponse response = new BasicResponse();
         try {
-            User user = userService.verify(u.getUsername(), u.getPassword());
-            if(user != null) {
+            User verifyResult = userService.verify(user.getUsername(), user.getPassword());
+            if (verifyResult != null) {
                 response.set(200, "用户验证成功");
-                userRole = user.getRole();
-            }else {
+                userRole = verifyResult.getRole();
+            } else {
                 response.set(400, "用户验证失败");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             response.set(503, e.getCause().toString());
         }
         return response;

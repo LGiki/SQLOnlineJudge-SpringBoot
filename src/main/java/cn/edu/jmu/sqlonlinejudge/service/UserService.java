@@ -1,14 +1,14 @@
 package cn.edu.jmu.sqlonlinejudge.service;
+
 import java.util.List;
 
 import cn.edu.jmu.sqlonlinejudge.model.User;
-    /**
- *
- *
+
+/**
  * @author sgh
  * @date 2019/6/18 18:55
  */
-public interface UserService{
+public interface UserService {
 
     /**
      * 通过id查找
@@ -61,8 +61,8 @@ public interface UserService{
      * 验证用户
      *
      * @param username 用户名
-     * @param password  密码
+     * @param password 密码
      * @return User 用户
-    */
+     */
     User verify(String username, String password);
 }
