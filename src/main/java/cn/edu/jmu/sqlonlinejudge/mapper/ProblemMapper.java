@@ -1,14 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
-import org.apache.ibatis.annotations.Param;
-
 import cn.edu.jmu.sqlonlinejudge.model.Problem;
 
 import java.util.List;
 
 /**
  * @author LGiki
- * @data 2019/06/21 13:19
+ * @date 2019/06/21 13:19
  */
 
 public interface ProblemMapper {

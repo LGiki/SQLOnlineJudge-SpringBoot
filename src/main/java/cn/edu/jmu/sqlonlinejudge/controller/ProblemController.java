@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/problem")
+@RequestMapping("/api/problem")
 public class ProblemController {
 
     @Autowired

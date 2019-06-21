@@ -1,6 +1,5 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
-import cn.edu.jmu.sqlonlinejudge.model.User;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.BeforeClass;
@@ -24,8 +23,6 @@ public class UserMapperTest {
 
     @Test
     public void testSelectAll() throws FileNotFoundException {
-        for(User user : mapper.selectAll()) {
-            System.out.println(user);
-        }
+
     }
 }

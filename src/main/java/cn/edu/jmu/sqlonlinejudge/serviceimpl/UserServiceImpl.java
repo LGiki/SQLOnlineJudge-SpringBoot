@@ -1,14 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.serviceimpl;
 
-import java.util.List;
-
+import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
+import cn.edu.jmu.sqlonlinejudge.model.User;
+import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import cn.edu.jmu.sqlonlinejudge.model.User;
-import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
-import cn.edu.jmu.sqlonlinejudge.service.UserService;
+import java.util.List;
 
 /**
  * @author sgh
@@ -26,23 +24,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insert(User record) {
-        return userMapper.insert(record);
-    }
-
-    @Override
-    public Boolean insertSelective(User record) {
-        return userMapper.insertSelective(record) == 1;
-    }
-
-    @Override
     public User selectById(Integer id) {
         return userMapper.selectById(id);
     }
 
     @Override
-    public Boolean updateByIdSelective(User record) {
-        return userMapper.updateByIdSelective(record) == 1;
+    public Boolean insert(User record) {
+        return userMapper.insert(record) == 1;
     }
 
     @Override
@@ -53,5 +41,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> selectAll() {
         return userMapper.selectAll();
+    }
+
+    @Override
+    public User verify(String username, String password) {
+        return userMapper.verify(username, password);
+    }
+
+    @Override
+    public List<User> selectBySelective(User record) {
+        return userMapper.selectBySelective(record);
     }
 }
