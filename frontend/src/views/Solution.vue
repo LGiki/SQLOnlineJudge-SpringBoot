@@ -31,22 +31,22 @@
                 <v-table
                   is-horizontal-resize
                   style="width:100%"
-                  :columns="columns"
-                  :table-data="tableData"
+                  :columns="tableConfig.columns"
+                  :table-data="tableConfig.tableData"
                   row-hover-color="#eee"
                   row-click-color="#edf7ff"
                   :row-click="rowClick"
                 ></v-table>
               </template>
               <div class="bd">
-                <template>
-                  <pagination
-                    class="justify-content-center"
-                    type="info"
-                    v-model="infoPagination"
-                    :page-count="3"
-                  ></pagination>
-                </template>
+                <v-pagination
+                  @page-change="pageChange"
+                  @page-size-change="pageSizeChange"
+                  :is-loading="isLoading"
+                  :showPagingCount="3"
+                  :total="totalItems"
+                  :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+                ></v-pagination>
               </div>
             </div>
           </div>
@@ -98,127 +98,133 @@ export default {
   data() {
     return {
       codeModal: false,
-      tableData: [
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        },
-        {
-          solutionId: "1",
-          username: "Admin",
-          problemId: "52",
-          submitTime: "2019-06-20 08:00:00",
-          result: "Accept"
-        }
-      ],
-      columns: [
-        {
-          field: "solutionId",
-          title: "ID",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "username",
-          title: "用户名",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "problemId",
-          title: "题目ID",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "submitTime",
-          title: "提交时间",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        },
-        {
-          field: "result",
-          title: "结果",
-          width: 100,
-          titleAlign: "center",
-          columnAlign: "center",
-          isResize: true
-        }
-      ]
+      pageIndex: 1,
+      pageSize: 10,
+      totalItems: 0,
+      isLoading: true,
+      tableConfig: {
+        tableData: [
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          },
+          {
+            solutionId: "1",
+            username: "Admin",
+            problemId: "52",
+            submitTime: "2019-06-20 08:00:00",
+            result: "Accept"
+          }
+        ],
+        columns: [
+          {
+            field: "solutionId",
+            title: "ID",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "username",
+            title: "用户名",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "problemId",
+            title: "题目ID",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "submitTime",
+            title: "提交时间",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "result",
+            title: "结果",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -230,7 +236,9 @@ export default {
     },
     rowClick(rowIndex, rowData, column) {
       this.codeModal = true;
-    }
+    },
+    pageChange() {},
+    pageSizeChange() {}
   },
   computed: {
     headerStyle() {
@@ -272,6 +280,10 @@ export default {
 .bd {
   padding-top: 10px;
   width: 100%;
+}
+
+.bd /deep/ a {
+  color: #333 !important;
 }
 
 .justify-content-center {
