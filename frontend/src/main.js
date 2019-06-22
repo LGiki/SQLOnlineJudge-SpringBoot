@@ -5,7 +5,7 @@ import router from "./router";
 import MaterialKit from "./plugins/material-kit";
 import VueHighlightJS from 'vue-highlight.js';
 import Axios from 'axios'
-import Url from './config'
+import Url from './urlConfig'
 
 Vue.config.productionTip = false;
 

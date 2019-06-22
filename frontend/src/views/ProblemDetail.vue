@@ -6,17 +6,33 @@
         <div class="container">
           <div class="md-layout">
             <div class="text-center" style="width:100%">
-              <h2 class="title">题目详情</h2>
+              <h2 class="title">{{ problemDetail.title }}</h2>
             </div>
           </div>
           <h3>题目描述</h3>
-          <p>查找最晚入职员工的所有信息</p>
+          <p>{{ problemDetail.description }}</p>
           <h3>建表语句</h3>
-          <highlight-code lang="sql">
-            CREATE TABLE `employee` {
-            `emp_no` int(11) NOT NULL,
-            }
-          </highlight-code>
+          <highlight-code lang="sql">{{ problemDetail.databaseId }}</highlight-code>
+          <template v-if="problemDetail.inputFormat">
+            <h3>输入格式</h3>
+            <p>{{ problemDetail.inputFormat }}</p>
+          </template>
+          <template v-if="problemDetail.outputFormat">
+            <h3>输出格式</h3>
+            <p>{{ problemDetail.outputFormat }}</p>
+          </template>
+          <template v-if="problemDetail.sampleInput">
+            <h3>样例输入</h3>
+            <p>{{ problemDetail.sampleInput }}</p>
+          </template>
+          <template v-if="problemDetail.sampleOutput">
+            <h3>样例输出</h3>
+            <p>{{ problemDetail.sampleOutput }}</p>
+          </template>
+          <template v-if="problemDetail.hint">
+            <h3>提示</h3>
+            <p>{{ problemDetail.hint }}</p>
+          </template>
           <h3>提交代码</h3>
           <codemirror v-model="code" :options="cmOptions" @ready="onCmReady"></codemirror>
           <div style="width:100%;padding-top:20px">
@@ -74,28 +90,38 @@ export default {
         lineNumbers: true,
         styleActiveLine: true,
         lineWrapping: true,
-        // autofocus: true,
         indentWithTabs: true,
         hintOptions: {
           completeSingle: false
         },
         line: true
-      }
+      },
+      problemDetail: {}
     };
   },
   methods: {
-    onInputRead(instance) {
-      if (instance.state.completionActive) return;
-      var cur = instance.getCursor();
-      var str = instance.getTokenAt(cur).string;
-      if (str.length > 0 && str.match(/^[.`\w@]\w*$/)) {
-        this.codemirror.commands.autocomplete(instance);
-      }
-    },
     onCmReady(cm) {
       cm.on("keypress", () => {
         cm.showHint();
       });
+    },
+    getProblemDetail(problemId) {
+      let apiUrl = this.Url.getProblem;
+      this.$axios
+        .get(apiUrl + problemId)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("Network error");
+          } else {
+            let resData = res.data;
+            if (resData.code === 200) {
+              this.problemDetail = resData.data;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   computed: {
@@ -107,6 +133,10 @@ export default {
     codemirror() {
       return this.$refs.myCm.codemirror;
     }
+  },
+  mounted: function() {
+    let problemId = this.$route.params.id;
+    this.getProblemDetail(problemId);
   }
 };
 </script>

@@ -43,6 +43,7 @@
                   <v-pagination
                     @page-change="pageChange"
                     @page-size-change="pageSizeChange"
+                    :is-loading="isLoading"
                     :showPagingCount="3"
                     :total="totalItems"
                     :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
@@ -80,6 +81,7 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       totalItems: 0,
+      isLoading: true,
       tableConfig: {
         tableData: [],
         columns: [
@@ -135,19 +137,24 @@ export default {
       this.$router.push({ path: "/problem/" + rowData.id });
     },
     getProblemList() {
+      let apiUrl = this.Url.getProblem;
       this.$axios
-        .get(this.Url.getProblem, {
+        .get(apiUrl, {
           params: {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           }
         })
         .then(res => {
-          let resData = res.data;
-          console.log(resData);
-          if (resData.code === 200) {
-            this.tableConfig.tableData = resData.data.list;
-            this.totalItems = resData.data.total;
+          if (res.status !== 200) {
+            alert("Network error");
+          } else {
+            let resData = res.data;
+            if (resData.code === 200) {
+              this.tableConfig.tableData = resData.data.list;
+              this.totalItems = resData.data.total;
+              this.isLoading = false;
+            }
           }
         })
         .catch(err => {
