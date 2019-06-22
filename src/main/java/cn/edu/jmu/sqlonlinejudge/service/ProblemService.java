@@ -43,7 +43,7 @@ public interface ProblemService {
     Problem selectById(Integer id);
 
     /**
-     * 选择性通过ID更新题目
+     * 通过ID选择性更新题目
      *
      * @param record 题目对象
      * @return 更新成功的记录条数

@@ -35,7 +35,7 @@ public interface ProblemMapper {
     int insertSelective(Problem record);
 
     /**
-     * 通过ID获取题目信息
+     * 通过ID获取题目对象
      *
      * @param id 题目ID
      * @return 题目对象
@@ -43,7 +43,7 @@ public interface ProblemMapper {
     Problem selectById(Integer id);
 
     /**
-     * 选择性通过ID更新题目
+     * 通过ID选择性更新题目
      *
      * @param record 题目对象
      * @return 更新成功的记录条数
