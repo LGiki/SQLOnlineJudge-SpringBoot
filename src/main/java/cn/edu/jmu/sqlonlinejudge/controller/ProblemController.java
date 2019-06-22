@@ -61,4 +61,70 @@ public class ProblemController {
         return basicResponse;
     }
 
+    /**
+     * 通过ID删除题目
+     *
+     * @param id 题目ID
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public BasicResponse deleteProblemById(@PathVariable("id") Integer id) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            if (problemService.deleteById(id) == 1) {
+                basicResponse.set(200, "删除成功");
+            } else {
+                basicResponse.set(400, "删除失败");
+            }
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
+
+    /**
+     * 添加题目
+     *
+     * @param problem 要添加的题目
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public BasicResponse insertProblem(@RequestBody Problem problem) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            if (problemService.insert(problem) == 1) {
+                basicResponse.set(200, "添加成功");
+            } else {
+                basicResponse.set(400, "添加失败");
+            }
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
+
+    /**
+     * 通过ID更新题目
+     *
+     * @param id      题目ID
+     * @param problem 更新的题目信息
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public BasicResponse updateProblemById(@PathVariable("id") Integer id, @RequestBody Problem problem) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            //确保更新的题目ID是URL中的ID
+            problem.setId(id);
+            if (problemService.updateByIdSelective(problem) == 1) {
+                basicResponse.set(200, "更新成功");
+            } else {
+                basicResponse.set(400, "更新失败");
+            }
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
+
 }
