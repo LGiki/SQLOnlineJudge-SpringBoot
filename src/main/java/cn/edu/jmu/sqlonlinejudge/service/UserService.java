@@ -65,4 +65,13 @@ public interface UserService {
      * @return User 用户
      */
     User verify(String username, String password);
+
+
+    /**
+     * 通过用户名查找用户
+     *
+     * @param username 用户名
+     * @return User 查找到的用户对象
+     */
+    User findByUsername(String username);
 }

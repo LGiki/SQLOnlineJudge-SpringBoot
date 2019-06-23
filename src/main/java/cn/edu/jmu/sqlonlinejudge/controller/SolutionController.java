@@ -66,7 +66,7 @@ public class SolutionController {
      * @param id 提交ID
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public BasicResponse deleteSolutionById(@PathVariable("id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         try {

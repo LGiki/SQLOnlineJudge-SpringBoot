@@ -52,4 +52,10 @@ public class UserServiceImpl implements UserService {
     public List<User> selectBySelective(User record) {
         return userMapper.selectBySelective(record);
     }
+
+	@Override
+	public User findByUsername(String username){
+		 return userMapper.findByUsername(username);
+	}
+
 }
