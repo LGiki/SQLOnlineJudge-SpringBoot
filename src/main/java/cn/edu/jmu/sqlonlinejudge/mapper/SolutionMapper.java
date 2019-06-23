@@ -1,5 +1,4 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
-import org.apache.ibatis.annotations.Param;
 
 import cn.edu.jmu.sqlonlinejudge.model.Solution;
 
@@ -64,6 +63,5 @@ public interface SolutionMapper {
      * @return List<Solution> 提交列表
      */
     List<Solution> selectAll();
-
 
 }

@@ -15,4 +15,8 @@ public class EncryptUtil {
     public static String md5(String password) {
         return DigestUtils.md5DigestAsHex(password.getBytes());
     }
+
+    public static String md5(CharSequence charSequence) {
+        return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+    }
 }

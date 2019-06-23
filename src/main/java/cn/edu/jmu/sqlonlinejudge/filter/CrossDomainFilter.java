@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/*", filterName = "AdminFilter")
-public class AdminFilter implements Filter {
+@WebFilter(urlPatterns = "/*", filterName = "CrossDomainFilter")
+public class CrossDomainFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
