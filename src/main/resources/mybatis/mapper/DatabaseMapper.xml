@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.jmu.sqlonlinejudge.model.Database">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="create_table" jdbcType="VARCHAR" property="createTable" />
+    <result column="test_data" jdbcType="VARCHAR" property="testData" />
+    <result column="is_created" jdbcType="BIT" property="isCreated" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, create_table, test_data, is_created
+  </sql>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from database
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from database
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into database (`name`, create_table, test_data, 
+      is_created)
+    values (#{name,jdbcType=VARCHAR}, #{createTable,jdbcType=VARCHAR}, #{testData,jdbcType=VARCHAR}, 
+      #{isCreated,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into database
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="createTable != null">
+        create_table,
+      </if>
+      <if test="testData != null">
+        test_data,
+      </if>
+      <if test="isCreated != null">
+        is_created,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createTable != null">
+        #{createTable,jdbcType=VARCHAR},
+      </if>
+      <if test="testData != null">
+        #{testData,jdbcType=VARCHAR},
+      </if>
+      <if test="isCreated != null">
+        #{isCreated,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByIdSelective" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database">
+    <!--@mbg.generated-->
+    update database
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createTable != null">
+        create_table = #{createTable,jdbcType=VARCHAR},
+      </if>
+      <if test="testData != null">
+        test_data = #{testData,jdbcType=VARCHAR},
+      </if>
+      <if test="isCreated != null">
+        is_created = #{isCreated,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateById" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database">
+    <!--@mbg.generated-->
+    update database
+    set `name` = #{name,jdbcType=VARCHAR},
+      create_table = #{createTable,jdbcType=VARCHAR},
+      test_data = #{testData,jdbcType=VARCHAR},
+      is_created = #{isCreated,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

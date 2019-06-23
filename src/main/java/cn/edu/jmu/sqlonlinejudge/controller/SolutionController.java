@@ -1,7 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.controller;
 
-import cn.edu.jmu.sqlonlinejudge.model.Problem;
-import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
+import cn.edu.jmu.sqlonlinejudge.model.Solution;
+import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import cn.edu.jmu.sqlonlinejudge.util.BasicResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -10,18 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author LGiki
- * @date 2019/06/21 13:19
+ * @date 2019/06/23 09:27
  */
 
 @RestController
-@RequestMapping("/api/problem")
-public class ProblemController {
-
+@RequestMapping("/api/solution")
+public class SolutionController {
     @Autowired
-    private ProblemService problemService;
+    private SolutionService solutionService;
 
     /**
-     * 查询所有题目
+     * 查询所有提交
      *
      * @param pageNum  当前页码
      * @param pageSize 页面数据条数
@@ -32,7 +31,7 @@ public class ProblemController {
         BasicResponse basicResponse = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
-            basicResponse.set(200, null, new PageInfo<>(problemService.selectAll()));
+            basicResponse.set(200, null, new PageInfo<>(solutionService.selectAll()));
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }
@@ -40,20 +39,20 @@ public class ProblemController {
     }
 
     /**
-     * 通过ID查询题目详情
+     * 通过ID查询提交详情
      *
-     * @param id 题目ID
+     * @param id 提交ID
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public BasicResponse selectProblemById(@PathVariable("id") Integer id) {
+    public BasicResponse selectSolutionById(@PathVariable("id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            Problem problem = problemService.selectById(id);
-            if (problem != null) {
-                basicResponse.set(200, null, problem);
+            Solution solution = solutionService.selectById(id);
+            if (solution != null) {
+                basicResponse.set(200, null, solution);
             } else {
-                basicResponse.set(400, "无此题目", null);
+                basicResponse.set(400, "无此提交");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -62,16 +61,16 @@ public class ProblemController {
     }
 
     /**
-     * 通过ID删除题目
+     * 通过ID删除提交
      *
-     * @param id 题目ID
+     * @param id 提交ID
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public BasicResponse deleteProblemById(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public BasicResponse deleteSolutionById(@PathVariable("id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            if (problemService.deleteById(id) == 1) {
+            if (solutionService.deleteById(id) == 1) {
                 basicResponse.set(200, "删除成功");
             } else {
                 basicResponse.set(400, "删除失败");
@@ -83,16 +82,16 @@ public class ProblemController {
     }
 
     /**
-     * 添加题目
+     * 添加提交
      *
-     * @param problem 要添加的题目
+     * @param solution 要添加的提交
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public BasicResponse insertProblem(@RequestBody Problem problem) {
+    public BasicResponse insertSolution(@RequestBody Solution solution) {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            if (problemService.insert(problem) == 1) {
+            if (solutionService.insert(solution) == 1) {
                 basicResponse.set(200, "添加成功");
             } else {
                 basicResponse.set(400, "添加失败");
@@ -104,19 +103,18 @@ public class ProblemController {
     }
 
     /**
-     * 通过ID更新题目
+     * 通过ID更新提交
      *
-     * @param id      题目ID
-     * @param problem 更新的题目对象
+     * @param id       提交ID
+     * @param solution 更新的提交对象
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public BasicResponse updateProblemById(@PathVariable("id") Integer id, @RequestBody Problem problem) {
+    public BasicResponse updateSolutionById(@PathVariable("id") Integer id, @RequestBody Solution solution) {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            //确保更新的题目ID是URL中的ID
-            problem.setId(id);
-            if (problemService.updateByIdSelective(problem) == 1) {
+            //确保更新的提交ID是URL中的ID
+            solution.setId(id);
+            if (solutionService.updateById(solution) == 1) {
                 basicResponse.set(200, "更新成功");
             } else {
                 basicResponse.set(400, "更新失败");
@@ -126,5 +124,4 @@ public class ProblemController {
         }
         return basicResponse;
     }
-
 }
