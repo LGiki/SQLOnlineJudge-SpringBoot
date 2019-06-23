@@ -2,6 +2,8 @@ package cn.edu.jmu.sqlonlinejudge.mapper;
 
 import cn.edu.jmu.sqlonlinejudge.model.Database;
 
+import java.util.List;
+
 /**
  * @author LGiki
  * @date 2019/06/23 09:27
@@ -55,4 +57,13 @@ public interface DatabaseMapper {
      * @return 更新成功的记录条数
      */
     int updateById(Database record);
+
+
+    /**
+     * 查询所有数据库
+     *
+     * @return List<Database> 数据库列表
+     */
+    List<Database> findAll();
+
 }

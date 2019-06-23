@@ -1,4 +1,5 @@
 package cn.edu.jmu.sqlonlinejudge.serviceimpl;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -46,5 +47,10 @@ public class DatabaseServiceImpl implements DatabaseService{
     public int updateById(Database record) {
         return databaseMapper.updateById(record);
     }
+
+	@Override
+	public List<Database> findAll(){
+		 return databaseMapper.findAll();
+	}
 
 }

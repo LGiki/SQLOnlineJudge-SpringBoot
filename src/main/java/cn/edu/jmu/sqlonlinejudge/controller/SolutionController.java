@@ -84,7 +84,7 @@ public class SolutionController {
     /**
      * 添加提交
      *
-     * @param solution 要添加的提交
+     * @param solution 要添加的提交对象
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -109,12 +109,13 @@ public class SolutionController {
      * @param solution 更新的提交对象
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public BasicResponse updateSolutionById(@PathVariable("id") Integer id, @RequestBody Solution solution) {
         BasicResponse basicResponse = new BasicResponse();
         try {
             //确保更新的提交ID是URL中的ID
             solution.setId(id);
-            if (solutionService.updateById(solution) == 1) {
+            if (solutionService.updateByIdSelective(solution) == 1) {
                 basicResponse.set(200, "更新成功");
             } else {
                 basicResponse.set(400, "更新失败");

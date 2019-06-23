@@ -1,5 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
+import java.util.List;
+
 import cn.edu.jmu.sqlonlinejudge.model.Database;
 
 /**
@@ -56,4 +58,11 @@ public interface DatabaseService {
      */
     int updateById(Database record);
 
+
+    /**
+     * 查询所有数据库
+     *
+     * @return List<Database> 数据库列表
+     */
+    List<Database> findAll();
 }
