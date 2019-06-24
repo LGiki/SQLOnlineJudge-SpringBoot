@@ -1,7 +1,5 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
-import org.apache.ibatis.annotations.Param;
-
 import cn.edu.jmu.sqlonlinejudge.model.Solution;
 
 import java.util.List;

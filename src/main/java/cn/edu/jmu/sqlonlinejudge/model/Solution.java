@@ -1,9 +1,10 @@
 package cn.edu.jmu.sqlonlinejudge.model;
 
-import java.util.Date;
-
+import cn.edu.jmu.sqlonlinejudge.model.enums.SolutionResult;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class Solution {
@@ -42,5 +43,5 @@ public class Solution {
     /**
      * 结果
      */
-    private Byte result;
+    private SolutionResult result;
 }

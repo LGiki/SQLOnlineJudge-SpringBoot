@@ -1,3 +1,17 @@
+-- --------------------------------------------------------
+-- 主机:                           127.0.0.1
+-- 服务器版本:                        8.0.16 - MySQL Community Server - GPL
+-- 服务器OS:                        Win64
+-- HeidiSQL 版本:                  10.2.0.5599
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
 -- Dumping database structure for sqlonlinejudge
 CREATE DATABASE IF NOT EXISTS `sqlonlinejudge` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `sqlonlinejudge`;
@@ -17,10 +31,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Dumping data for table sqlonlinejudge.user: ~0 rows (大约)
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+-- Dumping data for table sqlonlinejudge.user: ~2 rows (大约)
 
 -- Dumping structure for table sqlonlinejudge.database
 CREATE TABLE IF NOT EXISTS `database` (
@@ -30,10 +43,12 @@ CREATE TABLE IF NOT EXISTS `database` (
   `test_data` text COMMENT '数据插入语句',
   `is_created` bit(1) NOT NULL DEFAULT b'0' COMMENT '数据库是否已创建',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table sqlonlinejudge.database: ~0 rows (大约)
 /*!40000 ALTER TABLE `database` DISABLE KEYS */;
+INSERT INTO `database` (`id`, `name`, `create_table`, `test_data`, `is_created`) VALUES
+	(1, '1', '1', '1', b'1');
 /*!40000 ALTER TABLE `database` ENABLE KEYS */;
 
 -- Dumping structure for table sqlonlinejudge.problem
@@ -55,10 +70,12 @@ CREATE TABLE IF NOT EXISTS `problem` (
   PRIMARY KEY (`id`),
   KEY `FK_problem_database` (`database_id`),
   CONSTRAINT `FK_problem_database` FOREIGN KEY (`database_id`) REFERENCES `database` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table sqlonlinejudge.problem: ~0 rows (大约)
 /*!40000 ALTER TABLE `problem` DISABLE KEYS */;
+INSERT INTO `problem` (`id`, `title`, `description`, `input_format`, `output_format`, `sample_input`, `sample_output`, `hint`, `answer`, `solve`, `submit`, `true_result`, `need_order`, `database_id`) VALUES
+	(1, '1', '1', '1', '1', '1', '1', '1', '1', 0, 0, '1', b'1', 1);
 /*!40000 ALTER TABLE `problem` ENABLE KEYS */;
 
 -- Dumping structure for table sqlonlinejudge.solution
@@ -69,21 +86,25 @@ CREATE TABLE IF NOT EXISTS `solution` (
   `source_code` text NOT NULL COMMENT '源代码',
   `submit_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '提交时间',
   `run_error` text COMMENT '错误信息',
-  `result` tinyint(4) DEFAULT NULL COMMENT '结果',
+  `result` varchar(2) DEFAULT NULL COMMENT '结果',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `pid` (`pid`),
   CONSTRAINT `solution_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`id`),
   CONSTRAINT `solution_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `problem` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table sqlonlinejudge.solution: ~0 rows (大约)
 /*!40000 ALTER TABLE `solution` DISABLE KEYS */;
+INSERT INTO `solution` (`id`, `uid`, `pid`, `source_code`, `submit_time`, `run_error`, `result`) VALUES
+	(1, 1, 1, '1', '2011-06-24 18:37:39', '', '0');
 /*!40000 ALTER TABLE `solution` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `is_email_valid`, `submit`, `solved`, `avatar`, `status`, `role`) VALUES
-	(1, '1', '1', '1', b'0', 0, 0, NULL, '0', '0'),
-	(3, '2', '2', '2', b'0', 0, 0, NULL, '1', '0');
+	(1, '1', '1', '1', b'0', 100, 0, NULL, '1', '0'),
+	(3, '2', '2', '2', b'0', 122, 0, NULL, '1', '0'),
+	(4, 'admin', 'admin', '123@qq.com', b'0', 200, 0, NULL, '1', '1');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

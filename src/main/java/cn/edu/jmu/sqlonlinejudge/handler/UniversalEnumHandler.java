@@ -2,6 +2,7 @@ package cn.edu.jmu.sqlonlinejudge.handler;
 
 import cn.edu.jmu.sqlonlinejudge.model.User;
 import cn.edu.jmu.sqlonlinejudge.model.enums.BaseEnum;
+import cn.edu.jmu.sqlonlinejudge.model.enums.SolutionResult;
 import cn.edu.jmu.sqlonlinejudge.model.enums.UserRole;
 import cn.edu.jmu.sqlonlinejudge.model.enums.UserStatus;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
  * @author sgh
  * @date 2019/6/20 17:23
  */
-@MappedTypes({UserStatus.class, UserRole.class})
+@MappedTypes({UserStatus.class, UserRole.class, SolutionResult.class})
 public final class UniversalEnumHandler<E extends BaseEnum> extends BaseTypeHandler<E> {
 
     private Class<E> type;

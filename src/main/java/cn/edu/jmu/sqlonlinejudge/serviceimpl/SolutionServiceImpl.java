@@ -1,14 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.serviceimpl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-
 import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
 import cn.edu.jmu.sqlonlinejudge.model.Solution;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author LGiki
@@ -60,6 +58,4 @@ public class SolutionServiceImpl implements SolutionService {
 	public List<Solution> selectAllOrderBySubmitTimeDesc(){
 		 return solutionMapper.selectAllOrderBySubmitTimeDesc();
 	}
-
-
 }

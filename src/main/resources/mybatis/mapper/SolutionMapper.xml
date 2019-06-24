@@ -9,7 +9,7 @@
     <result column="source_code" jdbcType="VARCHAR" property="sourceCode" />
     <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" />
     <result column="run_error" jdbcType="VARCHAR" property="runError" />
-    <result column="result" jdbcType="TINYINT" property="result" />
+    <result column="result" jdbcType="TINYINT" property="result" typeHandler="cn.edu.jmu.sqlonlinejudge.handler.UniversalEnumHandler"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
