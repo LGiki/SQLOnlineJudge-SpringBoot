@@ -65,11 +65,11 @@
       </template>
 
       <template slot="body">
-        <p>{{ code }}</p>
+        <p><highlight-code lang="sql">{{ code }}</highlight-code></p>
       </template>
 
       <template slot="footer">
-        <md-button class="md-danger md-simple" @click="codeModalHide">Close</md-button>
+        <md-button class="md-danger md-simple" @click="codeModalHide">关闭</md-button>
       </template>
     </modal>
   </div>
@@ -81,8 +81,12 @@ import "vue-easytable/libs/themes-base/index.css";
 import { VTable, VPagination } from "vue-easytable";
 import { Pagination } from "@/components";
 import { Modal } from "@/components";
+import VueHighlightJS from "vue-highlight.js";
+import "vue-highlight.js/lib/allLanguages";
+import "highlight.js/styles/atom-one-light.css";
 export default {
   components: {
+    VueHighlightJS,
     Modal,
     VTable,
     VPagination,

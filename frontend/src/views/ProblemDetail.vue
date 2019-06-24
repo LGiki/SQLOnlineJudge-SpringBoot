@@ -12,7 +12,7 @@
           <h3>题目描述</h3>
           <p>{{ problemDetail.description }}</p>
           <h3>建表语句</h3>
-          <highlight-code lang="sql">{{ problemDetail.databaseId }}</highlight-code>
+          <highlight-code lang="sql">{{ createTableCode }}</highlight-code>
           <template v-if="problemDetail.inputFormat">
             <h3>输入格式</h3>
             <p>{{ problemDetail.inputFormat }}</p>
@@ -82,7 +82,7 @@ export default {
   },
   data() {
     return {
-      code: "select * from `test`",
+      code: "",
       cmOptions: {
         tabSize: 4,
         mode: "text/x-mysql",
@@ -96,7 +96,8 @@ export default {
         },
         line: true
       },
-      problemDetail: {}
+      problemDetail: {},
+      createTableCode: ""
     };
   },
   methods: {
@@ -116,6 +117,25 @@ export default {
             let resData = res.data;
             if (resData.code === 200) {
               this.problemDetail = resData.data;
+            }
+            this.getCreateTableCode(this.problemDetail.databaseId);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getCreateTableCode(databaseId) {
+      let apiUrl = this.Url.databaseDetail;
+      this.$axios
+        .get(apiUrl + databaseId)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("Network error");
+          } else {
+            let resData = res.data;
+            if (resData.code === 200) {
+              this.createTableCode = resData.data.createTable;
             }
           }
         })

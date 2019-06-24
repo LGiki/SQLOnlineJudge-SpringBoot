@@ -17,24 +17,24 @@
     <!--@mbg.generated-->
     select 
     <include refid="Base_Column_List" />
-    from database
+    from `database`
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteById" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
-    delete from database
+    delete from `database`
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into database (`name`, create_table, test_data, 
+    insert into `database` (`name`, create_table, test_data,
       is_created)
     values (#{name,jdbcType=VARCHAR}, #{createTable,jdbcType=VARCHAR}, #{testData,jdbcType=VARCHAR}, 
       #{isCreated,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into database
+    insert into `database`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
         `name`,
@@ -66,7 +66,7 @@
   </insert>
   <update id="updateByIdSelective" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database">
     <!--@mbg.generated-->
-    update database
+    update `database`
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
@@ -85,7 +85,7 @@
   </update>
   <update id="updateById" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database">
     <!--@mbg.generated-->
-    update database
+    update `database`
     set `name` = #{name,jdbcType=VARCHAR},
       create_table = #{createTable,jdbcType=VARCHAR},
       test_data = #{testData,jdbcType=VARCHAR},
@@ -97,6 +97,6 @@
   <select id="findAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from database
+        from `database`
     </select>
 </mapper>

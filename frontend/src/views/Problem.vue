@@ -189,7 +189,6 @@ export default {
 }
 
 .section-with-padding {
-  //   padding: 40px 0;
   padding-bottom: 40px;
 }
 

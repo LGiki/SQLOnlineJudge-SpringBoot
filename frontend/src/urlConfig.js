@@ -4,6 +4,8 @@ const Url = {
     problemList: BaseUrl + 'problem/',
     problemDetail: BaseUrl + 'problem/',
     rankList: BaseUrl + 'user/ranklist',
-    solutionList: BaseUrl + 'solution/'
+    solutionList: BaseUrl + 'solution/',
+    databaseList: BaseUrl + 'database/',
+    databaseDetail: BaseUrl + 'database/'
 }
 export default Url
