@@ -3,6 +3,9 @@ package cn.edu.jmu.sqlonlinejudge.serviceimpl;
 import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
 import cn.edu.jmu.sqlonlinejudge.model.User;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,7 +16,7 @@ import java.util.List;
  * @date 2019/6/18 18:55
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService,  UserDetailsService {
 
     @Resource
     private UserMapper userMapper;
@@ -63,4 +66,12 @@ public class UserServiceImpl implements UserService {
 		 return userMapper.selectAllOrderBySolvedDesc();
 	}
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userMapper.findByUsername(s);
+        if(user == null) {
+            return new User();
+        }
+        return user;
+    }
 }
