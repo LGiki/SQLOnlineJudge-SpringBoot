@@ -60,12 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 //登录提交密码参数
                 .passwordParameter("password").permitAll()
-                .and().logout().permitAll();
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/register");
+                //设置注销登录成功跳转到的URL
+                .and().logout().logoutSuccessUrl("/").permitAll();
     }
 
     @Override

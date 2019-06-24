@@ -1,11 +1,14 @@
 package cn.edu.jmu.sqlonlinejudge.controller;
 
 import cn.edu.jmu.sqlonlinejudge.model.Problem;
+import cn.edu.jmu.sqlonlinejudge.model.User;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 import cn.edu.jmu.sqlonlinejudge.util.BasicResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -31,9 +34,16 @@ public class ProblemController {
     public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         try {
+//            Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            if(object instanceof User) {
+//                User user = (User) object;
+//                System.out.println(user.getUsername());
+//                System.out.println(user.getRole().getDisplayName());
+//            }
             PageHelper.startPage(pageNum, pageSize);
             basicResponse.set(200, null, new PageInfo<>(problemService.selectAll()));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             basicResponse.set(503, e.getCause().toString());
         }
         return basicResponse;
