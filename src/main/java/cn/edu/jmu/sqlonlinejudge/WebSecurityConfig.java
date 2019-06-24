@@ -9,7 +9,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +38,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //需要特定角色的用户才能访问的URL
                 .antMatchers("/admin/**").hasRole("管理员")
                 //其他未指定的URL需要用户登录才能访问
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().formLogin().loginPage("/api/login")
+                //登录成功处理
+                .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                    httpServletResponse.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = httpServletResponse.getWriter();
+                    out.write("{\"status\":\"ok\",\"msg\":\"登录成功\"}");
+                    out.flush();
+                    out.close();
+                })
+                //登录失败处理
+                .failureHandler((httpServletRequest, httpServletResponse, e) -> {
+                    httpServletResponse.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = httpServletResponse.getWriter();
+                    out.write("{\"status\":\"error\",\"msg\":\"登录失败\"}");
+                    out.flush();
+                    out.close();
+                })
+                //登录提交用户名参数
+                .usernameParameter("username")
+                //登录提交密码参数
+                .passwordParameter("password").permitAll()
+                .and().logout().permitAll();
     }
 
     @Override
@@ -46,6 +78,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public boolean matches(CharSequence charSequence, String s) {
+                if (charSequence == null || s == null) {
+                    return false;
+                }
                 return s.equals(EncryptUtil.md5(charSequence));
             }
         });

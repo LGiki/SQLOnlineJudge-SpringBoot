@@ -15,6 +15,7 @@
     "axios": "^0.19.0",
     "highlight.js": "^9.15.8",
     "nouislider": "13.1.0",
+    "qs": "^6.7.0",
     "v-tooltip": "2.0.0-rc.33",
     "vue": "2.6.6",
     "vue-carousel": "0.17.0",

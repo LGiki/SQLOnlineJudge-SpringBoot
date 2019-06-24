@@ -8,46 +8,18 @@
           >
             <login-card header-color="green">
               <h2 slot="title" class="card-title">用户登录</h2>
-              <!-- <md-button
-                slot="buttons"
-                href="javascript:void(0)"
-                class="md-just-icon md-simple md-white"
-              >
-                <i class="fab fa-facebook-square"></i>
-              </md-button>
-              <md-button
-                slot="buttons"
-                href="javascript:void(0)"
-                class="md-just-icon md-simple md-white"
-              >
-                <i class="fab fa-twitter"></i>
-              </md-button>
-              <md-button
-                slot="buttons"
-                href="javascript:void(0)"
-                class="md-just-icon md-simple md-white"
-              >
-                <i class="fab fa-google-plus-g"></i>
-              </md-button> -->
               <p slot="description" class="description">&nbsp;</p>
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>face</md-icon>
                 <label>用户名</label>
                 <md-input v-model="username"></md-input>
               </md-field>
-              <!-- <md-field class="md-form-group" slot="inputs">
-                <md-icon>email</md-icon>
-                <label>Email...</label>
-                <md-input v-model="email" type="email"></md-input>
-              </md-field> -->
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>lock_outline</md-icon>
                 <label>密码</label>
-                <md-input v-model="password" type="password"></md-input>
+                <md-input @keyup.enter.native="login" v-model="password" type="password"></md-input>
               </md-field>
-              <md-button slot="footer" class="md-simple md-success md-lg">
-                登录
-              </md-button>
+              <md-button @click="login" slot="footer" class="md-simple md-success md-lg">登录</md-button>
             </login-card>
           </div>
         </div>
@@ -58,6 +30,7 @@
 
 <script>
 import { LoginCard } from "@/components";
+import qs from "qs";
 
 export default {
   components: {
@@ -67,7 +40,6 @@ export default {
   data() {
     return {
       username: null,
-      email: null,
       password: null
     };
   },
@@ -75,6 +47,28 @@ export default {
     header: {
       type: String,
       default: require("@/assets/img/profile_city.jpg")
+    }
+  },
+  methods: {
+    login() {
+      let postData = qs.stringify({
+        username: this.username,
+        password: this.password
+      });
+      this.$axios
+        .post(this.Url.login, postData)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("Network error!");
+          } else {
+            let resData = res.data;
+            console.log(resData);
+            alert(resData.msg);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   computed: {
