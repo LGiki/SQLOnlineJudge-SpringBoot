@@ -106,7 +106,7 @@ export default {
       });
     },
     getProblemDetail(problemId) {
-      let apiUrl = this.Url.getProblem;
+      let apiUrl = this.Url.problemDetail;
       this.$axios
         .get(apiUrl + problemId)
         .then(res => {

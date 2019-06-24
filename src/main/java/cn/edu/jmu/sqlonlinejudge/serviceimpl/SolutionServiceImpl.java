@@ -56,5 +56,10 @@ public class SolutionServiceImpl implements SolutionService {
         return solutionMapper.selectAll();
     }
 
+	@Override
+	public List<Solution> selectAllOrderBySubmitTimeDesc(){
+		 return solutionMapper.selectAllOrderBySubmitTimeDesc();
+	}
+
 
 }

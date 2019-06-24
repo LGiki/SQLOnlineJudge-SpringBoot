@@ -74,4 +74,13 @@ public interface UserService {
      * @return User 查找到的用户对象
      */
     User findByUsername(String username);
+
+
+    /**
+     * 查询所有用户并按通过数降序排序
+     *
+     * @return List<User> 用户列表
+     */
+    List<User> selectAllOrderBySolvedDesc();
+
 }

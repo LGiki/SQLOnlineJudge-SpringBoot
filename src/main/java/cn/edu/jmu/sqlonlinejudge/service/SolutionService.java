@@ -68,4 +68,12 @@ public interface SolutionService {
     List<Solution> selectAll();
 
 
+    /**
+     * 查询所有提交并按提交日期降序排序
+     *
+     * @return List<Solution> 提交列表
+     */
+    List<Solution> selectAllOrderBySubmitTimeDesc();
+
+
 }

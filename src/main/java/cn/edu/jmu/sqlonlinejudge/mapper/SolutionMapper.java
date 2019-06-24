@@ -1,5 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.edu.jmu.sqlonlinejudge.model.Solution;
 
 import java.util.List;
@@ -63,5 +65,13 @@ public interface SolutionMapper {
      * @return List<Solution> 提交列表
      */
     List<Solution> selectAll();
+
+    /**
+     * 查询所有提交并按提交日期降序排序
+     *
+     * @return List<Solution> 提交列表
+     */
+    List<Solution> selectAllOrderBySubmitTimeDesc();
+
 
 }

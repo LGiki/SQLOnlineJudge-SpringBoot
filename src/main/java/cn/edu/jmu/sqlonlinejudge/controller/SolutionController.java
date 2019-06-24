@@ -31,7 +31,7 @@ public class SolutionController {
         BasicResponse basicResponse = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
-            basicResponse.set(200, null, new PageInfo<>(solutionService.selectAll()));
+            basicResponse.set(200, null, new PageInfo<>(solutionService.selectAllOrderBySubmitTimeDesc()));
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }

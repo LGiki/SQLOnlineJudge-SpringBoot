@@ -58,4 +58,9 @@ public class UserServiceImpl implements UserService {
 		 return userMapper.findByUsername(username);
 	}
 
+	@Override
+	public List<User> selectAllOrderBySolvedDesc(){
+		 return userMapper.selectAllOrderBySolvedDesc();
+	}
+
 }

@@ -162,4 +162,24 @@ public class UserController {
         }
         return response;
     }
+
+    /**
+     * 查询所有用户并按通过数降序排序
+     *
+     * @param pageNum  当前页码
+     * @param pageSize 每页大小
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/ranklist", method = RequestMethod.GET)
+    public BasicResponse getRankList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                     @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            basicResponse.set(200, null, new PageInfo<>(userService.selectAllOrderBySolvedDesc()));
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
 }

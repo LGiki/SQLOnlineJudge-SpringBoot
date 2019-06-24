@@ -137,7 +137,7 @@ export default {
       this.$router.push({ path: "/problem/" + rowData.id });
     },
     getProblemList() {
-      let apiUrl = this.Url.getProblem;
+      let apiUrl = this.Url.problemList;
       this.$axios
         .get(apiUrl, {
           params: {
@@ -161,8 +161,8 @@ export default {
           console.log(err);
         });
     },
-    pageChange(pageIndex) {
-      this.pageNum = pageIndex;
+    pageChange(pageNum) {
+      this.pageNum = pageNum;
       this.getProblemList();
     },
     pageSizeChange(newPageSize) {

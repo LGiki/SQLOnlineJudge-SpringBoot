@@ -65,7 +65,7 @@
       </template>
 
       <template slot="body">
-        <p>SELECT * FROM `TEST`</p>
+        <p>{{ code }}</p>
       </template>
 
       <template slot="footer">
@@ -98,93 +98,16 @@ export default {
   data() {
     return {
       codeModal: false,
-      pageIndex: 1,
+      pageNum: 1,
       pageSize: 10,
       totalItems: 0,
       isLoading: true,
+      code: '',
       tableConfig: {
-        tableData: [
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          },
-          {
-            solutionId: "1",
-            username: "Admin",
-            problemId: "52",
-            submitTime: "2019-06-20 08:00:00",
-            result: "Accept"
-          }
-        ],
+        tableData: [],
         columns: [
           {
-            field: "solutionId",
+            field: "id",
             title: "ID",
             width: 100,
             titleAlign: "center",
@@ -192,7 +115,7 @@ export default {
             isResize: true
           },
           {
-            field: "username",
+            field: "uid",
             title: "用户名",
             width: 100,
             titleAlign: "center",
@@ -200,7 +123,7 @@ export default {
             isResize: true
           },
           {
-            field: "problemId",
+            field: "pid",
             title: "题目ID",
             width: 100,
             titleAlign: "center",
@@ -235,10 +158,43 @@ export default {
       this.codeModal = true;
     },
     rowClick(rowIndex, rowData, column) {
+      let solution = this.tableConfig.tableData[rowIndex];
+      this.code = solution.sourceCode;
       this.codeModal = true;
     },
-    pageChange() {},
-    pageSizeChange() {}
+    pageChange(pageNum) {
+      this.pageNum = pageNum;
+      this.getSolutionList();
+    },
+    pageSizeChange(newPageSize) {
+      this.pageSize = newPageSize;
+      this.getSolutionList();
+    },
+    getSolutionList() {
+      let apiUrl = this.Url.solutionList;
+      this.$axios
+        .get(apiUrl, {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          }
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            alert("Network error");
+          } else {
+            let resData = res.data;
+            if (resData.code === 200) {
+              this.tableConfig.tableData = resData.data.list;
+              this.totalItems = resData.data.total;
+              this.isLoading = false;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
   computed: {
     headerStyle() {
@@ -246,6 +202,9 @@ export default {
         backgroundImage: `url(${this.header})`
       };
     }
+  },
+  mounted: function() {
+    this.getSolutionList();
   }
 };
 </script>
@@ -255,7 +214,6 @@ export default {
 }
 
 .section-with-padding {
-  //   padding: 40px 0;
   padding-bottom: 40px;
 }
 

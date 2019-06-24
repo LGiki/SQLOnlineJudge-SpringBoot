@@ -75,83 +75,12 @@ export default {
   },
   data() {
     return {
-      pageIndex: 1,
+      pageNum: 1,
       pageSize: 10,
       totalItems: 0,
       isLoading: true,
       tableConfig: {
-        tableData: [
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          },
-          {
-            rank: "6",
-            username: "Admin",
-            solve: "52",
-            submit: "66",
-            accept_rate: 0.6
-          }
-        ],
+        tableData: [],
         columns: [
           {
             field: "rank",
@@ -159,7 +88,12 @@ export default {
             width: 30,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return rowIndex + 1 <= 3
+                ? '<font color="red"><b>' + (rowIndex + 1) + "</b></font>"
+                : rowIndex + 1;
+            }
           },
           {
             field: "username",
@@ -170,7 +104,7 @@ export default {
             isResize: true
           },
           {
-            field: "solve",
+            field: "solved",
             title: "通过数",
             width: 100,
             titleAlign: "center",
@@ -191,15 +125,49 @@ export default {
             width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return rowData.submit == 0 ? 0 : rowData.solved / rowData.submit;
+            }
           }
         ]
       }
     };
   },
   methods: {
-    pageChange() {},
-    pageSizeChange() {}
+    pageChange(pageNum) {
+      this.pageNum = pageNum;
+      this.getRanklist();
+    },
+    pageSizeChange(newPageSize) {
+      this.pageSize = newPageSize;
+      this.getRanklist();
+    },
+    getRanklist() {
+      let apiUrl = this.Url.rankList;
+      this.$axios
+        .get(apiUrl, {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          }
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            alert("Network error");
+          } else {
+            let resData = res.data;
+            if (resData.code === 200) {
+              this.tableConfig.tableData = resData.data.list;
+              this.totalItems = resData.data.total;
+              this.isLoading = false;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
   computed: {
     headerStyle() {
@@ -207,6 +175,9 @@ export default {
         backgroundImage: `url(${this.header})`
       };
     }
+  },
+  mounted: function() {
+    this.getRanklist();
   }
 };
 </script>
@@ -217,7 +188,6 @@ export default {
 }
 
 .section-with-padding {
-  //   padding: 40px 0;
   padding-bottom: 40px;
 }
 
