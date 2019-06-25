@@ -1,79 +1,150 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
+    <template>
+      <v-table
+        is-horizontal-resize
+        style="width:100%"
+        :columns="tableConfig.columns"
+        :table-data="tableConfig.tableData"
+        row-hover-color="#eee"
+        row-click-color="#edf7ff"
+        @on-custom-comp="customCompFunc"
+      ></v-table>
+    </template>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import Vue from "vue";
+import { getList } from "@/api/table";
+import "vue-easytable/libs/themes-base/index.css";
+import { VTable, VPagination } from "vue-easytable";
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
+  components: {
+    VTable,
+    VPagination
   },
   data() {
     return {
-      list: null,
-      listLoading: true
-    }
+      pageIndex: 1,
+      pageSize: 10,
+      totalItems: 0,
+      isLoading: true,
+      tableConfig: {
+        tableData: [
+          {
+            id: 1,
+            title: "Test",
+            solve: 123,
+            submit: 666
+          }
+        ],
+        columns: [
+          {
+            field: "id",
+            title: "题目ID",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "title",
+            title: "标题",
+            width: 280,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "solve",
+            title: "通过数",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "submit",
+            title: "提交数",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "accept_rate",
+            title: "通过率",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return rowData.submit == 0
+                ? 0
+                : (rowData.solve / rowData.submit).toFixed(2);
+            }
+          },
+          {
+            field: "action",
+            title: "操作",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            componentName: "table-operation"
+            // formatter: function(rowData, rowIndex, pagingIndex, field) {
+            //   return '<svg-icon icon-class="edit" />';
+            // }
+          }
+        ]
+      }
+    };
   },
-  created() {
-    this.fetchData()
-  },
+  created() {},
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+    customCompFunc(params) {
+      console.log(params);
+
+      if (params.type === "delete") {
+        // do delete operation
+
+      } else if (params.type === "edit") {
+        // do edit operation
+
+      }
     }
   }
-}
+};
+Vue.component("table-operation", {
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)"><svg-icon icon-class="edit" /></a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)"><i class="el-icon-delete" /></a>
+        </span>`,
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      let params = { type: "edit", index: this.index, rowData: this.rowData };
+      this.$emit("on-custom-comp", params);
+    },
+
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      let params = { type: "delete", index: this.index };
+      this.$emit("on-custom-comp", params);
+    }
+  }
+});
 </script>

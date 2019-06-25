@@ -24,12 +24,15 @@ import '@/permission' // permission control
  * please remove it before going online! ! !
  */
 import { mockXHR } from '../mock'
+import Url from './urlConfig'
+
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
+Vue.prototype.Url = Url;
 
 Vue.config.productionTip = false
 

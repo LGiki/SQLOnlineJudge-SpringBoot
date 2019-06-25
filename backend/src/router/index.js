@@ -56,14 +56,14 @@ export const constantRoutes = [
   },
 
   {
-    path: '/',
+    path: '/problem',
     component: Layout,
     redirect: '/problem',
     children: [{
       path: 'problem',
       name: 'Problem',
       component: () => import('@/views/problem/index'),
-      meta: { title: 'Problem', icon: 'tree-table' }
+      meta: { title: '题目管理', icon: 'tree-table' }
     }]
   },
   {
