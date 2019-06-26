@@ -49,12 +49,33 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '主页',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '主页', icon: 'dashboard' }
     }]
   },
 
+  {
+    path: '/database',
+    component: Layout,
+    redirect: '/database/index',
+    meta: { title: '数据库管理', icon: 'database' },
+    children: [
+      {
+        path: 'index',
+        name: 'Users',
+        component: () => import('@/views/database/index'),
+        meta: { title: '数据库列表' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'User Edit',
+        component: () => import('@/views/database/edit'),
+        meta: { title: '数据库编辑' },
+        hidden: true
+      }
+    ]
+  },
   {
     path: '/problem',
     component: Layout,
@@ -65,23 +86,51 @@ export const constantRoutes = [
         path: 'index',
         name: 'Problems',
         component: () => import('@/views/problem/index'),
-        meta: { title: '题目列表', icon: 'tree-table' }
+        meta: { title: '题目列表' }
       },
       {
         path: 'detail/:id',
         name: 'Problem Detail',
         component: () => import('@/views/problem/detail'),
-        meta: { title: '题目详情', icon: 'tree-table' },
+        meta: { title: '题目详情' },
         hidden: true
       },
       {
         path: 'edit/:id',
         name: 'Problem Edit',
         component: () => import('@/views/problem/edit'),
-        meta: { title: '题目编辑', icon: 'tree-table' },
+        meta: { title: '题目编辑' },
         hidden: true
       }
     ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/index',
+    meta: { title: '用户管理', icon: 'peoples' },
+    children: [
+      {
+        path: 'index',
+        name: 'Users',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户列表' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'User Edit',
+        component: () => import('@/views/user/edit'),
+        meta: { title: '用户编辑' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/solution',
+    redirect: '/solution/index',
+    meta: { title: '提交查看', icon: 'chart' },
+    component: () => import('@/views/solution/index'),
   },
   {
     path: '/example',
@@ -104,7 +153,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/form',
     component: Layout,
