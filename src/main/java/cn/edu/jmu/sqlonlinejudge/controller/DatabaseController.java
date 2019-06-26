@@ -41,6 +41,22 @@ public class DatabaseController {
     }
 
     /**
+     * 查询所有数据库，不分页
+     *
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public BasicResponse selectAllNoPagination() {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            basicResponse.set(200, null, databaseService.findAll());
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
+
+    /**
      * 通过ID查询数据库详情
      *
      * @param id 数据库ID
