@@ -78,7 +78,7 @@ export default {
   },
   data() {
     return {
-      pageIndex: 1,
+      pageNum: 1,
       pageSize: 10,
       totalItems: 0,
       isLoading: true,
