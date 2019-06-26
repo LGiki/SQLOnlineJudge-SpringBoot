@@ -58,13 +58,30 @@ export const constantRoutes = [
   {
     path: '/problem',
     component: Layout,
-    redirect: '/problem',
-    children: [{
-      path: 'problem',
-      name: 'Problem',
-      component: () => import('@/views/problem/index'),
-      meta: { title: '题目管理', icon: 'tree-table' }
-    }]
+    redirect: '/problem/index',
+    meta: { title: '题目管理', icon: 'tree-table' },
+    children: [
+      {
+        path: 'index',
+        name: 'Problems',
+        component: () => import('@/views/problem/index'),
+        meta: { title: '题目列表', icon: 'tree-table' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'Problem Detail',
+        component: () => import('@/views/problem/detail'),
+        meta: { title: '题目详情', icon: 'tree-table' },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: 'Problem Edit',
+        component: () => import('@/views/problem/edit'),
+        meta: { title: '题目编辑', icon: 'tree-table' },
+        hidden: true
+      }
+    ]
   },
   {
     path: '/example',

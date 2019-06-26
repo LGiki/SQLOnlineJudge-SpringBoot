@@ -1,22 +1,39 @@
 <template>
   <div class="app-container">
+    <div class="operation-button">
+      <el-input style="width: 200px;" class="filter-item"></el-input>
+      <el-button type="primary" @click="onSubmit">搜索</el-button>
+      <el-button type="primary" @click="onSubmit">新建题目</el-button>
+    </div>
     <template>
       <v-table
         is-horizontal-resize
         style="width:100%"
+        :is-loading="isLoading"
         :columns="tableConfig.columns"
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
         @on-custom-comp="customCompFunc"
-      ></v-table>
+        :row-click="rowClick"
+      />
+    </template>
+    <template>
+      <div class="bd">
+        <v-pagination
+          :show-paging-count="3"
+          :total="totalItems"
+          :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+          @page-change="pageChange"
+          @page-size-change="pageSizeChange"
+        />
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import { getList } from "@/api/table";
+import { getProblemList } from "@/api/problem";
 import "vue-easytable/libs/themes-base/index.css";
 import { VTable, VPagination } from "vue-easytable";
 
@@ -27,7 +44,7 @@ export default {
   },
   data() {
     return {
-      pageIndex: 1,
+      pageNum: 1,
       pageSize: 10,
       totalItems: 0,
       isLoading: true,
@@ -81,7 +98,7 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit == 0
+              return rowData.submit === 0
                 ? 0
                 : (rowData.solve / rowData.submit).toFixed(2);
             }
@@ -94,9 +111,6 @@ export default {
             columnAlign: "center",
             isResize: true,
             componentName: "table-operation"
-            // formatter: function(rowData, rowIndex, pagingIndex, field) {
-            //   return '<svg-icon icon-class="edit" />';
-            // }
           }
         ]
       }
@@ -105,46 +119,64 @@ export default {
   created() {},
   methods: {
     customCompFunc(params) {
-      console.log(params);
-
       if (params.type === "delete") {
         // do delete operation
-
+        alert("Delete");
       } else if (params.type === "edit") {
         // do edit operation
-
+        alert("Edit");
       }
-    }
-  }
-};
-Vue.component("table-operation", {
-  template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)"><svg-icon icon-class="edit" /></a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)"><i class="el-icon-delete" /></a>
-        </span>`,
-  props: {
-    rowData: {
-      type: Object
     },
-    field: {
-      type: String
+    rowClick(rowIndex, rowData, column) {
+      this.$router.push({ path: "/problem/edit/" + rowData.id });
     },
-    index: {
-      type: Number
+    pageChange(pageNum) {
+      this.pageNum = pageNum;
+      this.fetchProblemList();
+    },
+    pageSizeChange(newPageSize) {
+      this.pageSize = newPageSize;
+      this.fetchProblemList();
+    },
+    fetchProblemList() {
+      let apiUrl = this.Url.problemList;
+      this.$axios
+        .get(apiUrl, {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          }
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            alert("Network error");
+          } else {
+            let resData = res.data;
+            if (resData.code === 200) {
+              this.tableConfig.tableData = resData.data.list;
+              this.totalItems = resData.data.total;
+              this.isLoading = false;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
-  methods: {
-    update() {
-      // 参数根据业务场景随意构造
-      let params = { type: "edit", index: this.index, rowData: this.rowData };
-      this.$emit("on-custom-comp", params);
-    },
-
-    deleteRow() {
-      // 参数根据业务场景随意构造
-      let params = { type: "delete", index: this.index };
-      this.$emit("on-custom-comp", params);
-    }
+  mounted: function() {
+    this.fetchProblemList();
   }
-});
+};
 </script>
+<style lang="scss" scoped>
+.bd {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.operation-button {
+  float: right;
+  padding-bottom: 10px;
+}
+</style>

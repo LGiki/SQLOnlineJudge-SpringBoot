@@ -25,6 +25,7 @@ import '@/permission' // permission control
  */
 import { mockXHR } from '../mock'
 import Url from './urlConfig'
+import Axios from 'axios'
 
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
@@ -32,7 +33,39 @@ if (process.env.NODE_ENV === 'production') {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
-Vue.prototype.Url = Url;
+Vue.prototype.Url = Url
+Vue.prototype.$axios = Axios
+
+Vue.component('table-operation', {
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      const params = { type: 'edit', index: this.index, rowData: this.rowData }
+      this.$emit('on-custom-comp', params)
+    },
+
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      const params = { type: 'delete', index: this.index }
+      this.$emit('on-custom-comp', params)
+    }
+  },
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)"><svg-icon icon-class="edit" /></a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)"><i class="el-icon-delete" /></a>
+        </span>`
+})
 
 Vue.config.productionTip = false
 
