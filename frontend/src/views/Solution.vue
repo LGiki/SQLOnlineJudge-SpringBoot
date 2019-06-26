@@ -29,6 +29,7 @@
             <div class="md-layout">
               <template>
                 <v-table
+                  :is-loading="isLoading"
                   is-horizontal-resize
                   style="width:100%"
                   :columns="tableConfig.columns"
@@ -42,7 +43,6 @@
                 <v-pagination
                   @page-change="pageChange"
                   @page-size-change="pageSizeChange"
-                  :is-loading="isLoading"
                   :showPagingCount="3"
                   :total="totalItems"
                   :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
