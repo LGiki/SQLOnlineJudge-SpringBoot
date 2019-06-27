@@ -127,7 +127,7 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit == 0 ? 0 : rowData.solved / rowData.submit;
+              return rowData.submit == 0 ? 0 : (rowData.solved / rowData.submit).toFixed(2);
             }
           }
         ]
