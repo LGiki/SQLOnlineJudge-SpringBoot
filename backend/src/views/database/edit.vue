@@ -8,10 +8,10 @@
         <el-input v-model="databaseDetail.name" />
       </el-form-item>
       <el-form-item label="建表语句">
-        <el-input v-model="databaseDetail.createTable" type="textarea" />
+        <codemirror v-model="databaseDetail.createTable" :options="cmOptions" @ready="onCmReady" />
       </el-form-item>
       <el-form-item label="测试数据">
-        <el-input v-model="databaseDetail.testData" type="textarea" />
+        <codemirror v-model="databaseDetail.testData" :options="cmOptions" @ready="onCmReady" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -22,15 +22,44 @@
 </template>
 
 <script>
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/sql/sql.js'
+import 'codemirror/theme/solarized.css'
+import 'codemirror/addon/hint/show-hint.js'
+import 'codemirror/addon/hint/sql-hint.js'
+import 'codemirror/addon/edit/matchbrackets.js'
+import 'codemirror/addon/hint/show-hint.css'
 export default {
+  components: {
+    codemirror
+  },
   data() {
     return {
+      cmOptions: {
+        tabSize: 4,
+        mode: 'text/x-mysql',
+        theme: 'solarized light',
+        lineNumbers: true,
+        styleActiveLine: true,
+        lineWrapping: true,
+        indentWithTabs: true,
+        hintOptions: {
+          completeSingle: false
+        },
+        line: true
+      },
       databaseDetail: {
         id: '',
         name: '',
         createTable: '',
-        testData: '',
-      },
+        testData: ''
+      }
+    }
+  },
+  computed: {
+    codemirror() {
+      return this.$refs.myCm.codemirror
     }
   },
   mounted: function() {
@@ -38,6 +67,11 @@ export default {
     this.getDatabaseDetail(databaseId)
   },
   methods: {
+    onCmReady(cm) {
+      cm.on('keypress', () => {
+        cm.showHint()
+      })
+    },
     onSubmit() {
       this.$message('submit!')
     },
@@ -61,7 +95,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
-    },
+    }
   }
 }
 </script>

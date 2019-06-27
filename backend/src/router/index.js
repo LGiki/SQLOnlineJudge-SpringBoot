@@ -130,7 +130,7 @@ export const constantRoutes = [
         name: 'Solutions',
         component: () => import('@/views/solution/index'),
         meta: { title: '提交列表' }
-      },
+      }
     ]
   },
   {

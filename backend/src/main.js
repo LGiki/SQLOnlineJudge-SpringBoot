@@ -15,8 +15,7 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-
-import VueHighlightJS from 'vue-highlight.js';
+import VueHighlightJS from 'vue-highlight.js'
 
 /**
  * If you don't want to use mock-server

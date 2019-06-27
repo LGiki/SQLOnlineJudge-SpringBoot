@@ -31,7 +31,7 @@
         <el-input v-model="problemDetail.hint" type="textarea" />
       </el-form-item>
       <el-form-item label="答案">
-        <el-input v-model="problemDetail.answer" type="textarea" />
+        <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
       </el-form-item>
       <el-form-item label="结果是否必须有序">
         <el-switch v-model="problemDetail.needOrder" />
@@ -45,9 +45,34 @@
 </template>
 
 <script>
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/sql/sql.js'
+import 'codemirror/theme/solarized.css'
+import 'codemirror/addon/hint/show-hint.js'
+import 'codemirror/addon/hint/sql-hint.js'
+import 'codemirror/addon/edit/matchbrackets.js'
+import 'codemirror/addon/hint/show-hint.css'
+
 export default {
+  components: {
+    codemirror
+  },
   data() {
     return {
+      cmOptions: {
+        tabSize: 4,
+        mode: 'text/x-mysql',
+        theme: 'solarized light',
+        lineNumbers: true,
+        styleActiveLine: true,
+        lineWrapping: true,
+        indentWithTabs: true,
+        hintOptions: {
+          completeSingle: false
+        },
+        line: true
+      },
       problemDetail: {
         id: '',
         title: '',
@@ -66,12 +91,22 @@ export default {
       databaseList: []
     }
   },
+  computed: {
+    codemirror() {
+      return this.$refs.myCm.codemirror
+    }
+  },
   mounted: function() {
     const problemId = this.$route.params.id
     this.getProblemDetail(problemId)
     this.getDatabaseList()
   },
   methods: {
+    onCmReady(cm) {
+      cm.on('keypress', () => {
+        cm.showHint()
+      })
+    },
     onSubmit() {
       this.$message('submit!')
     },

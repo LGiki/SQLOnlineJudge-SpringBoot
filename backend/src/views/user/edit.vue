@@ -38,7 +38,7 @@ export default {
         email: '',
         submit: '',
         solved: ''
-      },
+      }
     }
   },
   mounted: function() {

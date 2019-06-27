@@ -9,6 +9,6 @@ const Url = {
   databaseDetail: BaseUrl + 'database/',
   userList: BaseUrl + 'user/',
   userDetail: BaseUrl + 'user/',
-  solutionList: BaseUrl + 'solution/',
+  solutionList: BaseUrl + 'solution/'
 }
 export default Url
