@@ -51,6 +51,28 @@ public class UserController {
     }
 
     /**
+     * 通过ID查询用户详情
+     *
+     * @param id 用户ID
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public BasicResponse selectUserById(@PathVariable("id") Integer id) {
+        BasicResponse response = new BasicResponse();
+        try {
+            User users = userService.selectById(id);
+            if (users != null) {
+                response.set(200, null, users);
+            } else {
+                response.set(400, "无此用户");
+            }
+        } catch (Exception e) {
+            response.set(503, e.getCause().toString());
+        }
+        return response;
+    }
+
+    /**
      * 模糊查询用户
      *
      * @param pageNum  页码
