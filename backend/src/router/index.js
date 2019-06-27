@@ -89,13 +89,6 @@ export const constantRoutes = [
         meta: { title: '题目列表' }
       },
       {
-        path: 'detail/:id',
-        name: 'Problem Detail',
-        component: () => import('@/views/problem/detail'),
-        meta: { title: '题目详情' },
-        hidden: true
-      },
-      {
         path: 'edit/:id',
         name: 'Problem Edit',
         component: () => import('@/views/problem/edit'),
@@ -128,9 +121,17 @@ export const constantRoutes = [
   },
   {
     path: '/solution',
+    component: Layout,
     redirect: '/solution/index',
     meta: { title: '提交查看', icon: 'chart' },
-    component: () => import('@/views/solution/index'),
+    children: [
+      {
+        path: 'index',
+        name: 'Solutions',
+        component: () => import('@/views/solution/index'),
+        meta: { title: '提交列表' }
+      },
+    ]
   },
   {
     path: '/example',

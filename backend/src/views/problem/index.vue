@@ -49,14 +49,7 @@ export default {
       totalItems: 0,
       isLoading: true,
       tableConfig: {
-        tableData: [
-          {
-            id: 1,
-            title: 'Test',
-            solve: 123,
-            submit: 666
-          }
-        ],
+        tableData: [],
         columns: [
           {
             field: 'id',

@@ -3,7 +3,7 @@
     <div class="operation-button">
       <el-input style="width: 200px;" class="filter-item" />
       <el-button type="primary" @click="onSubmit">搜索</el-button>
-      <el-button type="primary" @click="onSubmit">新建题目</el-button>
+      <el-button type="primary" @click="onSubmit">新建用户</el-button>
     </div>
     <template>
       <v-table
@@ -49,33 +49,34 @@ export default {
       totalItems: 0,
       isLoading: true,
       tableConfig: {
-        tableData: [
-          {
-            id: 1,
-            title: 'Test',
-            solve: 123,
-            submit: 666
-          }
-        ],
+        tableData: [],
         columns: [
           {
             field: 'id',
-            title: '题目ID',
+            title: '用户ID',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
           },
           {
-            field: 'title',
-            title: '标题',
-            width: 280,
+            field: 'username',
+            title: '用户名',
+            width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
           },
           {
-            field: 'solve',
+            field: 'email',
+            title: '邮箱',
+            width: 80,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
+            field: 'solved',
             title: '通过数',
             width: 80,
             titleAlign: 'center',
@@ -100,7 +101,7 @@ export default {
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return rowData.submit === 0
                 ? 0
-                : (rowData.solve / rowData.submit).toFixed(2)
+                : (rowData.solved / rowData.submit).toFixed(2)
             }
           },
           {
@@ -118,7 +119,7 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchProblemList()
+    this.fetchUserList()
   },
   methods: {
     customCompFunc(params) {
@@ -131,18 +132,18 @@ export default {
       }
     },
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: '/problem/edit/' + rowData.id })
+      this.$router.push({ path: '/user/edit/' + rowData.id })
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      this.fetchProblemList()
+      this.fetchUserList()
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      this.fetchProblemList()
+      this.fetchUserList()
     },
-    fetchProblemList() {
-      const apiUrl = this.Url.problemList
+    fetchUserList() {
+      const apiUrl = this.Url.userList
       this.$axios
         .get(apiUrl, {
           params: {

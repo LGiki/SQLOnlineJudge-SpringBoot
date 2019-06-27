@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
+    <el-form ref="form" :model="problemDetail" label-width="120px">
       <el-form-item label="题目ID">
         <el-input v-model="problemDetail.id" disabled />
       </el-form-item>
@@ -48,16 +48,6 @@
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
       problemDetail: {
         id: '',
         title: '',

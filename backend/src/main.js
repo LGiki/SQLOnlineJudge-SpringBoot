@@ -15,6 +15,9 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+
+import VueHighlightJS from 'vue-highlight.js';
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -33,6 +36,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
+Vue.use(VueHighlightJS)
 Vue.prototype.Url = Url
 Vue.prototype.$axios = Axios
 

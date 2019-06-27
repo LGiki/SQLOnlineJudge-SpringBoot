@@ -1,40 +1,23 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="题目ID">
-        <el-input v-model="problemDetail.id" disabled />
+    <el-form ref="form" :model="userDetail" label-width="120px">
+      <el-form-item label="用户ID">
+        <el-input v-model="userDetail.id" disabled />
       </el-form-item>
-      <el-form-item label="数据库">
-        <el-select v-model="problemDetail.databaseId" placeholder="选择数据库">
-          <el-option v-for="databaseItem in databaseList" :key="databaseItem.id" :label="databaseItem.name" :value="databaseItem.id" />
-        </el-select>
+      <el-form-item label="用户名">
+        <el-input v-model="userDetail.username" />
       </el-form-item>
-      <el-form-item label="题目标题">
-        <el-input v-model="problemDetail.title" />
+      <el-form-item label="密码">
+        <el-input v-model="userDetail.password" />
       </el-form-item>
-      <el-form-item label="题目描述">
-        <el-input v-model="problemDetail.description" type="textarea" />
+      <el-form-item label="邮箱">
+        <el-input v-model="userDetail.email" />
       </el-form-item>
-      <el-form-item label="输入格式">
-        <el-input v-model="problemDetail.inputFormat" type="textarea" />
+      <el-form-item label="通过数">
+        <el-input v-model="userDetail.solved" disabled />
       </el-form-item>
-      <el-form-item label="输出格式">
-        <el-input v-model="problemDetail.outputFormat" type="textarea" />
-      </el-form-item>
-      <el-form-item label="样例输入">
-        <el-input v-model="problemDetail.sampleInput" type="textarea" />
-      </el-form-item>
-      <el-form-item label="样例输出">
-        <el-input v-model="problemDetail.sampleOutput" type="textarea" />
-      </el-form-item>
-      <el-form-item label="提示">
-        <el-input v-model="problemDetail.hint" type="textarea" />
-      </el-form-item>
-      <el-form-item label="答案">
-        <el-input v-model="problemDetail.answer" type="textarea" />
-      </el-form-item>
-      <el-form-item label="结果是否必须有序">
-        <el-switch v-model="problemDetail.needOrder" />
+      <el-form-item label="提交数">
+        <el-input v-model="userDetail.submit" disabled />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -48,38 +31,19 @@
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      problemDetail: {
+      userDetail: {
         id: '',
-        title: '',
-        description: '',
-        inputFormat: '',
-        outputFormat: '',
-        sampleInput: '',
-        sampleOutput: '',
-        hint: '',
-        answer: '',
-        solve: 0,
-        submit: 0,
-        needOrder: false,
-        databaseId: 0
+        username: '',
+        password: '',
+        email: '',
+        submit: '',
+        solved: ''
       },
-      databaseList: []
     }
   },
   mounted: function() {
-    const problemId = this.$route.params.id
-    this.getProblemDetail(problemId)
-    this.getDatabaseList()
+    const userId = this.$route.params.id
+    this.getUserDetail(userId)
   },
   methods: {
     onSubmit() {
@@ -92,35 +56,17 @@ export default {
       // });
       this.$router.back(-1)
     },
-    getProblemDetail(problemId) {
-      const apiUrl = this.Url.problemDetail
+    getUserDetail(userId) {
+      const apiUrl = this.Url.userDetail
       this.$axios
-        .get(apiUrl + problemId)
+        .get(apiUrl + userId)
         .then(res => {
           if (res.status !== 200) {
             alert('Fetch problem detail: Network error')
           } else {
             const resData = res.data
             if (resData.code === 200) {
-              this.problemDetail = resData.data
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    getDatabaseList() {
-      const apiUrl = this.Url.databaseList
-      this.$axios
-        .get(apiUrl)
-        .then(res => {
-          if (res.status !== 200) {
-            alert('Get database list: Network error')
-          } else {
-            const resData = res.data
-            if (resData.code === 200) {
-              this.databaseList = resData.data.list
+              this.userDetail = resData.data
             }
           }
         })

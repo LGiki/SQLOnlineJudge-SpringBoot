@@ -3,7 +3,7 @@
     <div class="operation-button">
       <el-input style="width: 200px;" class="filter-item" />
       <el-button type="primary" @click="onSubmit">搜索</el-button>
-      <el-button type="primary" @click="onSubmit">新建题目</el-button>
+      <el-button type="primary" @click="onSubmit">新建数据库</el-button>
     </div>
     <template>
       <v-table
@@ -49,59 +49,23 @@ export default {
       totalItems: 0,
       isLoading: true,
       tableConfig: {
-        tableData: [
-          {
-            id: 1,
-            title: 'Test',
-            solve: 123,
-            submit: 666
-          }
-        ],
+        tableData: [],
         columns: [
           {
             field: 'id',
-            title: '题目ID',
+            title: '数据库ID',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
           },
           {
-            field: 'title',
-            title: '标题',
+            field: 'name',
+            title: '数据库名称',
             width: 280,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
-          },
-          {
-            field: 'solve',
-            title: '通过数',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'submit',
-            title: '提交数',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'accept_rate',
-            title: '通过率',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit === 0
-                ? 0
-                : (rowData.solve / rowData.submit).toFixed(2)
-            }
           },
           {
             field: 'action',
@@ -118,7 +82,7 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchProblemList()
+    this.fetchDatabaseList()
   },
   methods: {
     customCompFunc(params) {
@@ -131,18 +95,18 @@ export default {
       }
     },
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: '/problem/edit/' + rowData.id })
+      this.$router.push({ path: '/database/edit/' + rowData.id })
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      this.fetchProblemList()
+      this.fetchDatabaseList()
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      this.fetchProblemList()
+      this.fetchDatabaseList()
     },
-    fetchProblemList() {
-      const apiUrl = this.Url.problemList
+    fetchDatabaseList() {
+      const apiUrl = this.Url.databaseList
       this.$axios
         .get(apiUrl, {
           params: {

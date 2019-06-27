@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="operation-button">
-      <el-input style="width: 200px;" class="filter-item" />
+      <el-input style="width: 200px;" class="filter-item"/>
       <el-button type="primary" @click="onSubmit">搜索</el-button>
       <el-button type="primary" @click="onSubmit">新建题目</el-button>
     </div>
@@ -14,8 +14,6 @@
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
-        :row-click="rowClick"
-        @on-custom-comp="customCompFunc"
       />
     </template>
     <template>
@@ -33,12 +31,17 @@
 </template>
 
 <script>
-import { getProblemList } from '@/api/problem'
-import 'vue-easytable/libs/themes-base/index.css'
-import { VTable, VPagination } from 'vue-easytable'
+import Vue from 'vue'
+import { getProblemList } from "@/api/problem";
+import "vue-easytable/libs/themes-base/index.css";
+import { VTable, VPagination } from "vue-easytable";
+import VueHighlightJS from "vue-highlight.js";
+import "vue-highlight.js/lib/allLanguages";
+import "highlight.js/styles/atom-one-light.css";
 
 export default {
   components: {
+    VueHighlightJS,
     VTable,
     VPagination
   },
@@ -49,100 +52,67 @@ export default {
       totalItems: 0,
       isLoading: true,
       tableConfig: {
-        tableData: [
-          {
-            id: 1,
-            title: 'Test',
-            solve: 123,
-            submit: 666
-          }
-        ],
+        tableData: [],
         columns: [
           {
-            field: 'id',
-            title: '题目ID',
+            field: "id",
+            title: "提交ID",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'title',
-            title: '标题',
+            field: "uid",
+            title: "用户ID",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "pid",
+            title: "题目ID",
+            width: 80,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "sourceCode",
+            title: "代码",
             width: 280,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'solve',
-            title: '通过数',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'submit',
-            title: '提交数',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'accept_rate',
-            title: '通过率',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit === 0
-                ? 0
-                : (rowData.solve / rowData.submit).toFixed(2)
-            }
           },
           {
-            field: 'action',
-            title: '操作',
+            field: "result",
+            title: "运行结果",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            componentName: 'table-operation'
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
           }
         ]
       }
-    }
+    };
   },
   created() {},
   mounted: function() {
-    this.fetchProblemList()
+    this.fetchSolutionList();
   },
   methods: {
-    customCompFunc(params) {
-      if (params.type === 'delete') {
-        // do delete operation
-        alert('Delete')
-      } else if (params.type === 'edit') {
-        // do edit operation
-        alert('Edit')
-      }
-    },
-    rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: '/problem/edit/' + rowData.id })
-    },
     pageChange(pageNum) {
-      this.pageNum = pageNum
-      this.fetchProblemList()
+      this.pageNum = pageNum;
+      this.fetchSolutionList();
     },
     pageSizeChange(newPageSize) {
-      this.pageSize = newPageSize
-      this.fetchProblemList()
+      this.pageSize = newPageSize;
+      this.fetchSolutionList();
     },
-    fetchProblemList() {
-      const apiUrl = this.Url.problemList
+    fetchSolutionList() {
+      const apiUrl = this.Url.solutionList;
       this.$axios
         .get(apiUrl, {
           params: {
@@ -152,22 +122,22 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert('Network error')
+            alert("Network error");
           } else {
-            const resData = res.data
+            const resData = res.data;
             if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list
-              this.totalItems = resData.data.total
-              this.isLoading = false
+              this.tableConfig.tableData = resData.data.list;
+              this.totalItems = resData.data.total;
+              this.isLoading = false;
             }
           }
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .bd {
