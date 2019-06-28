@@ -7,10 +7,7 @@ const Url = {
   solutionList: BaseUrl + 'solution/',
   databaseList: BaseUrl + 'database/',
   databaseDetail: BaseUrl + 'database/',
-  userList: BaseUrl + 'user/',
-  userDetail: BaseUrl + 'user/',
-  userSearch: BaseUrl + 'user/search/',
-  userAdd: BaseUrl + 'user/',
-  solutionList: BaseUrl + 'solution/'
+  userBaseUrl: BaseUrl + 'user/',
+  userSearch: BaseUrl + 'user/search/'
 }
 export default Url
