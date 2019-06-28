@@ -4,6 +4,7 @@ import cn.edu.jmu.sqlonlinejudge.model.User;
 import cn.edu.jmu.sqlonlinejudge.model.enums.UserRole;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import cn.edu.jmu.sqlonlinejudge.util.BasicResponse;
+import cn.edu.jmu.sqlonlinejudge.util.EncryptUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,11 +127,13 @@ public class UserController {
      * @param user 新的用户信息
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public BasicResponse update(@RequestBody User user) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public BasicResponse update(@RequestBody User user, @PathVariable(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
         try {
             // 确保用户ID是URL中的ID
+            user.setId(id);
+            user.setPassword(EncryptUtil.md5(user.getPassword()));
             if (userService.updateById(user)) {
                 response.set(200, "成功修改ID为" + user.getId() + "的用户资料");
             } else {
@@ -151,6 +154,8 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BasicResponse insert(@RequestBody User user) {
         BasicResponse response = new BasicResponse();
+        //MD5 加密用户密码
+        user.setPassword(EncryptUtil.md5(user.getPassword()));
         try {
             if (userService.insert(user)) {
                 response.set(200, "增加用户成功", userService.selectById(user.getId()));
