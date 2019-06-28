@@ -1,9 +1,16 @@
 <template>
   <div class="app-container">
     <div class="operation-button">
-      <el-input style="width: 200px;" class="filter-item" />
-      <el-button type="primary" @click="onSubmit">搜索</el-button>
-      <el-button type="primary" @click="onSubmit">新建用户</el-button>
+      <el-input v-model="searchKeyword" placeholder="请输入搜索关键字" style="width: 200px;" class="filter-item"/>
+      <el-button type="primary" @click="onSearch">
+        <svg-icon icon-class="search"/>&nbsp;搜索
+      </el-button>
+      <el-button type="primary" @click="onCancelSearch" v-if="inSearch">
+        <i class="el-icon-close"/>&nbsp;取消搜索
+      </el-button>
+      <el-button type="danger" @click="onNewUser">
+        <i class="el-icon-plus"/>&nbsp;新建用户
+      </el-button>
     </div>
     <template>
       <v-table
@@ -33,9 +40,9 @@
 </template>
 
 <script>
-import { getProblemList } from '@/api/problem'
-import 'vue-easytable/libs/themes-base/index.css'
-import { VTable, VPagination } from 'vue-easytable'
+import { getProblemList } from "@/api/problem";
+import "vue-easytable/libs/themes-base/index.css";
+import { VTable, VPagination } from "vue-easytable";
 
 export default {
   components: {
@@ -44,6 +51,8 @@ export default {
   },
   data() {
     return {
+      inSearch: false,
+      searchKeyword: "",
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
@@ -52,98 +61,137 @@ export default {
         tableData: [],
         columns: [
           {
-            field: 'id',
-            title: '用户ID',
+            field: "id",
+            title: "用户ID",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'username',
-            title: '用户名',
+            field: "username",
+            title: "用户名",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'email',
-            title: '邮箱',
+            field: "email",
+            title: "邮箱",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'solved',
-            title: '通过数',
+            field: "solved",
+            title: "通过数",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'submit',
-            title: '提交数',
+            field: "submit",
+            title: "提交数",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'accept_rate',
-            title: '通过率',
+            field: "accept_rate",
+            title: "通过率",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return rowData.submit === 0
                 ? 0
-                : (rowData.solved / rowData.submit).toFixed(2)
+                : (rowData.solved / rowData.submit).toFixed(2);
             }
           },
           {
-            field: 'action',
-            title: '操作',
+            field: "action",
+            title: "操作",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
-            componentName: 'table-operation'
+            componentName: "table-operation"
           }
         ]
       }
-    }
+    };
   },
   created() {},
   mounted: function() {
-    this.fetchUserList()
+    this.fetchUserList();
   },
   methods: {
+    onSearch() {
+      const keyword = this.searchKeyword.trim();
+      if (keyword.length === 0) {
+        this.$message.error("请输入关键字！");
+      } else {
+        const apiUrl = this.Url.userSearch;
+        this.$axios
+          .get(apiUrl, {
+            params: {
+              keyword: keyword,
+              pageNum: this.pageNum,
+              pageSize: this.pageSize
+            }
+          })
+          .then(res => {
+            if (res.status !== 200) {
+              this.$message.error("网络错误！");
+            } else {
+              const resData = res.data;
+              if (resData.code === 200) {
+                this.tableConfig.tableData = resData.data.list;
+                this.totalItems = resData.data.total;
+                this.isLoading = false;
+                this.inSearch = true;
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    onCancelSearch() {
+      this.inSearch = false;
+      this.fetchUserList();
+    },
+    onNewUser() {
+      this.$router.push({ path: "/user/add/" });
+    },
     customCompFunc(params) {
-      if (params.type === 'delete') {
+      if (params.type === "delete") {
         // do delete operation
-        alert('Delete')
-      } else if (params.type === 'edit') {
+        alert("Delete");
+      } else if (params.type === "edit") {
         // do edit operation
-        alert('Edit')
+        alert("Edit");
       }
     },
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: '/user/edit/' + rowData.id })
+      this.$router.push({ path: "/user/edit/" + rowData.id });
     },
     pageChange(pageNum) {
-      this.pageNum = pageNum
-      this.fetchUserList()
+      this.pageNum = pageNum;
+      this.fetchUserList();
     },
     pageSizeChange(newPageSize) {
-      this.pageSize = newPageSize
-      this.fetchUserList()
+      this.pageSize = newPageSize;
+      this.fetchUserList();
     },
     fetchUserList() {
-      const apiUrl = this.Url.userList
+      const apiUrl = this.Url.userList;
       this.$axios
         .get(apiUrl, {
           params: {
@@ -153,22 +201,22 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert('Network error')
+            alert("Network error");
           } else {
-            const resData = res.data
+            const resData = res.data;
             if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list
-              this.totalItems = resData.data.total
-              this.isLoading = false
+              this.tableConfig.tableData = resData.data.list;
+              this.totalItems = resData.data.total;
+              this.isLoading = false;
             }
           }
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .bd {

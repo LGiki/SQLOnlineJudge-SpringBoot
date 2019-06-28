@@ -108,15 +108,23 @@ export const constantRoutes = [
         path: 'index',
         name: 'Users',
         component: () => import('@/views/user/index'),
-        meta: { title: '用户列表' }
+        meta: { title: '用户列表' },
+        // hidden: true
       },
       {
         path: 'edit/:id',
-        name: 'User Edit',
+        name: 'Edit Users',
         component: () => import('@/views/user/edit'),
-        meta: { title: '用户编辑' },
+        meta: { title: '编辑用户' },
         hidden: true
-      }
+      },
+      {
+        path: 'add',
+        name: 'Add Users',
+        component: () => import('@/views/user/add'),
+        meta: { title: '添加用户' },
+        hidden: true
+      },
     ]
   },
   {

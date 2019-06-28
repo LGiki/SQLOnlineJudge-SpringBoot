@@ -7,11 +7,11 @@
       <el-form-item label="用户名">
         <el-input v-model="userDetail.username" />
       </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="userDetail.password" />
-      </el-form-item>
       <el-form-item label="邮箱">
         <el-input v-model="userDetail.email" />
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="userDetail.password" type="password"/>
       </el-form-item>
       <el-form-item label="通过数">
         <el-input v-model="userDetail.solved" disabled />
@@ -50,10 +50,6 @@ export default {
       this.$message('submit!')
     },
     onCancel() {
-      // this.$message({
-      //   message: "cancel!",
-      //   type: "warning"
-      // });
       this.$router.back(-1)
     },
     getUserDetail(userId) {

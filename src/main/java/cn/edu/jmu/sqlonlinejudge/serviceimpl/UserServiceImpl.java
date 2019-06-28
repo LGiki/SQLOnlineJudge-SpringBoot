@@ -74,4 +74,9 @@ public class UserServiceImpl implements UserService,  UserDetailsService {
         }
         return user;
     }
+
+	@Override
+	public List<User> selectAllByKeyword(String keyword){
+		 return userMapper.selectAllByKeyword(keyword);
+	}
 }

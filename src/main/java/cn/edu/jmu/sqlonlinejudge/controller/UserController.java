@@ -75,20 +75,21 @@ public class UserController {
     /**
      * 模糊查询用户
      *
+     * @param keyword  关键字
      * @param pageNum  页码
      * @param pageSize 每页大小
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public BasicResponse selectBySelective(User user,
+    public BasicResponse selectBySelective(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse response = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
-            List<User> users = userService.selectBySelective(user);
+            List<User> users = userService.selectAllByKeyword(keyword);
             if (users != null) {
-                response.set(200, "查询成功", new PageInfo<>(users));
+                response.set(200, null, new PageInfo<>(users));
             } else {
                 response.set(400, "无符合条件用户");
             }

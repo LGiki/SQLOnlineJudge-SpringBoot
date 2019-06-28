@@ -83,4 +83,14 @@ public interface UserService {
      */
     List<User> selectAllOrderBySolvedDesc();
 
+
+    /**
+     * 模糊查询用户
+     *
+     * @param keyword 关键字
+     * @return List<User> 用户列表
+     */
+    List<User> selectAllByKeyword(String keyword);
+
+
 }
