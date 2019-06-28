@@ -158,7 +158,7 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              this.$message.error('网络错误！')
+              this.$message.error('搜索失败，网络错误！')
             } else {
               const resData = res.data
               if (resData.code === 200) {

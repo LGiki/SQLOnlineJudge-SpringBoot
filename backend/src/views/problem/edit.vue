@@ -118,7 +118,7 @@ export default {
       this.$router.back(-1)
     },
     getProblemDetail(problemId) {
-      const apiUrl = this.Url.problemDetail
+      const apiUrl = this.Url.problemBaseUrl
       this.$axios
         .get(apiUrl + problemId)
         .then(res => {
