@@ -55,4 +55,10 @@ public class ProblemServiceImpl implements ProblemService {
     public List<Problem> selectAll() {
         return problemMapper.selectAll();
     }
+
+	@Override
+	public List<Problem> selectAllByKeyword(String keyword){
+		 return problemMapper.selectAllByKeyword(keyword);
+	}
+
 }

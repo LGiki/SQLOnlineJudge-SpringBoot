@@ -92,7 +92,7 @@ public class UserController {
             if (users != null) {
                 response.set(200, null, new PageInfo<>(users));
             } else {
-                response.set(400, "无符合条件用户");
+                response.set(400, "无符合条件的用户");
             }
         } catch (Exception e) {
             response.set(503, e.getCause().toString());

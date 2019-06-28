@@ -64,4 +64,14 @@ public interface ProblemService {
      * @return List<Problem> 题目列表
      */
     List<Problem> selectAll();
+
+
+    /**
+     * 模糊查找题目
+     *
+     * @param keyword 关键字
+     * @return List<Problem> 题目列表
+     */
+	List<Problem> selectAllByKeyword(String keyword);
+
 }

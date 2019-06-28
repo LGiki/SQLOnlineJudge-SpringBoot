@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author LGiki
  * @date 2019/06/21 13:19
@@ -130,6 +132,33 @@ public class ProblemController {
                 basicResponse.set(200, "更新成功");
             } else {
                 basicResponse.set(400, "更新失败");
+            }
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
+
+    /**
+     * 模糊查询题目
+     *
+     * @param keyword  关键字
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public BasicResponse selectByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                         @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            List<Problem> problems = problemService.selectAllByKeyword(keyword);
+            if (problems != null) {
+                basicResponse.set(200, null, new PageInfo<>(problems));
+            } else {
+                basicResponse.set(400, "无符合条件的题目");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
