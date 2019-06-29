@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author LGiki
  * @date 2019/06/23 09:27
@@ -138,6 +140,33 @@ public class DatabaseController {
                 basicResponse.set(200, "更新失败");
             }
         } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
+
+    /**
+     * 模糊查询数据库
+     *
+     * @param keyword  关键字
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public BasicResponse selectByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                         @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            List<Database> databases = databaseService.selectAllByKeyword(keyword);
+            if (databases != null) {
+                basicResponse.set(200, null, new PageInfo<>(databases));
+            } else {
+                basicResponse.set(400, "无符合条件的数据库");
+            }
+        }catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }
         return basicResponse;
