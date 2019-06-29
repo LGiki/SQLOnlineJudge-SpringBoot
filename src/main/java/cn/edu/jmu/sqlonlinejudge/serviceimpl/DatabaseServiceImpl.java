@@ -49,8 +49,13 @@ public class DatabaseServiceImpl implements DatabaseService{
     }
 
 	@Override
-	public List<Database> findAll(){
-		 return databaseMapper.findAll();
+	public List<Database> selectAll(){
+		 return databaseMapper.selectAll();
+	}
+
+	@Override
+	public List<Database> selectAllByKeyword(String keyword){
+		 return databaseMapper.selectAllByKeyword(keyword);
 	}
 
 }

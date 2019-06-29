@@ -33,7 +33,7 @@ public class DatabaseController {
         BasicResponse basicResponse = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
-            basicResponse.set(200, null, new PageInfo<>(databaseService.findAll()));
+            basicResponse.set(200, null, new PageInfo<>(databaseService.selectAll()));
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }
@@ -49,7 +49,7 @@ public class DatabaseController {
     public BasicResponse selectAllNoPagination() {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            basicResponse.set(200, null, databaseService.findAll());
+            basicResponse.set(200, null, databaseService.selectAll());
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }

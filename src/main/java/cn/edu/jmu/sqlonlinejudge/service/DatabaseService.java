@@ -64,5 +64,14 @@ public interface DatabaseService {
      *
      * @return List<Database> 数据库列表
      */
-    List<Database> findAll();
+    List<Database> selectAll();
+
+
+    /**
+     * 模糊查询数据库
+     *
+     * @param keyword 关键字
+     * @return List<Database> 数据库列表
+     */
+    List<Database> selectAllByKeyword(String keyword);
 }

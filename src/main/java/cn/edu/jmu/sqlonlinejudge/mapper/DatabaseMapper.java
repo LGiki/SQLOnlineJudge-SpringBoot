@@ -1,5 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.edu.jmu.sqlonlinejudge.model.Database;
 
 import java.util.List;
@@ -64,6 +66,15 @@ public interface DatabaseMapper {
      *
      * @return List<Database> 数据库列表
      */
-    List<Database> findAll();
+    List<Database> selectAll();
+
+
+    /**
+     * 模糊查询数据库
+     *
+     * @param keyword 关键字
+     * @return List<Database> 数据库列表
+     */
+    List<Database> selectAllByKeyword(@Param("keyword") String keyword);
 
 }
