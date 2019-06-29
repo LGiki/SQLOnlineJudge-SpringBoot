@@ -1,11 +1,8 @@
 <template>
   <div class="app-container">
     <el-form ref="databaseDetail" :model="databaseDetail" :rules="checkRules" label-width="120px">
-      <el-form-item label="数据库ID">
-        <el-input v-model="databaseDetail.id" disabled />
-      </el-form-item>
       <el-form-item label="数据库名称" prop="name">
-        <el-input v-model="databaseDetail.name" />
+        <el-input v-model="databaseDetail.name" placeholder="请输入数据库名称" />
       </el-form-item>
       <el-form-item label="建表语句" prop="createTable">
         <codemirror v-model="databaseDetail.createTable" :options="cmOptions" @ready="onCmReady" />
@@ -75,7 +72,6 @@ export default {
         ]
       },
       databaseDetail: {
-        id: '',
         name: '',
         createTable: '',
         testData: ''
@@ -87,10 +83,6 @@ export default {
       return this.$refs.myCm.codemirror
     }
   },
-  mounted: function() {
-    const databaseId = this.$route.params.id
-    this.getDatabaseDetail(databaseId)
-  },
   methods: {
     onCmReady(cm) {
       cm.on('keypress', () => {
@@ -100,15 +92,7 @@ export default {
     onSubmit() {
       this.$refs.databaseDetail.validate(valid => {
         if (valid) {
-          const databaseId = this.$route.params.id
-          const database = {
-            name: this.databaseDetail.name.trim(),
-            createTable: this.databaseDetail.createTable,
-            testData: this.databaseDetail.testData
-          }
-          this.updateDatabase(databaseId, database, () => {
-            this.$router.back(-1)
-          })
+          this.addDatabase()
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
@@ -117,33 +101,17 @@ export default {
     onCancel() {
       this.$router.back(-1)
     },
-    getDatabaseDetail(databaseId) {
+    addDatabase() {
       const apiUrl = this.Url.databaseBaseUrl
+      const postData = this.databaseDetail
+      postData.name.trim()
+      postData.createTable.trim()
+      postData.testData.trim()
       this.$axios
-        .get(apiUrl + databaseId)
+        .post(apiUrl, postData)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取数据库详情失败，网络错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 200) {
-              this.databaseDetail = resData.data
-            } else {
-              this.$message.error('获取数据库详情失败！')
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    updateDatabase(databaseId, database, successCallback) {
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .put(apiUrl + databaseId, database)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新数据库失败，网络错误！')
+            this.$message.error('添加数据库失败，网络错误！')
           } else {
             const resData = res.data
             if (resData.code === 200) {
@@ -151,7 +119,7 @@ export default {
                 message: resData.message,
                 type: 'success'
               })
-              successCallback()
+              this.$router.back(-1)
             } else if (resData.code === 400) {
               this.$message.error(resData.message)
             } else if (resData.code === 503) {

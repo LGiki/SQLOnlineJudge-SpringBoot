@@ -178,11 +178,13 @@ export default {
         .get(apiUrl + problemId)
         .then(res => {
           if (res.status !== 200) {
-            alert('Fetch problem detail: Network error')
+            this.$message.error('获取题目详情失败，网络错误！')
           } else {
             const resData = res.data
             if (resData.code === 200) {
               this.problemDetail = resData.data
+            } else {
+              this.$message.error('获取题目详情失败！')
             }
           }
         })
@@ -191,16 +193,18 @@ export default {
         })
     },
     getDatabaseList() {
-      const apiUrl = this.Url.databaseList
+      const apiUrl = this.Url.databaseBaseUrl
       this.$axios
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            alert('Get database list: Network error')
+            this.$message.error('获取数据库列表失败，网络错误！')
           } else {
             const resData = res.data
             if (resData.code === 200) {
               this.databaseList = resData.data.list
+            } else {
+              this.$message.error('获取数据库列表失败！')
             }
           }
         })

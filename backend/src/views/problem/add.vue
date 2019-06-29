@@ -56,7 +56,6 @@ import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/sql-hint.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 import 'codemirror/addon/hint/show-hint.css'
-import { prototype } from 'events'
 export default {
   components: {
     codemirror
@@ -161,7 +160,7 @@ export default {
         .post(apiUrl, postData)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('网络错误！')
+            this.$message.error('添加题目失败，网络错误！')
           } else {
             const resData = res.data
             if (resData.code === 200) {
@@ -182,7 +181,7 @@ export default {
         })
     },
     getDatabaseList() {
-      const apiUrl = this.Url.databaseList
+      const apiUrl = this.Url.databaseBaseUrl
       this.$axios
         .get(apiUrl)
         .then(res => {

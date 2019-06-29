@@ -10,10 +10,10 @@ const Url = {
   rankList: BaseUrl + 'user/ranklist',
   // 提交列表接口
   solutionList: BaseUrl + 'solution/',
-  // 数据库列表接口
-  databaseList: BaseUrl + 'database/',
-  // 数据库详情接口
-  databaseDetail: BaseUrl + 'database/',
+  // 数据库基础接口
+  databaseBaseUrl: BaseUrl + 'database/',
+  // 数据库搜索基础接口
+  databaseSearch: BaseUrl + 'database/search/',
   // 用户基础接口
   userBaseUrl: BaseUrl + 'user/',
   // 用户搜索接口

@@ -1,9 +1,22 @@
 <template>
   <div class="app-container">
     <div class="operation-button">
-      <el-input style="width: 200px;" class="filter-item" />
-      <el-button type="primary" @click="onSubmit">搜索</el-button>
-      <el-button type="primary" @click="onSubmit">新建数据库</el-button>
+      <el-input
+        v-model="searchKeyword"
+        placeholder="请输入搜索关键字"
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="onSearch"
+      />
+      <el-button type="primary" @click="onSearch">
+        <svg-icon icon-class="search" />&nbsp;搜索
+      </el-button>
+      <el-button v-if="inSearch" type="primary" @click="onCancelSearch">
+        <i class="el-icon-close" />&nbsp;取消搜索
+      </el-button>
+      <el-button type="danger" @click="onNewDatabase">
+        <i class="el-icon-plus" />&nbsp;新建数据库
+      </el-button>
     </div>
     <template>
       <v-table
@@ -14,7 +27,6 @@
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
-        :row-click="rowClick"
         @on-custom-comp="customCompFunc"
       />
     </template>
@@ -33,7 +45,6 @@
 </template>
 
 <script>
-import { getProblemList } from '@/api/problem'
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
 
@@ -44,6 +55,8 @@ export default {
   },
   data() {
     return {
+      inSearch: false,
+      searchKeyword: '',
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
@@ -57,7 +70,10 @@ export default {
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return `<a href="#/database/edit/${rowData.id}">${rowData.id}</a>`
+            }
           },
           {
             field: 'name',
@@ -65,7 +81,10 @@ export default {
             width: 280,
             titleAlign: 'center',
             columnAlign: 'center',
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return `<a href="#/database/edit/${rowData.id}" title="${rowData.name}">${rowData.name}</a>`
+            }
           },
           {
             field: 'action',
@@ -80,22 +99,63 @@ export default {
       }
     }
   },
-  created() {},
   mounted: function() {
     this.fetchDatabaseList()
   },
   methods: {
-    customCompFunc(params) {
-      if (params.type === 'delete') {
-        // do delete operation
-        alert('Delete')
-      } else if (params.type === 'edit') {
-        // do edit operation
-        alert('Edit')
+    onSearch() {
+      const keyword = this.searchKeyword.trim()
+      if (keyword.length === 0) {
+        this.$message.error('请输入关键字！')
+      } else {
+        const apiUrl = this.Url.databaseSearch
+        this.$axios
+          .get(apiUrl, {
+            params: {
+              keyword: keyword,
+              pageNum: this.pageNum,
+              pageSize: this.pageSize
+            }
+          })
+          .then(res => {
+            if (res.status !== 200) {
+              this.$message.error('搜索失败，网络错误！')
+            } else {
+              const resData = res.data
+              if (resData.code === 200) {
+                this.tableConfig.tableData = resData.data.list
+                this.totalItems = resData.data.total
+                this.isLoading = false
+                this.inSearch = true
+              } else {
+                this.$message.error(resData.message)
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     },
-    rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: '/database/edit/' + rowData.id })
+    onCancelSearch() {
+      this.inSearch = false
+      this.fetchDatabaseList()
+    },
+    onNewDatabase() {
+      this.$router.push({ path: '/database/add/' })
+    },
+    customCompFunc(params) {
+      const index = params.index
+      const databaseId = this.tableConfig.tableData[index].id
+      if (params.type === 'delete') {
+        if (confirm('您确定要删除该数据库吗？')) {
+          this.deleteDatabase(databaseId, () => {
+            this.fetchDatabaseList()
+          })
+        }
+      } else if (params.type === 'edit') {
+        this.$router.push({ path: '/database/edit/' + databaseId })
+      }
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
@@ -106,7 +166,7 @@ export default {
       this.fetchDatabaseList()
     },
     fetchDatabaseList() {
-      const apiUrl = this.Url.databaseList
+      const apiUrl = this.Url.databaseBaseUrl
       this.$axios
         .get(apiUrl, {
           params: {
@@ -116,13 +176,39 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert('Network error')
+            this.$message.error('获取数据库列表失败，网络错误！')
           } else {
             const resData = res.data
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list
               this.totalItems = resData.data.total
               this.isLoading = false
+            } else {
+              this.$message.error(resData.message)
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    deleteDatabase(databaseId, successCallback) {
+      const apiUrl = this.Url.databaseBaseUrl
+      this.$axios
+        .delete(apiUrl + databaseId)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('删除数据库失败，网络错误！')
+          } else {
+            const resData = res.data
+            if (resData.code === 200) {
+              this.$message({
+                message: resData.message,
+                type: 'success'
+              })
+              successCallback()
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })

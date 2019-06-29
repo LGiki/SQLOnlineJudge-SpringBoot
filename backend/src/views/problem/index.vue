@@ -128,7 +128,6 @@ export default {
       }
     }
   },
-  created() {},
   mounted: function() {
     this.fetchProblemList()
   },
@@ -213,6 +212,8 @@ export default {
               this.tableConfig.tableData = resData.data.list
               this.totalItems = resData.data.total
               this.isLoading = false
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })

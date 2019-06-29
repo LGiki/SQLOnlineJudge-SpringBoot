@@ -196,9 +196,6 @@ export default {
         this.$router.push({ path: '/user/edit/' + userId })
       }
     },
-    rowClick(rowIndex, rowData, column) {
-      // this.$router.push({ path: "/user/edit/" + rowData.id });
-    },
     pageChange(pageNum) {
       this.pageNum = pageNum
       this.fetchUserList()
@@ -225,6 +222,8 @@ export default {
               this.tableConfig.tableData = resData.data.list
               this.totalItems = resData.data.total
               this.isLoading = false
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })

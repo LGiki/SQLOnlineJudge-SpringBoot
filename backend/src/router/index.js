@@ -63,15 +63,22 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: 'Users',
+        name: 'Database List',
         component: () => import('@/views/database/index'),
         meta: { title: '数据库列表' }
       },
       {
         path: 'edit/:id',
-        name: 'User Edit',
+        name: 'Edit Database',
         component: () => import('@/views/database/edit'),
-        meta: { title: '数据库编辑' },
+        meta: { title: '编辑数据库' },
+        hidden: true
+      },
+      {
+        path: 'add',
+        name: 'Add Database',
+        component: () => import('@/views/database/add'),
+        meta: { title: '添加数据库' },
         hidden: true
       }
     ]
