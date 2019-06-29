@@ -110,11 +110,13 @@ public class DatabaseController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BasicResponse insertDatabase(@RequestBody Database database) {
         BasicResponse basicResponse = new BasicResponse();
+        //新数据库要将是否已生成字段设置为 false
+        database.setIsCreated(false);
         try {
             if (databaseService.insert(database) == 1) {
-                basicResponse.set(200, "添加成功");
+                basicResponse.set(200, "数据库添加成功");
             } else {
-                basicResponse.set(400, "添加失败");
+                basicResponse.set(400, "数据库添加失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -133,11 +135,15 @@ public class DatabaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public BasicResponse updateDatabaseById(@PathVariable("id") Integer id, @RequestBody Database database) {
         BasicResponse basicResponse = new BasicResponse();
+        //确保要更新的数据库ID为URL中的ID
+        database.setId(id);
+        //更新数据库要将是否已生成字段设置为 false
+        database.setIsCreated(false);
         try {
             if (databaseService.updateByIdSelective(database) == 1) {
-                basicResponse.set(200, "更新成功");
+                basicResponse.set(200, "数据库更新成功");
             } else {
-                basicResponse.set(200, "更新失败");
+                basicResponse.set(400, "数据库更新失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
