@@ -84,9 +84,9 @@ public class ProblemController {
         BasicResponse basicResponse = new BasicResponse();
         try {
             if (problemService.deleteById(id) == 1) {
-                basicResponse.set(200, "删除成功");
+                basicResponse.set(200, "题目删除成功");
             } else {
-                basicResponse.set(400, "删除失败");
+                basicResponse.set(400, "题目删除失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -103,11 +103,13 @@ public class ProblemController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BasicResponse insertProblem(@RequestBody Problem problem) {
         BasicResponse basicResponse = new BasicResponse();
+        problem.setSolve(0);
+        problem.setSubmit(0);
         try {
             if (problemService.insert(problem) == 1) {
-                basicResponse.set(200, "添加成功");
+                basicResponse.set(200, "题目添加成功");
             } else {
-                basicResponse.set(400, "添加失败");
+                basicResponse.set(400, "题目添加失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -129,9 +131,9 @@ public class ProblemController {
             //确保更新的题目ID是URL中的ID
             problem.setId(id);
             if (problemService.updateByIdSelective(problem) == 1) {
-                basicResponse.set(200, "更新成功");
+                basicResponse.set(200, "题目更新成功");
             } else {
-                basicResponse.set(400, "更新失败");
+                basicResponse.set(400, "题目更新失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
