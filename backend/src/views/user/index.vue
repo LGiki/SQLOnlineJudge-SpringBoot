@@ -84,7 +84,7 @@ export default {
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}">${rowData.username}</a>`
+              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`
             }
           },
           {
@@ -166,6 +166,8 @@ export default {
                 this.totalItems = resData.data.total
                 this.isLoading = false
                 this.inSearch = true
+              } else {
+                this.$message.error(resData.message)
               }
             }
           })
@@ -230,7 +232,7 @@ export default {
           console.log(err)
         })
     },
-    deleteUser(userId, callback) {
+    deleteUser(userId, successCallback) {
       const apiUrl = this.Url.userBaseUrl
       this.$axios
         .delete(apiUrl + userId)
@@ -241,10 +243,12 @@ export default {
             const resData = res.data
             if (resData.code === 200) {
               this.$message({
-                message: '删除用户成功！',
+                message: resData.message,
                 type: 'success'
               })
-              callback()
+              successCallback()
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })

@@ -1,23 +1,43 @@
 <template>
   <div class="app-container">
-    <el-form ref="userDetail" :model="userDetail" :rules="checkRules" label-width="120px">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="userDetail.username" placeholder="请输入用户名" />
+    <el-form ref="problemDetail" :model="problemDetail" :rules="checkRules" label-width="120px">
+      <el-form-item label="题目标题" prop="title">
+        <el-input v-model="problemDetail.title" placeholder="请输入题目标题" />
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="userDetail.email" placeholder="请输入邮箱" />
+      <el-form-item label="数据库" prop="databaseId">
+        <el-select v-model="problemDetail.databaseId" placeholder="选择数据库">
+          <el-option
+            v-for="databaseItem in databaseList"
+            :key="databaseItem.id"
+            :label="databaseItem.name"
+            :value="databaseItem.id"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input
-          ref="password"
-          v-model="userDetail.password"
-          name="password"
-          placeholder="请输入密码"
-          :type="passwordType"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
+      <el-form-item label="题目介绍" prop="description">
+        <el-input v-model="problemDetail.description" placeholder="请输入题目介绍" type="textarea" />
+      </el-form-item>
+      <el-form-item label="输入格式" prop="inputFormat">
+        <el-input v-model="problemDetail.inputFormat" placeholder="请输入输入格式" type="textarea" />
+      </el-form-item>
+      <el-form-item label="输出格式" prop="outputFormat">
+        <el-input v-model="problemDetail.outputFormat" placeholder="请输入输出格式" type="textarea" />
+      </el-form-item>
+      <el-form-item label="样例输入" prop="sampleInput">
+        <el-input v-model="problemDetail.sampleInput" placeholder="请输入样例输入" type="textarea" />
+      </el-form-item>
+      <el-form-item label="样例输出" prop="sampleOutput">
+        <el-input v-model="problemDetail.sampleOutput" placeholder="请输入样例输出" type="textarea" />
+      </el-form-item>
+      <el-form-item label="提示" prop="hint">
+        <el-input v-model="problemDetail.hint" placeholder="请输入提示" type="textarea" />
+      </el-form-item>
+      <el-form-item label="答案" prop="answer">
+        <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
+        <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入提示" />
+      </el-form-item>
+      <el-form-item label="结果是否必须有序" prop="needOrder">
+        <el-switch v-model="problemDetail.needOrder" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -28,56 +48,97 @@
 </template>
 
 <script>
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/sql/sql.js'
+import 'codemirror/theme/solarized.css'
+import 'codemirror/addon/hint/show-hint.js'
+import 'codemirror/addon/hint/sql-hint.js'
+import 'codemirror/addon/edit/matchbrackets.js'
+import 'codemirror/addon/hint/show-hint.css'
+import { prototype } from 'events'
 export default {
+  components: {
+    codemirror
+  },
   data() {
     return {
-      passwordType: 'password',
+      cmOptions: {
+        tabSize: 4,
+        mode: 'text/x-mysql',
+        theme: 'solarized light',
+        lineNumbers: true,
+        styleActiveLine: true,
+        lineWrapping: true,
+        indentWithTabs: true,
+        hintOptions: {
+          completeSingle: false
+        },
+        line: true
+      },
       checkRules: {
-        username: [
+        title: [
           {
             required: true,
-            message: '用户名不能为空',
+            message: '题目标题不能为空',
             trigger: 'blur'
           }
         ],
-        email: [
+        databaseId: [
           {
             required: true,
-            type: 'email',
-            message: '邮箱格式错误',
+            message: '数据库不能为空',
             trigger: 'blur'
           }
         ],
-        password: [
+        answer: [
           {
             required: true,
-            message: '密码不能为空',
+            message: '答案不能为空',
+            trigger: 'blur'
+          }
+        ],
+        needOrder: [
+          {
+            required: true,
+            message: '必须确定结果是否必须有序',
             trigger: 'blur'
           }
         ]
       },
-      userDetail: {
-        username: '',
-        password: '',
-        email: ''
-      }
+      problemDetail: {
+        title: '',
+        description: '',
+        inputFormat: '',
+        outputFormat: '',
+        sampleInput: '',
+        sampleOutput: '',
+        hint: '',
+        answer: '',
+        needOrder: false,
+        databaseId: null
+      },
+      databaseList: []
     }
   },
+  computed: {
+    codemirror() {
+      return this.$refs.myCm.codemirror
+    }
+  },
+  mounted: function() {
+    this.getDatabaseList()
+  },
   methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus()
+    onCmReady(cm) {
+      cm.on('keypress', () => {
+        cm.showHint()
       })
     },
     onSubmit() {
-      this.$refs.userDetail.validate(valid => {
+      this.$refs.problemDetail.validate(valid => {
         if (valid) {
-          this.addUser()
+          this.addProblem()
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
@@ -86,12 +147,16 @@ export default {
     onCancel() {
       this.$router.back(-1)
     },
-    addUser() {
-      const apiUrl = this.Url.userBaseUrl
-      const postData = this.userDetail
-      postData.username.trim()
-      postData.password.trim()
-      postData.email.trim()
+    addProblem() {
+      const apiUrl = this.Url.problemBaseUrl
+      const postData = this.problemDetail
+      postData.title.trim()
+      postData.description.trim()
+      postData.inputFormat.trim()
+      postData.outputFormat.trim()
+      postData.sampleInput.trim()
+      postData.sampleOutput.trim()
+      postData.hint.trim()
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
@@ -115,6 +180,24 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    getDatabaseList() {
+      const apiUrl = this.Url.databaseList
+      this.$axios
+        .get(apiUrl)
+        .then(res => {
+          if (res.status !== 200) {
+            alert('Get database list: Network error')
+          } else {
+            const resData = res.data
+            if (resData.code === 200) {
+              this.databaseList = resData.data.list
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
@@ -123,16 +206,6 @@ export default {
 <style scoped>
 .line {
   text-align: center;
-}
-
-.show-pwd {
-  position: absolute;
-  right: 10px;
-  top: 1px;
-  font-size: 16px;
-  color: #888;
-  cursor: pointer;
-  user-select: none;
 }
 </style>
 

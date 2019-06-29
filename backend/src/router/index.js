@@ -90,9 +90,16 @@ export const constantRoutes = [
       },
       {
         path: 'edit/:id',
-        name: 'Problem Edit',
+        name: 'Edit problem',
         component: () => import('@/views/problem/edit'),
-        meta: { title: '题目编辑' },
+        meta: { title: '编辑题目' },
+        hidden: true
+      },
+      {
+        path: 'add',
+        name: 'Add problem',
+        component: () => import('@/views/problem/add'),
+        meta: { title: '添加题目' },
         hidden: true
       }
     ]

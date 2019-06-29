@@ -1,39 +1,45 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="problemDetail" label-width="120px">
+    <el-form ref="problemDetail" :model="problemDetail" :rules="checkRules" label-width="120px">
       <el-form-item label="题目ID">
         <el-input v-model="problemDetail.id" disabled />
       </el-form-item>
-      <el-form-item label="数据库">
-        <el-select v-model="problemDetail.databaseId" placeholder="选择数据库">
-          <el-option v-for="databaseItem in databaseList" :key="databaseItem.id" :label="databaseItem.name" :value="databaseItem.id" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="题目标题">
+      <el-form-item label="题目标题" prop="title">
         <el-input v-model="problemDetail.title" />
       </el-form-item>
-      <el-form-item label="题目描述">
+      <el-form-item label="数据库" prop="databaseId">
+        <el-select v-model="problemDetail.databaseId" placeholder="选择数据库">
+          <el-option
+            v-for="databaseItem in databaseList"
+            :key="databaseItem.id"
+            :label="databaseItem.name"
+            :value="databaseItem.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="题目描述" prop="description">
         <el-input v-model="problemDetail.description" type="textarea" />
       </el-form-item>
-      <el-form-item label="输入格式">
+      <el-form-item label="输入格式" prop="inputFormat">
         <el-input v-model="problemDetail.inputFormat" type="textarea" />
       </el-form-item>
-      <el-form-item label="输出格式">
+      <el-form-item label="输出格式" prop="outputFormat">
         <el-input v-model="problemDetail.outputFormat" type="textarea" />
       </el-form-item>
-      <el-form-item label="样例输入">
+      <el-form-item label="样例输入" prop="sampleInput">
         <el-input v-model="problemDetail.sampleInput" type="textarea" />
       </el-form-item>
-      <el-form-item label="样例输出">
+      <el-form-item label="样例输出" prop="sampleOutput">
         <el-input v-model="problemDetail.sampleOutput" type="textarea" />
       </el-form-item>
-      <el-form-item label="提示">
+      <el-form-item label="提示" prop="hint">
         <el-input v-model="problemDetail.hint" type="textarea" />
       </el-form-item>
-      <el-form-item label="答案">
+      <el-form-item label="答案" prop="answer">
         <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
+        <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入提示" />
       </el-form-item>
-      <el-form-item label="结果是否必须有序">
+      <el-form-item label="结果是否必须有序" prop="needOrder">
         <el-switch v-model="problemDetail.needOrder" />
       </el-form-item>
       <el-form-item>
@@ -60,6 +66,36 @@ export default {
   },
   data() {
     return {
+      checkRules: {
+        title: [
+          {
+            required: true,
+            message: '题目标题不能为空',
+            trigger: 'blur'
+          }
+        ],
+        databaseId: [
+          {
+            required: true,
+            message: '数据库不能为空',
+            trigger: 'blur'
+          }
+        ],
+        answer: [
+          {
+            required: true,
+            message: '答案不能为空',
+            trigger: 'blur'
+          }
+        ],
+        needOrder: [
+          {
+            required: true,
+            message: '必须确定结果是否必须有序',
+            trigger: 'blur'
+          }
+        ]
+      },
       cmOptions: {
         tabSize: 4,
         mode: 'text/x-mysql',
@@ -108,13 +144,32 @@ export default {
       })
     },
     onSubmit() {
-      this.$message('submit!')
+      this.$refs.problemDetail.validate(valid => {
+        if (valid) {
+          const problemId = this.$route.params.id
+          const problem = {
+            title: this.problemDetail.title.trim(),
+            description: this.problemDetail.description.trim(),
+            inputFormat: this.problemDetail.inputFormat.trim(),
+            outputFormat: this.problemDetail.outputFormat.trim(),
+            sampleInput: this.problemDetail.sampleInput.trim(),
+            sampleOutput: this.problemDetail.sampleOutput.trim(),
+            hint: this.problemDetail.hint.trim(),
+            answer: this.problemDetail.answer,
+            solve: this.problemDetail.solve,
+            submit: this.problemDetail.submit,
+            needOrder: this.problemDetail.needOrder,
+            databaseId: this.problemDetail.databaseId
+          }
+          this.updateProblem(problemId, problem, () => {
+            this.$router.back(-1)
+          })
+        } else {
+          this.$message.error('请确认所有项目均填写正确！')
+        }
+      })
     },
     onCancel() {
-      // this.$message({
-      //   message: "cancel!",
-      //   type: "warning"
-      // });
       this.$router.back(-1)
     },
     getProblemDetail(problemId) {
@@ -146,6 +201,32 @@ export default {
             const resData = res.data
             if (resData.code === 200) {
               this.databaseList = resData.data.list
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    updateProblem(problemId, problem, successCallback) {
+      const apiUrl = this.Url.problemBaseUrl
+      this.$axios
+        .put(apiUrl + problemId, problem)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('更新题目失败，网络错误！')
+          } else {
+            const resData = res.data
+            if (resData.code === 200) {
+              this.$message({
+                message: resData.message,
+                type: 'success'
+              })
+              successCallback()
+            } else if (resData.code === 400) {
+              this.$message.error(resData.message)
+            } else if (resData.code === 503) {
+              this.$message.error(resData.message)
             }
           }
         })

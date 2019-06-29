@@ -116,7 +116,7 @@ export default {
           console.log(err)
         })
     },
-    updateUser(userId, user, callback) {
+    updateUser(userId, user, successCallback) {
       const apiUrl = this.Url.userBaseUrl
       this.$axios
         .put(apiUrl + userId, user)
@@ -130,7 +130,7 @@ export default {
                 message: resData.message,
                 type: 'success'
               })
-              callback()
+              successCallback()
             } else if (resData.code === 400) {
               this.$message.error(resData.message)
             } else if (resData.code === 503) {
