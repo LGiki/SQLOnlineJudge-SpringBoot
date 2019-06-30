@@ -74,4 +74,14 @@ public interface ProblemService {
      */
 	List<Problem> selectAllByKeyword(String keyword);
 
+
+
+    /**
+     * 查询题目数量
+     *
+     * @return Integer 题目数量
+     */
+    Integer countAll();
+
+
 }

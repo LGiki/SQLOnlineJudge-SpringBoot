@@ -58,4 +58,8 @@ public class DatabaseServiceImpl implements DatabaseService{
 		 return databaseMapper.selectAllByKeyword(keyword);
 	}
 
+	@Override
+	public Integer countAll(){
+		 return databaseMapper.countAll();
+	}
 }

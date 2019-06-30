@@ -177,4 +177,20 @@ public class DatabaseController {
         }
         return basicResponse;
     }
+
+    /**
+     * 查询数据库数量
+     *
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public BasicResponse countAll() {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            basicResponse.set(200, null, databaseService.countAll());
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
 }

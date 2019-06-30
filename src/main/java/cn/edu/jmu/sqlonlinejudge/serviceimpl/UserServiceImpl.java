@@ -79,4 +79,10 @@ public class UserServiceImpl implements UserService,  UserDetailsService {
 	public List<User> selectAllByKeyword(String keyword){
 		 return userMapper.selectAllByKeyword(keyword);
 	}
+
+	@Override
+	public Integer countAll(){
+		 return userMapper.countAll();
+	}
+
 }

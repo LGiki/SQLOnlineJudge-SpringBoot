@@ -92,4 +92,14 @@ public interface SolutionService {
      */
     List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(String keyword);
 
+
+
+    /**
+     * 查询提交数量
+     *
+     * @return Integer 提交数量
+     */
+    Integer countAll();
+
+
 }

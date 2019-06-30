@@ -93,4 +93,14 @@ public interface UserService {
     List<User> selectAllByKeyword(String keyword);
 
 
+
+    /**
+     * 查询用户数量
+     *
+     * @return Integer 用户数量
+     */
+    Integer countAll();
+
+
+
 }

@@ -88,4 +88,13 @@ public interface SolutionMapper {
      * @return List<SolutionDetail> 提交详情列表
      */
     List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(@Param("keyword") String keyword);
+
+    /**
+     * 查询提交数量
+     *
+     * @return Integer 提交数量
+     */
+    Integer countAll();
+
+
 }

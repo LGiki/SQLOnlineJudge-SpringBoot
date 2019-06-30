@@ -61,4 +61,12 @@ public class ProblemServiceImpl implements ProblemService {
 		 return problemMapper.selectAllByKeyword(keyword);
 	}
 
+	@Override
+	public Integer countAll(){
+		 return problemMapper.countAll();
+	}
+
+
+
+
 }

@@ -69,4 +69,11 @@ public class SolutionServiceImpl implements SolutionService {
     public List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(String keyword) {
         return solutionMapper.selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(keyword);
     }
+
+    @Override
+    public Integer countAll() {
+        return solutionMapper.countAll();
+    }
+
+
 }

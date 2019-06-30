@@ -93,4 +93,12 @@ public interface UserMapper {
     List<User> selectAllByKeyword(@Param("keyword") String keyword);
 
 
+    /**
+     * 查询用户数量
+     *
+     * @return Integer 用户数量
+     */
+    Integer countAll();
+
+
 }

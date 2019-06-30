@@ -74,4 +74,14 @@ public interface DatabaseService {
      * @return List<Database> 数据库列表
      */
     List<Database> selectAllByKeyword(String keyword);
+
+
+
+    /**
+     * 查询数据库数量
+     *
+     * @return Integer 数据库数量
+     */
+    Integer countAll();
+
 }

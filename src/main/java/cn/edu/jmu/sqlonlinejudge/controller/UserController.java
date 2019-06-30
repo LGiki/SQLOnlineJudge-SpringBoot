@@ -210,4 +210,20 @@ public class UserController {
         }
         return basicResponse;
     }
+
+    /**
+     * 查询用户数量
+     *
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public BasicResponse countAll() {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            basicResponse.set(200, null, userService.countAll());
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
 }

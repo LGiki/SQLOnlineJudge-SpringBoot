@@ -77,4 +77,13 @@ public interface DatabaseMapper {
      */
     List<Database> selectAllByKeyword(@Param("keyword") String keyword);
 
+
+    /**
+     * 查询数据库数量
+     *
+     * @return Integer 数据库数量
+     */
+    Integer countAll();
+
+
 }
