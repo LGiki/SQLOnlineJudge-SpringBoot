@@ -1,213 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper">
-  <resultMap id="BaseResultMap" type="cn.edu.jmu.sqlonlinejudge.model.Problem">
-    <!--@mbg.generated-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="input_format" jdbcType="VARCHAR" property="inputFormat" />
-    <result column="output_format" jdbcType="VARCHAR" property="outputFormat" />
-    <result column="sample_input" jdbcType="VARCHAR" property="sampleInput" />
-    <result column="sample_output" jdbcType="VARCHAR" property="sampleOutput" />
-    <result column="hint" jdbcType="VARCHAR" property="hint" />
-    <result column="answer" jdbcType="VARCHAR" property="answer" />
-    <result column="solve" jdbcType="INTEGER" property="solve" />
-    <result column="submit" jdbcType="INTEGER" property="submit" />
-    <result column="true_result" jdbcType="VARCHAR" property="trueResult" />
-    <result column="need_order" jdbcType="BIT" property="needOrder" />
-    <result column="database_id" jdbcType="INTEGER" property="databaseId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, title, description, input_format, output_format, sample_input, sample_output, 
-    hint, answer, solve, submit, true_result, need_order, database_id
-  </sql>
-  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from problem
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteById" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from problem
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into problem (title, description, input_format, 
-      output_format, sample_input, sample_output, 
-      hint, answer, solve, 
-      submit, true_result, need_order, 
-      database_id)
-    values (#{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{inputFormat,jdbcType=VARCHAR}, 
-      #{outputFormat,jdbcType=VARCHAR}, #{sampleInput,jdbcType=VARCHAR}, #{sampleOutput,jdbcType=VARCHAR}, 
-      #{hint,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{solve,jdbcType=INTEGER}, 
-      #{submit,jdbcType=INTEGER}, #{trueResult,jdbcType=VARCHAR}, #{needOrder,jdbcType=BIT}, 
-      #{databaseId,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into problem
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="title != null">
-        title,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="inputFormat != null">
-        input_format,
-      </if>
-      <if test="outputFormat != null">
-        output_format,
-      </if>
-      <if test="sampleInput != null">
-        sample_input,
-      </if>
-      <if test="sampleOutput != null">
-        sample_output,
-      </if>
-      <if test="hint != null">
-        hint,
-      </if>
-      <if test="answer != null">
-        answer,
-      </if>
-      <if test="solve != null">
-        solve,
-      </if>
-      <if test="submit != null">
-        submit,
-      </if>
-      <if test="trueResult != null">
-        true_result,
-      </if>
-      <if test="needOrder != null">
-        need_order,
-      </if>
-      <if test="databaseId != null">
-        database_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="inputFormat != null">
-        #{inputFormat,jdbcType=VARCHAR},
-      </if>
-      <if test="outputFormat != null">
-        #{outputFormat,jdbcType=VARCHAR},
-      </if>
-      <if test="sampleInput != null">
-        #{sampleInput,jdbcType=VARCHAR},
-      </if>
-      <if test="sampleOutput != null">
-        #{sampleOutput,jdbcType=VARCHAR},
-      </if>
-      <if test="hint != null">
-        #{hint,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null">
-        #{answer,jdbcType=VARCHAR},
-      </if>
-      <if test="solve != null">
-        #{solve,jdbcType=INTEGER},
-      </if>
-      <if test="submit != null">
-        #{submit,jdbcType=INTEGER},
-      </if>
-      <if test="trueResult != null">
-        #{trueResult,jdbcType=VARCHAR},
-      </if>
-      <if test="needOrder != null">
-        #{needOrder,jdbcType=BIT},
-      </if>
-      <if test="databaseId != null">
-        #{databaseId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByIdSelective" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem">
-    <!--@mbg.generated-->
-    update problem
-    <set>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
+    <resultMap id="BaseResultMap" type="cn.edu.jmu.sqlonlinejudge.model.Problem">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="input_format" jdbcType="VARCHAR" property="inputFormat"/>
+        <result column="output_format" jdbcType="VARCHAR" property="outputFormat"/>
+        <result column="sample_input" jdbcType="VARCHAR" property="sampleInput"/>
+        <result column="sample_output" jdbcType="VARCHAR" property="sampleOutput"/>
+        <result column="hint" jdbcType="VARCHAR" property="hint"/>
+        <result column="answer" jdbcType="VARCHAR" property="answer"/>
+        <result column="solve" jdbcType="INTEGER" property="solve"/>
+        <result column="submit" jdbcType="INTEGER" property="submit"/>
+        <result column="true_result" jdbcType="VARCHAR" property="trueResult"/>
+        <result column="need_order" jdbcType="BIT" property="needOrder"/>
+        <result column="database_id" jdbcType="INTEGER" property="databaseId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, title, description, input_format, output_format, sample_input, sample_output,
+        hint, answer, solve, submit, true_result, need_order, database_id
+    </sql>
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from problem
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from problem
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into problem (title, description, input_format,
+        output_format, sample_input, sample_output,
+        hint, answer, solve,
+        submit, true_result, need_order,
+        database_id)
+        values (#{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{inputFormat,jdbcType=VARCHAR},
+        #{outputFormat,jdbcType=VARCHAR}, #{sampleInput,jdbcType=VARCHAR}, #{sampleOutput,jdbcType=VARCHAR},
+        #{hint,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{solve,jdbcType=INTEGER},
+        #{submit,jdbcType=INTEGER}, #{trueResult,jdbcType=VARCHAR}, #{needOrder,jdbcType=BIT},
+        #{databaseId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into problem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="inputFormat != null">
+                input_format,
+            </if>
+            <if test="outputFormat != null">
+                output_format,
+            </if>
+            <if test="sampleInput != null">
+                sample_input,
+            </if>
+            <if test="sampleOutput != null">
+                sample_output,
+            </if>
+            <if test="hint != null">
+                hint,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+            <if test="solve != null">
+                solve,
+            </if>
+            <if test="submit != null">
+                submit,
+            </if>
+            <if test="trueResult != null">
+                true_result,
+            </if>
+            <if test="needOrder != null">
+                need_order,
+            </if>
+            <if test="databaseId != null">
+                database_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="inputFormat != null">
+                #{inputFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="outputFormat != null">
+                #{outputFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="sampleInput != null">
+                #{sampleInput,jdbcType=VARCHAR},
+            </if>
+            <if test="sampleOutput != null">
+                #{sampleOutput,jdbcType=VARCHAR},
+            </if>
+            <if test="hint != null">
+                #{hint,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="solve != null">
+                #{solve,jdbcType=INTEGER},
+            </if>
+            <if test="submit != null">
+                #{submit,jdbcType=INTEGER},
+            </if>
+            <if test="trueResult != null">
+                #{trueResult,jdbcType=VARCHAR},
+            </if>
+            <if test="needOrder != null">
+                #{needOrder,jdbcType=BIT},
+            </if>
+            <if test="databaseId != null">
+                #{databaseId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByIdSelective" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem">
+        <!--@mbg.generated-->
+        update problem
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="inputFormat != null">
+                input_format = #{inputFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="outputFormat != null">
+                output_format = #{outputFormat,jdbcType=VARCHAR},
+            </if>
+            <if test="sampleInput != null">
+                sample_input = #{sampleInput,jdbcType=VARCHAR},
+            </if>
+            <if test="sampleOutput != null">
+                sample_output = #{sampleOutput,jdbcType=VARCHAR},
+            </if>
+            <if test="hint != null">
+                hint = #{hint,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="solve != null">
+                solve = #{solve,jdbcType=INTEGER},
+            </if>
+            <if test="submit != null">
+                submit = #{submit,jdbcType=INTEGER},
+            </if>
+            <if test="trueResult != null">
+                true_result = #{trueResult,jdbcType=VARCHAR},
+            </if>
+            <if test="needOrder != null">
+                need_order = #{needOrder,jdbcType=BIT},
+            </if>
+            <if test="databaseId != null">
+                database_id = #{databaseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateById" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem">
+        <!--@mbg.generated-->
+        update problem
+        set title = #{title,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="inputFormat != null">
         input_format = #{inputFormat,jdbcType=VARCHAR},
-      </if>
-      <if test="outputFormat != null">
         output_format = #{outputFormat,jdbcType=VARCHAR},
-      </if>
-      <if test="sampleInput != null">
         sample_input = #{sampleInput,jdbcType=VARCHAR},
-      </if>
-      <if test="sampleOutput != null">
         sample_output = #{sampleOutput,jdbcType=VARCHAR},
-      </if>
-      <if test="hint != null">
         hint = #{hint,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null">
         answer = #{answer,jdbcType=VARCHAR},
-      </if>
-      <if test="solve != null">
         solve = #{solve,jdbcType=INTEGER},
-      </if>
-      <if test="submit != null">
         submit = #{submit,jdbcType=INTEGER},
-      </if>
-      <if test="trueResult != null">
         true_result = #{trueResult,jdbcType=VARCHAR},
-      </if>
-      <if test="needOrder != null">
         need_order = #{needOrder,jdbcType=BIT},
-      </if>
-      <if test="databaseId != null">
-        database_id = #{databaseId,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateById" parameterType="cn.edu.jmu.sqlonlinejudge.model.Problem">
-    <!--@mbg.generated-->
-    update problem
-    set title = #{title,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      input_format = #{inputFormat,jdbcType=VARCHAR},
-      output_format = #{outputFormat,jdbcType=VARCHAR},
-      sample_input = #{sampleInput,jdbcType=VARCHAR},
-      sample_output = #{sampleOutput,jdbcType=VARCHAR},
-      hint = #{hint,jdbcType=VARCHAR},
-      answer = #{answer,jdbcType=VARCHAR},
-      solve = #{solve,jdbcType=INTEGER},
-      submit = #{submit,jdbcType=INTEGER},
-      true_result = #{trueResult,jdbcType=VARCHAR},
-      need_order = #{needOrder,jdbcType=BIT},
-      database_id = #{databaseId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        database_id = #{databaseId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
-<!--auto generated by MybatisCodeHelper on 2019-06-21-->
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from problem
-  </select>
+    <!--auto generated by MybatisCodeHelper on 2019-06-21-->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from problem
+    </select>
 
-<!--auto generated by MybatisCodeHelper on 2019-06-28-->
-  <select id="selectAllByKeyword" resultMap="BaseResultMap">
+    <!--auto generated by MybatisCodeHelper on 2019-06-28-->
+    <select id="selectAllByKeyword" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from problem
