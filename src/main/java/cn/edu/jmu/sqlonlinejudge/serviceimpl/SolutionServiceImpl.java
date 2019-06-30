@@ -2,6 +2,7 @@ package cn.edu.jmu.sqlonlinejudge.serviceimpl;
 
 import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
 import cn.edu.jmu.sqlonlinejudge.model.Solution;
+import cn.edu.jmu.sqlonlinejudge.model.SolutionDetail;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +55,18 @@ public class SolutionServiceImpl implements SolutionService {
         return solutionMapper.selectAll();
     }
 
-	@Override
-	public List<Solution> selectAllOrderBySubmitTimeDesc(){
-		 return solutionMapper.selectAllOrderBySubmitTimeDesc();
-	}
+    @Override
+    public List<Solution> selectAllOrderBySubmitTimeDesc() {
+        return solutionMapper.selectAllOrderBySubmitTimeDesc();
+    }
+
+    @Override
+    public List<SolutionDetail> selectWithUserAndProblemOrderBySubmitTimeDesc() {
+        return solutionMapper.selectWithUserAndProblemOrderBySubmitTimeDesc();
+    }
+
+    @Override
+    public List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(String keyword) {
+        return solutionMapper.selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(keyword);
+    }
 }

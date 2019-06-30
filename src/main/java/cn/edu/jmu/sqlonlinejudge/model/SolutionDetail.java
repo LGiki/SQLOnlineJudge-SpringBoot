@@ -8,11 +8,11 @@ import java.util.Date;
 
 /**
  * @author LGiki
- * @date 2019/06/22 15:15
+ * @date 2019/6/30 09:55
  */
 
 @Data
-public class Solution {
+public class SolutionDetail {
     /**
      * 解答ID
      */
@@ -24,9 +24,19 @@ public class Solution {
     private Integer uid;
 
     /**
+     * 用户名
+     */
+    private String username;
+
+    /**
      * 题目ID
      */
     private Integer pid;
+
+    /**
+     * 题目标题
+     */
+    private String problemTitle;
 
     /**
      * 源代码

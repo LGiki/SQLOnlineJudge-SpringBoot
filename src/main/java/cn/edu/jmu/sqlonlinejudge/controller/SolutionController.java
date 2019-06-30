@@ -31,7 +31,7 @@ public class SolutionController {
         BasicResponse basicResponse = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
-            basicResponse.set(200, null, new PageInfo<>(solutionService.selectAllOrderBySubmitTimeDesc()));
+            basicResponse.set(200, null, new PageInfo<>(solutionService.selectWithUserAndProblemOrderBySubmitTimeDesc()));
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }
@@ -125,4 +125,28 @@ public class SolutionController {
         }
         return basicResponse;
     }
+
+
+    /**
+     * 根据关键字查询所有提交同时返回用户名与题目标题并按提交日期降序排序
+     *
+     * @param keyword  关键字
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public BasicResponse selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(@RequestParam(value = "keyword", defaultValue = "") String keyword,
+                                                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        BasicResponse basicResponse = new BasicResponse();
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            basicResponse.set(200, null, new PageInfo<>(solutionService.selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(keyword)));
+        } catch (Exception e) {
+            basicResponse.set(503, e.getCause().toString());
+        }
+        return basicResponse;
+    }
 }
+
