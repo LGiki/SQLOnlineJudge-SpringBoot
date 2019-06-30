@@ -1,18 +1,27 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">Welcome to SQL Online Judge</div>
+    <panel-group />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import PanelGroup from './components/PanelGroup'
 
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  components: {
+    PanelGroup
+  },
+  data() {
+    return {
+      systemDetail: {
+        databaseCount: 0,
+        problemCount: 0,
+        userCount: 0,
+        solutionCount: 0
+      }
+    }
   }
 }
 </script>
@@ -23,8 +32,9 @@ export default {
     margin: 30px;
   }
   &-text {
-    font-size: 30px;
-    line-height: 46px;
+    font-size: 45px;
+    line-height: 60px;
+    text-align: center;
   }
 }
 </style>

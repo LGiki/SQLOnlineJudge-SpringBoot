@@ -108,6 +108,7 @@ export default {
       if (keyword.length === 0) {
         this.$message.error('请输入关键字！')
       } else {
+        this.isLoading = true
         const apiUrl = this.Url.databaseSearch
         this.$axios
           .get(apiUrl, {
@@ -125,15 +126,16 @@ export default {
               if (resData.code === 200) {
                 this.tableConfig.tableData = resData.data.list
                 this.totalItems = resData.data.total
-                this.isLoading = false
                 this.inSearch = true
               } else {
                 this.$message.error(resData.message)
               }
             }
+            this.isLoading = false
           })
           .catch(err => {
             console.log(err)
+            this.isLoading = false
           })
       }
     },
