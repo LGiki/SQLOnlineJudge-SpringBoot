@@ -149,7 +149,7 @@ export default {
       this.$router.push({ path: "/problem/" + rowData.id });
     },
     getProblemList() {
-      let apiUrl = this.Url.problemList;
+      let apiUrl = this.Url.problemBaseUrl;
       this.$axios
         .get(apiUrl, {
           params: {

@@ -177,7 +177,7 @@ export default {
       this.getSolutionList();
     },
     getSolutionList() {
-      let apiUrl = this.Url.solutionList;
+      let apiUrl = this.Url.solutionBaseUrl;
       this.$axios
         .get(apiUrl, {
           params: {

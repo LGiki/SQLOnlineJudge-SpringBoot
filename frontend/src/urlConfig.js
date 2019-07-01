@@ -4,17 +4,11 @@ const Url = {
     login: BaseUrl + 'login',
     //题目基础接口
     problemBaseUrl: BaseUrl + 'problem/',
-    problemList: BaseUrl + 'problem/',
-    problemDetail: BaseUrl + 'problem/',
     //排行榜基础接口
     rankListBaseUrl: BaseUrl + 'user/ranklist',
     //用户提交基础接口
     solutionBaseUrl: BaseUrl + 'solution/',
     //数据库基础接口
-    databaseBaseUrl: BaseUrl + 'database/',
-    rankList: BaseUrl + 'user/ranklist',
-    solutionList: BaseUrl + 'solution/',
-    databaseList: BaseUrl + 'database/',
-    databaseDetail: BaseUrl + 'database/'
+    databaseBaseUrl: BaseUrl + 'database/'
 }
 export default Url

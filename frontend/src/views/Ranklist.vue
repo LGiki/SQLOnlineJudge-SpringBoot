@@ -146,7 +146,7 @@ export default {
       this.getRanklist();
     },
     getRanklist() {
-      let apiUrl = this.Url.rankList;
+      let apiUrl = this.Url.rankListBaseUrl;
       this.$axios
         .get(apiUrl, {
           params: {
