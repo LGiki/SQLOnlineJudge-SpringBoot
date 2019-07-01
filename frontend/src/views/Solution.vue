@@ -65,7 +65,9 @@
       </template>
 
       <template slot="body">
-        <p><highlight-code lang="sql">{{ code }}</highlight-code></p>
+        <p>
+          <highlight-code lang="sql">{{ code }}</highlight-code>
+        </p>
       </template>
 
       <template slot="footer">
@@ -106,7 +108,7 @@ export default {
       pageSize: 10,
       totalItems: 0,
       isLoading: true,
-      code: '',
+      code: "",
       tableConfig: {
         tableData: [],
         columns: [
@@ -185,13 +187,15 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("Network error");
+            alert("获取用户提交列表失败，网络错误！");
           } else {
             let resData = res.data;
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list;
               this.totalItems = resData.data.total;
               this.isLoading = false;
+            } else {
+              alert(resData.message);
             }
           }
         })

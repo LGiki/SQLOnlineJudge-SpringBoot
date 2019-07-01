@@ -127,7 +127,9 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit == 0 ? 0 : (rowData.solved / rowData.submit).toFixed(2);
+              return rowData.submit == 0
+                ? 0
+                : (rowData.solved / rowData.submit).toFixed(2);
             }
           }
         ]
@@ -154,13 +156,15 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("Network error");
+            alert("获取排名失败，网络错误！");
           } else {
             let resData = res.data;
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list;
               this.totalItems = resData.data.total;
               this.isLoading = false;
+            } else {
+              alert(resData.message);
             }
           }
         })

@@ -131,11 +131,13 @@ export default {
         .get(apiUrl + databaseId)
         .then(res => {
           if (res.status !== 200) {
-            alert("Network error");
+            alert("获取题目详情失败，网络错误！");
           } else {
             let resData = res.data;
             if (resData.code === 200) {
               this.createTableCode = resData.data.createTable;
+            } else {
+              alert(resData.message);
             }
           }
         })

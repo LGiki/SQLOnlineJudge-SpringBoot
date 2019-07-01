@@ -27,6 +27,14 @@
         <div class="container">
           <div class="features text-center">
             <div class="md-layout">
+              <div class="search">
+                <md-field class="has-danger">
+                  <label>请输入搜索关键词</label>
+                  <md-input v-model="initial"></md-input>
+                </md-field>
+              </div>
+              <md-button class="md-info">搜索</md-button>
+              <md-button class="md-info" v-if="inSearch">取消搜索</md-button>
               <template>
                 <v-table
                   :is-loading="isLoading"
@@ -78,6 +86,8 @@ export default {
   },
   data() {
     return {
+      searchKeyword: '',
+      inSearch: false,
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
@@ -125,7 +135,9 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit == 0 ? 0 : (rowData.solve / rowData.submit).toFixed(2);
+              return rowData.submit == 0
+                ? 0
+                : (rowData.solve / rowData.submit).toFixed(2);
             }
           }
         ]
@@ -147,13 +159,15 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("Network error");
+            alert("获取题目列表失败，网络错误！");
           } else {
             let resData = res.data;
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list;
               this.totalItems = resData.data.total;
               this.isLoading = false;
+            } else {
+              alert(resData.message);
             }
           }
         })
@@ -168,6 +182,13 @@ export default {
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize;
       this.getProblemList();
+    },
+    searchProblem() {
+      
+    },
+    cancelSearch() {
+      this.getProblemList();
+      this.inSearch = false;
     }
   },
   computed: {
@@ -221,5 +242,8 @@ export default {
 
 .justify-content-center {
   justify-content: center !important;
+}
+
+.search {
 }
 </style>
