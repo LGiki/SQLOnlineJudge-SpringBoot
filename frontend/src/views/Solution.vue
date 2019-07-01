@@ -25,6 +25,15 @@
       </div>
       <div class="section section-with-padding">
         <div class="container">
+          <div class="search">
+            <md-field class="md-form-group" slot="inputs">
+              <md-icon>search</md-icon>
+              <label>请输入搜索关键字</label>
+              <md-input v-model="searchKeyword"></md-input>
+              <md-button class="md-info" @click="onSearch">搜索</md-button>&nbsp;
+              <md-button class="md-info" v-if="inSearch" @click="cancelSearch">取消搜索</md-button>
+            </md-field>
+          </div>
           <div class="features text-center">
             <div class="md-layout">
               <template>
@@ -63,13 +72,11 @@
           <md-icon>clear</md-icon>
         </md-button>
       </template>
-
       <template slot="body">
         <p>
           <highlight-code lang="sql">{{ code }}</highlight-code>
         </p>
       </template>
-
       <template slot="footer">
         <md-button class="md-danger md-simple" @click="codeModalHide">关闭</md-button>
       </template>
@@ -103,11 +110,13 @@ export default {
   },
   data() {
     return {
+      searchKeyword: '',
+      inSearch: false,
       codeModal: false,
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
-      isLoading: true,
+      isLoading: false,
       code: "",
       tableConfig: {
         tableData: [],
@@ -177,6 +186,7 @@ export default {
       this.getSolutionList();
     },
     getSolutionList() {
+      this.isLoading = true;
       let apiUrl = this.Url.solutionBaseUrl;
       this.$axios
         .get(apiUrl, {
@@ -193,15 +203,58 @@ export default {
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list;
               this.totalItems = resData.data.total;
-              this.isLoading = false;
             } else {
               alert(resData.message);
             }
           }
+          this.isLoading = false;
         })
         .catch(err => {
+          alert("获取用户提交列表失败！");
+          this.isLoading = false;
           console.log(err);
         });
+    },
+    onSearch() {
+      const keyword = this.searchKeyword.trim();
+      if (keyword.length === 0) {
+        alert("请输入关键字！");
+      } else {
+        this.isLoading = true;
+        const apiUrl = this.Url.solutionSearch;
+        this.$axios
+          .get(apiUrl, {
+            params: {
+              keyword: keyword,
+              pageNum: this.pageNum,
+              pageSize: this.pageSize
+            }
+          })
+          .then(res => {
+            if (res.status !== 200) {
+              alert("用户提交搜索失败，网络错误！");
+            } else {
+              const resData = res.data;
+              if (resData.code === 200) {
+                this.tableConfig.tableData = resData.data.list;
+                this.totalItems = resData.data.total;
+                this.inSearch = true;
+              } else {
+                alert(resData.message);
+              }
+            }
+            this.isLoading = false;
+          })
+          .catch(err => {
+            this.isLoading = false;
+            alert("用户提交搜索失败！");
+            console.log(err);
+          });
+      }
+    },
+    cancelSearch() {
+      this.getSolutionList();
+      this.inSearch = false;
     }
   },
   computed: {

@@ -59,11 +59,11 @@ export default {
         .post(this.Url.login, postData)
         .then(res => {
           if (res.status !== 200) {
-            alert("Network error!");
+            alert("登录失败，网路错误!");
           } else {
             let resData = res.data;
             console.log(resData);
-            alert(resData.msg);
+            alert(resData.message);
           }
         })
         .catch(err => {

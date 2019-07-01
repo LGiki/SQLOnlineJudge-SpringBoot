@@ -25,16 +25,17 @@
       </div>
       <div class="section section-with-padding">
         <div class="container">
+          <div class="search">
+            <md-field class="md-form-group" slot="inputs">
+              <md-icon>search</md-icon>
+              <label>请输入搜索关键字</label>
+              <md-input v-model="searchKeyword"></md-input>
+              <md-button class="md-info" @click="onSearch">搜索</md-button>&nbsp;
+              <md-button class="md-info" v-if="inSearch" @click="cancelSearch">取消搜索</md-button>
+            </md-field>
+          </div>
           <div class="features text-center">
             <div class="md-layout">
-              <div class="search">
-                <md-field class="has-danger">
-                  <label>请输入搜索关键词</label>
-                  <md-input v-model="initial"></md-input>
-                </md-field>
-              </div>
-              <md-button class="md-info">搜索</md-button>
-              <md-button class="md-info" v-if="inSearch">取消搜索</md-button>
               <template>
                 <v-table
                   :is-loading="isLoading"
@@ -86,12 +87,12 @@ export default {
   },
   data() {
     return {
-      searchKeyword: '',
+      searchKeyword: "",
       inSearch: false,
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
-      isLoading: true,
+      isLoading: false,
       tableConfig: {
         tableData: [],
         columns: [
@@ -149,6 +150,7 @@ export default {
       this.$router.push({ path: "/problem/" + rowData.id });
     },
     getProblemList() {
+      this.isLoading = true;
       let apiUrl = this.Url.problemBaseUrl;
       this.$axios
         .get(apiUrl, {
@@ -165,13 +167,15 @@ export default {
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list;
               this.totalItems = resData.data.total;
-              this.isLoading = false;
             } else {
               alert(resData.message);
             }
           }
+          this.isLoading = false;
         })
         .catch(err => {
+          this.isLoading = false;
+          alert("获取题目列表失败！");
           console.log(err);
         });
     },
@@ -183,8 +187,42 @@ export default {
       this.pageSize = newPageSize;
       this.getProblemList();
     },
-    searchProblem() {
-      
+    onSearch() {
+      const keyword = this.searchKeyword.trim();
+      if (keyword.length === 0) {
+        alert("请输入关键字！");
+      } else {
+        this.isLoading = true;
+        const apiUrl = this.Url.problemSearch;
+        this.$axios
+          .get(apiUrl, {
+            params: {
+              keyword: keyword,
+              pageNum: this.pageNum,
+              pageSize: this.pageSize
+            }
+          })
+          .then(res => {
+            if (res.status !== 200) {
+              alert("题目搜索失败，网络错误！");
+            } else {
+              const resData = res.data;
+              if (resData.code === 200) {
+                this.tableConfig.tableData = resData.data.list;
+                this.totalItems = resData.data.total;
+                this.inSearch = true;
+              } else {
+                alert(resData.message);
+              }
+            }
+            this.isLoading = false;
+          })
+          .catch(err => {
+            this.isLoading = false;
+            alert("题目搜索失败！");
+            console.log(err);
+          });
+      }
     },
     cancelSearch() {
       this.getProblemList();
@@ -244,6 +282,4 @@ export default {
   justify-content: center !important;
 }
 
-.search {
-}
 </style>
