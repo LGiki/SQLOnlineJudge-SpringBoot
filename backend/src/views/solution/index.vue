@@ -41,17 +41,13 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import { getProblemList } from '@/api/problem'
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
-import VueHighlightJS from 'vue-highlight.js'
 import 'vue-highlight.js/lib/allLanguages'
 import 'highlight.js/styles/atom-one-light.css'
 
 export default {
   components: {
-    VueHighlightJS,
     VTable,
     VPagination
   },
