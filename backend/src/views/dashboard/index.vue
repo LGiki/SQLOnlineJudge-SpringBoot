@@ -37,4 +37,9 @@ export default {
     text-align: center;
   }
 }
+
+.dashboard-text {
+  color: #304156;
+  text-shadow: 2px 2px 2px #ccc;
+}
 </style>
