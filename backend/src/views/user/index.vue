@@ -60,7 +60,7 @@ export default {
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
-      isLoading: true,
+      isLoading: false,
       tableConfig: {
         tableData: [],
         columns: [
@@ -172,8 +172,9 @@ export default {
             this.isLoading = false
           })
           .catch(err => {
-            console.log(err)
             this.isLoading = false
+            this.$message.error('搜索失败！')
+            console.log(err)
           })
       }
     },
@@ -206,6 +207,7 @@ export default {
       this.fetchUserList()
     },
     fetchUserList() {
+      this.isLoading = true
       const apiUrl = this.Url.userBaseUrl
       this.$axios
         .get(apiUrl, {
@@ -222,13 +224,15 @@ export default {
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list
               this.totalItems = resData.data.total
-              this.isLoading = false
             } else {
               this.$message.error(resData.message)
             }
           }
+          this.isLoading = false
         })
         .catch(err => {
+          this.$message.error('获取用户列表失败！')
+          this.isLoading = false
           console.log(err)
         })
     },
@@ -253,6 +257,7 @@ export default {
           }
         })
         .catch(err => {
+          this.$message.error('删除用户失败！')
           console.log(err)
         })
     }

@@ -62,7 +62,7 @@ export default {
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
-      isLoading: true,
+      isLoading: false,
       tableConfig: {
         tableData: [],
         columns: [
@@ -174,8 +174,9 @@ export default {
             this.isLoading = false
           })
           .catch(err => {
-            console.log(err)
+            this.$message.error('搜索失败！')
             this.isLoading = false
+            console.log(err)
           })
       }
     },
@@ -192,6 +193,7 @@ export default {
       this.fetchSolutionList()
     },
     fetchSolutionList() {
+      this.isLoading = true
       const apiUrl = this.Url.solutionBaseUrl
       this.$axios
         .get(apiUrl, {
@@ -202,17 +204,19 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert('Network error')
+            this.$message.error('获取用户提交列表失败，网络错误！')
           } else {
             const resData = res.data
             if (resData.code === 200) {
               this.tableConfig.tableData = resData.data.list
               this.totalItems = resData.data.total
-              this.isLoading = false
             }
           }
+          this.isLoading = false
         })
         .catch(err => {
+          this.$message.error('获取用户提交列表失败！')
+          this.isLoading = false
           console.log(err)
         })
     }
