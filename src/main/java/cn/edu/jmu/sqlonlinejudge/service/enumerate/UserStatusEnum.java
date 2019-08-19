@@ -1,6 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.model.enums;
-
-import lombok.Getter;
+package cn.edu.jmu.sqlonlinejudge.service.enumerate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,28 +7,33 @@ import java.util.Map;
  * @author sgh
  * @date 2019/6/20 15:51
  */
-public enum UserStatus implements BaseEnum<UserStatus, String> {
+public enum UserStatusEnum implements BaseEnum<UserStatusEnum, String> {
+
+    /**
+     * 未激活
+     */
+    INACTIVATED("0", "inactivated"),
     /**
      * 正常状态
      */
-    NORMAL("1","正常"),
+    NORMAL("1", "normal"),
     /**
      * 删除状态
      */
-    DETELE("0","删除"),
+    LOCK("2", "lockd"),
     ;
 
     private final String value;
     private final String displayName;
-    static Map<String,UserStatus> enumMap=new HashMap<String, UserStatus>();
+    static Map<String, UserStatusEnum> enumMap=new HashMap<String, UserStatusEnum>();
     static{
-        for(UserStatus type:UserStatus.values()){
+        for(UserStatusEnum type: UserStatusEnum.values()){
             enumMap.put(type.getValue(), type);
         }
     }
 
 
-    private UserStatus(String value,String displayName) {
+    private UserStatusEnum(String value, String displayName) {
         this.value=value;
         this.displayName=displayName;
     }
@@ -45,7 +48,7 @@ public enum UserStatus implements BaseEnum<UserStatus, String> {
         return this.displayName;
     }
 
-    public static UserStatus getEnum(String value) {
+    public static UserStatusEnum getEnum(String value) {
         return enumMap.get(value);
     }
 }

@@ -1,8 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
-import org.apache.ibatis.annotations.Param;
-
 import cn.edu.jmu.sqlonlinejudge.model.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

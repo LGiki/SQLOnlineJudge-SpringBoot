@@ -1,6 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.model.enums;
-
-import java.util.Set;
+package cn.edu.jmu.sqlonlinejudge.service.enumerate;
 
 /**
  * @author sgh

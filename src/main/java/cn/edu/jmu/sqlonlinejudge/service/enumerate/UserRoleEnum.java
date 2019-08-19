@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.model.enums;
+package cn.edu.jmu.sqlonlinejudge.service.enumerate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ import java.util.Map;
  * @author sgh
  * @date 2019/6/20 17:44
  */
-public enum UserRole implements BaseEnum<UserRole, String>{
+public enum UserRoleEnum implements BaseEnum<UserRoleEnum, String>{
     /**
      * 普通用户
      */
@@ -20,14 +20,14 @@ public enum UserRole implements BaseEnum<UserRole, String>{
 
     private final String value;
     private final String displayName;
-    static Map<String, UserRole> enumMap=new HashMap<String, UserRole>();
+    static Map<String, UserRoleEnum> enumMap=new HashMap<String, UserRoleEnum>();
     static{
-        for(UserRole type:UserRole.values()){
+        for(UserRoleEnum type: UserRoleEnum.values()){
             enumMap.put(type.getValue(), type);
         }
     }
 
-    private UserRole(String value,String displayName) {
+    private UserRoleEnum(String value, String displayName) {
         this.value=value;
         this.displayName=displayName;
     }
@@ -42,7 +42,7 @@ public enum UserRole implements BaseEnum<UserRole, String>{
         return this.displayName;
     }
 
-    public static UserRole getEnum(String value) {
+    public static UserRoleEnum getEnum(String value) {
         return enumMap.get(value);
     }
 }

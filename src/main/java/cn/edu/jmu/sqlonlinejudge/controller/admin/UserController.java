@@ -1,7 +1,7 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
 import cn.edu.jmu.sqlonlinejudge.model.User;
-import cn.edu.jmu.sqlonlinejudge.model.enums.UserRole;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserRoleEnum;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import cn.edu.jmu.sqlonlinejudge.util.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.util.EncryptUtil;
@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private UserRole userRole;
+    private UserRoleEnum userRole;
 
     /**
      * 查询所有用户

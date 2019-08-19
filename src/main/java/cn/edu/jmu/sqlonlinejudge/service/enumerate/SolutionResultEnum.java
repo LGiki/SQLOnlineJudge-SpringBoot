@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.model.enums;
+package cn.edu.jmu.sqlonlinejudge.service.enumerate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ import java.util.Map;
  * @author sgh
  * @date 2019/6/24 18:28
  */
-public enum SolutionResult implements BaseEnum<SolutionResult, String> {
+public enum SolutionResultEnum implements BaseEnum<SolutionResultEnum, String> {
     /**
      * Accepted
      */
@@ -20,14 +20,14 @@ public enum SolutionResult implements BaseEnum<SolutionResult, String> {
 
     private final String value;
     private final String displayName;
-    static Map<String, SolutionResult> enumMap=new HashMap<String, SolutionResult>();
+    static Map<String, SolutionResultEnum> enumMap=new HashMap<String, SolutionResultEnum>();
     static{
-        for(SolutionResult type:SolutionResult.values()){
+        for(SolutionResultEnum type: SolutionResultEnum.values()){
             enumMap.put(type.getValue(), type);
         }
     }
 
-    private SolutionResult(String value,String displayName) {
+    private SolutionResultEnum(String value, String displayName) {
         this.value=value;
         this.displayName=displayName;
     }
@@ -42,7 +42,7 @@ public enum SolutionResult implements BaseEnum<SolutionResult, String> {
         return this.displayName;
     }
 
-    public static SolutionResult getEnum(String value) {
+    public static SolutionResultEnum getEnum(String value) {
         return enumMap.get(value);
     }
 }

@@ -1,6 +1,6 @@
 package cn.edu.jmu.sqlonlinejudge.model;
 
-import cn.edu.jmu.sqlonlinejudge.model.enums.SolutionResult;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.SolutionResultEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -58,5 +58,5 @@ public class SolutionDetail {
     /**
      * 结果
      */
-    private SolutionResult result;
+    private SolutionResultEnum result;
 }

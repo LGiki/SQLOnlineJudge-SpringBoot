@@ -1,6 +1,6 @@
 package cn.edu.jmu.sqlonlinejudge.config;
 
-import cn.edu.jmu.sqlonlinejudge.serviceimpl.UserServiceImpl;
+import cn.edu.jmu.sqlonlinejudge.service.impl.UserServiceImpl;
 import cn.edu.jmu.sqlonlinejudge.util.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

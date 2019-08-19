@@ -1,8 +1,7 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
-
-import cn.edu.jmu.sqlonlinejudge.model.Database;
-import cn.edu.jmu.sqlonlinejudge.service.DatabaseService;
+import cn.edu.jmu.sqlonlinejudge.model.Problem;
+import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 import cn.edu.jmu.sqlonlinejudge.util.BasicResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,18 +12,18 @@ import java.util.List;
 
 /**
  * @author LGiki
- * @date 2019/06/23 09:27
+ * @date 2019/06/21 13:19
  */
 
 @RestController
-@RequestMapping("/api/database")
-public class DatabaseController {
+@RequestMapping("/api/problem")
+public class ProblemController {
 
     @Autowired
-    private DatabaseService databaseService;
+    private ProblemService problemService;
 
     /**
-     * 查询所有数据库
+     * 查询所有题目
      *
      * @param pageNum  当前页码
      * @param pageSize 页面数据条数
@@ -34,45 +33,36 @@ public class DatabaseController {
     public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         try {
+//            Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+////            if(object instanceof User) {
+////                User user = (User) object;
+////                System.out.println(user.getUsername());
+////                System.out.println(user.getRole().getDisplayName());
+////            }
             PageHelper.startPage(pageNum, pageSize);
-            basicResponse.set(200, null, new PageInfo<>(databaseService.selectAll()));
+            basicResponse.set(200, null, new PageInfo<>(problemService.selectAll()));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             basicResponse.set(503, e.getCause().toString());
         }
         return basicResponse;
     }
 
     /**
-     * 查询所有数据库，不分页
+     * 通过ID查询题目详情
      *
-     * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
-     */
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public BasicResponse selectAllNoPagination() {
-        BasicResponse basicResponse = new BasicResponse();
-        try {
-            basicResponse.set(200, null, databaseService.selectAll());
-        } catch (Exception e) {
-            basicResponse.set(503, e.getCause().toString());
-        }
-        return basicResponse;
-    }
-
-    /**
-     * 通过ID查询数据库详情
-     *
-     * @param id 数据库ID
+     * @param id 题目ID
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public BasicResponse selectDatabaseById(@PathVariable("id") Integer id) {
+    public BasicResponse selectProblemById(@PathVariable("id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            Database database = databaseService.selectById(id);
-            if (database != null) {
-                basicResponse.set(200, null, database);
+            Problem problem = problemService.selectById(id);
+            if (problem != null) {
+                basicResponse.set(200, null, problem);
             } else {
-                basicResponse.set(400, "无此数据库");
+                basicResponse.set(400, "无此题目", null);
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -81,19 +71,19 @@ public class DatabaseController {
     }
 
     /**
-     * 通过ID删除数据库
+     * 通过ID删除题目
      *
-     * @param id 数据库ID
+     * @param id 题目ID
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public BasicResponse deleteDatabaseById(@PathVariable("id") Integer id) {
+    public BasicResponse deleteProblemById(@PathVariable("id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            if (databaseService.deleteById(id) == 1) {
-                basicResponse.set(200, "删除成功");
+            if (problemService.deleteById(id) == 1) {
+                basicResponse.set(200, "题目删除成功");
             } else {
-                basicResponse.set(400, "删除失败");
+                basicResponse.set(400, "题目删除失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -102,48 +92,45 @@ public class DatabaseController {
     }
 
     /**
-     * 添加数据库
+     * 添加题目
      *
-     * @param database 要添加的数据库对象
+     * @param problem 要添加的题目
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public BasicResponse insertDatabase(@RequestBody Database database) {
+    public BasicResponse insertProblem(@RequestBody Problem problem) {
         BasicResponse basicResponse = new BasicResponse();
-        //新数据库要将是否已生成字段设置为 false
-        database.setIsCreated(false);
+        problem.setSolve(0);
+        problem.setSubmit(0);
         try {
-            if (databaseService.insert(database) == 1) {
-                basicResponse.set(200, "数据库添加成功");
+            if (problemService.insert(problem) == 1) {
+                basicResponse.set(200, "题目添加成功");
             } else {
-                basicResponse.set(400, "数据库添加失败");
+                basicResponse.set(400, "题目添加失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
-
         }
         return basicResponse;
     }
 
     /**
-     * 通过ID更新数据库
+     * 通过ID更新题目
      *
-     * @param id       数据库ID
-     * @param database 更新的数据库对象
+     * @param id      题目ID
+     * @param problem 更新的题目对象
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public BasicResponse updateDatabaseById(@PathVariable("id") Integer id, @RequestBody Database database) {
+    public BasicResponse updateProblemById(@PathVariable("id") Integer id, @RequestBody Problem problem) {
         BasicResponse basicResponse = new BasicResponse();
-        //确保要更新的数据库ID为URL中的ID
-        database.setId(id);
-        //更新数据库要将是否已生成字段设置为 false
-        database.setIsCreated(false);
         try {
-            if (databaseService.updateByIdSelective(database) == 1) {
-                basicResponse.set(200, "数据库更新成功");
+            //确保更新的题目ID是URL中的ID
+            problem.setId(id);
+            if (problemService.updateByIdSelective(problem) == 1) {
+                basicResponse.set(200, "题目更新成功");
             } else {
-                basicResponse.set(400, "数据库更新失败");
+                basicResponse.set(400, "题目更新失败");
             }
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
@@ -152,7 +139,7 @@ public class DatabaseController {
     }
 
     /**
-     * 模糊查询数据库
+     * 模糊查询题目
      *
      * @param keyword  关键字
      * @param pageNum  页码
@@ -166,20 +153,21 @@ public class DatabaseController {
         BasicResponse basicResponse = new BasicResponse();
         try {
             PageHelper.startPage(pageNum, pageSize);
-            List<Database> databases = databaseService.selectAllByKeyword(keyword);
-            if (databases != null) {
-                basicResponse.set(200, null, new PageInfo<>(databases));
+            List<Problem> problems = problemService.selectAllByKeyword(keyword);
+            if (problems != null) {
+                basicResponse.set(200, null, new PageInfo<>(problems));
             } else {
-                basicResponse.set(400, "无符合条件的数据库");
+                basicResponse.set(400, "无符合条件的题目");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }
         return basicResponse;
     }
 
+
     /**
-     * 查询数据库数量
+     * 查询题目数量
      *
      * @return cn.edu.jmu.sqlonlinejudge.util.BasicResponse
      */
@@ -187,7 +175,7 @@ public class DatabaseController {
     public BasicResponse countAll() {
         BasicResponse basicResponse = new BasicResponse();
         try {
-            basicResponse.set(200, null, databaseService.countAll());
+            basicResponse.set(200, null, problemService.countAll());
         } catch (Exception e) {
             basicResponse.set(503, e.getCause().toString());
         }

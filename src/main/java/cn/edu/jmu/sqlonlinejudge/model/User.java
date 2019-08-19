@@ -1,7 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.model;
 
-import cn.edu.jmu.sqlonlinejudge.model.enums.UserRole;
-import cn.edu.jmu.sqlonlinejudge.model.enums.UserStatus;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserRoleEnum;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserStatusEnum;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,12 +60,12 @@ public class User implements UserDetails {
     /**
      * 状态
      */
-    private UserStatus status;
+    private UserStatusEnum status;
 
     /**
      * 用户角色
      */
-    private UserRole role;
+    private UserRoleEnum role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

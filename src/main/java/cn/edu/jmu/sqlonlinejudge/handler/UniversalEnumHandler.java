@@ -1,10 +1,9 @@
 package cn.edu.jmu.sqlonlinejudge.handler;
 
-import cn.edu.jmu.sqlonlinejudge.model.User;
-import cn.edu.jmu.sqlonlinejudge.model.enums.BaseEnum;
-import cn.edu.jmu.sqlonlinejudge.model.enums.SolutionResult;
-import cn.edu.jmu.sqlonlinejudge.model.enums.UserRole;
-import cn.edu.jmu.sqlonlinejudge.model.enums.UserStatus;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.BaseEnum;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.SolutionResultEnum;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserRoleEnum;
+import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserStatusEnum;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
@@ -18,7 +17,7 @@ import java.sql.SQLException;
  * @author sgh
  * @date 2019/6/20 17:23
  */
-@MappedTypes({UserStatus.class, UserRole.class, SolutionResult.class})
+@MappedTypes({UserStatusEnum.class, UserRoleEnum.class, SolutionResultEnum.class})
 public final class UniversalEnumHandler<E extends BaseEnum> extends BaseTypeHandler<E> {
 
     private Class<E> type;

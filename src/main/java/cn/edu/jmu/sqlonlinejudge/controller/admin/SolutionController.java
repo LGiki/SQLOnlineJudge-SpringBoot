@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
 import cn.edu.jmu.sqlonlinejudge.model.Solution;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;

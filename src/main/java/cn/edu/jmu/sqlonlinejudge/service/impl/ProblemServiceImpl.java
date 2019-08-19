@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.serviceimpl;
+package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import java.util.List;
 

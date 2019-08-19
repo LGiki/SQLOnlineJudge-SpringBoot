@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.serviceimpl;
+package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
 import cn.edu.jmu.sqlonlinejudge.model.User;
