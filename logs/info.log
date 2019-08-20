@@ -1,0 +1,409 @@
+2019-08-20 15:37:37.032 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 27582 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 15:37:37.042 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 15:40:28.723 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 28080 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 15:40:28.749 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 15:41:39.521 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 28219 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 15:41:39.525 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 15:41:43.352 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 15:41:43.636 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 15:41:45.298 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 15:41:45.309 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 15:41:45.311 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 15:41:45.552 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 15:41:46.992 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 15:41:47.015 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 9.034 seconds (JVM running for 10.869)
+2019-08-20 15:41:54.828 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 15:47:47.493 Thread-27 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 15:47:59.699 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 28780 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 15:47:59.703 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 15:48:03.276 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 15:48:03.452 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 15:48:05.256 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 15:48:05.274 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 15:48:05.275 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 15:48:05.385 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 15:48:06.654 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 15:48:06.678 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 8.29 seconds (JVM running for 10.286)
+2019-08-20 15:48:14.159 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 15:52:56.320 Thread-23 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 15:53:07.550 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 29978 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 15:53:07.551 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 15:53:11.343 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 15:53:11.569 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 15:53:13.344 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 15:53:13.362 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 15:53:13.363 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 15:53:13.500 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 15:53:14.905 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 15:53:14.933 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 9.577 seconds (JVM running for 11.764)
+2019-08-20 15:53:20.118 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 16:01:32.021 Thread-25 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:01:41.159 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 30480 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:01:41.165 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:01:44.204 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:01:44.395 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:01:46.003 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:01:46.020 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:01:46.020 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:01:46.121 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:01:47.155 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:01:47.175 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 7.16 seconds (JVM running for 8.449)
+2019-08-20 16:01:58.193 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 16:05:35.658 Thread-22 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:12:17.163 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Starting SqlOnlineJudgeApplicationTests on shangguanhong-pc with PID 31709 (started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:12:17.182 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests The following profiles are active: dev
+2019-08-20 16:12:20.672 main INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:12:21.091 main INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:12:25.064 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Started SqlOnlineJudgeApplicationTests in 9.122 seconds (JVM running for 10.713)
+2019-08-20 16:12:26.020 Thread-3 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:13:22.434 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Starting SqlOnlineJudgeApplicationTests on shangguanhong-pc with PID 31849 (started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:13:22.439 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests The following profiles are active: dev
+2019-08-20 16:13:26.567 main INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:13:27.394 main INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:13:31.424 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Started SqlOnlineJudgeApplicationTests in 9.941 seconds (JVM running for 11.407)
+2019-08-20 16:13:32.266 Thread-3 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:14:02.559 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 31979 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:14:02.576 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:14:04.924 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:14:05.088 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:14:06.701 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:14:06.715 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:14:06.716 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:14:06.831 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:14:08.173 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:14:08.203 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 7.685 seconds (JVM running for 9.541)
+2019-08-20 16:14:18.714 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 16:16:14.985 Thread-20 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:16:15.614 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 31979 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:16:15.614 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:16:16.924 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:16:16.972 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} inited
+2019-08-20 16:16:17.413 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:16:17.413 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:16:17.415 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:16:17.431 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:16:19.948 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:16:19.975 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 4.584 seconds (JVM running for 141.312)
+2019-08-20 16:16:32.339 Thread-33 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} closed
+2019-08-20 16:16:47.440 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:16:47.442 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:16:49.598 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:16:49.792 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:16:51.452 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:16:51.467 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:16:51.468 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:16:51.592 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:16:52.881 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:16:52.912 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 7.687 seconds (JVM running for 9.313)
+2019-08-20 16:16:58.087 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 16:24:31.195 Thread-21 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:24:31.998 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:24:32.032 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:24:33.779 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:24:33.867 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} inited
+2019-08-20 16:24:34.074 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} closed
+2019-08-20 16:24:36.999 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:24:36.999 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:24:37.474 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:24:37.529 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-3} inited
+2019-08-20 16:24:38.216 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:24:38.217 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:24:38.218 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:24:38.232 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:24:39.279 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:24:39.333 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 2.397 seconds (JVM running for 475.734)
+2019-08-20 16:25:20.927 Thread-29 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-3} closed
+2019-08-20 16:25:21.782 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:25:21.793 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:25:28.747 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:25:28.750 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:25:29.673 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:25:29.696 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-4} inited
+2019-08-20 16:25:30.395 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:25:30.396 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:25:30.396 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:25:30.411 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:25:31.764 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:25:31.791 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 3.243 seconds (JVM running for 528.192)
+2019-08-20 16:25:35.141 Thread-38 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-4} closed
+2019-08-20 16:25:36.341 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:25:36.342 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:25:38.636 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:25:38.637 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:25:38.637 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:25:38.687 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:25:39.252 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:25:39.339 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-5} inited
+2019-08-20 16:25:39.764 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:25:39.876 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 3.743 seconds (JVM running for 536.277)
+2019-08-20 16:25:44.294 Thread-46 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-5} closed
+2019-08-20 16:25:45.076 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:25:45.076 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:25:46.456 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:25:46.534 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-6} inited
+2019-08-20 16:25:47.084 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:25:47.085 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:25:47.085 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:25:47.102 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:25:48.630 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:25:49.011 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 4.207 seconds (JVM running for 545.412)
+2019-08-20 16:26:47.957 Thread-52 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-6} closed
+2019-08-20 16:27:00.858 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:27:00.859 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:27:01.363 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:27:01.363 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:27:01.377 restartedMain INFO   o.a.c.c.C.[Tomcat-1].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:27:01.605 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:27:01.620 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-7} inited
+2019-08-20 16:27:01.866 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 1.09 seconds (JVM running for 618.267)
+2019-08-20 16:27:07.393 Thread-58 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-7} closed
+2019-08-20 16:27:08.357 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 32288 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:27:08.363 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:27:09.196 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:27:09.278 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-8} inited
+2019-08-20 16:27:09.941 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:27:09.941 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:27:09.951 restartedMain INFO   o.a.c.c.C.[Tomcat-1].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:27:11.185 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 3.096 seconds (JVM running for 627.585)
+2019-08-20 16:27:29.875 Thread-72 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-8} closed
+2019-08-20 16:46:46.253 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 1872 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:46:46.263 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:46:50.591 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:46:50.933 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:46:52.723 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:46:52.739 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:46:52.740 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:46:52.871 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:46:54.245 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:46:54.281 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 9.95 seconds (JVM running for 11.849)
+2019-08-20 16:47:00.241 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 16:52:18.242 Thread-22 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 16:52:18.990 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 1872 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:52:19.000 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:52:24.940 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 1872 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:52:24.975 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:52:25.729 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:52:25.820 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} inited
+2019-08-20 16:52:26.980 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:52:26.984 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:52:26.990 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:52:27.026 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:52:28.299 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:52:28.439 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 3.565 seconds (JVM running for 346.007)
+2019-08-20 16:53:04.725 Thread-30 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} closed
+2019-08-20 16:53:05.406 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 1872 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:53:05.407 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 16:53:06.165 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:53:06.247 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-3} inited
+2019-08-20 16:53:07.385 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:53:07.386 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 16:53:07.386 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 16:53:07.395 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 16:53:08.624 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 16:53:08.631 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 3.364 seconds (JVM running for 386.2)
+2019-08-20 16:54:29.142 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Starting SqlOnlineJudgeApplicationTests on shangguanhong-pc with PID 2467 (started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 16:54:29.155 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests The following profiles are active: dev
+2019-08-20 16:54:31.007 Thread-44 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-3} closed
+2019-08-20 16:54:39.241 main INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 16:54:40.338 main INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 16:54:49.384 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Started SqlOnlineJudgeApplicationTests in 22.513 seconds (JVM running for 26.002)
+2019-08-20 16:54:50.792 Thread-3 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 17:04:05.807 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Starting SqlOnlineJudgeApplicationTests on shangguanhong-pc with PID 3557 (started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 17:04:05.824 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests The following profiles are active: dev
+2019-08-20 17:04:10.810 main INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 17:04:11.410 main INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 17:04:16.036 main INFO   c.e.j.s.SqlOnlineJudgeApplicationTests Started SqlOnlineJudgeApplicationTests in 12.452 seconds (JVM running for 15.605)
+2019-08-20 17:04:16.968 Thread-3 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 17:04:29.281 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 3662 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 17:04:29.284 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 17:04:31.269 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 17:04:31.466 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 17:04:32.918 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 17:04:32.937 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 17:04:32.937 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 17:04:33.032 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 17:04:34.126 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 17:04:34.154 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 6.833 seconds (JVM running for 9.266)
+2019-08-20 17:05:06.128 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 18:14:47.089 Thread-22 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 18:14:55.906 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 5259 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:14:55.911 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:17:42.544 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 5511 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:17:42.546 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:23:26.413 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6167 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:23:26.415 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:23:29.272 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 18:23:29.437 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 18:23:29.471 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 18:25:26.851 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:25:26.853 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:25:29.411 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 18:25:29.726 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} inited
+2019-08-20 18:25:31.836 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 18:25:31.859 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 18:25:31.859 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 18:25:31.952 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 18:25:33.360 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 18:25:33.392 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 8.766 seconds (JVM running for 10.208)
+2019-08-20 18:25:45.355 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 18:28:35.279 Thread-23 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-1} closed
+2019-08-20 18:28:35.650 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:28:35.650 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:28:36.360 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 18:28:36.407 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} inited
+2019-08-20 18:28:36.683 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 18:28:36.683 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 18:28:36.683 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 18:28:36.689 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 18:28:37.436 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 18:28:37.443 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 1.881 seconds (JVM running for 194.259)
+2019-08-20 18:29:10.586 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 18:40:48.538 Thread-31 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-2} closed
+2019-08-20 18:40:49.765 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:40:49.765 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:40:57.010 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 18:40:57.011 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 18:40:57.359 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 18:40:57.386 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-3} inited
+2019-08-20 18:40:57.722 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 18:40:57.723 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 18:40:57.723 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 18:40:57.728 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 18:40:58.486 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 18:40:58.553 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 1.577 seconds (JVM running for 935.37)
+2019-08-20 19:05:14.081 Thread-37 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-3} closed
+2019-08-20 19:05:15.336 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:05:15.339 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:05:16.258 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:05:16.259 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:05:16.259 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:05:16.285 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:05:16.470 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:05:16.576 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-4} inited
+2019-08-20 19:05:17.358 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:05:17.379 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 2.407 seconds (JVM running for 2394.195)
+2019-08-20 19:05:38.871 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:08:06.141 Thread-46 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-4} closed
+2019-08-20 19:08:06.890 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:08:06.891 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:08:07.766 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:08:07.767 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:08:07.767 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:08:07.788 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:08:08.005 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:08:08.135 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-5} inited
+2019-08-20 19:08:08.888 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:08:08.899 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 2.177 seconds (JVM running for 2565.715)
+2019-08-20 19:08:13.853 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:09:39.558 Thread-52 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-5} closed
+2019-08-20 19:09:39.941 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:09:39.942 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:09:40.509 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:09:40.510 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:09:40.511 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:09:40.518 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:09:40.616 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:09:40.659 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-6} inited
+2019-08-20 19:09:41.296 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:09:41.355 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 1.492 seconds (JVM running for 2658.171)
+2019-08-20 19:11:27.872 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:13:16.169 Thread-58 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-6} closed
+2019-08-20 19:13:17.530 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:13:17.540 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:13:18.477 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:13:18.621 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-7} inited
+2019-08-20 19:13:19.604 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:13:19.608 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:13:19.608 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:13:19.641 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:13:20.946 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:13:21.102 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 4.005 seconds (JVM running for 2877.918)
+2019-08-20 19:13:57.839 Thread-64 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-7} closed
+2019-08-20 19:13:59.305 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:13:59.305 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:14:00.693 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:14:00.791 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-8} inited
+2019-08-20 19:14:01.461 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:14:01.461 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:14:01.462 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:14:01.472 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:14:02.925 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:14:02.949 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 4.245 seconds (JVM running for 2919.765)
+2019-08-20 19:14:11.056 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:16:18.534 Thread-70 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-8} closed
+2019-08-20 19:16:19.536 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:16:19.538 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:16:20.184 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:16:20.246 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-9} inited
+2019-08-20 19:16:20.646 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:16:20.647 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:16:20.647 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:16:20.652 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:16:21.752 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:16:21.995 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 2.744 seconds (JVM running for 3058.811)
+2019-08-20 19:16:28.113 Thread-76 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-9} closed
+2019-08-20 19:16:28.594 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:16:28.594 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:16:31.097 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:16:31.097 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:16:32.277 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:16:32.340 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-10} inited
+2019-08-20 19:16:33.842 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:16:33.844 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:16:33.844 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:16:33.870 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:16:35.238 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:16:35.251 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 4.215 seconds (JVM running for 3072.067)
+2019-08-20 19:16:44.642 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:20:41.087 Thread-82 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-10} closed
+2019-08-20 19:20:41.777 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:20:41.778 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:20:42.257 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:20:42.314 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-11} inited
+2019-08-20 19:20:42.897 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:20:42.898 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:20:42.898 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:20:42.904 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:20:43.519 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:20:43.522 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 1.815 seconds (JVM running for 3320.339)
+2019-08-20 19:21:03.902 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:22:53.384 Thread-91 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-11} closed
+2019-08-20 19:22:53.923 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:22:53.940 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:22:54.516 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:22:54.547 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-12} inited
+2019-08-20 19:22:54.850 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:22:54.850 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:22:54.851 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:22:54.856 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:22:56.139 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:22:56.197 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 2.38 seconds (JVM running for 3453.013)
+2019-08-20 19:22:57.579 http-nio-8080-exec-1 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:37:51.501 Thread-97 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-12} closed
+2019-08-20 19:37:52.987 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:37:53.001 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:37:57.195 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:37:57.195 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:37:59.312 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:37:59.339 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-13} inited
+2019-08-20 19:37:59.850 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:37:59.850 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:37:59.851 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:37:59.865 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:38:00.802 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:38:00.960 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 3.886 seconds (JVM running for 4357.776)
+2019-08-20 19:38:08.300 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-08-20 19:46:57.233 Thread-103 INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-13} closed
+2019-08-20 19:46:57.941 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:46:57.941 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:46:59.444 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Starting SqlOnlineJudgeApplication on shangguanhong-pc with PID 6412 (/home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot/target/classes started by sgh in /home/sgh/IdeaProjects/SQLOnlineJudge-SpringBoot)
+2019-08-20 19:46:59.447 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication The following profiles are active: dev
+2019-08-20 19:46:59.968 restartedMain INFO   c.a.d.s.b.a.DruidDataSourceAutoConfigure Init DruidDataSource
+2019-08-20 19:46:59.993 restartedMain INFO   com.alibaba.druid.pool.DruidDataSource {dataSource-14} inited
+2019-08-20 19:47:00.333 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:47:00.333 restartedMain INFO   org.apache.catalina.core.StandardService Starting service [Tomcat]
+2019-08-20 19:47:00.334 restartedMain INFO   org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.19]
+2019-08-20 19:47:00.339 restartedMain INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+2019-08-20 19:47:01.559 restartedMain INFO   o.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+2019-08-20 19:47:01.591 restartedMain INFO   c.e.j.s.SqlOnlineJudgeApplication Started SqlOnlineJudgeApplication in 2.227 seconds (JVM running for 4898.407)
+2019-08-20 19:47:13.111 http-nio-8080-exec-2 INFO   o.a.c.c.C.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'

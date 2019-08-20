@@ -1,96 +1,78 @@
 package cn.edu.jmu.sqlonlinejudge.model;
 
-import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserRoleEnum;
-import cn.edu.jmu.sqlonlinejudge.service.enumerate.UserStatusEnum;
+import cn.edu.jmu.sqlonlinejudge.service.enums.UserStatusEnum;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * @author sgh
  * @date 2019/6/20 18:35
  */
 @Data
-public class User implements UserDetails {
+@TableName(value = "sys_user")
+public class User implements Serializable {
+
     /**
      * 用户ID
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 用户名
      */
+    @TableField(value = "username")
     private String username;
+
+    /**
+     * 昵称
+     */
+    @TableField(value = "nickname")
+    private String nickname;
 
     /**
      * 密码
      */
+    @TableField(value = "password")
     private String password;
+
+    /**
+     * 密码盐
+     */
+    @TableField(value = "salt")
+    private String salt;
 
     /**
      * 邮箱地址
      */
+    @TableField(value = "email")
     private String email;
 
-    /**
-     * 邮箱是否有效
-     */
-    private Boolean isEmailValid;
 
     /**
      * 提交数
      */
+    @TableField(value = "submit")
     private Integer submit;
 
     /**
      * 通过数
      */
+    @TableField(value = "solved")
     private Integer solved;
 
     /**
      * 头像
      */
+    @TableField(value = "avatar")
     private String avatar;
 
     /**
      * 状态
      */
+    @EnumValue
+    @TableField(value = "status")
     private UserStatusEnum status;
-
-    /**
-     * 用户角色
-     */
-    private UserRoleEnum role;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("ROLE_" + this.role.getDisplayName()));
-        return authorityList;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

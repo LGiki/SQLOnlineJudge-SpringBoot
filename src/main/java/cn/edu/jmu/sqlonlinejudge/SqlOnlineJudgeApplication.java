@@ -1,13 +1,14 @@
 package cn.edu.jmu.sqlonlinejudge;
 
-import org.mybatis.spring.annotation.MapperScan;
+import cn.edu.jmu.sqlonlinejudge.util.JwtTokenUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
-@MapperScan("cn.edu.jmu.sqlonlinejudge.mapper")
 @ServletComponentScan("cn.edu.jmu.sqlonlinejudge.filter")
 @SpringBootApplication
+@EnableConfigurationProperties({JwtTokenUtil.class})
 public class SqlOnlineJudgeApplication {
 
     public static void main(String[] args) {

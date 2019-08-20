@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    # druid 连接池
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/sqlonlinejudge?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat
+    maxActive: 20
+    initialSize: 5
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatisConfig.xml
+  type-aliases-package: cn.edu.jmu.sqlonlinejudge.model
+
+# MP配置
+mybatis-plus:
+  # 支持统配符 * 或者 ; 分割
+  typeEnumsPackage: cn.edu.jmu.sqlonlinejudge.service.enums
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+
+# jwt配置
+jwt:
+  header: Authorization
+  # 过期时间 2小时
+  expiration: 72000
+  # 加密秘钥
+  secret: mySecret
+  # token开头字符串
+  bearer: "Bearer "
