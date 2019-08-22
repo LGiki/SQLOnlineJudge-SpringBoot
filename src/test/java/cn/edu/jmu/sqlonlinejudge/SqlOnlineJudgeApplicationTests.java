@@ -1,10 +1,8 @@
 package cn.edu.jmu.sqlonlinejudge;
 
-import cn.edu.jmu.sqlonlinejudge.mapper.AdminMapper;
-import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
-import cn.edu.jmu.sqlonlinejudge.model.User;
-import cn.edu.jmu.sqlonlinejudge.service.UserService;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import cn.edu.jmu.sqlonlinejudge.service.PermissionService;
+import cn.edu.jmu.sqlonlinejudge.service.RoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,23 +13,19 @@ import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 public class SqlOnlineJudgeApplicationTests {
     @Resource
-    private AdminMapper adminMapper;
+    private RoleService roleService;
 
     @Resource
-    private UserMapper userMapper;
-
-    @Resource
-    private UserService userService;
+    private PermissionService permissionService;
 
     @Test
     @Transactional
     public void contextLoads() {
-        User user = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, "1"));
-        System.out.println(user);
-        User one = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, "1"));
-        System.out.println(one);
+        System.out.println(roleService.findAllRoleByAdminId(1));
+        System.out.println(permissionService.findAllPermissionByRoleId(1));
     }
 
 }

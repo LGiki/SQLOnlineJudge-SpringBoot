@@ -1,11 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
-import cn.edu.jmu.sqlonlinejudge.model.Admin;
+import cn.edu.jmu.sqlonlinejudge.entity.Admin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author sgh

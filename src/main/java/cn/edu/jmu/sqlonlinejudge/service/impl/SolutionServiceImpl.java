@@ -1,8 +1,8 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
-import cn.edu.jmu.sqlonlinejudge.model.Solution;
-import cn.edu.jmu.sqlonlinejudge.model.SolutionDetail;
+import cn.edu.jmu.sqlonlinejudge.entity.Solution;
+import cn.edu.jmu.sqlonlinejudge.entity.SolutionDetail;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import org.springframework.stereotype.Service;
 

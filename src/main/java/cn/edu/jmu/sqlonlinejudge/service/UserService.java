@@ -1,6 +1,6 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
-import cn.edu.jmu.sqlonlinejudge.model.User;
+import cn.edu.jmu.sqlonlinejudge.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

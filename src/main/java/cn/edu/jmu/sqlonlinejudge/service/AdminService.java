@@ -1,6 +1,6 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
-import cn.edu.jmu.sqlonlinejudge.model.Admin;
+import cn.edu.jmu.sqlonlinejudge.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -12,5 +12,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-08-19
  */
 public interface AdminService extends IService<Admin> {
-
 }

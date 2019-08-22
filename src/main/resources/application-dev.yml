@@ -23,7 +23,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatisConfig.xml
-  type-aliases-package: cn.edu.jmu.sqlonlinejudge.model
+  type-aliases-package: cn.edu.jmu.sqlonlinejudge.entity
 
 # MP配置
 mybatis-plus:
@@ -31,18 +31,14 @@ mybatis-plus:
   typeEnumsPackage: cn.edu.jmu.sqlonlinejudge.service.enums
   configuration:
     default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: cn.edu.jmu.sqlonlinejudge.entity
 
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
 
-# jwt配置
-jwt:
-  header: Authorization
-  # 过期时间 2小时
-  expiration: 72000
-  # 加密秘钥
-  secret: mySecret
-  # token开头字符串
-  bearer: "Bearer "
+login-type:
+  user: User
+  admin: Admin

@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper;
-import cn.edu.jmu.sqlonlinejudge.model.Database;
+import cn.edu.jmu.sqlonlinejudge.entity.Database;
 import cn.edu.jmu.sqlonlinejudge.service.DatabaseService;
 
 /**

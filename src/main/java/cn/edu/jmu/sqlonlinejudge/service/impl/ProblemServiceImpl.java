@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 import cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper;
-import cn.edu.jmu.sqlonlinejudge.model.Problem;
+import cn.edu.jmu.sqlonlinejudge.entity.Problem;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 
 /**

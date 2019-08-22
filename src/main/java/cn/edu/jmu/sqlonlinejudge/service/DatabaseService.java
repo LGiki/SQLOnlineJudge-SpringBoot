@@ -2,7 +2,7 @@ package cn.edu.jmu.sqlonlinejudge.service;
 
 import java.util.List;
 
-import cn.edu.jmu.sqlonlinejudge.model.Database;
+import cn.edu.jmu.sqlonlinejudge.entity.Database;
 
 /**
  * @author LGiki

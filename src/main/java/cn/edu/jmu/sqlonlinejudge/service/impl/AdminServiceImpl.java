@@ -1,7 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
+import cn.edu.jmu.sqlonlinejudge.entity.Admin;
 import cn.edu.jmu.sqlonlinejudge.mapper.AdminMapper;
-import cn.edu.jmu.sqlonlinejudge.model.Admin;
 import cn.edu.jmu.sqlonlinejudge.service.AdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

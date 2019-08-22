@@ -179,7 +179,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     </logger>
 
     <!--特别制定该目录下为debug模式-->
-    <logger name="cn.edu.jmu.sqlonlinejudge" level="debug" additivity="false">
+    <logger name="cn.edu.jmu" level="debug" additivity="false">
         <appender-ref ref="debug"/>
         <appender-ref ref="info"/>
         <appender-ref ref="error"/>

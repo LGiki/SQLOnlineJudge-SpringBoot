@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper">
-    <resultMap id="BaseResultMap" type="cn.edu.jmu.sqlonlinejudge.model.Database">
+    <resultMap id="BaseResultMap" type="cn.edu.jmu.sqlonlinejudge.entity.Database">
         <!--@mbg.generated-->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -25,7 +25,7 @@
         delete from `database`
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database"
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.edu.jmu.sqlonlinejudge.entity.Database"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into `database` (`name`, create_table, test_data,
@@ -34,7 +34,7 @@
         #{isCreated,jdbcType=BIT})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
-            parameterType="cn.edu.jmu.sqlonlinejudge.model.Database" useGeneratedKeys="true">
+            parameterType="cn.edu.jmu.sqlonlinejudge.entity.Database" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into `database`
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -66,7 +66,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByIdSelective" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database">
+    <update id="updateByIdSelective" parameterType="cn.edu.jmu.sqlonlinejudge.entity.Database">
         <!--@mbg.generated-->
         update `database`
         <set>
@@ -85,7 +85,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateById" parameterType="cn.edu.jmu.sqlonlinejudge.model.Database">
+    <update id="updateById" parameterType="cn.edu.jmu.sqlonlinejudge.entity.Database">
         <!--@mbg.generated-->
         update `database`
         set `name` = #{name,jdbcType=VARCHAR},
