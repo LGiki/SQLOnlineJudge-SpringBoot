@@ -1,7 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.controller;
 
-import cn.edu.jmu.common.enums.ResponseStatusEnum;
-import cn.edu.jmu.common.util.BasicResponse;
+import cn.edu.jmu.common.response.AbstractResponseCode;
+import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -38,7 +38,7 @@ public class UserController {
         BasicResponse basicResponse = new BasicResponse();
         Page<User> userPage = new Page<>(pageNum, pageSize);
         IPage<User> iPage = userService.page(userPage, null);
-        basicResponse.wrapper(ResponseStatusEnum.OK, "查询成功", iPage);
+        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
 
@@ -89,5 +89,4 @@ public class UserController {
         userService.saveOrUpdate(user);
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
 }

@@ -76,7 +76,6 @@ public class ShiroConfig {
         realms.add(userRealm());
         realms.add(jwtRealm());
         securityManager.setRealms(realms);
-
         // 关闭shiro自带的session
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
@@ -93,7 +92,7 @@ public class ShiroConfig {
      */
     @Bean
     public ModularRealmAuthenticator modularRealmAuthenticator() {
-        //自己重写的ModularRealmAuthenticator
+        // 自己重写的ModularRealmAuthenticator
         UserModularRealmAuthenticator userModularRealmAuthenticator = new UserModularRealmAuthenticator();
         userModularRealmAuthenticator.setAuthenticationStrategy(new FirstSuccessfulStrategy());
         return userModularRealmAuthenticator;

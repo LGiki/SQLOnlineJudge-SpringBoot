@@ -1,5 +1,6 @@
 package cn.edu.jmu.security.filter;
 
+import cn.edu.jmu.common.enums.LoginTypeEnum;
 import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class JwtFilter extends AuthenticatingFilter {
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        log.debug("hello");
+        log.debug("JwtFilter--------------------------->onAccessDenied");
         return false;
     }
 
@@ -53,7 +54,7 @@ public class JwtFilter extends AuthenticatingFilter {
             token = token.substring(JwtTokenUtil.bearer.length());
             log.debug("JwtFilter--------------->createToken-------------->" + token);
             if (JwtTokenUtil.validateToken(token)) {
-                return new UserToken(token, "Jwt");
+                return new UserToken(token, LoginTypeEnum.JWT.getType());
             }
         }
         return null;

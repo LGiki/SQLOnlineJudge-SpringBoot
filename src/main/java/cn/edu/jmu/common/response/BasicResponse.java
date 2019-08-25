@@ -1,6 +1,5 @@
-package cn.edu.jmu.common.util;
+package cn.edu.jmu.common.response;
 
-import cn.edu.jmu.common.enums.ResponseStatusEnum;
 import lombok.Data;
 
 /**
@@ -15,7 +14,7 @@ public class BasicResponse {
     /**
      * 消息代码
      */
-    private ResponseStatusEnum responseStatus;
+    private Integer code;
 
     /**
      * 消息内容
@@ -27,13 +26,13 @@ public class BasicResponse {
      */
     private Object data;
 
-    public void wrapper(ResponseStatusEnum responseStatus, String message) {
-        this.responseStatus = responseStatus;
+    public void wrapper(Integer code, String message) {
+        this.code = code;
         this.message = message;
     }
 
-    public void wrapper(ResponseStatusEnum responseStatus, String message, Object data) {
-        this.responseStatus = responseStatus;
+    public void wrapper(Integer code, String message, Object data) {
+        this.code = code;
         this.message = message;
         this.data = data;
     }

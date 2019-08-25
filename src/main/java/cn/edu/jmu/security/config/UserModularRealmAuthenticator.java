@@ -23,10 +23,6 @@ public class UserModularRealmAuthenticator extends ModularRealmAuthenticator {
 
     /**
      * 自定义doAuthenticator
-     *
-     * @param authenticationToken authenticationToken
-     * @return AuthenticationInfo AuthenticationInfo
-     * @throws AuthenticationException AuthenticationException
      */
     @Override
     protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken) throws AuthenticationException {

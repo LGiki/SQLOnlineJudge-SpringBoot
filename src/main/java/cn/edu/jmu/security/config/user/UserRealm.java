@@ -28,7 +28,9 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.debug("UserRealm------------------->doGetAuthorizationInfo");
-        return new SimpleAuthorizationInfo();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.addRole("user");
+        return info;
     }
 
     @Override

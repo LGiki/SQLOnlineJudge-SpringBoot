@@ -22,7 +22,7 @@ public class DatabaseController {
 //     *
 //     * @param pageNum  当前页码
 //     * @param pageSize 页面数据条数
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/", method = RequestMethod.GET)
 //    public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -39,7 +39,7 @@ public class DatabaseController {
 //    /**
 //     * 查询所有数据库，不分页
 //     *
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/all", method = RequestMethod.GET)
 //    public BasicResponse selectAllNoPagination() {
@@ -56,7 +56,7 @@ public class DatabaseController {
 //     * 通过ID查询数据库详情
 //     *
 //     * @param id 数据库ID
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //    public BasicResponse selectDatabaseById(@PathVariable("id") Integer id) {
@@ -78,7 +78,7 @@ public class DatabaseController {
 //     * 通过ID删除数据库
 //     *
 //     * @param id 数据库ID
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 //    public BasicResponse deleteDatabaseById(@PathVariable("id") Integer id) {
@@ -99,7 +99,7 @@ public class DatabaseController {
 //     * 添加数据库
 //     *
 //     * @param database 要添加的数据库对象
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/", method = RequestMethod.POST)
 //    public BasicResponse insertDatabase(@RequestBody Database database) {
@@ -124,7 +124,7 @@ public class DatabaseController {
 //     *
 //     * @param id       数据库ID
 //     * @param database 更新的数据库对象
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 //    public BasicResponse updateDatabaseById(@PathVariable("id") Integer id, @RequestBody Database database) {
@@ -151,7 +151,7 @@ public class DatabaseController {
 //     * @param keyword  关键字
 //     * @param pageNum  页码
 //     * @param pageSize 每页大小
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/search", method = RequestMethod.GET)
 //    public BasicResponse selectByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
@@ -175,7 +175,7 @@ public class DatabaseController {
 //    /**
 //     * 查询数据库数量
 //     *
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/count", method = RequestMethod.GET)
 //    public BasicResponse countAll() {

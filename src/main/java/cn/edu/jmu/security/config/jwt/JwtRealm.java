@@ -1,5 +1,6 @@
 package cn.edu.jmu.security.config.jwt;
 
+import cn.edu.jmu.common.enums.LoginTypeEnum;
 import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.Admin;
@@ -16,7 +17,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 
@@ -32,12 +32,6 @@ public class JwtRealm extends AuthorizingRealm {
 
     @Resource
     private UserService userService;
-
-    @Value("${login-type.user}")
-    private String userLoginType;
-
-    @Value("${login-type.admin}")
-    private String adminLoginType;
 
     public JwtRealm() {
         this.setCredentialsMatcher(new JwtCredentialsMatcher());
@@ -59,7 +53,7 @@ public class JwtRealm extends AuthorizingRealm {
         String loginType = JwtTokenUtil.getLoginTypeFromToken(token);
         String username = JwtTokenUtil.getUsernameFromToken(token);
         AuthenticationInfo authenticationInfo;
-        if (loginType.equals(adminLoginType)) {
+        if (loginType.equals(LoginTypeEnum.ADMIN.getType())) {
             Admin admin = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, username));
             if (admin == null) {
                 throw new AuthenticationException("token过期，请重新登录");

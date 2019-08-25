@@ -21,7 +21,7 @@ public class SolutionController {
      *
      * @param pageNum  当前页码
      * @param pageSize 页面数据条数
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/", method = RequestMethod.GET)
 //    public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -39,7 +39,7 @@ public class SolutionController {
      * 通过ID查询提交详情
      *
      * @param id 提交ID
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //    public BasicResponse selectSolutionById(@PathVariable("id") Integer id) {
@@ -61,7 +61,7 @@ public class SolutionController {
      * 通过ID删除提交
      *
      * @param id 提交ID
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 //    public BasicResponse deleteSolutionById(@PathVariable("id") Integer id) {
@@ -82,7 +82,7 @@ public class SolutionController {
      * 添加提交
      *
      * @param solution 要添加的提交对象
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/", method = RequestMethod.POST)
 //    public BasicResponse insertSolution(@RequestBody Solution solution) {
@@ -104,7 +104,7 @@ public class SolutionController {
      *
      * @param id       提交ID
      * @param solution 更新的提交对象
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 //    public BasicResponse updateSolutionById(@PathVariable("id") Integer id, @RequestBody Solution solution) {
@@ -130,7 +130,7 @@ public class SolutionController {
      * @param keyword  关键字
      * @param pageNum  页码
      * @param pageSize 每页大小
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/search", method = RequestMethod.GET)
 //    public BasicResponse selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(@RequestParam(value = "keyword", defaultValue = "") String keyword,
@@ -149,7 +149,7 @@ public class SolutionController {
     /**
      * 查询提交数量
      *
-     * @return cn.edu.jmu.common.util.BasicResponse
+     * @return cn.edu.jmu.common.response.BasicResponse
      */
 //    @RequestMapping(value = "/count", method = RequestMethod.GET)
 //    public BasicResponse countAll() {

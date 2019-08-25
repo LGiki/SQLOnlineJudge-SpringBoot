@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.service.enums;
+package cn.edu.jmu.common.enums;
 
 /**
  * @author sgh
@@ -10,6 +10,7 @@ public enum LoginTypeEnum {
      */
     USER("User"),
     ADMIN("Admin"),
+    JWT("Jwt"),
     ;
 
     private String type;

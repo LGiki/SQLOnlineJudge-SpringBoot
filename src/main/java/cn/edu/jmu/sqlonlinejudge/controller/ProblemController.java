@@ -20,7 +20,7 @@ public class ProblemController {
 //     *
 //     * @param pageNum  当前页码
 //     * @param pageSize 页面数据条数
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/", method = RequestMethod.GET)
 //    public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -45,7 +45,7 @@ public class ProblemController {
 //     * 通过ID查询题目详情
 //     *
 //     * @param id 题目ID
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
 //    public BasicResponse selectProblemById(@PathVariable("id") Integer id) {
@@ -67,7 +67,7 @@ public class ProblemController {
 //     * 通过ID删除题目
 //     *
 //     * @param id 题目ID
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 //    public BasicResponse deleteProblemById(@PathVariable("id") Integer id) {
@@ -88,7 +88,7 @@ public class ProblemController {
 //     * 添加题目
 //     *
 //     * @param problem 要添加的题目
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/", method = RequestMethod.POST)
 //    public BasicResponse insertProblem(@RequestBody Problem problem) {
@@ -112,7 +112,7 @@ public class ProblemController {
 //     *
 //     * @param id      题目ID
 //     * @param problem 更新的题目对象
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 //    public BasicResponse updateProblemById(@PathVariable("id") Integer id, @RequestBody Problem problem) {
@@ -137,7 +137,7 @@ public class ProblemController {
 //     * @param keyword  关键字
 //     * @param pageNum  页码
 //     * @param pageSize 每页大小
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/search", method = RequestMethod.GET)
 //    public BasicResponse selectByKeyword(@RequestParam(value = "keyword", defaultValue = "") String keyword,
@@ -162,7 +162,7 @@ public class ProblemController {
 //    /**
 //     * 查询题目数量
 //     *
-//     * @return cn.edu.jmu.common.util.BasicResponse
+//     * @return cn.edu.jmu.common.response.BasicResponse
 //     */
 //    @RequestMapping(value = "/count", method = RequestMethod.GET)
 //    public BasicResponse countAll() {
