@@ -11,6 +11,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 
@@ -29,6 +30,10 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.debug("UserRealm------------------->doGetAuthorizationInfo");
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        User user = principalCollection.oneByType(User.class);
+        if (ObjectUtils.isEmpty(user)) {
+            return info;
+        }
         info.addRole("user");
         return info;
     }

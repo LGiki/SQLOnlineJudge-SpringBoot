@@ -41,7 +41,7 @@ public class AdminRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.debug("AdminRealm---------------->管理员授权方法");
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        Admin admin = (Admin) principalCollection.oneByType(Admin.class);
+        Admin admin = principalCollection.oneByType(Admin.class);
         if (ObjectUtils.isEmpty(admin)) {
             return info;
         }
