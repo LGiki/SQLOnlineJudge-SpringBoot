@@ -1,5 +1,6 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
+import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
 import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
@@ -10,7 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author sgh
@@ -30,6 +31,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public IPage<User> get(User user, Page page) {
         Page<User> userPage = new Page<>(page.getCurrent(), page.getSize());
         return baseMapper.selectPage(userPage, predicate(user));
+    }
+
+    /**
+     * 更新用户
+     *
+     * @param user user
+     * @return boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean update(User user) {
+        if (user.getPassword() != null) {
+            user.setPassword(EncryptUtil.encryption(user.getUsername(), user.getPassword(), user.getSalt()));
+        }
+        User select = baseMapper.selectById(user.getId());
+        BeanUtil.copyProperties(user, select, true,
+                CopyOptions.create().setIgnoreNullValue(true)
+                        .setIgnoreError(true)
+                        .setIgnoreProperties("id", "username", "salt", ""));
+        return baseMapper.updateById(select) >= 1;
     }
 
     /**

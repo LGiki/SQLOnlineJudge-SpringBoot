@@ -30,6 +30,5 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         } else {
             return baseMapper.selectBatchIds(roleIdList);
         }
-
     }
 }

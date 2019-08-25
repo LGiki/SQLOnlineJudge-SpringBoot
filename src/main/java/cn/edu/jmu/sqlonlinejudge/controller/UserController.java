@@ -86,7 +86,7 @@ public class UserController {
         BasicResponse response = new BasicResponse();
         if (user != null && user.getId() != null && user.getId().equals(id)) {
             // 更新用户信息
-            if (userService.saveOrUpdate(user)) {
+            if (userService.update(user)) {
                 response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", user);
             } else {
                 response.wrapper(AbstractResponseCode.FAIL, "更新用户信息失败");

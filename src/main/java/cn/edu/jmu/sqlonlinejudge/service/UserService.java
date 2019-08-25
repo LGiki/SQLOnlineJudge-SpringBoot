@@ -19,4 +19,12 @@ public interface UserService extends IService<User> {
      * @return IPage<User>
      */
     IPage<User> get(User user, Page page);
+
+    /**
+     * 更新用户
+     *
+     * @param user user
+     * @return boolean
+     */
+    boolean update(User user);
 }

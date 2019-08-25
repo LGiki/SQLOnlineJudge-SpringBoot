@@ -2,6 +2,8 @@ package cn.edu.jmu.sqlonlinejudge.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author LGiki
  * @date 2019/06/23 09:27
@@ -9,6 +11,7 @@ import lombok.Data;
 
 @Data
 public class Database {
+
     /**
      * 数据库ID
      */
@@ -17,16 +20,19 @@ public class Database {
     /**
      * 数据库名称
      */
+    @NotBlank
     private String name;
 
     /**
      * 建表语句
      */
+    @NotBlank
     private String createTable;
 
     /**
      * 数据插入语句
      */
+    @NotBlank
     private String testData;
 
     /**
