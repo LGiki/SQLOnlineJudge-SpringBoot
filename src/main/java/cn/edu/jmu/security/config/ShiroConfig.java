@@ -102,8 +102,8 @@ public class ShiroConfig {
     public UserRealm userRealm() {
         UserRealm userRealm = new UserRealm();
         // 告诉realm,使用credentialsMatcher加密算法类来验证密文
-        // myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        // myShiroRealm.setCachingEnabled(false);
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        userRealm.setCachingEnabled(false);
         return userRealm;
     }
 

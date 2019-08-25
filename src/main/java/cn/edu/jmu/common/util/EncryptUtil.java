@@ -2,26 +2,14 @@ package cn.edu.jmu.common.util;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.util.DigestUtils;
+
+import java.security.SecureRandom;
 
 /**
  * @author LGiki
  * @date 2019/06/22 15:15
  */
 public class EncryptUtil {
-    /**
-     * 计算MD5值
-     *
-     * @param password 密码
-     * @return String 密码对应的MD5值
-     */
-    public static String md5(String password) {
-        return DigestUtils.md5DigestAsHex(password.getBytes());
-    }
-
-    public static String md5(CharSequence charSequence) {
-        return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-    }
 
     /**
      * 加密算法MD5
@@ -37,5 +25,12 @@ public class EncryptUtil {
         // 迭代次数 2
         return new SimpleHash("MD5", password,
                 ByteSource.Util.bytes(username + salt), 2).toHex();
+    }
+
+    public static String generatorSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[15];
+        random.nextBytes(bytes);
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
     }
 }

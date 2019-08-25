@@ -1,9 +1,8 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
-import java.util.List;
-
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
-import cn.edu.jmu.sqlonlinejudge.entity.SolutionDetail;
+
+import java.util.List;
 
 
 /**
@@ -75,24 +74,6 @@ public interface SolutionService {
      * @return List<Solution> 提交列表
      */
     List<Solution> selectAllOrderBySubmitTimeDesc();
-
-
-    /**
-     * 查询所有提交同时返回用户名与题目标题并按提交日期降序排序
-     *
-     * @return List<SolutionDetail> 提交详情列表
-     */
-    List<SolutionDetail> selectWithUserAndProblemOrderBySubmitTimeDesc();
-
-    /**
-     * 根据关键字查询所有提交同时返回用户名与题目标题并按提交日期降序排序
-     *
-     * @param keyword 关键字
-     * @return List<SolutionDetail> 提交详情列表
-     */
-    List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(String keyword);
-
-
 
     /**
      * 查询提交数量

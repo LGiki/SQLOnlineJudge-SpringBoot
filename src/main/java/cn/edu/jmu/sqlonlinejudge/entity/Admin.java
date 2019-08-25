@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author sgh
@@ -30,18 +28,14 @@ public class Admin implements Serializable {
     /**
      * 管理员用户名
      */
+    @NotBlank
     @TableField(value = "username")
     private String username;
 
     /**
-     * 管理员昵称
-     */
-    @TableField(value = "nickname")
-    private String nickname;
-
-    /**
      * 管理员密码
      */
+    @NotBlank
     @TableField(value = "password")
     private String password;
 

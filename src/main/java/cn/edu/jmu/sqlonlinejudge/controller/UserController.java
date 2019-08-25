@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
  * @date 2019/6/18 19:17
  */
 @RestController
+@RequiresRoles(value = {"admin"})
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -27,17 +29,14 @@ public class UserController {
 
     /**
      * 查询所有用户
-     *
-     * @param pageNum  页码
-     * @param pageSize 每页大小
      */
-    @GetMapping(value = "/")
-    @RequiresRoles(value = {"admin"})
-    public ResponseEntity<BasicResponse> getAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+    @GetMapping(value = "")
+    public ResponseEntity<BasicResponse> getAll(User user,
+                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
-        Page<User> userPage = new Page<>(pageNum, pageSize);
-        IPage<User> iPage = userService.page(userPage, null);
+        Page<User> page = new Page<>(pageNum, pageSize);
+        IPage<User> iPage = userService.get(user, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
@@ -47,11 +46,12 @@ public class UserController {
      *
      * @param id 用户ID
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity selectUserById(@PathVariable("id") Integer id) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         User user = userService.getById(id);
-        return ResponseEntity.ok().body(user);
+        response.wrapper(AbstractResponseCode.OK, "查询成功", user);
+        return ResponseEntity.ok().body(response);
     }
 
     /**
@@ -59,11 +59,21 @@ public class UserController {
      *
      * @param id 用户ID
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable("id") Integer id) {
-        // 删除用户
-        userService.removeById(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
+        BasicResponse response = new BasicResponse();
+        if (id != null) {
+            // 删除用户
+            if (userService.removeById(id)) {
+                response.wrapper(AbstractResponseCode.OK, "删除成功");
+            } else {
+                response.wrapper(AbstractResponseCode.FAIL, "删除失败");
+            }
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        } else {
+            response.wrapper(AbstractResponseCode.FAIL, "删除失败");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     /**
@@ -71,11 +81,20 @@ public class UserController {
      *
      * @param user 新的用户信息
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody User user, @PathVariable(value = "id") Integer id) {
-        // 更新用户信息
-        userService.saveOrUpdate(user);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> update(@RequestBody User user, @PathVariable(value = "id") Integer id) {
+        BasicResponse response = new BasicResponse();
+        if (user != null && user.getId() != null && user.getId().equals(id)) {
+            // 更新用户信息
+            if (userService.saveOrUpdate(user)) {
+                response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", user);
+            } else {
+                response.wrapper(AbstractResponseCode.FAIL, "更新用户信息失败");
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     /**
@@ -83,10 +102,18 @@ public class UserController {
      *
      * @param user 新的用户
      */
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity insert(@RequestBody User user) {
-        // 创建用户
-        userService.saveOrUpdate(user);
-        return new ResponseEntity(HttpStatus.CREATED);
+    @PostMapping(value = "")
+    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated User user) {
+        BasicResponse response = new BasicResponse();
+        if (user != null && user.getId() == null) {
+            if (userService.saveOrUpdate(user)) {
+                response.wrapper(AbstractResponseCode.OK, "新增用户成功", user);
+            } else {
+                response.wrapper(AbstractResponseCode.FAIL, "新增用户失败");
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 }

@@ -2,9 +2,10 @@ package cn.edu.jmu.sqlonlinejudge.entity;
 
 import cn.edu.jmu.sqlonlinejudge.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -14,7 +15,6 @@ import java.io.Serializable;
 @Data
 @TableName(value = "sys_user")
 public class User implements Serializable {
-
     /**
      * 用户ID
      */
@@ -24,18 +24,14 @@ public class User implements Serializable {
     /**
      * 用户名
      */
+    @NotBlank
     @TableField(value = "username")
     private String username;
 
     /**
-     * 昵称
-     */
-    @TableField(value = "nickname")
-    private String nickname;
-
-    /**
      * 密码
      */
+    @NotBlank
     @TableField(value = "password")
     private String password;
 
@@ -48,9 +44,10 @@ public class User implements Serializable {
     /**
      * 邮箱地址
      */
+    @NotBlank
+    @Email
     @TableField(value = "email")
     private String email;
-
 
     /**
      * 提交数

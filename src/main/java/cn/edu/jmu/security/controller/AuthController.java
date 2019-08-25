@@ -1,18 +1,24 @@
 package cn.edu.jmu.security.controller;
 
+import cn.edu.jmu.common.enums.LoginTypeEnum;
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.common.util.EncryptUtil;
+import cn.edu.jmu.common.util.ValidateUtil;
 import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
-import cn.edu.jmu.common.enums.LoginTypeEnum;
+import cn.edu.jmu.sqlonlinejudge.entity.User;
+import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,11 +30,11 @@ import java.util.Map;
 @RequestMapping(value = "/auth")
 public class AuthController {
 
+    @Resource
+    private UserService userService;
+
     /**
      * 用户登录
-     *
-     * @param username username
-     * @param password password
      */
     @PostMapping(value = "/user/login")
     public ResponseEntity<BasicResponse> userLogin(@RequestParam(value = "username") String username,
@@ -36,20 +42,17 @@ public class AuthController {
         // 得到当前 subject
         Subject subject = SecurityUtils.getSubject();
         UserToken userToken = new UserToken(username, password, LoginTypeEnum.USER.getType());
-        BasicResponse basicResponse = new BasicResponse();
+        BasicResponse response = new BasicResponse();
         subject.login(userToken);
         String token = JwtTokenUtil.generateToken(userToken);
         Map<String, String> data = new HashMap<>(1);
         data.put("token", token);
-        basicResponse.wrapper(AbstractResponseCode.OK, "登录成功", data);
-        return ResponseEntity.ok(basicResponse);
+        response.wrapper(AbstractResponseCode.OK, "登录成功", data);
+        return ResponseEntity.ok(response);
     }
 
     /**
      * 管理员登录
-     *
-     * @param username username
-     * @param password password
      */
     @PostMapping(value = "/admin/login")
     public ResponseEntity<BasicResponse> adminLogin(@RequestParam(value = "username") String username,
@@ -57,12 +60,41 @@ public class AuthController {
         // 得到当前 subject
         Subject subject = SecurityUtils.getSubject();
         UserToken userToken = new UserToken(username, password, LoginTypeEnum.ADMIN.getType());
-        BasicResponse basicResponse = new BasicResponse();
+        BasicResponse response = new BasicResponse();
         subject.login(userToken);
         String token = JwtTokenUtil.generateToken(userToken);
         Map<String, String> data = new HashMap<>(1);
         data.put("token", token);
-        basicResponse.wrapper(AbstractResponseCode.OK, "登录成功", data);
-        return ResponseEntity.ok(basicResponse);
+        response.wrapper(AbstractResponseCode.OK, "登录成功", data);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 用户注册
+     */
+    @PostMapping(value = "/user/register")
+    public ResponseEntity<BasicResponse> userRegister(@RequestParam(value = "username") String username,
+                                                      @RequestParam(value = "password") String password,
+                                                      @RequestParam(value = "email") String email) {
+        BasicResponse response = new BasicResponse();
+        if (!ValidateUtil.isEmail(email)) {
+            response.wrapper(AbstractResponseCode.FAIL, "注册失败");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } else {
+            User user = new User();
+            user.setUsername(username);
+            String salt = EncryptUtil.generatorSalt();
+            user.setSalt(salt);
+            password = EncryptUtil.encryption(username, password, salt);
+            user.setPassword(password);
+            user.setEmail(email);
+            if (userService.save(user)) {
+                response.wrapper(AbstractResponseCode.OK, "注册成功", user);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                response.wrapper(AbstractResponseCode.FAIL, "注册失败");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        }
     }
 }

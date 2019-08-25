@@ -1,7 +1,8 @@
 package cn.edu.jmu.sqlonlinejudge;
 
-import cn.edu.jmu.sqlonlinejudge.service.PermissionService;
-import cn.edu.jmu.sqlonlinejudge.service.RoleService;
+import cn.edu.jmu.sqlonlinejudge.entity.Admin;
+import cn.edu.jmu.sqlonlinejudge.service.AdminService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,17 +16,15 @@ import javax.annotation.Resource;
 @SpringBootTest
 @Slf4j
 public class SqlOnlineJudgeApplicationTests {
-    @Resource
-    private RoleService roleService;
 
     @Resource
-    private PermissionService permissionService;
+    private AdminService adminService;
 
     @Test
     @Transactional
     public void contextLoads() {
-        System.out.println(roleService.findAllRoleByAdminId(1));
-        System.out.println(permissionService.findAllPermissionByRoleId(1));
+        Admin admin = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, "admin"));
+        System.out.println(admin);
     }
 
 }

@@ -1,8 +1,6 @@
 package cn.edu.jmu.sqlonlinejudge.mapper;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
-import cn.edu.jmu.sqlonlinejudge.entity.SolutionDetail;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -74,27 +72,9 @@ public interface SolutionMapper {
     List<Solution> selectAllOrderBySubmitTimeDesc();
 
     /**
-     * 查询所有提交同时返回用户名与题目标题并按提交日期降序排序
-     *
-     * @return List<SolutionDetail> 提交详情列表
-     */
-    List<SolutionDetail> selectWithUserAndProblemOrderBySubmitTimeDesc();
-
-
-    /**
-     * 根据关键字查询所有提交同时返回用户名与题目标题并按提交日期降序排序
-     *
-     * @param keyword 关键字
-     * @return List<SolutionDetail> 提交详情列表
-     */
-    List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(@Param("keyword") String keyword);
-
-    /**
      * 查询提交数量
      *
      * @return Integer 提交数量
      */
     Integer countAll();
-
-
 }

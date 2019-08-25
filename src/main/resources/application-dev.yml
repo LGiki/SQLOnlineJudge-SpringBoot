@@ -38,7 +38,3 @@ pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
-
-login-type:
-  user: User
-  admin: Admin

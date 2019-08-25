@@ -66,15 +66,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> incorrectCredentialsException(IncorrectCredentialsException e) {
         // 打印堆栈信息
         log.error(ThrowableUtil.getStackTrace(e));
-        ApiError apiError = new ApiError(UNAUTHORIZED.value(), "用户密码错误");
+        ApiError apiError = new ApiError(UNAUTHORIZED.value(), e.getMessage());
         return buildResponseEntity(apiError);
     }
 
+    /**
+     * 验证错误异常
+     */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> authenticationException(AuthenticationException e) {
         // 打印堆栈信息
         log.error(ThrowableUtil.getStackTrace(e));
-        ApiError apiError = new ApiError(UNAUTHORIZED.value(), "账号或密码错误");
+        ApiError apiError = new ApiError(UNAUTHORIZED.value(), "登录失败");
         return buildResponseEntity(apiError);
     }
 
@@ -129,5 +132,4 @@ public class GlobalExceptionHandler {
     private ResponseEntity<ApiError> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, valueOf(apiError.getStatus()));
     }
-
 }

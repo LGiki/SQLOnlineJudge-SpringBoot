@@ -11,7 +11,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.util.ObjectUtils;
+import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
 
@@ -31,10 +31,12 @@ public class UserRealm extends AuthorizingRealm {
         log.debug("UserRealm------------------->doGetAuthorizationInfo");
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         User user = principalCollection.oneByType(User.class);
-        if (ObjectUtils.isEmpty(user)) {
+        if (user == null) {
             return info;
         }
-        info.addRole("user");
+        if (user.getStatus().equals(UserStatusEnum.NORMAL)) {
+            info.addRole("user");
+        }
         return info;
     }
 
@@ -50,13 +52,13 @@ public class UserRealm extends AuthorizingRealm {
         if (user == null) {
             throw new UnknownAccountException("用户不存在！");
         }
-        if (user.getStatus() == UserStatusEnum.INACTIVATED) {
-            throw new AuthenticationException("该用户没激活！");
-        }
         if (user.getStatus() == UserStatusEnum.LOCK) {
             throw new AuthenticationException("该用户账号被锁定！");
         }
         // 4. 根据用户的情况，来构建AuthenticationInfo对象并返回，通常使用的实现类为SimpleAuthenticationInfo
-        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+        return new SimpleAuthenticationInfo(user,
+                user.getPassword(),
+                ByteSource.Util.bytes(user.getUsername() + user.getSalt()),
+                getName());
     }
 }

@@ -11,25 +11,9 @@
         <result column="run_error" jdbcType="VARCHAR" property="runError"/>
         <result column="result" jdbcType="TINYINT" property="result"/>
     </resultMap>
-    <resultMap id="SolutionDetailResultMap" type="SolutionDetail">
-        <!--@mbg.generated-->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="uid" jdbcType="INTEGER" property="uid"/>
-        <result column="pid" jdbcType="INTEGER" property="pid"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="title" jdbcType="VARCHAR" property="problemTitle"/>
-        <result column="source_code" jdbcType="VARCHAR" property="sourceCode"/>
-        <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime"/>
-        <result column="run_error" jdbcType="VARCHAR" property="runError"/>
-        <result column="result" jdbcType="TINYINT" property="result"/>
-    </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id, `uid`, pid, source_code, submit_time, run_error, `result`
-    </sql>
-    <sql id="Solution_Detail_Column_List">
-        <!--@mbg.generated-->
-        solution.id, `uid`, pid, user.username, problem.title, source_code, submit_time, run_error, `result`
     </sql>
     <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -147,29 +131,6 @@
         select
         <include refid="Base_Column_List"/>
         from solution
-        order by submit_time desc
-    </select>
-
-    <select id="selectWithUserAndProblemOrderBySubmitTimeDesc" resultMap="SolutionDetailResultMap">
-        select
-        <include refid="Solution_Detail_Column_List"/>
-        from solution, user, problem
-        where solution.uid = user.id and solution.pid = problem.id
-        order by submit_time desc
-    </select>
-
-    <select id="selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc" resultMap="SolutionDetailResultMap">
-        select
-        <include refid="Solution_Detail_Column_List"/>
-        from solution, user, problem
-        where solution.uid = user.id and solution.pid = problem.id
-        and (
-        solution.id like concat('%', #{keyword,jdbcType=VARCHAR},'%')
-        or solution.uid like concat('%', #{keyword,jdbcType=VARCHAR},'%')
-        or solution.pid like concat('%', #{keyword,jdbcType=VARCHAR},'%')
-        or user.username like concat('%', #{keyword,jdbcType=VARCHAR},'%')
-        or problem.title like concat('%', #{keyword,jdbcType=VARCHAR},'%')
-        )
         order by submit_time desc
     </select>
 

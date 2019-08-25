@@ -2,7 +2,6 @@ package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
-import cn.edu.jmu.sqlonlinejudge.entity.SolutionDetail;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import org.springframework.stereotype.Service;
 
@@ -60,15 +59,6 @@ public class SolutionServiceImpl implements SolutionService {
         return solutionMapper.selectAllOrderBySubmitTimeDesc();
     }
 
-    @Override
-    public List<SolutionDetail> selectWithUserAndProblemOrderBySubmitTimeDesc() {
-        return solutionMapper.selectWithUserAndProblemOrderBySubmitTimeDesc();
-    }
-
-    @Override
-    public List<SolutionDetail> selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(String keyword) {
-        return solutionMapper.selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(keyword);
-    }
 
     @Override
     public Integer countAll() {

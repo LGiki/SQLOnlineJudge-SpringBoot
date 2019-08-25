@@ -3,6 +3,7 @@ package cn.edu.jmu.sqlonlinejudge.service.impl;
 import cn.edu.jmu.sqlonlinejudge.entity.Admin;
 import cn.edu.jmu.sqlonlinejudge.mapper.AdminMapper;
 import cn.edu.jmu.sqlonlinejudge.service.AdminService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +17,26 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+
+    /**
+     * 条件构造器
+     *
+     * @param admin user
+     * @return LambdaQueryWrapper<User>
+     */
+    private LambdaQueryWrapper<Admin> predicate(Admin admin) {
+        LambdaQueryWrapper<Admin> queryWrapper = new LambdaQueryWrapper<>();
+        if (admin == null) {
+            return queryWrapper;
+        } else {
+            if (admin.getId() != null) {
+                queryWrapper.eq(Admin::getId, admin.getId());
+                return queryWrapper;
+            }
+            if (admin.getUsername() != null) {
+                queryWrapper.like(Admin::getUsername, "%" + admin.getUsername() + "%");
+            }
+        }
+        return queryWrapper;
+    }
 }
