@@ -1,10 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -19,12 +21,15 @@ import java.io.Serializable;
 @TableName(value = "sys_permission")
 public class Permission implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1281933827608139147L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    @TableField(value = "name")
     private String name;
 
+    @NotBlank
+    @TableField(value = "permission")
     private String permission;
 }

@@ -2,13 +2,18 @@ package cn.edu.jmu.sqlonlinejudge.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author LGiki
  * @date 2019/06/21 13:19
  */
 
 @Data
-public class Problem {
+public class Problem implements Serializable {
+
+    private static final long serialVersionUID = -1984904930642872739L;
+
     /**
      * 题目ID
      */

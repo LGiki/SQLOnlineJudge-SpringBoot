@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -20,13 +21,15 @@ import java.io.Serializable;
 @TableName(value = "sys_role")
 public class Role implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -7771416957946342884L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @NotBlank
+    @TableField(value = "role_name")
     private String roleName;
 
+    @TableField(value = "description")
     private String description;
 }

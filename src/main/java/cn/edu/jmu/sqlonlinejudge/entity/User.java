@@ -15,6 +15,9 @@ import java.io.Serializable;
 @Data
 @TableName(value = "sys_user")
 public class User implements Serializable {
+
+    private static final long serialVersionUID = -1860981300389191032L;
+
     /**
      * 用户ID
      */

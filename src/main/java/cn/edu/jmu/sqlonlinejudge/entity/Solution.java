@@ -4,6 +4,7 @@ import cn.edu.jmu.sqlonlinejudge.service.enums.SolutionResultEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,10 @@ import java.util.Date;
  */
 
 @Data
-public class Solution {
+public class Solution implements Serializable {
+
+    private static final long serialVersionUID = -1536199246828489364L;
+
     /**
      * 解答ID
      */

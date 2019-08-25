@@ -3,6 +3,7 @@ package cn.edu.jmu.sqlonlinejudge.entity;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * @author LGiki
@@ -10,8 +11,9 @@ import javax.validation.constraints.NotBlank;
  */
 
 @Data
-public class Database {
+public class Database implements Serializable {
 
+    private static final long serialVersionUID = -8714097362269205387L;
     /**
      * 数据库ID
      */
