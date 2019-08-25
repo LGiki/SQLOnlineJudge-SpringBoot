@@ -4,6 +4,8 @@ import cn.edu.jmu.sqlonlinejudge.entity.Admin;
 import cn.edu.jmu.sqlonlinejudge.mapper.AdminMapper;
 import cn.edu.jmu.sqlonlinejudge.service.AdminService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+
+    /**
+     * 得到所有管理员
+     *
+     * @param admin admin
+     * @param page  page
+     * @return IPage<User>
+     */
+    @Override
+    public IPage<Admin> get(Admin admin, Page page) {
+        Page<Admin> adminPage = new Page<>(page.getCurrent(), page.getSize());
+        return baseMapper.selectPage(adminPage, predicate(admin));
+    }
 
     /**
      * 条件构造器
