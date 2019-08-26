@@ -36,7 +36,7 @@ public class ProblemController {
                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         Page<Problem> page = new Page<>(pageNum, pageSize);
-        IPage<Problem> iPage = problemService.get(problem, page);
+        IPage<Problem> iPage = problemService.getAll(problem, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }

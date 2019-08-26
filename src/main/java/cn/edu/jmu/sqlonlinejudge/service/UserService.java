@@ -1,6 +1,8 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
 import cn.edu.jmu.sqlonlinejudge.entity.User;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
+import cn.edu.jmu.sqlonlinejudge.entity.vo.UserVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,11 +16,11 @@ public interface UserService extends IService<User> {
     /**
      * 得到所有用户
      *
-     * @param user user
-     * @param page page
+     * @param userDto userDto
+     * @param page    page
      * @return IPage<User>
      */
-    IPage<User> get(User user, Page page);
+    IPage<UserVo> getAll(UserDto userDto, Page page);
 
     /**
      * 更新用户

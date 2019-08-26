@@ -41,7 +41,8 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         log.debug("ShiroConfig------------------>shiroFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        shiroFilterFactoryBean.setSecurityManager(securityManager);        // 添加jwt过滤器
+        // 添加jwt过滤器
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = new HashMap<>();
         filterMap.put("jwt", jwtFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
@@ -50,9 +51,10 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         // 验证接口放行,noSessionCreation的作用是用户在操作session时会抛异常
         filterChainDefinitionMap.put("/auth/**", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/logout", "noSessionCreation, jwt[permissive]");
+        filterChainDefinitionMap.put("/api/public/**", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/logout", "noSessionCreation,jwt[permissive]");
         // 剩下的全部采用自定义的拦截器
-        filterChainDefinitionMap.put("/**", "noSessionCreation, jwt");
+        filterChainDefinitionMap.put("/**", "noSessionCreation,jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Problem;
+import cn.edu.jmu.sqlonlinejudge.entity.vo.ProblemVo;
 import cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 import cn.hutool.core.bean.BeanUtil;
@@ -20,20 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> implements ProblemService {
     /**
-     * 得到所有管理员
+     * 得到所有题目
      *
      * @param problem problem
      * @param page    page
      * @return IPage<problem>
      */
     @Override
-    public IPage<Problem> get(Problem problem, Page page) {
+    public IPage<Problem> getAll(Problem problem, Page page) {
         Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
         return baseMapper.selectPage(problemPage, predicate(problem));
     }
 
     /**
-     * 更新用户
+     * 更新题目
      *
      * @param problem problem
      * @return boolean
@@ -47,6 +48,21 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
                         .setIgnoreError(true)
                         .setIgnoreProperties("id", "solve", "submit"));
         return baseMapper.updateById(select) >= 1;
+    }
+
+    /**
+     * 得到所有题目给用户
+     *
+     * @param problem problem
+     * @param page    page
+     * @return IPage<problem>
+     */
+    @Override
+    public IPage<ProblemVo> getAllToUser(Problem problem, Page page) {
+        Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
+        IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problem));
+        Page<ProblemVo> res = new Page<ProblemVo>();
+        return null;
     }
 
     /**

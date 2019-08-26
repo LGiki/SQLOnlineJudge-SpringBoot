@@ -2,8 +2,12 @@ package cn.edu.jmu.sqlonlinejudge.controller;
 
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
+import cn.edu.jmu.sqlonlinejudge.entity.vo.UserVo;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
+import cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -31,12 +35,12 @@ public class UserController {
      * 查询所有用户
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(User user,
+    public ResponseEntity<BasicResponse> getAll(UserDto userDto,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         Page<User> page = new Page<>(pageNum, pageSize);
-        IPage<User> iPage = userService.get(user, page);
+        IPage<UserVo> iPage = userService.getAll(userDto, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
@@ -50,7 +54,7 @@ public class UserController {
     public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         User user = userService.getById(id);
-        response.wrapper(AbstractResponseCode.OK, "查询成功", user);
+        response.wrapper(AbstractResponseCode.OK, "查询成功", UserMapper.userToUserVo(user));
         return ResponseEntity.ok().body(response);
     }
 
@@ -79,13 +83,14 @@ public class UserController {
     /**
      * 更新用户
      *
-     * @param user 新的用户信息
+     * @param userDto 新的用户信息
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> update(@RequestBody User user, @PathVariable(value = "id") Integer id) {
+    public ResponseEntity<BasicResponse> update(@RequestBody UserDto userDto, @PathVariable(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
-        if (user != null && user.getId() != null && user.getId().equals(id)) {
+        if (userDto != null && userDto.getId() != null && userDto.getId().equals(id)) {
             // 更新用户信息
+            User user = UserMapper.userDtoToUser(userDto);
             if (userService.update(user)) {
                 response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", user);
             } else {
@@ -100,12 +105,16 @@ public class UserController {
     /**
      * 添加用户
      *
-     * @param user 新的用户
+     * @param userDto 新的用户
      */
     @PostMapping(value = "/")
-    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated User user) {
+    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated UserDto userDto) {
         BasicResponse response = new BasicResponse();
-        if (user != null && user.getId() == null) {
+        if (userDto != null && userDto.getId() == null) {
+            User user = UserMapper.userDtoToUser(userDto);
+            String salt = EncryptUtil.generatorSalt();
+            user.setSalt(salt);
+            user.setPassword(EncryptUtil.encryption(user.getUsername(), user.getPassword(), salt));
             if (userService.saveOrUpdate(user)) {
                 response.wrapper(AbstractResponseCode.OK, "新增用户成功", user);
             } else {
