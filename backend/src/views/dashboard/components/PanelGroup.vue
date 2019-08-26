@@ -116,7 +116,7 @@ export default {
             this.$message.error('获取用户数量失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.systemDetail.userCount = resData.data
             }
           }
@@ -134,7 +134,7 @@ export default {
             this.$message.error('获取数据库数量失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.systemDetail.databaseCount = resData.data
             }
           }
@@ -152,7 +152,7 @@ export default {
             this.$message.error('获取题目数量失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.systemDetail.problemCount = resData.data
             }
           }
@@ -170,7 +170,7 @@ export default {
             this.$message.error('获取用户提交数量失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.systemDetail.solutionCount = resData.data
             }
           }

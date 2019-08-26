@@ -7,7 +7,7 @@ const Url = {
   // 题目搜索接口
   problemSearch: BaseUrl + 'problem/search/',
   // 题目数量接口
-  problemCount: BaseUrl + 'problem/count/',
+  problemCount: BaseUrl + 'problem/count',
   // 排名接口
   rankList: BaseUrl + 'user/ranklist',
   // 提交基础接口
@@ -15,18 +15,16 @@ const Url = {
   // 提交搜索接口
   solutionSearch: BaseUrl + 'solution/search/',
   // 提交数量接口
-  solutionCount: BaseUrl + 'solution/count/',
+  solutionCount: BaseUrl + 'solution/count',
   // 数据库基础接口
   databaseBaseUrl: BaseUrl + 'database/',
   // 数据库搜索接口
   databaseSearch: BaseUrl + 'database/search/',
   // 数据库数量接口
-  databaseCount: BaseUrl + 'database/count/',
+  databaseCount: BaseUrl + 'database/count',
   // 用户基础接口
-  userBaseUrl: BaseUrl + 'user/',
-  // 用户搜索接口
-  userSearch: BaseUrl + 'user/search/',
+  userBaseUrl: BaseUrl + 'users/',
   // 用户数量接口
-  userCount: BaseUrl + 'user/count/'
+  userCount: BaseUrl + 'users/count'
 }
 export default Url

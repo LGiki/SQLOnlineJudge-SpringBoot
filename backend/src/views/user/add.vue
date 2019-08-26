@@ -95,11 +95,11 @@ export default {
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
-          if (res.status !== 200) {
+          if (res.status !== 201) {
             this.$message.error('添加用户失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.$message({
                 message: resData.message,
                 type: 'success'

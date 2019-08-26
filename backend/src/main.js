@@ -33,6 +33,19 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
+Axios.interceptors.request.use(
+  config => {
+    // if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    //   config.headers.Authorization = `token ${localStorage.JWT_TOKEN}`;
+    // }
+    config.headers.Authorization = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImxvZ2luVHlwZSI6IkFkbWluIiwiZXhwIjoxNTY2ODcwNDQ2LCJpYXQiOjE1NjY3OTg0NDZ9.YVJ-ULtbpZdbSlf98ya4ag10LBcMRk6ljgjYB3hIYzxurN62B_X7jc22S7hYEojHXNBOWyAyV5hWMfHetkQkBg';
+    return config;
+  },
+  err => {
+    return Promise.reject(err);
+  }
+)
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 Vue.use(VueHighlightJS)

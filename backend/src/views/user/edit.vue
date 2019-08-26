@@ -82,9 +82,12 @@ export default {
         if (valid) {
           const userId = this.$route.params.id
           const user = {
+            id: this.userDetail.id,
             username: this.userDetail.username.trim(),
-            password: this.userDetail.password.trim(),
             email: this.userDetail.email.trim()
+          }
+          if(this.userDetail.password) {
+            user[password] = this.userDetail.password.trim();
           }
           this.updateUser(userId, user, () => {
             this.$router.back(-1)
@@ -106,7 +109,7 @@ export default {
             this.$message.error('获取用户信息失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.userDetail = resData.data
               this.userDetail.password = null
             }
@@ -121,19 +124,17 @@ export default {
       this.$axios
         .put(apiUrl + userId, user)
         .then(res => {
-          if (res.status !== 200) {
+          if (res.status !== 201) {
             this.$message.error('更新用户资料失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.$message({
                 message: resData.message,
                 type: 'success'
               })
               successCallback()
-            } else if (resData.code === 400) {
-              this.$message.error(resData.message)
-            } else if (resData.code === 503) {
+            } else if (resData.code === 1) {
               this.$message.error(resData.message)
             }
           }

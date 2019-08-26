@@ -8,6 +8,14 @@
         class="filter-item"
         @keyup.enter.native="onSearch"
       />
+      <el-select v-model="searchType">
+          <el-option v-for="item in searchTypeList"
+          :label="item.label"
+          :key="item.value"
+          :value="item.value"
+          >
+          </el-option>
+      </el-select>
       <el-button type="primary" @click="onSearch">
         <svg-icon icon-class="search" />&nbsp;搜索
       </el-button>
@@ -45,8 +53,8 @@
 </template>
 
 <script>
-import 'vue-easytable/libs/themes-base/index.css'
-import { VTable, VPagination } from 'vue-easytable'
+import "vue-easytable/libs/themes-base/index.css";
+import { VTable, VPagination } from "vue-easytable";
 
 export default {
   components: {
@@ -55,6 +63,21 @@ export default {
   },
   data() {
     return {
+      searchTypeList: [
+        {
+          label: '用户ID',
+          value: 'id'
+        },
+        {
+          label: '用户名',
+          value: 'username'
+        },
+        {
+          label: '邮箱',
+          value: 'email'
+        }
+      ],
+      searchType: 'id',
       inSearch: false,
       searchKeyword: '',
       pageNum: 1,
@@ -65,150 +88,150 @@ export default {
         tableData: [],
         columns: [
           {
-            field: 'id',
-            title: '用户ID',
+            field: "id",
+            title: "用户ID",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}">${rowData.id}</a>`
+              return `<a href="#/user/edit/${rowData.id}">${rowData.id}</a>`;
             }
           },
           {
-            field: 'username',
-            title: '用户名',
+            field: "username",
+            title: "用户名",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`
+              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`;
             }
           },
           {
-            field: 'email',
-            title: '邮箱',
+            field: "email",
+            title: "邮箱",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'solved',
-            title: '通过数',
+            field: "solved",
+            title: "通过数",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'submit',
-            title: '提交数',
+            field: "submit",
+            title: "提交数",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'accept_rate',
-            title: '通过率',
+            field: "accept_rate",
+            title: "通过率",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return rowData.submit === 0
                 ? 0
-                : (rowData.solved / rowData.submit).toFixed(2)
+                : (rowData.solved / rowData.submit).toFixed(2);
             }
           },
           {
-            field: 'action',
-            title: '操作',
+            field: "action",
+            title: "操作",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
-            componentName: 'table-operation'
+            componentName: "table-operation"
           }
         ]
       }
-    }
+    };
   },
   created() {},
   mounted: function() {
-    this.fetchUserList()
+    this.fetchUserList();
   },
   methods: {
     onSearch() {
-      const keyword = this.searchKeyword.trim()
+      const keyword = this.searchKeyword.trim();
       if (keyword.length === 0) {
-        this.$message.error('请输入关键字！')
+        this.$message.error("请输入关键字！");
       } else {
-        this.isLoading = true
-        const apiUrl = this.Url.userSearch
+        this.isLoading = true;
+        const apiUrl = this.Url.userBaseUrl;
         this.$axios
           .get(apiUrl, {
             params: {
-              keyword: keyword,
+              [this.searchType]: keyword,
               pageNum: this.pageNum,
               pageSize: this.pageSize
             }
           })
           .then(res => {
             if (res.status !== 200) {
-              this.$message.error('搜索失败，网络错误！')
+              this.$message.error("搜索失败，网络错误！");
             } else {
-              const resData = res.data
-              if (resData.code === 200) {
-                this.tableConfig.tableData = resData.data.list
-                this.totalItems = resData.data.total
-                this.inSearch = true
+              const resData = res.data;
+              if (resData.code === 0) {
+                this.tableConfig.tableData = resData.data.records;
+                this.totalItems = resData.data.total;
+                this.inSearch = true;
               } else {
-                this.$message.error(resData.message)
+                this.$message.error(resData.message);
               }
             }
-            this.isLoading = false
+            this.isLoading = false;
           })
           .catch(err => {
-            this.isLoading = false
-            this.$message.error('搜索失败！')
-            console.log(err)
-          })
+            this.isLoading = false;
+            this.$message.error("搜索失败！");
+            console.log(err);
+          });
       }
     },
     onCancelSearch() {
-      this.inSearch = false
-      this.fetchUserList()
+      this.inSearch = false;
+      this.fetchUserList();
     },
     onNewUser() {
-      this.$router.push({ path: '/user/add/' })
+      this.$router.push({ path: "/user/add/" });
     },
     customCompFunc(params) {
-      const index = params.index
-      const userId = this.tableConfig.tableData[index].id
-      if (params.type === 'delete') {
-        if (confirm('您确定要删除该用户吗？')) {
+      const index = params.index;
+      const userId = this.tableConfig.tableData[index].id;
+      if (params.type === "delete") {
+        if (confirm("您确定要删除该用户吗？")) {
           this.deleteUser(userId, () => {
-            this.fetchUserList()
-          })
+            this.fetchUserList();
+          });
         }
-      } else if (params.type === 'edit') {
-        this.$router.push({ path: '/user/edit/' + userId })
+      } else if (params.type === "edit") {
+        this.$router.push({ path: "/user/edit/" + userId });
       }
     },
     pageChange(pageNum) {
-      this.pageNum = pageNum
-      this.fetchUserList()
+      this.pageNum = pageNum;
+      this.fetchUserList();
     },
     pageSizeChange(newPageSize) {
-      this.pageSize = newPageSize
-      this.fetchUserList()
+      this.pageSize = newPageSize;
+      this.fetchUserList();
     },
     fetchUserList() {
-      this.isLoading = true
-      const apiUrl = this.Url.userBaseUrl
+      this.isLoading = true;
+      const apiUrl = this.Url.userBaseUrl;
       this.$axios
         .get(apiUrl, {
           params: {
@@ -218,51 +241,42 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取用户列表失败，网络错误！')
+            this.$message.error("获取用户列表失败，网络错误！");
           } else {
-            const resData = res.data
-            if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list
-              this.totalItems = resData.data.total
+            const resData = res.data;
+            if (resData.code === 0) {
+              this.tableConfig.tableData = resData.data.records;
+              this.totalItems = resData.data.total;
             } else {
-              this.$message.error(resData.message)
+              this.$message.error(resData.message);
             }
           }
-          this.isLoading = false
+          this.isLoading = false;
         })
         .catch(err => {
-          this.$message.error('获取用户列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
+          this.$message.error("获取用户列表失败！");
+          this.isLoading = false;
+          console.log(err);
+        });
     },
     deleteUser(userId, successCallback) {
-      const apiUrl = this.Url.userBaseUrl
+      const apiUrl = this.Url.userBaseUrl;
       this.$axios
         .delete(apiUrl + userId)
         .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('删除用户失败，网络错误！')
+          if (res.status !== 204) {
+            this.$message.error("删除用户失败，网络错误！");
           } else {
-            const resData = res.data
-            if (resData.code === 200) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
+            successCallback();
           }
         })
         .catch(err => {
-          this.$message.error('删除用户失败！')
-          console.log(err)
-        })
+          this.$message.error("删除用户失败！");
+          console.log(err);
+        });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .bd {
