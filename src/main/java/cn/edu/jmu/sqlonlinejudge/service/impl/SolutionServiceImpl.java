@@ -1,12 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
-import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
+import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author LGiki
@@ -14,56 +14,18 @@ import java.util.List;
  */
 
 @Service
-public class SolutionServiceImpl implements SolutionService {
+public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> implements SolutionService {
 
-    @Resource
-    private SolutionMapper solutionMapper;
-
+    /**
+     * 得到所有解答
+     *
+     * @param solution solution
+     * @param page     page
+     * @return IPage<solution>
+     */
     @Override
-    public int deleteById(Integer id) {
-        return solutionMapper.deleteById(id);
+    public IPage<Solution> get(Solution solution, Page page) {
+        Page<Solution> problemPage = new Page<>(page.getCurrent(), page.getSize());
+        return baseMapper.selectPage(problemPage, null);
     }
-
-    @Override
-    public int insert(Solution record) {
-        return solutionMapper.insert(record);
-    }
-
-    @Override
-    public int insertSelective(Solution record) {
-        return solutionMapper.insertSelective(record);
-    }
-
-    @Override
-    public Solution selectById(Integer id) {
-        return solutionMapper.selectById(id);
-    }
-
-    @Override
-    public int updateByIdSelective(Solution record) {
-        return solutionMapper.updateByIdSelective(record);
-    }
-
-    @Override
-    public int updateById(Solution record) {
-        return solutionMapper.updateById(record);
-    }
-
-    @Override
-    public List<Solution> selectAll() {
-        return solutionMapper.selectAll();
-    }
-
-    @Override
-    public List<Solution> selectAllOrderBySubmitTimeDesc() {
-        return solutionMapper.selectAllOrderBySubmitTimeDesc();
-    }
-
-
-    @Override
-    public Integer countAll() {
-        return solutionMapper.countAll();
-    }
-
-
 }

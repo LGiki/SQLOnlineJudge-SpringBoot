@@ -1,9 +1,18 @@
 package cn.edu.jmu.sqlonlinejudge.controller;
 
+import cn.edu.jmu.common.response.AbstractResponseCode;
+import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.sqlonlinejudge.entity.Solution;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author LGiki
@@ -11,155 +20,64 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
+@RequiresRoles(value = {"admin"})
 @RequestMapping("/api/solutions")
 public class SolutionController {
-    @Autowired
+
+    @Resource
     private SolutionService solutionService;
 
     /**
-     * 查询所有提交
-     *
-     * @param pageNum  当前页码
-     * @param pageSize 页面数据条数
-     * @return cn.edu.jmu.common.response.BasicResponse
+     * 查询所有解答
      */
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public BasicResponse selectAll(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            PageHelper.startPage(pageNum, pageSize);
-//            basicResponse.wrapper(200, null, new PageInfo<>(solutionService.selectWithUserAndProblemOrderBySubmitTimeDesc()));
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<BasicResponse> selectAll(Solution solution,
+                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        BasicResponse basicResponse = new BasicResponse();
+        Page<Solution> page = new Page<>(pageNum, pageSize);
+        IPage<Solution> iPage = solutionService.get(solution, page);
+        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
+        return ResponseEntity.ok().body(basicResponse);
+    }
 
     /**
-     * 通过ID查询提交详情
-     *
-     * @param id 提交ID
-     * @return cn.edu.jmu.common.response.BasicResponse
+     * 通过ID查询解答详情
      */
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public BasicResponse selectSolutionById(@PathVariable("id") Integer id) {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            Solution solution = solutionService.selectById(id);
-//            if (solution != null) {
-//                basicResponse.wrapper(200, null, solution);
-//            } else {
-//                basicResponse.wrapper(400, "无此提交");
-//            }
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> getSolutionById(@PathVariable("id") Integer id) {
+        BasicResponse basicResponse = new BasicResponse();
+        Solution solution = solutionService.getById(id);
+        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", solution);
+        return ResponseEntity.ok().body(basicResponse);
+    }
 
     /**
-     * 通过ID删除提交
-     *
-     * @param id 提交ID
-     * @return cn.edu.jmu.common.response.BasicResponse
+     * 添加解答
      */
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-//    public BasicResponse deleteSolutionById(@PathVariable("id") Integer id) {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            if (solutionService.deleteById(id) == 1) {
-//                basicResponse.wrapper(200, "删除成功");
-//            } else {
-//                basicResponse.wrapper(400, "删除失败");
-//            }
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
+    @PostMapping(value = "/")
+    public ResponseEntity<BasicResponse> insertSolution(@RequestBody @Validated Solution solution) {
+        BasicResponse response = new BasicResponse();
+        if (solution != null && solution.getId() == null) {
+            if (solutionService.saveOrUpdate(solution)) {
+                response.wrapper(AbstractResponseCode.OK, "新增数据库成功", solution);
+            } else {
+                response.wrapper(AbstractResponseCode.FAIL, "新增数据库失败");
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
     /**
-     * 添加提交
-     *
-     * @param solution 要添加的提交对象
-     * @return cn.edu.jmu.common.response.BasicResponse
+     * 获取解答数量
      */
-//    @RequestMapping(value = "/", method = RequestMethod.POST)
-//    public BasicResponse insertSolution(@RequestBody Solution solution) {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            if (solutionService.insert(solution) == 1) {
-//                basicResponse.wrapper(200, "添加成功");
-//            } else {
-//                basicResponse.wrapper(400, "添加失败");
-//            }
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
-
-    /**
-     * 通过ID更新提交
-     *
-     * @param id       提交ID
-     * @param solution 更新的提交对象
-     * @return cn.edu.jmu.common.response.BasicResponse
-     */
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-//    public BasicResponse updateSolutionById(@PathVariable("id") Integer id, @RequestBody Solution solution) {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            //确保更新的提交ID是URL中的ID
-//            solution.setId(id);
-//            if (solutionService.updateByIdSelective(solution) == 1) {
-//                basicResponse.wrapper(200, "更新成功");
-//            } else {
-//                basicResponse.wrapper(400, "更新失败");
-//            }
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
-
-
-    /**
-     * 根据关键字查询所有提交同时返回用户名与题目标题并按提交日期降序排序
-     *
-     * @param keyword  关键字
-     * @param pageNum  页码
-     * @param pageSize 每页大小
-     * @return cn.edu.jmu.common.response.BasicResponse
-     */
-//    @RequestMapping(value = "/search", method = RequestMethod.GET)
-//    public BasicResponse selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(@RequestParam(value = "keyword", defaultValue = "") String keyword,
-//                                                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-//                                                                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            PageHelper.startPage(pageNum, pageSize);
-//            basicResponse.wrapper(200, null, new PageInfo<>(solutionService.selectWithUserAndProblemByKeywordOrderBySubmitTimeDesc(keyword)));
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
-
-    /**
-     * 查询提交数量
-     *
-     * @return cn.edu.jmu.common.response.BasicResponse
-     */
-//    @RequestMapping(value = "/count", method = RequestMethod.GET)
-//    public BasicResponse countAll() {
-//        BasicResponse basicResponse = new BasicResponse();
-//        try {
-//            basicResponse.wrapper(200, null, solutionService.countAll());
-//        } catch (Exception e) {
-//            basicResponse.wrapper(503, e.getCause().toString());
-//        }
-//        return basicResponse;
-//    }
+    @GetMapping(value = "/count")
+    public ResponseEntity<BasicResponse> count() {
+        BasicResponse response = new BasicResponse();
+        response.wrapper(AbstractResponseCode.OK, "获取数量成功", solutionService.count());
+        return ResponseEntity.ok().body(response);
+    }
 }
 

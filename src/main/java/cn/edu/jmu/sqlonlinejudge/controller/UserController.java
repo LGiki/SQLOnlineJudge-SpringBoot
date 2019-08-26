@@ -30,7 +30,7 @@ public class UserController {
     /**
      * 查询所有用户
      */
-    @GetMapping(value = "")
+    @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> getAll(User user,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -102,7 +102,7 @@ public class UserController {
      *
      * @param user 新的用户
      */
-    @PostMapping(value = "")
+    @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated User user) {
         BasicResponse response = new BasicResponse();
         if (user != null && user.getId() == null) {
@@ -115,5 +115,15 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+    }
+
+    /**
+     * 获取用户数量
+     */
+    @GetMapping(value = "/count")
+    public ResponseEntity<BasicResponse> count() {
+        BasicResponse response = new BasicResponse();
+        response.wrapper(AbstractResponseCode.OK, "获取数量成功", userService.count());
+        return ResponseEntity.ok().body(response);
     }
 }

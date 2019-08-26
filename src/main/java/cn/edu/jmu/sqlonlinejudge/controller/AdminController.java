@@ -32,7 +32,7 @@ public class AdminController {
     /**
      * 查询所有管理员
      */
-    @GetMapping(value = "")
+    @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> getAll(Admin admin,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -49,7 +49,7 @@ public class AdminController {
      * @param id 用户ID
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
+    public ResponseEntity<BasicResponse> selectAdminById(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         Admin admin = adminService.getById(id);
         response.wrapper(AbstractResponseCode.OK, "查询成功", admin);
@@ -64,18 +64,13 @@ public class AdminController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
-        if (id != null) {
-            // 删除用户
-            if (adminService.removeById(id)) {
-                response.wrapper(AbstractResponseCode.OK, "删除成功");
-            } else {
-                response.wrapper(AbstractResponseCode.FAIL, "删除失败");
-            }
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        // 删除用户
+        if (adminService.removeById(id)) {
+            response.wrapper(AbstractResponseCode.OK, "删除成功");
         } else {
             response.wrapper(AbstractResponseCode.FAIL, "删除失败");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 
     /**
@@ -104,7 +99,7 @@ public class AdminController {
      *
      * @param admin 新的管理员
      */
-    @PostMapping(value = "")
+    @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated Admin admin) {
         BasicResponse response = new BasicResponse();
         if (admin != null && admin.getId() == null) {

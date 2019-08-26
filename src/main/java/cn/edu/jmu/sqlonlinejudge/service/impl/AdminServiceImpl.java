@@ -38,7 +38,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     }
 
     /**
-     * 更新用户
+     * 更新管理员
      *
      * @param admin admin
      * @return boolean

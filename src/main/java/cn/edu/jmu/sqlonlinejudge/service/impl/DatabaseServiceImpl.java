@@ -1,11 +1,13 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
-import java.util.List;
 
-import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper;
 import cn.edu.jmu.sqlonlinejudge.entity.Database;
+import cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper;
 import cn.edu.jmu.sqlonlinejudge.service.DatabaseService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * @author LGiki
@@ -13,53 +15,40 @@ import cn.edu.jmu.sqlonlinejudge.service.DatabaseService;
  */
 
 @Service
-public class DatabaseServiceImpl implements DatabaseService{
+public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> implements DatabaseService {
 
-    @Resource
-    private DatabaseMapper databaseMapper;
-
+    /**
+     * 得到所有数据库
+     *
+     * @param database database
+     * @param page     page
+     * @return IPage<database>
+     */
     @Override
-    public int deleteById(Integer id) {
-        return databaseMapper.deleteById(id);
+    public IPage<Database> get(Database database, Page page) {
+        Page<Database> databasePage = new Page<>(page.getCurrent(), page.getSize());
+        return baseMapper.selectPage(databasePage, predicate(database));
     }
 
-    @Override
-    public int insert(Database record) {
-        return databaseMapper.insert(record);
+    /**
+     * 条件构造器
+     *
+     * @param database database
+     * @return LambdaQueryWrapper<database>
+     */
+    private LambdaQueryWrapper<Database> predicate(Database database) {
+        LambdaQueryWrapper<Database> queryWrapper = new LambdaQueryWrapper<>();
+        if (database == null) {
+            return queryWrapper;
+        } else {
+            if (database.getId() != null) {
+                queryWrapper.eq(Database::getId, database.getId());
+                return queryWrapper;
+            }
+            if (database.getName() != null) {
+                queryWrapper.like(Database::getName, "%" + database.getName() + "%");
+            }
+        }
+        return queryWrapper;
     }
-
-    @Override
-    public int insertSelective(Database record) {
-        return databaseMapper.insertSelective(record);
-    }
-
-    @Override
-    public Database selectById(Integer id) {
-        return databaseMapper.selectById(id);
-    }
-
-    @Override
-    public int updateByIdSelective(Database record) {
-        return databaseMapper.updateByIdSelective(record);
-    }
-
-    @Override
-    public int updateById(Database record) {
-        return databaseMapper.updateById(record);
-    }
-
-	@Override
-	public List<Database> selectAll(){
-		 return databaseMapper.selectAll();
-	}
-
-	@Override
-	public List<Database> selectAllByKeyword(String keyword){
-		 return databaseMapper.selectAllByKeyword(keyword);
-	}
-
-	@Override
-	public Integer countAll(){
-		 return databaseMapper.countAll();
-	}
 }

@@ -1,14 +1,16 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-
-import cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper;
 import cn.edu.jmu.sqlonlinejudge.entity.Problem;
+import cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author LGiki
@@ -16,57 +18,56 @@ import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
  */
 
 @Service
-public class ProblemServiceImpl implements ProblemService {
-
-    @Resource
-    private ProblemMapper problemMapper;
-
+public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> implements ProblemService {
+    /**
+     * 得到所有管理员
+     *
+     * @param problem problem
+     * @param page    page
+     * @return IPage<problem>
+     */
     @Override
-    public int deleteById(Integer id) {
-        return problemMapper.deleteById(id);
+    public IPage<Problem> get(Problem problem, Page page) {
+        Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
+        return baseMapper.selectPage(problemPage, predicate(problem));
     }
 
+    /**
+     * 更新用户
+     *
+     * @param problem problem
+     * @return boolean
+     */
     @Override
-    public int insert(Problem record) {
-        return problemMapper.insert(record);
+    @Transactional(rollbackFor = Exception.class)
+    public boolean update(Problem problem) {
+        Problem select = baseMapper.selectById(problem.getId());
+        BeanUtil.copyProperties(problem, select, true,
+                CopyOptions.create().setIgnoreNullValue(true)
+                        .setIgnoreError(true)
+                        .setIgnoreProperties("id", "solve", "submit"));
+        return baseMapper.updateById(select) >= 1;
     }
 
-    @Override
-    public int insertSelective(Problem record) {
-        return problemMapper.insertSelective(record);
+    /**
+     * 条件构造器
+     */
+    private LambdaQueryWrapper<Problem> predicate(Problem problem) {
+        LambdaQueryWrapper<Problem> queryWrapper = new LambdaQueryWrapper<>();
+        if (problem == null) {
+            return queryWrapper;
+        } else {
+            if (problem.getId() != null) {
+                queryWrapper.eq(Problem::getId, problem.getId());
+                return queryWrapper;
+            }
+            if (problem.getTitle() != null) {
+                queryWrapper.like(Problem::getTitle, "%" + problem.getTitle() + "%");
+            }
+            if (problem.getDatabaseId() != null) {
+                queryWrapper.eq(Problem::getDatabaseId, problem.getDatabaseId());
+            }
+        }
+        return queryWrapper;
     }
-
-    @Override
-    public Problem selectById(Integer id) {
-        return problemMapper.selectById(id);
-    }
-
-    @Override
-    public int updateByIdSelective(Problem record) {
-        return problemMapper.updateByIdSelective(record);
-    }
-
-    @Override
-    public int updateById(Problem record) {
-        return problemMapper.updateById(record);
-    }
-
-    @Override
-    public List<Problem> selectAll() {
-        return problemMapper.selectAll();
-    }
-
-	@Override
-	public List<Problem> selectAllByKeyword(String keyword){
-		 return problemMapper.selectAllByKeyword(keyword);
-	}
-
-	@Override
-	public Integer countAll(){
-		 return problemMapper.countAll();
-	}
-
-
-
-
 }

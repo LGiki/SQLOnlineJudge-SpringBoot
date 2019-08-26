@@ -1,86 +1,23 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 
 /**
  * @author LGiki
  * @date 2019/06/22 15:15
  */
-public interface SolutionService {
+public interface SolutionService extends IService<Solution> {
 
     /**
-     * 通过ID删除提交
+     * 得到所有解答
      *
-     * @param id 提交ID
-     * @return 删除成功的记录条数
+     * @param solution solution
+     * @param page     page
+     * @return IPage<solution>
      */
-    int deleteById(Integer id);
-
-    /**
-     * 添加提交
-     *
-     * @param record 提交对象
-     * @return 插入成功的记录条数
-     */
-    int insert(Solution record);
-
-    /**
-     * 选择性添加提交
-     *
-     * @param record 提交对象
-     * @return 插入成功的记录条数
-     */
-    int insertSelective(Solution record);
-
-    /**
-     * 通过ID获取提交对象
-     *
-     * @param id 提交ID
-     * @return 提交对象
-     */
-    Solution selectById(Integer id);
-
-    /**
-     * 通过ID选择性更新提交
-     *
-     * @param record 提交对象
-     * @return 更新成功的记录条数
-     */
-    int updateByIdSelective(Solution record);
-
-    /**
-     * 通过ID更新提交
-     *
-     * @param record 提交对象
-     * @return 更新成功的记录条数
-     */
-    int updateById(Solution record);
-
-
-    /**
-     * 查询所有提交
-     *
-     * @return List<Solution> 提交列表
-     */
-    List<Solution> selectAll();
-
-
-    /**
-     * 查询所有提交并按提交日期降序排序
-     *
-     * @return List<Solution> 提交列表
-     */
-    List<Solution> selectAllOrderBySubmitTimeDesc();
-
-    /**
-     * 查询提交数量
-     *
-     * @return Integer 提交数量
-     */
-    Integer countAll();
-
-
+    IPage<Solution> get(Solution solution, Page page);
 }
