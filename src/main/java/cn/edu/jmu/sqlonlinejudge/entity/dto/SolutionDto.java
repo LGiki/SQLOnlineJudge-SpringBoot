@@ -1,21 +1,20 @@
-package cn.edu.jmu.sqlonlinejudge.entity;
+package cn.edu.jmu.sqlonlinejudge.entity.dto;
 
 import cn.edu.jmu.sqlonlinejudge.service.enums.SolutionResultEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * @author LGiki
- * @date 2019/06/22 15:15
+ * @author sgh
+ * @date 2019/8/26 下午9:42
  */
-
 @Data
-public class Solution implements Serializable {
+public class SolutionDto implements Serializable {
 
-    private static final long serialVersionUID = -1536199246828489364L;
+    private static final long serialVersionUID = -8322780947820151796L;
 
     /**
      * 解答ID
@@ -33,21 +32,11 @@ public class Solution implements Serializable {
     private Integer pid;
 
     /**
-     * 源代码
-     */
-    private String sourceCode;
-
-    /**
      * 提交时间
      * 格式化显示为 yyyy/MM/dd HH:mm:ss
      */
-    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+    @JsonFormat(timezone = "UTC", pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp submitTime;
-
-    /**
-     * 错误信息
-     */
-    private String runError;
 
     /**
      * 结果

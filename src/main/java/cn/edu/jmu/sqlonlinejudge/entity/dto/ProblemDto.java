@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.entity.vo;
+package cn.edu.jmu.sqlonlinejudge.entity.dto;
 
 import lombok.Data;
 
@@ -6,12 +6,12 @@ import java.io.Serializable;
 
 /**
  * @author sgh
- * @date 2019/8/26 下午2:22
+ * @date 2019/8/26 下午8:46
  */
 @Data
-public class ProblemVo implements Serializable {
+public class ProblemDto implements Serializable {
 
-    private static final long serialVersionUID = 200897514465448035L;
+    private static final long serialVersionUID = 4508740922344036666L;
 
     /**
      * 题目ID

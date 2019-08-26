@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.SolutionDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -15,9 +16,9 @@ public interface SolutionService extends IService<Solution> {
     /**
      * 得到所有解答
      *
-     * @param solution solution
-     * @param page     page
+     * @param solutionDto solutionDto
+     * @param page        page
      * @return IPage<solution>
      */
-    IPage<Solution> get(Solution solution, Page page);
+    IPage<SolutionDto> get(SolutionDto solutionDto, Page page);
 }

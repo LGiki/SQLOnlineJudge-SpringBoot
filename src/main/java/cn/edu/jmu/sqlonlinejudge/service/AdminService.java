@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Admin;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -18,11 +19,11 @@ public interface AdminService extends IService<Admin> {
     /**
      * 得到所有管理员
      *
-     * @param admin admin
-     * @param page  page
-     * @return IPage<admin>
+     * @param adminDto adminDto
+     * @param page     page
+     * @return IPage<AdminDto>
      */
-    IPage<Admin> get(Admin admin, Page page);
+    IPage<AdminDto> getAll(AdminDto adminDto, Page page);
 
     /**
      * 更新管理员

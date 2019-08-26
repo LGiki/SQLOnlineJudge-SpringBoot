@@ -3,7 +3,9 @@ package cn.edu.jmu.sqlonlinejudge.controller;
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.entity.Database;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.DatabaseDto;
 import cn.edu.jmu.sqlonlinejudge.service.DatabaseService;
+import cn.edu.jmu.sqlonlinejudge.service.mapper.DatabaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -30,12 +32,12 @@ public class DatabaseController {
      * 查询所有数据库
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(Database database,
+    public ResponseEntity<BasicResponse> getAll(DatabaseDto databaseDto,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         Page<Database> page = new Page<>(pageNum, pageSize);
-        IPage<Database> iPage = databaseService.get(database, page);
+        IPage<DatabaseDto> iPage = databaseService.getAll(databaseDto, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
@@ -48,7 +50,8 @@ public class DatabaseController {
     public ResponseEntity<BasicResponse> getDatabaseById(@PathVariable("id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         Database database = databaseService.getById(id);
-        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", database);
+        DatabaseDto databaseDto = DatabaseMapper.toDto(database);
+        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", databaseDto);
         return ResponseEntity.ok().body(basicResponse);
     }
 
@@ -71,9 +74,10 @@ public class DatabaseController {
      * 添加数据库
      */
     @PostMapping(value = "/")
-    public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated Database database) {
+    public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
         BasicResponse response = new BasicResponse();
-        if (database != null && database.getId() == null) {
+        if (databaseDto != null && databaseDto.getId() == null) {
+            Database database = DatabaseMapper.toEntity(databaseDto);
             //新数据库要将是否已生成字段设置为 false
             database.setIsCreated(false);
             if (databaseService.saveOrUpdate(database)) {
@@ -91,10 +95,12 @@ public class DatabaseController {
      * 通过ID更新数据库
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id, @RequestBody Database database) {
+    public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id,
+                                                            @RequestBody DatabaseDto databaseDto) {
         BasicResponse response = new BasicResponse();
-        if (database != null && database.getId() != null && database.getId().equals(id)) {
+        if (databaseDto != null && databaseDto.getId() != null && databaseDto.getId().equals(id)) {
             // 更新数据库信息
+            Database database = DatabaseMapper.toEntity(databaseDto);
             if (databaseService.saveOrUpdate(database)) {
                 response.wrapper(AbstractResponseCode.OK, "更新数据库信息成功", database);
             } else {

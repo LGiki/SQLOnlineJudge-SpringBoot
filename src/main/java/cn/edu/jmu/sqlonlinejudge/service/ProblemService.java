@@ -1,7 +1,8 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Problem;
-import cn.edu.jmu.sqlonlinejudge.entity.vo.ProblemVo;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.ProblemDetailDto;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.ProblemDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -16,11 +17,11 @@ public interface ProblemService extends IService<Problem> {
     /**
      * 得到所有题目
      *
-     * @param problem problem
-     * @param page    page
+     * @param problemDto problemDto
+     * @param page       page
      * @return IPage<problem>
      */
-    IPage<Problem> getAll(Problem problem, Page page);
+    IPage<ProblemDto> getAll(ProblemDto problemDto, Page page);
 
     /**
      * 更新用户
@@ -29,13 +30,4 @@ public interface ProblemService extends IService<Problem> {
      * @return boolean
      */
     boolean update(Problem problem);
-
-    /**
-     * 得到所有题目给用户
-     *
-     * @param problem problem
-     * @param page    page
-     * @return IPage<problem>
-     */
-    IPage<ProblemVo> getAllToUser(Problem problem, Page page);
 }

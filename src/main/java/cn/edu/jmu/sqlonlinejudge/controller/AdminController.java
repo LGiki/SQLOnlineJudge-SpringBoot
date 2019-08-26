@@ -4,7 +4,9 @@ package cn.edu.jmu.sqlonlinejudge.controller;
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.entity.Admin;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto;
 import cn.edu.jmu.sqlonlinejudge.service.AdminService;
+import cn.edu.jmu.sqlonlinejudge.service.mapper.AdminMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -33,12 +35,12 @@ public class AdminController {
      * 查询所有管理员
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(Admin admin,
+    public ResponseEntity<BasicResponse> getAll(AdminDto adminDto,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         Page<Admin> page = new Page<>(pageNum, pageSize);
-        IPage<Admin> iPage = adminService.get(admin, page);
+        IPage<AdminDto> iPage = adminService.getAll(adminDto, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
@@ -52,7 +54,8 @@ public class AdminController {
     public ResponseEntity<BasicResponse> selectAdminById(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         Admin admin = adminService.getById(id);
-        response.wrapper(AbstractResponseCode.OK, "查询成功", admin);
+        AdminDto adminDto = AdminMapper.toDto(admin);
+        response.wrapper(AbstractResponseCode.OK, "查询成功", adminDto);
         return ResponseEntity.ok().body(response);
     }
 
@@ -76,13 +79,14 @@ public class AdminController {
     /**
      * 更新管理员信息
      *
-     * @param admin 新的管理员信息
+     * @param adminDto 新的管理员信息
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> update(@RequestBody Admin admin, @PathVariable(value = "id") Integer id) {
+    public ResponseEntity<BasicResponse> update(@RequestBody cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto adminDto, @PathVariable(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
-        if (admin != null && admin.getId() != null && admin.getId().equals(id)) {
+        if (adminDto != null && adminDto.getId() != null && adminDto.getId().equals(id)) {
             // 更新用户信息
+            Admin admin = AdminMapper.toEntity(adminDto);
             if (adminService.saveOrUpdate(admin)) {
                 response.wrapper(AbstractResponseCode.OK, "更新管理员信息成功", admin);
             } else {
@@ -97,12 +101,16 @@ public class AdminController {
     /**
      * 添加管理员
      *
-     * @param admin 新的管理员
+     * @param adminDto 新的管理员
      */
     @PostMapping(value = "/")
-    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated Admin admin) {
+    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto adminDto) {
         BasicResponse response = new BasicResponse();
-        if (admin != null && admin.getId() == null) {
+        if (adminDto != null && adminDto.getId() == null) {
+            Admin admin = AdminMapper.toEntity(adminDto);
+//            String salt = EncryptUtil.generatorSalt();
+//            admin.setSalt(salt);
+//            admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), salt));
             if (adminService.saveOrUpdate(admin)) {
                 response.wrapper(AbstractResponseCode.OK, "新增管理员成功", admin);
             } else {

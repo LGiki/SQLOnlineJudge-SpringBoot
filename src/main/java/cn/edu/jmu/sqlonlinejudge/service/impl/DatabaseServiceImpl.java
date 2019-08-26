@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Database;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.DatabaseDto;
 import cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper;
 import cn.edu.jmu.sqlonlinejudge.service.DatabaseService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -20,35 +21,34 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
     /**
      * 得到所有数据库
      *
-     * @param database database
-     * @param page     page
+     * @param databaseDto databaseDto
+     * @param page        page
      * @return IPage<database>
      */
     @Override
-    public IPage<Database> get(Database database, Page page) {
+    public IPage<DatabaseDto> getAll(DatabaseDto databaseDto, Page page) {
         Page<Database> databasePage = new Page<>(page.getCurrent(), page.getSize());
-        return baseMapper.selectPage(databasePage, predicate(database));
+        IPage<Database> iPage = baseMapper.selectPage(databasePage, predicate(databaseDto));
+        return iPage.convert(cn.edu.jmu.sqlonlinejudge.service.mapper.DatabaseMapper::toDto);
     }
 
     /**
      * 条件构造器
      *
-     * @param database database
+     * @param databaseDto databaseDto
      * @return LambdaQueryWrapper<database>
      */
-    private LambdaQueryWrapper<Database> predicate(Database database) {
+    private LambdaQueryWrapper<Database> predicate(DatabaseDto databaseDto) {
         LambdaQueryWrapper<Database> queryWrapper = new LambdaQueryWrapper<>();
-        if (database == null) {
+        if (databaseDto == null) {
             return queryWrapper;
         } else {
-            if (database.getId() != null) {
-                queryWrapper.eq(Database::getId, database.getId());
-                return queryWrapper;
+            if (databaseDto.getId() != null) {
+                queryWrapper.eq(Database::getId, databaseDto.getId());
+            } else if (databaseDto.getName() != null) {
+                queryWrapper.like(Database::getName, "%" + databaseDto.getName() + "%");
             }
-            if (database.getName() != null) {
-                queryWrapper.like(Database::getName, "%" + database.getName() + "%");
-            }
+            return queryWrapper;
         }
-        return queryWrapper;
     }
 }

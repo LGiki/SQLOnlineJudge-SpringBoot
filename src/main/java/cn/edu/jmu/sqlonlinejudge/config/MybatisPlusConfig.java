@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement
 @Configuration
-@MapperScan("cn.edu.jmu.sqlonlinejudge.mapper")
 public class MybatisPlusConfig {
 
     /**

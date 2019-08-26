@@ -1,9 +1,11 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.SolutionDto;
 import cn.edu.jmu.sqlonlinejudge.mapper.SolutionMapper;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,14 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
     /**
      * 得到所有解答
      *
-     * @param solution solution
-     * @param page     page
+     * @param solutionDto solutionDto
+     * @param page        page
      * @return IPage<solution>
      */
     @Override
-    public IPage<Solution> get(Solution solution, Page page) {
+    public IPage<SolutionDto> get(SolutionDto solutionDto, Page page) {
         Page<Solution> problemPage = new Page<>(page.getCurrent(), page.getSize());
-        return baseMapper.selectPage(problemPage, null);
+        IPage<Solution> iPage = baseMapper.selectPage(problemPage, Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getSubmitTime));
+        return iPage.convert(cn.edu.jmu.sqlonlinejudge.service.mapper.SolutionMapper::toDto);
     }
 }

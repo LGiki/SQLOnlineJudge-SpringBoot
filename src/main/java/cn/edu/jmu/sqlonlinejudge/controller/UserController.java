@@ -5,7 +5,6 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
 import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
-import cn.edu.jmu.sqlonlinejudge.entity.vo.UserVo;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -40,7 +39,7 @@ public class UserController {
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         Page<User> page = new Page<>(pageNum, pageSize);
-        IPage<UserVo> iPage = userService.getAll(userDto, page);
+        IPage<UserDto> iPage = userService.getAll(userDto, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
@@ -54,7 +53,8 @@ public class UserController {
     public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         User user = userService.getById(id);
-        response.wrapper(AbstractResponseCode.OK, "查询成功", UserMapper.userToUserVo(user));
+        UserDto userDto = UserMapper.toDto(user);
+        response.wrapper(AbstractResponseCode.OK, "查询成功", userDto);
         return ResponseEntity.ok().body(response);
     }
 
@@ -90,7 +90,7 @@ public class UserController {
         BasicResponse response = new BasicResponse();
         if (userDto != null && userDto.getId() != null && userDto.getId().equals(id)) {
             // 更新用户信息
-            User user = UserMapper.userDtoToUser(userDto);
+            User user = UserMapper.toEntity(userDto);
             if (userService.update(user)) {
                 response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", user);
             } else {
@@ -111,7 +111,7 @@ public class UserController {
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated UserDto userDto) {
         BasicResponse response = new BasicResponse();
         if (userDto != null && userDto.getId() == null) {
-            User user = UserMapper.userDtoToUser(userDto);
+            User user = UserMapper.toEntity(userDto);
             String salt = EncryptUtil.generatorSalt();
             user.setSalt(salt);
             user.setPassword(EncryptUtil.encryption(user.getUsername(), user.getPassword(), salt));

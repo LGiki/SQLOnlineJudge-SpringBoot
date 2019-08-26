@@ -3,7 +3,6 @@ package cn.edu.jmu.sqlonlinejudge.service.impl;
 import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
 import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
-import cn.edu.jmu.sqlonlinejudge.entity.vo.UserVo;
 import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import cn.hutool.core.bean.BeanUtil;
@@ -30,10 +29,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return IPage<User>
      */
     @Override
-    public IPage<UserVo> getAll(UserDto userDto, Page page) {
+    public IPage<UserDto> getAll(UserDto userDto, Page page) {
         Page<User> userPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<User> iPage = baseMapper.selectPage(userPage, predicate(userDto));
-        return iPage.convert(cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper::userToUserVo);
+        return iPage.convert(cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper::toDto);
     }
 
     /**
@@ -64,21 +63,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     private LambdaQueryWrapper<User> predicate(UserDto userDto) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc(User::getSolved);
         if (userDto == null) {
             return queryWrapper;
         } else {
             if (userDto.getId() != null) {
                 queryWrapper.eq(User::getId, userDto.getId());
-                return queryWrapper;
-            }
-            if (userDto.getUsername() != null) {
+            } else if (userDto.getUsername() != null) {
                 queryWrapper.like(User::getUsername, "%" + userDto.getUsername() + "%");
-            }
-            if (userDto.getEmail() != null) {
+            } else if (userDto.getEmail() != null) {
                 queryWrapper.like(User::getEmail, "%" + userDto.getEmail() + "%");
             }
-            queryWrapper.orderByAsc(User::getId);
+            return queryWrapper;
         }
-        return queryWrapper;
     }
 }

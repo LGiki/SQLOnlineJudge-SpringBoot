@@ -2,6 +2,7 @@ package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.Admin;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto;
 import cn.edu.jmu.sqlonlinejudge.mapper.AdminMapper;
 import cn.edu.jmu.sqlonlinejudge.service.AdminService;
 import cn.hutool.core.bean.BeanUtil;
@@ -27,14 +28,15 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     /**
      * 得到所有管理员
      *
-     * @param admin admin
-     * @param page  page
+     * @param adminDto adminDto
+     * @param page     page
      * @return IPage<admin>
      */
     @Override
-    public IPage<Admin> get(Admin admin, Page page) {
+    public IPage<AdminDto> getAll(AdminDto adminDto, Page page) {
         Page<Admin> adminPage = new Page<>(page.getCurrent(), page.getSize());
-        return baseMapper.selectPage(adminPage, predicate(admin));
+        IPage<Admin> iPage = baseMapper.selectPage(adminPage, predicate(adminDto));
+        return iPage.convert(cn.edu.jmu.sqlonlinejudge.service.mapper.AdminMapper::toDto);
     }
 
     /**
@@ -60,22 +62,21 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     /**
      * 条件构造器
      *
-     * @param admin admin
+     * @param adminDto adminDto
      * @return LambdaQueryWrapper<admin>
      */
-    private LambdaQueryWrapper<Admin> predicate(Admin admin) {
-        LambdaQueryWrapper<Admin> queryWrapper = new LambdaQueryWrapper<>();
-        if (admin == null) {
-            return queryWrapper;
+    private LambdaQueryWrapper<Admin> predicate(AdminDto adminDto) {
+        if (adminDto == null) {
+            return null;
         } else {
-            if (admin.getId() != null) {
-                queryWrapper.eq(Admin::getId, admin.getId());
+            LambdaQueryWrapper<Admin> queryWrapper = new LambdaQueryWrapper<>();
+            if (adminDto.getId() != null) {
+                queryWrapper.eq(Admin::getId, adminDto.getId());
                 return queryWrapper;
+            } else if (adminDto.getUsername() != null) {
+                queryWrapper.like(Admin::getUsername, "%" + adminDto.getUsername() + "%");
             }
-            if (admin.getUsername() != null) {
-                queryWrapper.like(Admin::getUsername, "%" + admin.getUsername() + "%");
-            }
+            return queryWrapper;
         }
-        return queryWrapper;
     }
 }

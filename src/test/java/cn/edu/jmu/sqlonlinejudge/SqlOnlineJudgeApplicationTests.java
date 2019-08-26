@@ -1,8 +1,10 @@
 package cn.edu.jmu.sqlonlinejudge;
 
-import cn.edu.jmu.sqlonlinejudge.entity.Admin;
+import cn.edu.jmu.sqlonlinejudge.entity.Database;
+import cn.edu.jmu.sqlonlinejudge.mapper.DatabaseMapper;
 import cn.edu.jmu.sqlonlinejudge.service.AdminService;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +22,18 @@ public class SqlOnlineJudgeApplicationTests {
     @Resource
     private AdminService adminService;
 
+    @Resource
+    private DatabaseMapper databaseMapper;
+
     @Test
     @Transactional
     public void contextLoads() {
-        Admin admin = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, "admin"));
-        System.out.println(admin);
+
+        Page<Database> databasePage = new Page<>(1, 10);
+        databasePage.setOptimizeCountSql(false);
+        IPage<Database> iPage = databaseMapper.selectPage(databasePage, null);
+
+        iPage.getRecords().forEach(System.out::println);
     }
 
 }

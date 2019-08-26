@@ -3,7 +3,9 @@ package cn.edu.jmu.sqlonlinejudge.controller;
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.entity.Problem;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.ProblemDto;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
+import cn.edu.jmu.sqlonlinejudge.service.mapper.ProblemMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -31,12 +33,12 @@ public class ProblemController {
      * 查询所有题目
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<BasicResponse> selectAll(Problem problem,
+    public ResponseEntity<BasicResponse> selectAll(ProblemDto problemDto,
                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse basicResponse = new BasicResponse();
         Page<Problem> page = new Page<>(pageNum, pageSize);
-        IPage<Problem> iPage = problemService.getAll(problem, page);
+        IPage<ProblemDto> iPage = problemService.getAll(problemDto, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
     }
@@ -71,9 +73,10 @@ public class ProblemController {
      * 添加题目
      */
     @PostMapping(value = "/")
-    public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated Problem problem) {
+    public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated ProblemDto problemDto) {
         BasicResponse response = new BasicResponse();
-        if (problem != null && problem.getId() == null) {
+        if (problemDto != null && problemDto.getId() == null) {
+            Problem problem = ProblemMapper.toEntity(problemDto);
             if (problemService.saveOrUpdate(problem)) {
                 response.wrapper(AbstractResponseCode.OK, "新增题目成功", problem);
             } else {
@@ -89,9 +92,11 @@ public class ProblemController {
      * 通过ID更新题目
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("id") Integer id, @RequestBody Problem problem) {
+    public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("id") Integer id,
+                                                           @RequestBody ProblemDto problemDto) {
         BasicResponse response = new BasicResponse();
-        if (problem != null && problem.getId() != null && problem.getId().equals(id)) {
+        if (problemDto != null && problemDto.getId() != null && problemDto.getId().equals(id)) {
+            Problem problem = ProblemMapper.toEntity(problemDto);
             // 更新数据库信息
             if (problemService.update(problem)) {
                 response.wrapper(AbstractResponseCode.OK, "更新题目信息成功", problem);

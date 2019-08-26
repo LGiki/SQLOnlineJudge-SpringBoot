@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -28,32 +29,16 @@ public class Problem implements Serializable {
     /**
      * 题目标题
      */
+    @NotBlank
     @TableField(value = "title")
     private String title;
 
     /**
      * 题目描述
      */
+    @NotBlank
     @TableField(value = "description")
     private String description;
-
-    /**
-     * 输入格式
-     */
-    @TableField(value = "input_format")
-    private String inputFormat;
-
-    /**
-     * 输出格式
-     */
-    @TableField(value = "output_format")
-    private String outputFormat;
-
-    /**
-     * 样例输入
-     */
-    @TableField(value = "sample_input")
-    private String sampleInput;
 
     /**
      * 样例输出
@@ -70,6 +55,7 @@ public class Problem implements Serializable {
     /**
      * 答案
      */
+    @NotBlank
     @TableField(value = "answer")
     private String answer;
 
@@ -101,5 +87,6 @@ public class Problem implements Serializable {
      * 数据库ID
      */
     @TableField(value = "database_id")
+    @NotBlank
     private Integer databaseId;
 }

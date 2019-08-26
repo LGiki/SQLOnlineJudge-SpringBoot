@@ -1,7 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service.impl;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Problem;
-import cn.edu.jmu.sqlonlinejudge.entity.vo.ProblemVo;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.ProblemDto;
 import cn.edu.jmu.sqlonlinejudge.mapper.ProblemMapper;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 import cn.hutool.core.bean.BeanUtil;
@@ -23,14 +23,15 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     /**
      * 得到所有题目
      *
-     * @param problem problem
-     * @param page    page
+     * @param problemDto problemDto
+     * @param page       page
      * @return IPage<problem>
      */
     @Override
-    public IPage<Problem> getAll(Problem problem, Page page) {
+    public IPage<ProblemDto> getAll(ProblemDto problemDto, Page page) {
         Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
-        return baseMapper.selectPage(problemPage, predicate(problem));
+        IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problemDto));
+        return iPage.convert(cn.edu.jmu.sqlonlinejudge.service.mapper.ProblemMapper::toDto);
     }
 
     /**
@@ -51,39 +52,20 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     }
 
     /**
-     * 得到所有题目给用户
-     *
-     * @param problem problem
-     * @param page    page
-     * @return IPage<problem>
-     */
-    @Override
-    public IPage<ProblemVo> getAllToUser(Problem problem, Page page) {
-        Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problem));
-        Page<ProblemVo> res = new Page<ProblemVo>();
-        return null;
-    }
-
-    /**
      * 条件构造器
      */
-    private LambdaQueryWrapper<Problem> predicate(Problem problem) {
-        LambdaQueryWrapper<Problem> queryWrapper = new LambdaQueryWrapper<>();
-        if (problem == null) {
-            return queryWrapper;
+    private LambdaQueryWrapper<Problem> predicate(ProblemDto problemDto) {
+        if (problemDto == null) {
+            return null;
         } else {
-            if (problem.getId() != null) {
-                queryWrapper.eq(Problem::getId, problem.getId());
+            LambdaQueryWrapper<Problem> queryWrapper = new LambdaQueryWrapper<>();
+            if (problemDto.getId() != null) {
+                queryWrapper.eq(Problem::getId, problemDto.getId());
                 return queryWrapper;
+            } else if (problemDto.getTitle() != null) {
+                queryWrapper.like(Problem::getTitle, "%" + problemDto.getTitle() + "%");
             }
-            if (problem.getTitle() != null) {
-                queryWrapper.like(Problem::getTitle, "%" + problem.getTitle() + "%");
-            }
-            if (problem.getDatabaseId() != null) {
-                queryWrapper.eq(Problem::getDatabaseId, problem.getDatabaseId());
-            }
+            return queryWrapper;
         }
-        return queryWrapper;
     }
 }

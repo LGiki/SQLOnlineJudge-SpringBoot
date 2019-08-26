@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.service;
 
 import cn.edu.jmu.sqlonlinejudge.entity.Database;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.DatabaseDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -11,12 +12,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 
 public interface DatabaseService extends IService<Database> {
+
     /**
      * 得到所有数据库
      *
-     * @param database database
-     * @param page     page
+     * @param databaseDto databaseDto
+     * @param page        page
      * @return IPage<database>
      */
-    IPage<Database> get(Database database, Page page);
+    IPage<DatabaseDto> getAll(DatabaseDto databaseDto, Page page);
 }

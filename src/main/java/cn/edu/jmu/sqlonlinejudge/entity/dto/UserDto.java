@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.entity.dto;
 
 import cn.edu.jmu.sqlonlinejudge.service.enums.UserStatusEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -31,6 +32,7 @@ public class UserDto implements Serializable {
      * 密码
      */
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     /**
@@ -49,4 +51,14 @@ public class UserDto implements Serializable {
      * 状态
      */
     private UserStatusEnum status;
+
+    /**
+     * 提交数
+     */
+    private Integer submit;
+
+    /**
+     * 通过数
+     */
+    private Integer solved;
 }
