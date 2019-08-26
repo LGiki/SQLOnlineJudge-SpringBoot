@@ -105,9 +105,7 @@ export default {
                 type: 'success'
               })
               this.$router.back(-1)
-            } else if (resData.code === 400) {
-              this.$message.error(resData.message)
-            } else if (resData.code === 503) {
+            } else {
               this.$message.error(resData.message)
             }
           }

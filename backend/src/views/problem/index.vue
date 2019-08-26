@@ -8,6 +8,14 @@
         class="filter-item"
         @keyup.enter.native="onSearch"
       />
+      <el-select v-model="searchType">
+        <el-option
+          v-for="item in searchTypeList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
       <el-button type="primary" @click="onSearch">
         <svg-icon icon-class="search" />&nbsp;搜索
       </el-button>
@@ -55,6 +63,17 @@ export default {
   },
   data() {
     return {
+      searchTypeList: [
+        {
+          label: '题目ID',
+          value: 'id'
+        },
+        {
+          label: '题目标题',
+          value: 'title'
+        }
+      ],
+      searchType: 'id',
       inSearch: false,
       searchKeyword: '',
       pageNum: 1,
@@ -77,7 +96,7 @@ export default {
           },
           {
             field: 'title',
-            title: '标题',
+            title: '题目标题',
             width: 280,
             titleAlign: 'center',
             columnAlign: 'center',
@@ -138,7 +157,7 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.problemSearch
+        const apiUrl = this.Url.problemBaseUrl
         this.$axios
           .get(apiUrl, {
             params: {
@@ -152,8 +171,8 @@ export default {
               this.$message.error('搜索失败，网络错误！')
             } else {
               const resData = res.data
-              if (resData.code === 200) {
-                this.tableConfig.tableData = resData.data.list
+              if (resData.code === 0) {
+                this.tableConfig.tableData = resData.data.records
                 this.totalItems = resData.data.total
                 this.inSearch = true
               } else {
@@ -212,8 +231,8 @@ export default {
             this.$message.error('获取题目列表失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list
+            if (resData.code === 0) {
+              this.tableConfig.tableData = resData.data.records
               this.totalItems = resData.data.total
             } else {
               this.$message.error(resData.message)
@@ -232,19 +251,10 @@ export default {
       this.$axios
         .delete(apiUrl + problemId)
         .then(res => {
-          if (res.status !== 200) {
+          if (res.status !== 204) {
             this.$message.error('删除题目失败，网络错误！')
           } else {
-            const resData = res.data
-            if (resData.code === 200) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
+            successCallback()
           }
         })
         .catch(err => {

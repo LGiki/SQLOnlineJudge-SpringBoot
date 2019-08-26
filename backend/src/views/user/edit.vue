@@ -86,8 +86,8 @@ export default {
             username: this.userDetail.username.trim(),
             email: this.userDetail.email.trim()
           }
-          if(this.userDetail.password) {
-            user[password] = this.userDetail.password.trim();
+          if (this.userDetail.password) {
+            user[password] = this.userDetail.password.trim()
           }
           this.updateUser(userId, user, () => {
             this.$router.back(-1)

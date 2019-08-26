@@ -126,7 +126,7 @@ export default {
             this.$message.error('获取数据库详情失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.databaseDetail = resData.data
             } else {
               this.$message.error('获取数据库详情失败！')
@@ -142,19 +142,17 @@ export default {
       this.$axios
         .put(apiUrl + databaseId, database)
         .then(res => {
-          if (res.status !== 200) {
+          if (res.status !== 201) {
             this.$message.error('更新数据库失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.$message({
                 message: resData.message,
                 type: 'success'
               })
               successCallback()
-            } else if (resData.code === 400) {
-              this.$message.error(resData.message)
-            } else if (resData.code === 503) {
+            } else {
               this.$message.error(resData.message)
             }
           }

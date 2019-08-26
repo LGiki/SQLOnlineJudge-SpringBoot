@@ -110,19 +110,17 @@ export default {
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
-          if (res.status !== 200) {
+          if (res.status !== 201) {
             this.$message.error('添加数据库失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.$message({
                 message: resData.message,
                 type: 'success'
               })
               this.$router.back(-1)
-            } else if (resData.code === 400) {
-              this.$message.error(resData.message)
-            } else if (resData.code === 503) {
+            } else {
               this.$message.error(resData.message)
             }
           }
