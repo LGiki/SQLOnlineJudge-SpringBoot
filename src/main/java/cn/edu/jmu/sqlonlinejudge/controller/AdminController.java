@@ -84,9 +84,9 @@ public class AdminController {
         if (admin != null && admin.getId() != null && admin.getId().equals(id)) {
             // 更新用户信息
             if (adminService.saveOrUpdate(admin)) {
-                response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", admin);
+                response.wrapper(AbstractResponseCode.OK, "更新管理员信息成功", admin);
             } else {
-                response.wrapper(AbstractResponseCode.FAIL, "更新用户信息失败");
+                response.wrapper(AbstractResponseCode.FAIL, "更新管理员信息失败");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
@@ -104,9 +104,9 @@ public class AdminController {
         BasicResponse response = new BasicResponse();
         if (admin != null && admin.getId() == null) {
             if (adminService.saveOrUpdate(admin)) {
-                response.wrapper(AbstractResponseCode.OK, "新增用户成功", admin);
+                response.wrapper(AbstractResponseCode.OK, "新增管理员成功", admin);
             } else {
-                response.wrapper(AbstractResponseCode.FAIL, "新增用户失败");
+                response.wrapper(AbstractResponseCode.FAIL, "新增管理员失败");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {

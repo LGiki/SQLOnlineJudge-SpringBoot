@@ -60,9 +60,9 @@ public class SolutionController {
         BasicResponse response = new BasicResponse();
         if (solution != null && solution.getId() == null) {
             if (solutionService.saveOrUpdate(solution)) {
-                response.wrapper(AbstractResponseCode.OK, "新增数据库成功", solution);
+                response.wrapper(AbstractResponseCode.OK, "新增解答成功", solution);
             } else {
-                response.wrapper(AbstractResponseCode.FAIL, "新增数据库失败");
+                response.wrapper(AbstractResponseCode.FAIL, "新增解答失败");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
