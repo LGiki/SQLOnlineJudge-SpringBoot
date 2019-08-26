@@ -7,8 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author lgiki
  */
-// @ServletComponentScan("cn.edu.jmu.security.filter")
-// @Import({ShiroConfig.class, CrossDomainFilter.class})
+
 @SpringBootApplication
 @MapperScan("cn.edu.jmu.sqlonlinejudge.mapper")
 public class SqlOnlineJudgeApplication {

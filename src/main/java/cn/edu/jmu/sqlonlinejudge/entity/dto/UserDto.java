@@ -28,6 +28,12 @@ public class UserDto implements Serializable {
     private String username;
 
     /**
+     * 密码
+     */
+    @NotBlank
+    private String password;
+
+    /**
      * 邮箱地址
      */
     @NotBlank
