@@ -75,9 +75,9 @@ public class ProblemController {
         BasicResponse response = new BasicResponse();
         if (problem != null && problem.getId() == null) {
             if (problemService.saveOrUpdate(problem)) {
-                response.wrapper(AbstractResponseCode.OK, "新增数据库成功", problem);
+                response.wrapper(AbstractResponseCode.OK, "新增题目成功", problem);
             } else {
-                response.wrapper(AbstractResponseCode.FAIL, "新增数据库失败");
+                response.wrapper(AbstractResponseCode.FAIL, "新增题目失败");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
@@ -94,9 +94,9 @@ public class ProblemController {
         if (problem != null && problem.getId() != null && problem.getId().equals(id)) {
             // 更新数据库信息
             if (problemService.update(problem)) {
-                response.wrapper(AbstractResponseCode.OK, "更新数据库信息成功", problem);
+                response.wrapper(AbstractResponseCode.OK, "更新题目信息成功", problem);
             } else {
-                response.wrapper(AbstractResponseCode.FAIL, "更新数据库信息失败");
+                response.wrapper(AbstractResponseCode.FAIL, "更新题目信息失败");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
