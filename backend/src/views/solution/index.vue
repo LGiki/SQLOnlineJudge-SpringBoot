@@ -8,6 +8,14 @@
         class="filter-item"
         @keyup.enter.native="onSearch"
       />
+      <el-select v-model="searchType">
+        <el-option
+          v-for="item in searchTypeList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
       <el-button type="primary" @click="onSearch">
         <svg-icon icon-class="search" />&nbsp;搜索
       </el-button>
@@ -53,6 +61,21 @@ export default {
   },
   data() {
     return {
+      searchTypeList: [
+        {
+          label: '提交ID',
+          value: 'id'
+        },
+        {
+          label: '用户ID',
+          value: 'uid'
+        },
+        {
+          label: '题目ID',
+          value: 'pid'
+        }
+      ],
+      searchType: 'id',
       inSearch: false,
       searchKeyword: '',
       pageNum: 1,
@@ -149,7 +172,7 @@ export default {
         this.$axios
           .get(apiUrl, {
             params: {
-              keyword: keyword,
+              [this.searchType]: keyword,
               pageNum: this.pageNum,
               pageSize: this.pageSize
             }
