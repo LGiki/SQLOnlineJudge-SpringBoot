@@ -132,7 +132,7 @@ export default {
         this.$axios
           .get(apiUrl, {
             params: {
-              keyword: keyword,
+              [this.searchType]: keyword,
               pageNum: this.pageNum,
               pageSize: this.pageSize
             }

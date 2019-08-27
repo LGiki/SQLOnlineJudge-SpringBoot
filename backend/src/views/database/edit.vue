@@ -102,6 +102,7 @@ export default {
         if (valid) {
           const databaseId = this.$route.params.id
           const database = {
+            id: this.databaseDetail.id,
             name: this.databaseDetail.name.trim(),
             createTable: this.databaseDetail.createTable,
             testData: this.databaseDetail.testData
