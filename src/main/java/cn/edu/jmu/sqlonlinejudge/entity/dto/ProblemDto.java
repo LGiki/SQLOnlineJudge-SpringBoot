@@ -17,7 +17,6 @@ public class ProblemDto implements Serializable {
     /**
      * 题目ID
      */
-    @NotBlank
     private Integer id;
 
     /**
