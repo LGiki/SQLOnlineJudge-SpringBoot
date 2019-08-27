@@ -2,6 +2,7 @@ package cn.edu.jmu.sqlonlinejudge.entity.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -16,11 +17,13 @@ public class ProblemDto implements Serializable {
     /**
      * 题目ID
      */
+    @NotBlank
     private Integer id;
 
     /**
      * 题目标题
      */
+    @NotBlank
     private String title;
 
     /**

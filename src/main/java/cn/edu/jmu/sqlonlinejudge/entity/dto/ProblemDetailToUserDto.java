@@ -1,6 +1,7 @@
 package cn.edu.jmu.sqlonlinejudge.entity.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -8,8 +9,9 @@ import java.io.Serializable;
  * @author sgh
  * @date 2019/8/26 下午9:11
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ProblemDetailToUserDto implements Serializable {
+public class ProblemDetailToUserDto extends ProblemDto implements Serializable {
 
     private static final long serialVersionUID = 3952059359065232418L;
 

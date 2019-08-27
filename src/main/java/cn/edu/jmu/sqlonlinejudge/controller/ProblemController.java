@@ -3,6 +3,7 @@ package cn.edu.jmu.sqlonlinejudge.controller;
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.entity.Problem;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.ProblemDetailDto;
 import cn.edu.jmu.sqlonlinejudge.entity.dto.ProblemDto;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 import cn.edu.jmu.sqlonlinejudge.service.mapper.ProblemMapper;
@@ -73,10 +74,10 @@ public class ProblemController {
      * 添加题目
      */
     @PostMapping(value = "/")
-    public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated ProblemDto problemDto) {
+    public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated ProblemDetailDto problemDetailDto) {
         BasicResponse response = new BasicResponse();
-        if (problemDto != null && problemDto.getId() == null) {
-            Problem problem = ProblemMapper.toEntity(problemDto);
+        if (problemDetailDto != null && problemDetailDto.getId() == null) {
+            Problem problem = ProblemMapper.toEntity(problemDetailDto);
             if (problemService.saveOrUpdate(problem)) {
                 response.wrapper(AbstractResponseCode.OK, "新增题目成功", problem);
             } else {
@@ -93,10 +94,10 @@ public class ProblemController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("id") Integer id,
-                                                           @RequestBody ProblemDto problemDto) {
+                                                           @RequestBody ProblemDetailDto problemDetailDto) {
         BasicResponse response = new BasicResponse();
-        if (problemDto != null && problemDto.getId() != null && problemDto.getId().equals(id)) {
-            Problem problem = ProblemMapper.toEntity(problemDto);
+        if (problemDetailDto != null && problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
+            Problem problem = ProblemMapper.toEntity(problemDetailDto);
             // 更新数据库信息
             if (problemService.update(problem)) {
                 response.wrapper(AbstractResponseCode.OK, "更新题目信息成功", problem);
