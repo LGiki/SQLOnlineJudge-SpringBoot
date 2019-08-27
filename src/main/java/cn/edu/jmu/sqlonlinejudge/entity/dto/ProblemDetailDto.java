@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -41,6 +42,6 @@ public class ProblemDetailDto extends ProblemDto implements Serializable {
     /**
      * 数据库ID
      */
-    @NotBlank
+    @NotNull
     private Integer databaseId;
 }
