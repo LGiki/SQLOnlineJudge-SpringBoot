@@ -14,15 +14,35 @@ Vue.use(VueHighlightJS);
 
 Axios.interceptors.request.use(
     config => {
-      // if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-      //   config.headers.Authorization = `token ${localStorage.JWT_TOKEN}`;
-      // }
-      config.headers.Authorization = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImxvZ2luVHlwZSI6IkFkbWluIiwiZXhwIjoxNTY2OTQyNjMwLCJpYXQiOjE1NjY4NzA2MzB9.0CONq-yrmnfN1MENNPvismxO8X2Ms1mUwbW8FJ4Yke49u8A_4SpxGKL5xnvwWT_4C80YSTwrz80vKGJ1SRks8Q'
+    if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+        config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`;
+      }
       return config
     },
     err => {
       return Promise.reject(err)
     }
+)
+
+Axios.interceptors.response.use(
+  response => {
+    if(response.status === 403) {
+      this.$router.push({ path: "/login" });
+    }
+    return response;
+  },
+  error => {
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          router.replace({
+            path: '/login'
+          })
+          location.reload()
+      }
+    }
+    return Promise.reject(error)
+  }
 )
 
 Vue.prototype.$axios = Axios;

@@ -61,9 +61,8 @@ export default {
           if (res.status !== 200) {
             alert("登录失败，网路错误!");
           } else {
-            let resData = res.data;
-            console.log(resData);
-            alert(resData.message);
+            localStorage.setItem('JWT_TOKEN', res.data.data.token);
+            this.$router.push({ path: "/problem/" });
           }
         })
         .catch(err => {
@@ -77,6 +76,9 @@ export default {
         backgroundImage: `url(${this.header})`
       };
     }
+  },
+  created: function() {
+    
   }
 };
 </script>

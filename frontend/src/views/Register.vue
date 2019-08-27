@@ -29,7 +29,7 @@
                 <label>请重复密码</label>
                 <md-input @keyup.enter.native="register" v-model="repassword" type="password"></md-input>
               </md-field>
-              <md-button @click="register" slot="footer" class="md-simple md-success md-lg">登录</md-button>
+              <md-button @click="register" slot="footer" class="md-simple md-success md-lg">注册</md-button>
             </login-card>
           </div>
         </div>
@@ -49,10 +49,10 @@ export default {
   bodyClass: "login-page",
   data() {
     return {
-      username: '',
-      password: '',
-      repassword: '',
-      email: ''
+      username: "",
+      password: "",
+      repassword: "",
+      email: ""
     };
   },
   props: {
@@ -62,9 +62,25 @@ export default {
     }
   },
   methods: {
+    isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     register() {
-      if(this.password !== this.repassword) {
-        alert('两次密码输入不一致！');
+      if (
+        this.isEmpty(this.username) ||
+        this.isEmpty(this.password) ||
+        this.isEmpty(this.repassword) ||
+        this.isEmpty(this.email)
+      ) {
+        alert("请确认表单输入完整！");
+        return;
+      }
+      if (this.password !== this.repassword) {
+        alert("两次密码输入不一致！");
         return;
       }
       let postData = qs.stringify({

@@ -1,24 +1,27 @@
-const BaseUrl = 'http://127.0.0.1:8080/api/'
+const ApiHost = 'http://127.0.0.1:8080'
+const BaseUrl = ApiHost + '/api/admin'
 const Url = {
   // 登录接口
-  login: BaseUrl + 'login',
+  login: ApiHost + '/auth/admin/login',
   // 题目基础接口
-  problemBaseUrl: BaseUrl + 'problems/',
+  problemBaseUrl: BaseUrl + '/problems/',
   // 题目数量接口
-  problemCount: BaseUrl + 'problems/count',
-  // 排名接口
-  rankList: BaseUrl + 'user/ranklist',
+  problemCount: BaseUrl + '/problems/count',
   // 提交基础接口
-  solutionBaseUrl: BaseUrl + 'public/solutions/',
+  solutionBaseUrl: ApiHost + '/api/public/solutions/',
   // 提交数量接口
-  solutionCount: BaseUrl + 'solutions/count',
+  solutionCount: ApiHost + '/api/public/solutions/count',
   // 数据库基础接口
-  databaseBaseUrl: BaseUrl + 'databases/',
+  databaseBaseUrl: BaseUrl + '/databases/',
   // 数据库数量接口
-  databaseCount: BaseUrl + 'databases/count',
+  databaseCount: BaseUrl + '/databases/count',
   // 用户基础接口
-  userBaseUrl: BaseUrl + 'users/',
+  userBaseUrl: BaseUrl + '/users/',
   // 用户数量接口
-  userCount: BaseUrl + 'users/count'
+  userCount: BaseUrl + '/users/count',
+  // 管理员基础接口
+  adminBaseUrl: BaseUrl + '/admins/',
+  // 管理员数量接口
+  adminCount: BaseUrl + '/admins/count'
 }
 export default Url

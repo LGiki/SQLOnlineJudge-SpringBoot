@@ -97,7 +97,7 @@ export default {
     getProblemDetail(problemId) {
       let apiUrl = this.Url.problemBaseUrl;
       this.$axios
-        .get(apiUrl + problemId)
+        .get(apiUrl + '/' + problemId)
         .then(res => {
           if (res.status !== 200) {
             alert("Network error");
@@ -116,7 +116,7 @@ export default {
     getCreateTableCode(databaseId) {
       let apiUrl = this.Url.databaseBaseUrl;
       this.$axios
-        .get(apiUrl + databaseId)
+        .get(apiUrl + '/' + databaseId)
         .then(res => {
           if (res.status !== 200) {
             alert("获取题目详情失败，网络错误！");

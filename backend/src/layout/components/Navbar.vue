@@ -53,7 +53,9 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
+      localStorage.removeItem('JWT_TOKEN')
+      // localStorage.JWT_TOKEN = null
+      // await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

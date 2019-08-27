@@ -140,6 +140,35 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/index',
+    meta: { title: '管理员管理', icon: 'peoples' },
+    children: [
+      {
+        path: 'index',
+        name: 'Admins',
+        component: () => import('@/views/admin/index'),
+        meta: { title: '管理员列表' }
+        // hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: 'Edit Admin',
+        component: () => import('@/views/admin/edit'),
+        meta: { title: '编辑管理员' },
+        hidden: true
+      },
+      {
+        path: 'add',
+        name: 'Add Admin',
+        component: () => import('@/views/admin/add'),
+        meta: { title: '添加管理员' },
+        hidden: true
+      }
+    ]
+  },
+  {
     path: '/solution',
     component: Layout,
     redirect: '/solution/index',

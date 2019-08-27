@@ -13,7 +13,6 @@ import store from './store'
 import router from './router'
 
 import '@/icons' // icon
-import '@/permission' // permission control
 
 import VueHighlightJS from 'vue-highlight.js'
 
@@ -25,24 +24,45 @@ import VueHighlightJS from 'vue-highlight.js'
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
-import { mockXHR } from '../mock'
+// import { mockXHR } from '../mock'
 import Url from './urlConfig'
 import Axios from 'axios'
 
-if (process.env.NODE_ENV === 'production') {
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   mockXHR()
+// }
 
 Axios.interceptors.request.use(
   config => {
-    // if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-    //   config.headers.Authorization = `token ${localStorage.JWT_TOKEN}`;
-    // }
-    config.headers.Authorization = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImxvZ2luVHlwZSI6IkFkbWluIiwiZXhwIjoxNTY2OTQyNjMwLCJpYXQiOjE1NjY4NzA2MzB9.0CONq-yrmnfN1MENNPvismxO8X2Ms1mUwbW8FJ4Yke49u8A_4SpxGKL5xnvwWT_4C80YSTwrz80vKGJ1SRks8Q'
+    if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+      config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`;
+    }
     return config
   },
   err => {
     return Promise.reject(err)
+  }
+)
+
+Axios.interceptors.response.use(
+  response => {
+    if (response.status === 403) {
+      this.$router.push({ path: "/login" });
+    }
+    return response;
+  },
+  error => {
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          localStorage.removeItem('JWT_TOKEN')
+          router.replace({
+            path: '/login'
+          })
+          location.reload()
+      }
+    }
+    return Promise.reject(error)   // 返回接口返回的错误信息
   }
 )
 
@@ -51,6 +71,13 @@ Vue.use(ElementUI, { locale })
 Vue.use(VueHighlightJS)
 Vue.prototype.Url = Url
 Vue.prototype.$axios = Axios
+
+router.beforeEach((to, from, next) => {
+  if (!localStorage.JWT_TOKEN && to.path !== '/login') {
+    return next('/login')
+  }
+  next()
+})
 
 Vue.component('table-operation', {
   props: {
