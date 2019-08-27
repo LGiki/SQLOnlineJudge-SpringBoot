@@ -10,6 +10,7 @@ import Problem from "./views/Problem.vue";
 import Ranklist from "./views/Ranklist.vue"
 import Solution from "./views/Solution.vue"
 import ProblemDetail from "./views/ProblemDetail.vue"
+import Register from "./views/Register.vue"
 
 Vue.use(Router);
 
@@ -61,6 +62,14 @@ export default new Router({
       }
     },
     {
+      path: "/register",
+      name: "register",
+      components: { default: Register, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    },
+    {
       path: "/login",
       name: "login",
       components: { default: Login, header: MainNavbar, footer: MainFooter },
@@ -68,24 +77,24 @@ export default new Router({
         header: { colorOnScroll: 400 }
       }
     },
-    {
-      path: "/landing",
-      name: "landing",
-      components: { default: Landing, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
-      }
-    },
-    {
-      path: "/profile",
-      name: "profile",
-      components: { default: Profile, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" }
-      }
-    }
+    // {
+    //   path: "/landing",
+    //   name: "landing",
+    //   components: { default: Landing, header: MainNavbar, footer: MainFooter },
+    //   props: {
+    //     header: { colorOnScroll: 400 },
+    //     footer: { backgroundColor: "black" },
+    //   }
+    // },
+    // {
+    //   path: "/profile",
+    //   name: "profile",
+    //   components: { default: Profile, header: MainNavbar, footer: MainFooter },
+    //   props: {
+    //     header: { colorOnScroll: 400 },
+    //     footer: { backgroundColor: "black" }
+    //   }
+    // }
   ],
   scrollBehavior: to => {
     if (to.hash) {

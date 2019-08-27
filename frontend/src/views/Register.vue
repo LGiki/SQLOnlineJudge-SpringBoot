@@ -7,7 +7,7 @@
             class="md-layout-item md-size-33 md-small-size-66 md-xsmall-size-100 md-medium-size-40 mx-auto"
           >
             <login-card header-color="green">
-              <h2 slot="title" class="card-title">用户登录</h2>
+              <h2 slot="title" class="card-title">用户注册</h2>
               <p slot="description" class="description">&nbsp;</p>
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>face</md-icon>
@@ -15,11 +15,21 @@
                 <md-input v-model="username"></md-input>
               </md-field>
               <md-field class="md-form-group" slot="inputs">
+                <md-icon>email</md-icon>
+                <label>邮箱</label>
+                <md-input v-model="email"></md-input>
+              </md-field>
+              <md-field class="md-form-group" slot="inputs">
                 <md-icon>lock_outline</md-icon>
                 <label>密码</label>
-                <md-input @keyup.enter.native="login" v-model="password" type="password"></md-input>
+                <md-input v-model="password" type="password"></md-input>
               </md-field>
-              <md-button @click="login" slot="footer" class="md-simple md-success md-lg">登录</md-button>
+              <md-field class="md-form-group" slot="inputs">
+                <md-icon>lock_outline</md-icon>
+                <label>请重复密码</label>
+                <md-input @keyup.enter.native="register" v-model="repassword" type="password"></md-input>
+              </md-field>
+              <md-button @click="register" slot="footer" class="md-simple md-success md-lg">登录</md-button>
             </login-card>
           </div>
         </div>
@@ -40,7 +50,9 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      repassword: '',
+      email: ''
     };
   },
   props: {
@@ -50,19 +62,23 @@ export default {
     }
   },
   methods: {
-    login() {
+    register() {
+      if(this.password !== this.repassword) {
+        alert('两次密码输入不一致！');
+        return;
+      }
       let postData = qs.stringify({
+        email: this.email,
         username: this.username,
         password: this.password
       });
       this.$axios
-        .post(this.Url.login, postData)
+        .post(this.Url.register, postData)
         .then(res => {
           if (res.status !== 200) {
             alert("登录失败，网路错误!");
           } else {
             let resData = res.data;
-            console.log(resData);
             alert(resData.message);
           }
         })

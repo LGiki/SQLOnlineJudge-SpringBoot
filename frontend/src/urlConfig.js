@@ -9,6 +9,8 @@ const Url = {
     //用户提交基础接口
     solutionBaseUrl: BaseUrl + '/public/solutions',
     //数据库基础接口
-    databaseBaseUrl: BaseUrl + 'databases/'
+    databaseBaseUrl: BaseUrl + 'databases/',
+    //用户注册接口
+    register: BaseUrl + '',
 }
 export default Url
