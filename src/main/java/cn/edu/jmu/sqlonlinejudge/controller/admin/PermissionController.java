@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
 
 import cn.edu.jmu.common.response.AbstractResponseCode;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequiresPermissions(value = {"admin"})
-@RequestMapping("/api/permissions")
+@RequestMapping("/api/admin/permissions")
 public class PermissionController {
 
     @Resource

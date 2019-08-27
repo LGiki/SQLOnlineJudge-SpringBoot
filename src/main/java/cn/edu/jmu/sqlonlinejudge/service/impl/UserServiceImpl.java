@@ -5,8 +5,6 @@ import cn.edu.jmu.sqlonlinejudge.entity.User;
 import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
 import cn.edu.jmu.sqlonlinejudge.mapper.UserMapper;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,21 +36,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 更新用户
      *
-     * @param user user
+     * @param userDto userDto
      * @return boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean update(User user) {
-        if (user.getPassword() != null) {
-            user.setPassword(EncryptUtil.encryption(user.getUsername(), user.getPassword(), user.getSalt()));
+    public boolean update(UserDto userDto) {
+        User user = baseMapper.selectById(userDto.getId());
+        if (userDto.getPassword() != null) {
+            userDto.setPassword(EncryptUtil.encryption(userDto.getUsername(), userDto.getPassword(), user.getSalt()));
         }
-        User select = baseMapper.selectById(user.getId());
-        BeanUtil.copyProperties(user, select, true,
-                CopyOptions.create().setIgnoreNullValue(true)
-                        .setIgnoreError(true)
-                        .setIgnoreProperties("id", "username", "salt", "submit", "solved"));
-        return baseMapper.updateById(select) >= 1;
+        cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper.toEntity(userDto, user);
+        return baseMapper.updateById(user) >= 1;
     }
 
     /**

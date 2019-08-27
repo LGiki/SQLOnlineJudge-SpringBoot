@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
 
 import cn.edu.jmu.common.response.AbstractResponseCode;
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequiresRoles(value = {"admin"})
-@RequestMapping("/api/admins")
+@RequestMapping("/api/admin/admins")
 public class AdminController {
 
     @Resource

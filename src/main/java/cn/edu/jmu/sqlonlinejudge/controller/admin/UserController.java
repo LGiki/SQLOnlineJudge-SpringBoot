@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequiresRoles(value = {"admin"})
-@RequestMapping("/api/users")
+@RequestMapping("/api/admin/users")
 public class UserController {
 
     @Resource
@@ -90,9 +90,8 @@ public class UserController {
         BasicResponse response = new BasicResponse();
         if (userDto != null && userDto.getId() != null && userDto.getId().equals(id)) {
             // 更新用户信息
-            User user = UserMapper.toEntity(userDto);
-            if (userService.update(user)) {
-                response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", user);
+            if (userService.update(userDto)) {
+                response.wrapper(AbstractResponseCode.OK, "更新用户信息成功", userDto);
             } else {
                 response.wrapper(AbstractResponseCode.FAIL, "更新用户信息失败");
             }

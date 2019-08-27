@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -47,15 +48,19 @@ public class JwtFilter extends AuthenticatingFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         log.debug("JwtFilter--------------------------->onAccessDenied");
+        HttpServletResponse httpResponse = WebUtils.toHttp(servletResponse);
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setContentType("application/json;charset=utf-8");
+        httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         return false;
     }
 
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        String token = ((HttpServletRequest) servletRequest).getHeader(JwtTokenUtil.header);
+        String token = ((HttpServletRequest) servletRequest).getHeader(JwtTokenUtil.HEADER);
         // 判断请求头是否带上了token
-        if (!StringUtils.isBlank(token) && token.startsWith(JwtTokenUtil.bearer)) {
-            token = token.substring(JwtTokenUtil.bearer.length());
+        if (!StringUtils.isBlank(token) && token.startsWith(JwtTokenUtil.BEARER)) {
+            token = token.substring(JwtTokenUtil.BEARER.length());
             log.debug("JwtFilter--------------->createToken-------------->" + token);
             if (JwtTokenUtil.validateToken(token)) {
                 return new UserToken(token, LoginTypeEnum.JWT.getType());
@@ -81,5 +86,4 @@ public class JwtFilter extends AuthenticatingFilter {
         }
         return super.preHandle(request, response);
     }
-
 }

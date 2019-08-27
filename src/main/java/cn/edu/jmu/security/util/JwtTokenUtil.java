@@ -4,7 +4,9 @@ import cn.edu.jmu.security.config.UserToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,26 +23,26 @@ public class JwtTokenUtil implements Serializable {
 
     public static final String LOGIN_TYPE = "loginType";
 
-    public static final String secret = "MySecret";
+    public static final String SECRET = "MySecret";
 
-    public static final Long expiration = 72000L;
+    public static final Long EXPIRATION = 72000L;
 
-    public static final String header = "Authorization";
+    public static final String HEADER = "Authorization";
 
-    public static final String bearer = "Bearer ";
+    public static final String BEARER = "Bearer ";
 
     public static String generateToken(UserToken userToken) {
         // 写入自定义数据
         Map<String, Object> claims = new HashMap<>(10);
         claims.put(LOGIN_TYPE, userToken.getLoginType());
         final Date createdDate = new Date();
-        final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
+        final Date expirationDate = new Date(createdDate.getTime() + EXPIRATION * 1000);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userToken.getUsername())
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
@@ -71,7 +73,7 @@ public class JwtTokenUtil implements Serializable {
 
     public static Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(SECRET)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -107,13 +109,22 @@ public class JwtTokenUtil implements Serializable {
 
     public static String refreshToken(String token) {
         final Date createdDate = new Date();
-        final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
+        final Date expirationDate = new Date(createdDate.getTime() + EXPIRATION * 1000);
         final Claims claims = getAllClaimsFromToken(token);
         claims.setIssuedAt(createdDate);
         claims.setExpiration(expirationDate);
         return Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
+    }
+
+    public static String getToken(HttpServletRequest request) {
+        String token = request.getHeader(JwtTokenUtil.HEADER);
+        // 判断请求头是否带上了token
+        if (!StringUtils.isBlank(token) && token.startsWith(JwtTokenUtil.BEARER)) {
+            token = token.substring(JwtTokenUtil.BEARER.length());
+        }
+        return token;
     }
 }

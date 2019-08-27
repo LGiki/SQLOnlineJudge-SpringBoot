@@ -19,7 +19,25 @@ public class UserMapper {
 
     public static User toEntity(UserDto userDto) {
         User user = new User();
-        BeanUtil.copyProperties(userDto, user, true, CopyOptions.create().setIgnoreNullValue(true));
+        BeanUtil.copyProperties(userDto, user, true, CopyOptions.create()
+                .setIgnoreNullValue(true)
+                .setIgnoreProperties("id", "username", "submit", "solved"));
         return user;
+    }
+
+    public static void toEntity(UserDto userDto, User user) {
+        if (user == null) {
+            user = new User();
+        }
+        BeanUtil.copyProperties(userDto, user, true, CopyOptions.create()
+                .setIgnoreNullValue(true)
+                .setIgnoreProperties("id", "username", "submit", "solved"));
+    }
+
+    public static void toDto(User user, UserDto userDto) {
+        if (userDto == null) {
+            userDto = new UserDto();
+        }
+        BeanUtil.copyProperties(user, userDto);
     }
 }

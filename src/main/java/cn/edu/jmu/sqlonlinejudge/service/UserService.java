@@ -24,8 +24,8 @@ public interface UserService extends IService<User> {
     /**
      * 更新用户
      *
-     * @param user user
+     * @param userDto userDto
      * @return boolean
      */
-    boolean update(User user);
+    boolean update(UserDto userDto);
 }

@@ -1,4 +1,4 @@
-package cn.edu.jmu.sqlonlinejudge.controller;
+package cn.edu.jmu.sqlonlinejudge.controller.publics;
 
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
@@ -102,5 +102,15 @@ public class PublicController {
         IPage<SolutionDto> iPage = solutionService.get(null, page);
         basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(basicResponse);
+    }
+
+    /**
+     * 获取解答数量
+     */
+    @GetMapping(value = "/solutions/count")
+    public ResponseEntity<BasicResponse> count() {
+        BasicResponse response = new BasicResponse();
+        response.wrapper(AbstractResponseCode.OK, "获取数量成功", solutionService.count());
+        return ResponseEntity.ok().body(response);
     }
 }
