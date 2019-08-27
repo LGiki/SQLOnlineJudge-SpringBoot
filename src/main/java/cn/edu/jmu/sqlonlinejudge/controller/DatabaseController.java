@@ -59,7 +59,7 @@ public class DatabaseController {
      * 通过ID删除数据库
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         // 删除数据库
         if (databaseService.removeById(id)) {
@@ -67,7 +67,7 @@ public class DatabaseController {
         } else {
             response.wrapper(AbstractResponseCode.FAIL, "删除失败");
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     /**
@@ -87,7 +87,7 @@ public class DatabaseController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -108,7 +108,7 @@ public class DatabaseController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

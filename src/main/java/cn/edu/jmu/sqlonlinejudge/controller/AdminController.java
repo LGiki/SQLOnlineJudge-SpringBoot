@@ -65,7 +65,7 @@ public class AdminController {
      * @param id 用户ID
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         BasicResponse response = new BasicResponse();
         // 删除用户
         if (adminService.removeById(id)) {
@@ -73,7 +73,7 @@ public class AdminController {
         } else {
             response.wrapper(AbstractResponseCode.FAIL, "删除失败");
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     /**
@@ -82,7 +82,7 @@ public class AdminController {
      * @param adminDto 新的管理员信息
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> update(@RequestBody cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto adminDto, @PathVariable(value = "id") Integer id) {
+    public ResponseEntity<BasicResponse> update(@RequestBody AdminDto adminDto, @PathVariable(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
         if (adminDto != null && adminDto.getId() != null && adminDto.getId().equals(id)) {
             // 更新用户信息
@@ -94,7 +94,7 @@ public class AdminController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -104,7 +104,7 @@ public class AdminController {
      * @param adminDto 新的管理员
      */
     @PostMapping(value = "/")
-    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated cn.edu.jmu.sqlonlinejudge.entity.dto.AdminDto adminDto) {
+    public ResponseEntity<BasicResponse> insert(@RequestBody @Validated AdminDto adminDto) {
         BasicResponse response = new BasicResponse();
         if (adminDto != null && adminDto.getId() == null) {
             Admin admin = AdminMapper.toEntity(adminDto);
@@ -118,7 +118,7 @@ public class AdminController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }

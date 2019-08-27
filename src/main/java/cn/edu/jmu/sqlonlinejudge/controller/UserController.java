@@ -73,10 +73,10 @@ public class UserController {
             } else {
                 response.wrapper(AbstractResponseCode.FAIL, "删除失败");
             }
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             response.wrapper(AbstractResponseCode.FAIL, "删除失败");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -98,7 +98,7 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -122,7 +122,7 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

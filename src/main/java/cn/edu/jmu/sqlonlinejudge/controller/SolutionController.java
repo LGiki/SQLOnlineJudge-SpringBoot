@@ -23,10 +23,6 @@ public class SolutionController {
     @Resource
     private SolutionService solutionService;
 
-
-
-
-
     /**
      * 获取解答数量
      */
