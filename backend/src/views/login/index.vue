@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import qs from "qs";
+import qs from 'qs'
 
 export default {
   name: 'Login',
@@ -80,8 +80,8 @@ export default {
       loginRules: {
         // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         // password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-        username: [{ required: true, trigger: 'blur'}],
-        password: [{ required: true, trigger: 'blur'}]
+        username: [{ required: true, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur' }]
       },
       loading: false,
       passwordType: 'password',
@@ -111,19 +111,19 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          let postData = qs.stringify({
+          const postData = qs.stringify({
             username: this.loginForm.username,
             password: this.loginForm.password
-          });
+          })
           this.$axios
             .post(this.Url.login, postData)
             .then(res => {
               if (res.status !== 200) {
-                alert("登录失败，网路错误!");
+                alert('登录失败，网路错误!')
               } else {
                 // this.$store.dispatch('user/login', this.loginForm).then(() => {
-                  localStorage.setItem('JWT_TOKEN', res.data.data.token);
-                  this.$router.push({ path: this.redirect || '/' })
+                localStorage.setItem('JWT_TOKEN', res.data.data.token)
+                this.$router.push({ path: this.redirect || '/' })
                 //   this.loading = false
                 // }).catch(() => {
                 //   this.loading = false
@@ -132,9 +132,9 @@ export default {
               this.loading = false
             })
             .catch(err => {
-              alert("登录失败，用户名或密码错误!");
+              alert('登录失败，用户名或密码错误!')
               this.loading = false
-            });
+            })
         } else {
           return false
         }

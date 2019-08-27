@@ -34,8 +34,8 @@ import Axios from 'axios'
 
 Axios.interceptors.request.use(
   config => {
-    if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-      config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`;
+    if (localStorage.JWT_TOKEN) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+      config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`
     }
     return config
   },
@@ -47,9 +47,9 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   response => {
     if (response.status === 403) {
-      this.$router.push({ path: "/login" });
+      this.$router.push({ path: '/login' })
     }
-    return response;
+    return response
   },
   error => {
     if (error.response) {
@@ -62,7 +62,7 @@ Axios.interceptors.response.use(
           location.reload()
       }
     }
-    return Promise.reject(error)   // 返回接口返回的错误信息
+    return Promise.reject(error) // 返回接口返回的错误信息
   }
 )
 
