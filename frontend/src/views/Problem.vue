@@ -30,6 +30,34 @@
               <md-icon>search</md-icon>
               <label>请输入搜索关键字</label>
               <md-input v-model="searchKeyword"></md-input>
+
+              <li class="md-list-item">
+                <a
+                  href="javascript:void(0)"
+                  class="md-list-item-router md-list-item-container md-button-clean dropdown"
+                >
+                  <div class="md-list-item-content">
+                    <drop-down direction="down">
+                      <md-button
+                        slot="title"
+                        class="md-button md-button-link md-simple dropdown-toggle"
+                        data-toggle="dropdown"
+                      >
+                        <i class="material-icons">apps</i>
+                        <p>{{searchType.label}}</p>
+                      </md-button>
+                      <ul class="dropdown-menu dropdown-with-icons">
+                        <li v-for="item in searchTypeList">
+                          <a @click="selectSearchType(item)">
+                            <i class="material-icons">layers</i>
+                            <p>{{item.label}}</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </drop-down>
+                  </div>
+                </a>
+              </li>
               <md-button class="md-info" @click="onSearch">搜索</md-button>&nbsp;
               <md-button class="md-info" v-if="inSearch" @click="cancelSearch">取消搜索</md-button>
             </md-field>
@@ -87,6 +115,20 @@ export default {
   },
   data() {
     return {
+      searchTypeList: [
+        {
+          label: "题目ID",
+          value: "id"
+        },
+        {
+          label: "题目标题",
+          value: "title"
+        }
+      ],
+      searchType: {
+          label: "题目ID",
+          value: "id"
+      },
       searchKeyword: "",
       inSearch: false,
       pageNum: 1,
@@ -146,6 +188,9 @@ export default {
     };
   },
   methods: {
+    selectSearchType(searchTypeItem) {
+      this.searchType = searchTypeItem;
+    },
     rowClick(rowIndex, rowData, column) {
       this.$router.push({ path: "/problem/" + rowData.id });
     },
@@ -164,8 +209,8 @@ export default {
             alert("获取题目列表失败，网络错误！");
           } else {
             let resData = res.data;
-            if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list;
+            if (resData.code === 0) {
+              this.tableConfig.tableData = resData.data.records;
               this.totalItems = resData.data.total;
             } else {
               alert(resData.message);
@@ -193,11 +238,11 @@ export default {
         alert("请输入关键字！");
       } else {
         this.isLoading = true;
-        const apiUrl = this.Url.problemSearch;
+        const apiUrl = this.Url.problemBaseUrl;
         this.$axios
           .get(apiUrl, {
             params: {
-              keyword: keyword,
+              [this.searchType.value]: keyword,
               pageNum: this.pageNum,
               pageSize: this.pageSize
             }
@@ -207,8 +252,8 @@ export default {
               alert("题目搜索失败，网络错误！");
             } else {
               const resData = res.data;
-              if (resData.code === 200) {
-                this.tableConfig.tableData = resData.data.list;
+              if (resData.code === 0) {
+                this.tableConfig.tableData = resData.data.records;
                 this.totalItems = resData.data.total;
                 this.inSearch = true;
               } else {
@@ -281,5 +326,4 @@ export default {
 .justify-content-center {
   justify-content: center !important;
 }
-
 </style>

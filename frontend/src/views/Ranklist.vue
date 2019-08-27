@@ -159,8 +159,8 @@ export default {
             alert("获取排名失败，网络错误！");
           } else {
             let resData = res.data;
-            if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list;
+            if (resData.code === 0) {
+              this.tableConfig.tableData = resData.data.records;
               this.totalItems = resData.data.total;
               this.isLoading = false;
             } else {
