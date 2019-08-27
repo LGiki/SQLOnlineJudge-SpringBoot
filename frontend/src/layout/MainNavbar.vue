@@ -55,6 +55,12 @@
                   <b>提交状态</b>
                 </p>
               </md-list-item>
+              <md-list-item href="#/register">
+                <i class="material-icons">how_to_reg</i>
+                <p>
+                  <b>注册</b>
+                </p>
+              </md-list-item>
               <md-list-item href="#/login">
                 <i class="material-icons">assignment_ind</i>
                 <p>

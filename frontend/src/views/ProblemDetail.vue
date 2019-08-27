@@ -13,18 +13,6 @@
           <p>{{ problemDetail.description }}</p>
           <h3>建表语句</h3>
           <highlight-code lang="sql">{{ createTableCode }}</highlight-code>
-          <template v-if="problemDetail.inputFormat">
-            <h3>输入格式</h3>
-            <p>{{ problemDetail.inputFormat }}</p>
-          </template>
-          <template v-if="problemDetail.outputFormat">
-            <h3>输出格式</h3>
-            <p>{{ problemDetail.outputFormat }}</p>
-          </template>
-          <template v-if="problemDetail.sampleInput">
-            <h3>样例输入</h3>
-            <p>{{ problemDetail.sampleInput }}</p>
-          </template>
           <template v-if="problemDetail.sampleOutput">
             <h3>样例输出</h3>
             <p>{{ problemDetail.sampleOutput }}</p>
@@ -115,7 +103,7 @@ export default {
             alert("Network error");
           } else {
             let resData = res.data;
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.problemDetail = resData.data;
             }
             this.getCreateTableCode(this.problemDetail.databaseId);
@@ -134,7 +122,7 @@ export default {
             alert("获取题目详情失败，网络错误！");
           } else {
             let resData = res.data;
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.createTableCode = resData.data.createTable;
             } else {
               alert(resData.message);
