@@ -20,15 +20,6 @@
       <el-form-item label="题目描述" prop="description">
         <el-input v-model="problemDetail.description" type="textarea" />
       </el-form-item>
-      <el-form-item label="输入格式" prop="inputFormat">
-        <el-input v-model="problemDetail.inputFormat" type="textarea" />
-      </el-form-item>
-      <el-form-item label="输出格式" prop="outputFormat">
-        <el-input v-model="problemDetail.outputFormat" type="textarea" />
-      </el-form-item>
-      <el-form-item label="样例输入" prop="sampleInput">
-        <el-input v-model="problemDetail.sampleInput" type="textarea" />
-      </el-form-item>
       <el-form-item label="样例输出" prop="sampleOutput">
         <el-input v-model="problemDetail.sampleOutput" type="textarea" />
       </el-form-item>
@@ -113,9 +104,6 @@ export default {
         id: '',
         title: '',
         description: '',
-        inputFormat: '',
-        outputFormat: '',
-        sampleInput: '',
         sampleOutput: '',
         hint: '',
         answer: '',
@@ -148,11 +136,9 @@ export default {
         if (valid) {
           const problemId = this.$route.params.id
           const problem = {
+            id: problemId,
             title: this.problemDetail.title.trim(),
             description: this.problemDetail.description.trim(),
-            inputFormat: this.problemDetail.inputFormat.trim(),
-            outputFormat: this.problemDetail.outputFormat.trim(),
-            sampleInput: this.problemDetail.sampleInput.trim(),
             sampleOutput: this.problemDetail.sampleOutput.trim(),
             hint: this.problemDetail.hint.trim(),
             answer: this.problemDetail.answer,

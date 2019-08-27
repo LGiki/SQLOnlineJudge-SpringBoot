@@ -17,15 +17,6 @@
       <el-form-item label="题目介绍" prop="description">
         <el-input v-model="problemDetail.description" placeholder="请输入题目介绍" type="textarea" />
       </el-form-item>
-      <el-form-item label="输入格式" prop="inputFormat">
-        <el-input v-model="problemDetail.inputFormat" placeholder="请输入输入格式" type="textarea" />
-      </el-form-item>
-      <el-form-item label="输出格式" prop="outputFormat">
-        <el-input v-model="problemDetail.outputFormat" placeholder="请输入输出格式" type="textarea" />
-      </el-form-item>
-      <el-form-item label="样例输入" prop="sampleInput">
-        <el-input v-model="problemDetail.sampleInput" placeholder="请输入样例输入" type="textarea" />
-      </el-form-item>
       <el-form-item label="样例输出" prop="sampleOutput">
         <el-input v-model="problemDetail.sampleOutput" placeholder="请输入样例输出" type="textarea" />
       </el-form-item>
@@ -83,6 +74,13 @@ export default {
             trigger: 'blur'
           }
         ],
+        description: [
+          {
+            required: true,
+            message: '题目介绍不能为空',
+            trigger: 'blur'
+          }
+        ],
         databaseId: [
           {
             required: true,
@@ -108,9 +106,6 @@ export default {
       problemDetail: {
         title: '',
         description: '',
-        inputFormat: '',
-        outputFormat: '',
-        sampleInput: '',
         sampleOutput: '',
         hint: '',
         answer: '',
@@ -151,27 +146,22 @@ export default {
       const postData = this.problemDetail
       postData.title.trim()
       postData.description.trim()
-      postData.inputFormat.trim()
-      postData.outputFormat.trim()
-      postData.sampleInput.trim()
       postData.sampleOutput.trim()
       postData.hint.trim()
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
-          if (res.status !== 200) {
+          if (res.status !== 201) {
             this.$message.error('添加题目失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
+            if (resData.code === 0) {
               this.$message({
                 message: resData.message,
                 type: 'success'
               })
               this.$router.back(-1)
-            } else if (resData.code === 400) {
-              this.$message.error(resData.message)
-            } else if (resData.code === 503) {
+            } else {
               this.$message.error(resData.message)
             }
           }
@@ -186,11 +176,11 @@ export default {
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            alert('Get database list: Network error')
+            this.$message.error('获取数据库列表失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
-              this.databaseList = resData.data.list
+            if (resData.code === 0) {
+              this.databaseList = resData.data.records
             }
           }
         })

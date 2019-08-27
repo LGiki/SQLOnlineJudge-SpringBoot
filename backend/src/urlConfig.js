@@ -9,7 +9,7 @@ const Url = {
   // 排名接口
   rankList: BaseUrl + 'user/ranklist',
   // 提交基础接口
-  solutionBaseUrl: BaseUrl + 'solutions/',
+  solutionBaseUrl: BaseUrl + 'public/solutions/',
   // 提交数量接口
   solutionCount: BaseUrl + 'solutions/count',
   // 数据库基础接口

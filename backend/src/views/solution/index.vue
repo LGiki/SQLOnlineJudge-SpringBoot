@@ -145,7 +145,7 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.solutionSearch
+        const apiUrl = this.Url.solutionBaseUrl
         this.$axios
           .get(apiUrl, {
             params: {
@@ -159,8 +159,8 @@ export default {
               this.$message.error('搜索失败，网络错误！')
             } else {
               const resData = res.data
-              if (resData.code === 200) {
-                this.tableConfig.tableData = resData.data.list
+              if (resData.code === 0) {
+                this.tableConfig.tableData = resData.data.records
                 this.totalItems = resData.data.total
                 this.inSearch = true
               } else {
@@ -203,8 +203,8 @@ export default {
             this.$message.error('获取用户提交列表失败，网络错误！')
           } else {
             const resData = res.data
-            if (resData.code === 200) {
-              this.tableConfig.tableData = resData.data.list
+            if (resData.code === 0) {
+              this.tableConfig.tableData = resData.data.records
               this.totalItems = resData.data.total
             }
           }
