@@ -65,7 +65,7 @@ export default {
           const userId = this.$route.params.id
           const user = {
             id: this.userDetail.id,
-            username: this.userDetail.username.trim(),
+            username: this.userDetail.username.trim()
           }
           if (this.userDetail.password) {
             user[password] = this.userDetail.password.trim()

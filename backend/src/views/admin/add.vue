@@ -47,7 +47,7 @@ export default {
       },
       userDetail: {
         username: '',
-        password: '',
+        password: ''
       }
     }
   },
