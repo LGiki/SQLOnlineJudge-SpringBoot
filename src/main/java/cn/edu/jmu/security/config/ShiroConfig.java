@@ -50,8 +50,8 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 配置不会被拦截的链接 顺序判断
         // 验证接口放行,noSessionCreation的作用是用户在操作session时会抛异常
-        filterChainDefinitionMap.put("/auth/**", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/api/public/**", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/auth/**", "noSessionCreation,jwt[permissive]");
+        filterChainDefinitionMap.put("/api/public/**", "noSessionCreation,jwt[permissive]");
         filterChainDefinitionMap.put("/logout", "noSessionCreation,jwt[permissive]");
         // 剩下的全部采用自定义的拦截器
         filterChainDefinitionMap.put("/**", "noSessionCreation,jwt");

@@ -32,7 +32,8 @@ public class JwtFilter extends AuthenticatingFilter {
         boolean allowed = false;
         try {
             allowed = executeLogin(request, response);
-        } catch (IllegalStateException e) { //not found any token
+        } catch (IllegalStateException e) {
+            //not found any token
             log.error("Not found any token");
         } catch (Exception e) {
             log.error("Error occurs when login", e);

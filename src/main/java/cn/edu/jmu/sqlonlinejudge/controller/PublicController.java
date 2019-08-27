@@ -12,6 +12,7 @@ import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
 import cn.edu.jmu.sqlonlinejudge.service.ProblemService;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
+import cn.edu.jmu.sqlonlinejudge.service.enums.UserStatusEnum;
 import cn.edu.jmu.sqlonlinejudge.service.mapper.ProblemMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -71,7 +72,9 @@ public class PublicController {
                                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         BasicResponse response = new BasicResponse();
         Page<User> userPage = new Page<>(pageNum, pageSize);
-        IPage<UserDto> iPage = userService.getAll(null, userPage);
+        UserDto userDto = new UserDto();
+        userDto.setStatus(UserStatusEnum.NORMAL);
+        IPage<UserDto> iPage = userService.getAll(userDto, userPage);
         response.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
         return ResponseEntity.ok().body(response);
     }

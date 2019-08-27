@@ -74,6 +74,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             } else if (userDto.getEmail() != null) {
                 queryWrapper.like(User::getEmail, "%" + userDto.getEmail() + "%");
             }
+            if (userDto.getStatus() != null) {
+                queryWrapper.eq(User::getStatus, userDto.getStatus());
+            }
             return queryWrapper;
         }
     }
