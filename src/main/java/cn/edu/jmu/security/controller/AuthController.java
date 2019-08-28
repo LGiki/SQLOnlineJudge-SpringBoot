@@ -9,6 +9,7 @@ import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,8 @@ public class AuthController {
         String token = JwtTokenUtil.generateToken(userToken);
         Map<String, String> data = new HashMap<>(1);
         data.put("token", token);
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        data.put("id", user.getId().toString());
         response.wrapper(AbstractResponseCode.OK, "登录成功", data);
         return ResponseEntity.ok(response);
     }
