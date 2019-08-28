@@ -27,10 +27,20 @@ public class SolutionDto implements Serializable {
     private Integer uid;
 
     /**
+     * 用户名
+     */
+    private String username;
+
+    /**
      * 题目ID
      */
     private Integer pid;
 
+    /**
+     * 题目标题
+     */
+
+    private String title;
     /**
      * 提交时间
      * 格式化显示为 yyyy/MM/dd HH:mm:ss
