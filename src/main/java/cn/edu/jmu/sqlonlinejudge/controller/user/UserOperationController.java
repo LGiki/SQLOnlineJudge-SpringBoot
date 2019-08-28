@@ -8,7 +8,6 @@ import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.security.Security;
 
 /**
  * @author sgh
@@ -37,8 +35,8 @@ public class UserOperationController {
     /**
      * 获取登录用户的信息
      */
-    @GetMapping(value = "users/")
-    public ResponseEntity<BasicResponse> get(@RequestParam(value = "id") Integer id) {
+    @GetMapping(value = "users/{id}")
+    public ResponseEntity<BasicResponse> get(@PathVariable(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
         User user = userService.getById(id);
         UserDto userDto = UserMapper.toDto(user);
@@ -70,8 +68,8 @@ public class UserOperationController {
     /**
      * 用户查看自己提交的代码
      */
-    @GetMapping(value = "/solutions/code")
-    public ResponseEntity<BasicResponse> getCode(@RequestParam(value = "id") Integer id) {
+    @GetMapping(value = "/solutions/{id}")
+    public ResponseEntity<BasicResponse> getCode(@PathVariable(value = "id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();

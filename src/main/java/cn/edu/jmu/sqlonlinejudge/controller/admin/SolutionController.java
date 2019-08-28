@@ -25,8 +25,8 @@ public class SolutionController {
     /**
      * 管理员查看提交的源代码
      */
-    @GetMapping(value = "/code")
-    public ResponseEntity<BasicResponse> getCode(@RequestParam(value = "id") Integer id) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> getCode(@PathVariable(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
         Solution solution = solutionService.getById(id);
         response.wrapper(AbstractResponseCode.OK, "查询成功", solution.getSourceCode());
