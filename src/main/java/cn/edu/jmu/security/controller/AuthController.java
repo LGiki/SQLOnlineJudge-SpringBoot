@@ -8,7 +8,9 @@ import cn.edu.jmu.common.util.ValidateUtil;
 import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
+import cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -82,7 +84,7 @@ public class AuthController {
         BasicResponse response = new BasicResponse();
         if (!ValidateUtil.isEmail(email)) {
             response.wrapper(AbstractResponseCode.FAIL, "注册失败");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
             User user = new User();
             user.setUsername(username);
@@ -92,7 +94,8 @@ public class AuthController {
             user.setPassword(password);
             user.setEmail(email);
             if (userService.save(user)) {
-                response.wrapper(AbstractResponseCode.OK, "注册成功", user);
+                UserDto userDto = UserMapper.toDto(user);
+                response.wrapper(AbstractResponseCode.OK, "注册成功", userDto);
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 response.wrapper(AbstractResponseCode.FAIL, "注册失败");
