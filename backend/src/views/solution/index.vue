@@ -32,8 +32,19 @@
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
+        :row-click="rowClick"
       />
     </template>
+    <el-dialog
+      title="查看代码"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose">
+      <code>{{ sourceCode }}</code>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
     <template>
       <div class="bd">
         <v-pagination
@@ -75,6 +86,8 @@ export default {
           value: 'pid'
         }
       ],
+      sourceCode: '',
+      dialogVisible: false,
       searchType: 'id',
       inSearch: false,
       searchKeyword: '',
@@ -140,10 +153,13 @@ export default {
           {
             field: 'sourceCode',
             title: '代码',
-            width: 280,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return `<a>查看代码</a>`
+            }
           },
           {
             field: 'result',
@@ -162,6 +178,18 @@ export default {
     this.fetchSolutionList()
   },
   methods: {
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    rowClick(rowIndex, rowData, column) {
+      if(column.field=='sourceCode'){
+        this.fetchSolutionCode(rowData.id)
+      } 
+    },
     onSearch() {
       const keyword = this.searchKeyword.trim()
       if (keyword.length === 0) {
@@ -236,6 +264,31 @@ export default {
         .catch(err => {
           this.$message.error('获取用户提交列表失败！')
           this.isLoading = false
+          console.log(err)
+        })
+    },
+    fetchSolutionCode(solutionId) {
+      let apiUrl = this.Url.solutionCode
+      this.$axios
+        .get(apiUrl, {
+          params: {
+            id: solutionId
+          }
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('获取解答代码失败！')
+          } else {
+            const resData = res.data
+            if (resData.code === 0) {
+              this.sourceCode = resData.data
+              this.dialogVisible = true
+            }
+          }
+          this.isLoading = false
+        })
+        .catch(err => {
+          this.$message.error('获取解答代码失败！')
           console.log(err)
         })
     }
