@@ -38,9 +38,9 @@ public class UserOperationController {
      * 获取登录用户的信息
      */
     @GetMapping(value = "users/")
-    public ResponseEntity<BasicResponse> get(@RequestParam(value = "username") String username) {
+    public ResponseEntity<BasicResponse> get(@RequestParam(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
-        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        User user = userService.getById(id);
         UserDto userDto = UserMapper.toDto(user);
         response.wrapper(AbstractResponseCode.OK, "查询成功", userDto);
         return ResponseEntity.ok().body(response);
