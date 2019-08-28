@@ -62,7 +62,8 @@ export default {
             alert("登录失败，网路错误!");
           } else {
             localStorage.setItem('JWT_TOKEN', res.data.data.token);
-            this.$router.push({ path: "/problem/" });
+            localStorage.setItem('USER_ID', res.data.data.id);
+            window.location.href="/"
           }
         })
         .catch(err => {

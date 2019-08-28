@@ -55,18 +55,34 @@
                   <b>提交状态</b>
                 </p>
               </md-list-item>
-              <md-list-item href="#/register">
-                <i class="material-icons">how_to_reg</i>
-                <p>
-                  <b>注册</b>
-                </p>
-              </md-list-item>
-              <md-list-item href="#/login">
-                <i class="material-icons">assignment_ind</i>
-                <p>
-                  <b>登录</b>
-                </p>
-              </md-list-item>
+              <template v-if="!userDetail">
+                <md-list-item href="#/register">
+                  <i class="material-icons">how_to_reg</i>
+                  <p>
+                    <b>注册</b>
+                  </p>
+                </md-list-item>
+                <md-list-item href="#/login">
+                  <i class="material-icons">assignment_ind</i>
+                  <p>
+                    <b>登录</b>
+                  </p>
+                </md-list-item>
+              </template>
+              <template v-else>
+                <md-list-item :href="`#/profile/${userDetail.id}`">
+                  <i class="material-icons">person</i>
+                  <p>
+                    <b>{{userDetail.username}}</b>
+                  </p>
+                </md-list-item>
+                <md-list-item href="#" @click="logout">
+                  <i class="material-icons">power_settings_new</i>
+                  <p>
+                    <b>注销</b>
+                  </p>
+                </md-list-item>
+              </template>
             </md-list>
           </div>
         </div>
@@ -118,7 +134,8 @@ export default {
   data() {
     return {
       extraNavClasses: "",
-      toggledClass: false
+      toggledClass: false,
+      userDetail: null,
     };
   },
   computed: {
@@ -128,6 +145,35 @@ export default {
     }
   },
   methods: {
+    logout() {
+      localStorage.removeItem('JWT_TOKEN');
+      localStorage.removeItem('USER_ID');
+      this.userDetail = null;
+    },
+    fetchUserInformation(userId) {
+      this.$axios
+          .get(this.Url.userDetail, {
+            params: {
+              id: userId
+            }
+          })
+          .then(res => {
+            if (res.status !== 200) {
+              alert("获取用户详细信息失败，网络错误！");
+            } else {
+              const resData = res.data;
+              if (resData.code === 0) {
+                this.userDetail = resData.data
+              } else {
+                alert(resData.message);
+              }
+            }
+          })
+          .catch(err => {
+            alert("获取用户详细信息失败，未知错误！");
+            console.log(err);
+          });
+    },
     bodyClick() {
       let bodyClick = document.getElementById("bodyClick");
 
@@ -175,6 +221,9 @@ export default {
   },
   mounted() {
     document.addEventListener("scroll", this.scrollListener);
+    if (localStorage.JWT_TOKEN && localStorage.USER_ID) {
+      this.fetchUserInformation(localStorage.USER_ID);
+    }
   },
   beforeDestroy() {
     document.removeEventListener("scroll", this.scrollListener);

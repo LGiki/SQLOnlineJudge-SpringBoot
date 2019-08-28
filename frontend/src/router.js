@@ -86,15 +86,15 @@ export default new Router({
     //     footer: { backgroundColor: "black" },
     //   }
     // },
-    // {
-    //   path: "/profile",
-    //   name: "profile",
-    //   components: { default: Profile, header: MainNavbar, footer: MainFooter },
-    //   props: {
-    //     header: { colorOnScroll: 400 },
-    //     footer: { backgroundColor: "black" }
-    //   }
-    // }
+    {
+      path: "/profile/:id",
+      name: "profile",
+      components: { default: Profile, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 400 },
+        footer: { backgroundColor: "black" }
+      }
+    }
   ],
   scrollBehavior: to => {
     if (to.hash) {

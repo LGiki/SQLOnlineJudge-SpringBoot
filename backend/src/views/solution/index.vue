@@ -127,14 +127,14 @@ export default {
             }
           },
           {
-            field: 'problemTitle',
+            field: 'title',
             title: '题目标题',
             width: 280,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.problemTitle}">${rowData.problemTitle}</a>`
+              return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.title}">${rowData.title}</a>`
             }
           },
           {

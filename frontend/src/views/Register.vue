@@ -92,10 +92,14 @@ export default {
         .post(this.Url.register, postData)
         .then(res => {
           if (res.status !== 200) {
-            alert("登录失败，网路错误!");
+            alert("注册失败，网路错误!");
           } else {
             let resData = res.data;
-            alert(resData.message);
+            if (resData.code === 0) {
+              this.$router.push({ path: "/login" });
+            }else{
+              alert('注册失败！')
+            }
           }
         })
         .catch(err => {

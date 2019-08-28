@@ -13,5 +13,7 @@ const Url = {
     databaseBaseUrl: BaseUrl + '/public/databases',
     //用户注册接口
     register: ApiHost + '/auth/user/register',
+    //获取用户详细信息接口
+    userDetail: BaseUrl + '/users/',
 }
 export default Url
