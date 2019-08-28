@@ -8,6 +8,7 @@ import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
 import cn.edu.jmu.sqlonlinejudge.service.mapper.UserMapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -37,10 +38,9 @@ public class UserOperationController {
      * 获取登录用户的信息
      */
     @GetMapping(value = "users/")
-    public ResponseEntity<BasicResponse> get() {
+    public ResponseEntity<BasicResponse> get(@RequestParam(value = "username") String username) {
         BasicResponse response = new BasicResponse();
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
         UserDto userDto = UserMapper.toDto(user);
         response.wrapper(AbstractResponseCode.OK, "查询成功", userDto);
         return ResponseEntity.ok().body(response);
@@ -67,6 +67,9 @@ public class UserOperationController {
         }
     }
 
+    /**
+     * 用户查看自己提交的代码
+     */
     @GetMapping(value = "/solutions/code")
     public ResponseEntity<BasicResponse> getCode(@RequestParam(value = "id") Integer id) {
         BasicResponse basicResponse = new BasicResponse();
@@ -79,5 +82,10 @@ public class UserOperationController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @PostMapping(value = "/solutions/")
+    public ResponseEntity<BasicResponse> submit() {
+        return null;
     }
 }
