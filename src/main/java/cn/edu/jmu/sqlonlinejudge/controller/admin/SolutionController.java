@@ -1,12 +1,12 @@
 package cn.edu.jmu.sqlonlinejudge.controller.admin;
 
+import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.sqlonlinejudge.entity.Solution;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -22,7 +22,11 @@ public class SolutionController {
     @Resource
     private SolutionService solutionService;
 
-    public ResponseEntity<BasicResponse> getCode(@RequestParam Integer id) {
-        return null;
+    @GetMapping(value = "/code")
+    public ResponseEntity<BasicResponse> getCode(@RequestParam(value = "id") Integer id) {
+        BasicResponse response = new BasicResponse();
+        Solution solution = solutionService.getById(id);
+        response.wrapper(AbstractResponseCode.OK, "查询成功", solution.getSourceCode());
+        return ResponseEntity.ok(response);
     }
 }
