@@ -22,6 +22,9 @@ public class SolutionController {
     @Resource
     private SolutionService solutionService;
 
+    /**
+     * 管理员查看提交的源代码
+     */
     @GetMapping(value = "/code")
     public ResponseEntity<BasicResponse> getCode(@RequestParam(value = "id") Integer id) {
         BasicResponse response = new BasicResponse();
