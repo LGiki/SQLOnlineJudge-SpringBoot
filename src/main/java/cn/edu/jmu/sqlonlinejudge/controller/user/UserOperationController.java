@@ -4,6 +4,7 @@ import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.sqlonlinejudge.entity.Solution;
 import cn.edu.jmu.sqlonlinejudge.entity.User;
+import cn.edu.jmu.sqlonlinejudge.entity.dto.SolutionDto;
 import cn.edu.jmu.sqlonlinejudge.entity.dto.UserDto;
 import cn.edu.jmu.sqlonlinejudge.service.SolutionService;
 import cn.edu.jmu.sqlonlinejudge.service.UserService;
@@ -13,6 +14,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -83,7 +85,13 @@ public class UserOperationController {
     }
 
     @PostMapping(value = "/solutions/")
-    public ResponseEntity<BasicResponse> submit() {
-        return null;
+    public ResponseEntity<BasicResponse> submit(@RequestBody @Validated SolutionDto solutionDto) {
+        BasicResponse response = new BasicResponse();
+        if (solutionService.add(solutionDto)) {
+            response.wrapper(AbstractResponseCode.OK, "提交成功");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

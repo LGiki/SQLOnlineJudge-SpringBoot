@@ -10,13 +10,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum SolutionResultEnum {
 
     /**
-     * Accepted
+     * Solution Result
      */
-    ACCEPTED("0", "Accepted"),
-    /**
-     * Wrong Answer
-     */
-    WRONG("1", "Wrong Answer"),
+    UNKNOWN("0", "Unknown"),
+    ACCEPTED("1", "Accepted"),
+    WRONG("2", "Wrong Answer"),
     ;
 
     @EnumValue

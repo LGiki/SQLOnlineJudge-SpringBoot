@@ -2,8 +2,11 @@ package cn.edu.jmu.sqlonlinejudge.entity.dto;
 
 import cn.edu.jmu.sqlonlinejudge.service.enums.SolutionResultEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -24,6 +27,7 @@ public class SolutionDto implements Serializable {
     /**
      * 用户ID
      */
+    @NotNull
     private Integer uid;
 
     /**
@@ -34,6 +38,7 @@ public class SolutionDto implements Serializable {
     /**
      * 题目ID
      */
+    @NotNull
     private Integer pid;
 
     /**
@@ -47,6 +52,10 @@ public class SolutionDto implements Serializable {
      */
     @JsonFormat(timezone = "UTC", pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp submitTime;
+
+    @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String code;
 
     /**
      * 结果

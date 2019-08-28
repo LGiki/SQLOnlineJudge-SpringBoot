@@ -46,6 +46,11 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         return convert;
     }
 
+    @Override
+    public boolean add(SolutionDto solutionDto) {
+        return true;
+    }
+
     private void addMessage(SolutionDto solutionDto) {
         User user = userService.getById(solutionDto.getUid());
         solutionDto.setUsername(user.getUsername());

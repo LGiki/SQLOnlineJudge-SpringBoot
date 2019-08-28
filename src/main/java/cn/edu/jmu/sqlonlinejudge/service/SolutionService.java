@@ -21,4 +21,12 @@ public interface SolutionService extends IService<Solution> {
      * @return IPage<solution>
      */
     IPage<SolutionDto> get(SolutionDto solutionDto, Page page);
+
+    /**
+     * 增加solution
+     *
+     * @param solutionDto solutionDto
+     * @return boolean
+     */
+    boolean add(SolutionDto solutionDto);
 }
