@@ -27,7 +27,6 @@ public class SolutionDto implements Serializable {
     /**
      * 用户ID
      */
-    @NotNull
     private Integer uid;
 
     /**

@@ -86,6 +86,9 @@ public class UserOperationController {
 
     @PostMapping(value = "/solutions/")
     public ResponseEntity<BasicResponse> submit(@RequestBody @Validated SolutionDto solutionDto) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        solutionDto.setUid(user.getId());
         BasicResponse response = new BasicResponse();
         if (solutionService.add(solutionDto)) {
             response.wrapper(AbstractResponseCode.OK, "提交成功");
