@@ -221,9 +221,45 @@ export default {
       this.codeModal = true;
     },
     rowClick(rowIndex, rowData, column) {
-      let solution = this.tableConfig.tableData[rowIndex];
-      this.code = solution.sourceCode;
-      this.codeModal = true;
+      switch (column.field) {
+        case 'result':
+        case 'submitTime':
+          if (this.tableConfig.tableData[rowIndex].uid != localStorage.USER_ID) {
+            alert('只能查看自己提交的代码哦！')
+          }else{
+            let solutionId = this.tableConfig.tableData[rowIndex].id;
+            this.fetchSolutionCode(solutionId);
+          }
+          break;
+        case 'uid':
+          this.$router.push({ path: "/profile/" + this.tableConfig.tableData[rowIndex].uid });
+          break;
+        case 'pid':
+          this.$router.push({ path: "/problem/" + this.tableConfig.tableData[rowIndex].pid });
+          break;
+      }
+    },
+    fetchSolutionCode(solutionId) {
+      let apiUrl = this.Url.solutionCode;
+      this.$axios
+        .get(apiUrl + solutionId)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("获取用户解答代码失败，网络错误！");
+          } else {
+            let resData = res.data;
+            if (resData.code === 0) {
+              this.code = resData.data;
+              this.codeModal = true;
+            } else {
+              alert(resData.message);
+            }
+          }
+        })
+        .catch(err => {
+          alert("获取用户解答代码失败！");
+          console.log(err);
+        });
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;

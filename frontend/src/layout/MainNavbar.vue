@@ -152,11 +152,7 @@ export default {
     },
     fetchUserInformation(userId) {
       this.$axios
-          .get(this.Url.userDetail, {
-            params: {
-              id: userId
-            }
-          })
+          .get(this.Url.userDetail + userId)
           .then(res => {
             if (res.status !== 200) {
               alert("获取用户详细信息失败，网络错误！");

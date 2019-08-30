@@ -36,6 +36,7 @@
                   :table-data="tableConfig.tableData"
                   row-hover-color="#eee"
                   row-click-color="#edf7ff"
+                  :row-click="rowClick"                  
                 ></v-table>
               </template>
               <div class="bd">
@@ -137,6 +138,9 @@ export default {
     };
   },
   methods: {
+    rowClick(rowIndex, rowData, column) {
+      //TODO: jump to user profile page 
+    },
     pageChange(pageNum) {
       this.pageNum = pageNum;
       this.getRanklist();

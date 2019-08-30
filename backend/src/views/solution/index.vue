@@ -39,7 +39,8 @@
       title="查看代码"
       :visible.sync="dialogVisible"
       width="50%"
-      :before-close="handleClose">
+      :before-close="handleClose"
+    >
       <code>{{ sourceCode }}</code>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -181,14 +182,14 @@ export default {
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
-          done();
+          done()
         })
-        .catch(_ => {});
+        .catch(_ => {})
     },
     rowClick(rowIndex, rowData, column) {
-      if(column.field=='sourceCode'){
+      if (column.field == 'sourceCode') {
         this.fetchSolutionCode(rowData.id)
-      } 
+      }
     },
     onSearch() {
       const keyword = this.searchKeyword.trim()
@@ -268,13 +269,9 @@ export default {
         })
     },
     fetchSolutionCode(solutionId) {
-      let apiUrl = this.Url.solutionCode
+      const apiUrl = this.Url.solutionCode
       this.$axios
-        .get(apiUrl, {
-          params: {
-            id: solutionId
-          }
-        })
+        .get(apiUrl + solutionId)
         .then(res => {
           if (res.status !== 200) {
             this.$message.error('获取解答代码失败！')
