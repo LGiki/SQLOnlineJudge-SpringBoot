@@ -15,5 +15,7 @@ const Url = {
     register: ApiHost + '/auth/user/register',
     //获取用户详细信息接口
     userDetail: BaseUrl + '/users/',
+    //获取用户提交代码接口
+    solutionCode: BaseUrl + '/solutions/'
 }
 export default Url

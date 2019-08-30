@@ -6,6 +6,7 @@ import MaterialKit from "./plugins/material-kit";
 import VueHighlightJS from 'vue-highlight.js';
 import Axios from 'axios'
 import Url from './urlConfig'
+import { exists } from "fs";
 
 Vue.config.productionTip = false;
 
@@ -35,10 +36,12 @@ Axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          router.replace({
-            path: '/login'
-          })
-          location.reload()
+          if (router.history.current.name !== 'login') {
+            router.replace({
+              path: '/login'
+            })
+            location.reload()
+          }
       }
     }
     return Promise.reject(error)
