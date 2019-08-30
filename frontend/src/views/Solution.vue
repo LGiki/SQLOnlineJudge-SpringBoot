@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
-    <parallax class="section page-header header-filter" :style="headerStyle"></parallax>
+    <parallax
+      class="section page-header header-filter"
+      :style="headerStyle"
+    ></parallax>
     <div class="main main-raised">
       <div class="section profile-content">
         <div class="container">
@@ -12,7 +15,8 @@
                     <md-icon
                       alt="Circle Image"
                       class="md-size-6x img-raised rounded-circle img-fluid img-middle"
-                    >info</md-icon>
+                      >info</md-icon
+                    >
                   </div>
                 </div>
                 <div class="name">
@@ -43,13 +47,13 @@
                         data-toggle="dropdown"
                       >
                         <i class="material-icons">apps</i>
-                        <p>{{searchType.label}}</p>
+                        <p>{{ searchType.label }}</p>
                       </md-button>
                       <ul class="dropdown-menu dropdown-with-icons">
                         <li v-for="item in searchTypeList">
                           <a @click="selectSearchType(item)">
                             <i class="material-icons">layers</i>
-                            <p>{{item.label}}</p>
+                            <p>{{ item.label }}</p>
                           </a>
                         </li>
                       </ul>
@@ -57,8 +61,11 @@
                   </div>
                 </a>
               </li>
-              <md-button class="md-info" @click="onSearch">搜索</md-button>&nbsp;
-              <md-button class="md-info" v-if="inSearch" @click="cancelSearch">取消搜索</md-button>
+              <md-button class="md-info" @click="onSearch">搜索</md-button
+              >&nbsp;
+              <md-button class="md-info" v-if="inSearch" @click="cancelSearch"
+                >取消搜索</md-button
+              >
             </md-field>
           </div>
           <div class="features text-center">
@@ -81,7 +88,14 @@
                   @page-size-change="pageSizeChange"
                   :showPagingCount="3"
                   :total="totalItems"
-                  :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+                  :layout="[
+                    'total',
+                    'sizer',
+                    'prev',
+                    'pager',
+                    'next',
+                    'jumper'
+                  ]"
                 ></v-pagination>
               </div>
             </div>
@@ -105,12 +119,13 @@
         </p>
       </template>
       <template slot="footer">
-        <md-button class="md-danger md-simple" @click="codeModalHide">关闭</md-button>
+        <md-button class="md-danger md-simple" @click="codeModalHide"
+          >关闭</md-button
+        >
       </template>
     </modal>
   </div>
 </template>
-
 
 <script>
 import "vue-easytable/libs/themes-base/index.css";
@@ -149,13 +164,13 @@ export default {
         {
           label: "题目ID",
           value: "pid"
-      }
+        }
       ],
       searchType: {
-          label: "提交ID",
-          value: "id"
+        label: "提交ID",
+        value: "id"
       },
-      searchKeyword: '',
+      searchKeyword: "",
       inSearch: false,
       codeModal: false,
       pageNum: 1,
@@ -222,20 +237,26 @@ export default {
     },
     rowClick(rowIndex, rowData, column) {
       switch (column.field) {
-        case 'result':
-        case 'submitTime':
-          if (this.tableConfig.tableData[rowIndex].uid != localStorage.USER_ID) {
-            alert('只能查看自己提交的代码哦！')
-          }else{
+        case "result":
+        case "submitTime":
+          if (
+            this.tableConfig.tableData[rowIndex].uid != localStorage.USER_ID
+          ) {
+            alert("只能查看自己提交的代码哦！");
+          } else {
             let solutionId = this.tableConfig.tableData[rowIndex].id;
             this.fetchSolutionCode(solutionId);
           }
           break;
-        case 'uid':
-          this.$router.push({ path: "/profile/" + this.tableConfig.tableData[rowIndex].uid });
+        case "uid":
+          this.$router.push({
+            path: "/profile/" + this.tableConfig.tableData[rowIndex].uid
+          });
           break;
-        case 'pid':
-          this.$router.push({ path: "/problem/" + this.tableConfig.tableData[rowIndex].pid });
+        case "pid":
+          this.$router.push({
+            path: "/problem/" + this.tableConfig.tableData[rowIndex].pid
+          });
           break;
       }
     },

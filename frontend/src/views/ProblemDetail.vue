@@ -22,11 +22,17 @@
             <p>{{ problemDetail.hint }}</p>
           </template>
           <h3>提交代码</h3>
-          <codemirror v-model="code" :options="cmOptions" @ready="onCmReady"></codemirror>
+          <codemirror
+            v-model="code"
+            :options="cmOptions"
+            @ready="onCmReady"
+          ></codemirror>
           <div style="width:100%;padding-top:20px">
             <div class="md-layout text-center justify-content-center">
-              <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp;
-              <md-button class="md-success md-lg">提交</md-button>
+              <!-- <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp; -->
+              <md-button class="md-success md-lg" @click="submitSolution"
+                >提交</md-button
+              >
             </div>
           </div>
         </div>
@@ -42,7 +48,6 @@
   </div>
 </template>
 
-
 <script>
 import VueHighlightJS from "vue-highlight.js";
 import "vue-highlight.js/lib/allLanguages";
@@ -55,6 +60,7 @@ import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/sql-hint.js";
 import "codemirror/addon/edit/matchbrackets.js";
 import "codemirror/addon/hint/show-hint.css";
+import qs from "qs";
 
 export default {
   components: {
@@ -97,7 +103,7 @@ export default {
     getProblemDetail(problemId) {
       let apiUrl = this.Url.problemBaseUrl;
       this.$axios
-        .get(apiUrl + '/' + problemId)
+        .get(apiUrl + "/" + problemId)
         .then(res => {
           if (res.status !== 200) {
             alert("Network error");
@@ -116,7 +122,7 @@ export default {
     getCreateTableCode(databaseId) {
       let apiUrl = this.Url.databaseBaseUrl;
       this.$axios
-        .get(apiUrl + '/' + databaseId)
+        .get(apiUrl + "/" + databaseId)
         .then(res => {
           if (res.status !== 200) {
             alert("获取题目详情失败，网络错误！");
@@ -124,6 +130,32 @@ export default {
             let resData = res.data;
             if (resData.code === 0) {
               this.createTableCode = resData.data.createTable;
+            } else {
+              alert(resData.message);
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    submitSolution() {
+      const apiUrl = this.Url.solutionSubmit;
+      const problemId = this.$route.params.id;
+      let postData = {
+        pid: problemId,
+        code: this.code
+      };
+      this.$axios
+        .post(apiUrl, postData)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("提交解答代码失败，网络错误！");
+          } else {
+            let resData = res.data;
+            if (resData.code === 0) {
+              alert("解答提交成功！");
+              this.$router.push({ path: "/solution/" });
             } else {
               alert(resData.message);
             }

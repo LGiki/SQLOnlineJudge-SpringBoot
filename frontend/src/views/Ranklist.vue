@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
-    <parallax class="section page-header header-filter" :style="headerStyle"></parallax>
+    <parallax
+      class="section page-header header-filter"
+      :style="headerStyle"
+    ></parallax>
     <div class="main main-raised">
       <div class="section profile-content">
         <div class="container">
@@ -12,7 +15,8 @@
                     <md-icon
                       alt="Circle Image"
                       class="md-size-6x img-raised rounded-circle img-fluid img-middle"
-                    >assessment</md-icon>
+                      >assessment</md-icon
+                    >
                   </div>
                 </div>
                 <div class="name">
@@ -36,7 +40,7 @@
                   :table-data="tableConfig.tableData"
                   row-hover-color="#eee"
                   row-click-color="#edf7ff"
-                  :row-click="rowClick"                  
+                  :row-click="rowClick"
                 ></v-table>
               </template>
               <div class="bd">
@@ -45,7 +49,14 @@
                   @page-size-change="pageSizeChange"
                   :showPagingCount="3"
                   :total="totalItems"
-                  :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+                  :layout="[
+                    'total',
+                    'sizer',
+                    'prev',
+                    'pager',
+                    'next',
+                    'jumper'
+                  ]"
                 ></v-pagination>
               </div>
             </div>
@@ -55,7 +66,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import "vue-easytable/libs/themes-base/index.css";
@@ -139,7 +149,7 @@ export default {
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
-      //TODO: jump to user profile page 
+      //TODO: jump to user profile page
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;

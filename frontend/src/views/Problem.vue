@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
-    <parallax class="section page-header header-filter" :style="headerStyle"></parallax>
+    <parallax
+      class="section page-header header-filter"
+      :style="headerStyle"
+    ></parallax>
     <div class="main main-raised">
       <div class="section profile-content">
         <div class="container">
@@ -12,7 +15,8 @@
                     <md-icon
                       alt="Circle Image"
                       class="md-size-6x img-raised rounded-circle img-fluid img-middle"
-                    >assignment</md-icon>
+                      >assignment</md-icon
+                    >
                   </div>
                 </div>
                 <div class="name">
@@ -44,13 +48,13 @@
                         data-toggle="dropdown"
                       >
                         <i class="material-icons">apps</i>
-                        <p>{{searchType.label}}</p>
+                        <p>{{ searchType.label }}</p>
                       </md-button>
                       <ul class="dropdown-menu dropdown-with-icons">
                         <li v-for="item in searchTypeList">
                           <a @click="selectSearchType(item)">
                             <i class="material-icons">layers</i>
-                            <p>{{item.label}}</p>
+                            <p>{{ item.label }}</p>
                           </a>
                         </li>
                       </ul>
@@ -58,8 +62,11 @@
                   </div>
                 </a>
               </li>
-              <md-button class="md-info" @click="onSearch">搜索</md-button>&nbsp;
-              <md-button class="md-info" v-if="inSearch" @click="cancelSearch">取消搜索</md-button>
+              <md-button class="md-info" @click="onSearch">搜索</md-button
+              >&nbsp;
+              <md-button class="md-info" v-if="inSearch" @click="cancelSearch"
+                >取消搜索</md-button
+              >
             </md-field>
           </div>
           <div class="features text-center">
@@ -83,7 +90,14 @@
                     @page-size-change="pageSizeChange"
                     :showPagingCount="3"
                     :total="totalItems"
-                    :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+                    :layout="[
+                      'total',
+                      'sizer',
+                      'prev',
+                      'pager',
+                      'next',
+                      'jumper'
+                    ]"
                   ></v-pagination>
                 </div>
               </template>
@@ -94,7 +108,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import "vue-easytable/libs/themes-base/index.css";
@@ -126,8 +139,8 @@ export default {
         }
       ],
       searchType: {
-          label: "题目ID",
-          value: "id"
+        label: "题目ID",
+        value: "id"
       },
       searchKeyword: "",
       inSearch: false,

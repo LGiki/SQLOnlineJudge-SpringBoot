@@ -1,13 +1,14 @@
 <template>
   <div class="wrapper">
+    <!-- <notifications></notifications> -->
     <parallax class="page-header header-filter" :style="headerStyle">
       <div class="md-layout">
         <div class="md-layout-item">
           <div class="image-wrapper">
-            <img :src="leaf4" alt="leaf4" class="leaf4" v-show="leafShow">
-            <img :src="leaf3" alt="leaf3" class="leaf3" v-show="leafShow">
-            <img :src="leaf2" alt="leaf2" class="leaf2" v-show="leafShow">
-            <img :src="leaf1" alt="leaf1" class="leaf1" v-show="leafShow">
+            <img :src="leaf4" alt="leaf4" class="leaf4" v-show="leafShow" />
+            <img :src="leaf3" alt="leaf3" class="leaf3" v-show="leafShow" />
+            <img :src="leaf2" alt="leaf2" class="leaf2" v-show="leafShow" />
+            <img :src="leaf1" alt="leaf1" class="leaf1" v-show="leafShow" />
             <div class="brand">
               <h1>SQL Online Judge</h1>
             </div>
@@ -15,6 +16,9 @@
               <md-button href="#/problem" class="md-success md-lg">
                 <font size="5em">即刻开始刷题</font>
               </md-button>
+              <!-- <md-button @click="notifyVue('bottom','right')" class="md-success md-lg">
+                <font size="5em">即刻开始刷题</font>
+              </md-button> -->
             </div>
           </div>
         </div>
@@ -31,7 +35,9 @@
                     <md-icon>bug_report</md-icon>
                   </div>
                   <h4 class="info-title">强大的在线调试</h4>
-                  <p>我们提供在线调试SQL代码功能，您可以在提交您的解答之前，充分调试您的代码，直到您认为有把握了之后再进行提交。</p>
+                  <p>
+                    我们提供在线调试SQL代码功能，您可以在提交您的解答之前，充分调试您的代码，直到您认为有把握了之后再进行提交。
+                  </p>
                 </div>
               </div>
               <div class="md-layout-item md-medium-size-33 md-small-size-100">
@@ -40,7 +46,9 @@
                     <md-icon>spellcheck</md-icon>
                   </div>
                   <h4 class="info-title">享受编程的乐趣</h4>
-                  <p>刷过千道题，不是大咖也是高手，比的就是手快，刷的就是未来......</p>
+                  <p>
+                    刷过千道题，不是大咖也是高手，比的就是手快，刷的就是未来......
+                  </p>
                 </div>
               </div>
               <div class="md-layout-item md-medium-size-33 md-small-size-100">
@@ -49,7 +57,10 @@
                     <md-icon>thumb_up</md-icon>
                   </div>
                   <h4 class="info-title">焕然一新的感受</h4>
-                  <p>我们有一流的UI设计, 我们着眼细节，追求品质；提供给OIer们最友好高效的训练平台。</p>
+                  <p>
+                    我们有一流的UI设计,
+                    我们着眼细节，追求品质；提供给OIer们最友好高效的训练平台。
+                  </p>
                 </div>
               </div>
             </div>
@@ -66,7 +77,6 @@ import Navigation from "./components/NavigationSection";
 import SmallNavigation from "./components/SmallNavigationSection";
 import Tabs from "./components/TabsSection";
 import NavPills from "./components/NavPillsSection";
-import Notifications from "./components/NotificationsSection";
 import TypographyImages from "./components/TypographyImagesSection";
 import JavascriptComponents from "./components/JavascriptComponentsSection";
 import { LoginCard } from "@/components";
@@ -78,7 +88,6 @@ export default {
     SmallNavigation,
     Tabs,
     NavPills,
-    Notifications,
     TypographyImages,
     JavascriptComponents,
     LoginCard
@@ -135,6 +144,17 @@ export default {
         this.leafShow = true;
       }
     }
+    // notifyVue (verticalAlign, horizontalAlign) {
+    //   console.log('123')
+    //   this.$notify(
+    //     {
+    //       message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.',
+    //       icon: 'add_alert',
+    //       horizontalAlign: horizontalAlign,
+    //       verticalAlign: verticalAlign,
+    //       type: 'success'
+    //     })
+    // }
   },
   computed: {
     headerStyle() {

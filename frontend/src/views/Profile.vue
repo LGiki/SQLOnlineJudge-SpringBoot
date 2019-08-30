@@ -18,25 +18,31 @@
                   />
                 </div>
                 <div class="name">
-                  <h3 class="title">{{userDetail.username}}</h3>
+                  <h3 class="title">{{ userDetail.username }}</h3>
                 </div>
               </div>
             </div>
           </div>
           <div class="md-layout">
-            <h4><b>用户ID</b>：{{userDetail.id}}</h4>
+            <h4><b>用户ID</b>：{{ userDetail.id }}</h4>
           </div>
           <div class="md-layout">
-            <h4><b>用户邮箱</b>：{{userDetail.email}}</h4>
+            <h4><b>用户邮箱</b>：{{ userDetail.email }}</h4>
           </div>
           <div class="md-layout">
-            <h4><b>提交数</b>：{{userDetail.submit}}</h4>
+            <h4><b>提交数</b>：{{ userDetail.submit }}</h4>
           </div>
           <div class="md-layout">
-            <h4><b>通过数</b>：{{userDetail.solved}}</h4>
+            <h4><b>通过数</b>：{{ userDetail.solved }}</h4>
           </div>
           <div class="md-layout">
-            <h4><b>通过率</b>：{{userDetail.submit == 0 ? 0 : (userDetail.solved / userDetail.submit).toFixed(2)}}</h4>
+            <h4>
+              <b>通过率</b>：{{
+                userDetail.submit == 0
+                  ? 0
+                  : (userDetail.solved / userDetail.submit).toFixed(2)
+              }}
+            </h4>
           </div>
         </div>
       </div>
@@ -58,7 +64,7 @@ export default {
         id: 0,
         solved: 0,
         submit: 0,
-        email: null,
+        email: null
       }
     };
   },
@@ -75,24 +81,24 @@ export default {
   methods: {
     fetchUserInformation(userId) {
       this.$axios
-          .get(this.Url.userDetail + userId)
-          .then(res => {
-            if (res.status !== 200) {
-              alert("获取用户详细信息失败，网络错误！");
+        .get(this.Url.userDetail + userId)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("获取用户详细信息失败，网络错误！");
+          } else {
+            const resData = res.data;
+            if (resData.code === 0) {
+              this.userDetail = resData.data;
             } else {
-              const resData = res.data;
-              if (resData.code === 0) {
-                this.userDetail = resData.data
-              } else {
-                alert(resData.message);
-              }
+              alert(resData.message);
             }
-          })
-          .catch(err => {
-            alert("获取用户详细信息失败，未知错误！");
-            console.log(err);
-          });
-    },
+          }
+        })
+        .catch(err => {
+          alert("获取用户详细信息失败，未知错误！");
+          console.log(err);
+        });
+    }
   },
   computed: {
     headerStyle() {
@@ -102,8 +108,8 @@ export default {
     }
   },
   mounted: function() {
-    let userId = this.$route.params.id
-    this.fetchUserInformation(userId)
+    let userId = this.$route.params.id;
+    this.fetchUserInformation(userId);
   }
 };
 </script>

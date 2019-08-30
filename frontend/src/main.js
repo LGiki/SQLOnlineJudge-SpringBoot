@@ -3,31 +3,34 @@ import App from "./App.vue";
 import router from "./router";
 
 import MaterialKit from "./plugins/material-kit";
-import VueHighlightJS from 'vue-highlight.js';
-import Axios from 'axios'
-import Url from './urlConfig'
+import VueHighlightJS from "vue-highlight.js";
+import Axios from "axios";
+import Url from "./urlConfig";
 import { exists } from "fs";
+import Notifications from "./components/NotificationPlugin";
 
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
 Vue.use(VueHighlightJS);
+Vue.use(Notifications);
 
 Axios.interceptors.request.use(
-    config => {
-    if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-        config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`;
-      }
-      return config
-    },
-    err => {
-      return Promise.reject(err)
+  config => {
+    if (localStorage.JWT_TOKEN) {
+      // 判断是否存在token，如果存在的话，则每个http header都加上token
+      config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`;
     }
-)
+    return config;
+  },
+  err => {
+    return Promise.reject(err);
+  }
+);
 
 Axios.interceptors.response.use(
   response => {
-    if(response.status === 403) {
+    if (response.status === 403) {
       this.$router.push({ path: "/login" });
     }
     return response;
@@ -36,17 +39,17 @@ Axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          if (router.history.current.name !== 'login') {
+          if (router.history.current.name !== "login") {
             router.replace({
-              path: '/login'
-            })
-            location.reload()
+              path: "/login"
+            });
+            location.reload();
           }
       }
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 Vue.prototype.$axios = Axios;
 Vue.prototype.Url = Url;

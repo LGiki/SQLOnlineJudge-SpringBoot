@@ -7,10 +7,10 @@ import Profile from "./views/Profile.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 import Problem from "./views/Problem.vue";
-import Ranklist from "./views/Ranklist.vue"
-import Solution from "./views/Solution.vue"
-import ProblemDetail from "./views/ProblemDetail.vue"
-import Register from "./views/Register.vue"
+import Ranklist from "./views/Ranklist.vue";
+import Solution from "./views/Solution.vue";
+import ProblemDetail from "./views/ProblemDetail.vue";
+import Register from "./views/Register.vue";
 
 Vue.use(Router);
 
@@ -31,16 +31,20 @@ export default new Router({
       components: { default: Problem, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
+        footer: { backgroundColor: "black" }
       }
     },
     {
       path: "/problem/:id",
       name: "problemDetail",
-      components: { default: ProblemDetail, header: MainNavbar, footer: MainFooter },
+      components: {
+        default: ProblemDetail,
+        header: MainNavbar,
+        footer: MainFooter
+      },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
+        footer: { backgroundColor: "black" }
       }
     },
     {
@@ -49,7 +53,7 @@ export default new Router({
       components: { default: Ranklist, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" },
+        footer: { backgroundColor: "black" }
       }
     },
     {

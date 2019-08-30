@@ -27,9 +27,18 @@
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>lock_outline</md-icon>
                 <label>请重复密码</label>
-                <md-input @keyup.enter.native="register" v-model="repassword" type="password"></md-input>
+                <md-input
+                  @keyup.enter.native="register"
+                  v-model="repassword"
+                  type="password"
+                ></md-input>
               </md-field>
-              <md-button @click="register" slot="footer" class="md-simple md-success md-lg">注册</md-button>
+              <md-button
+                @click="register"
+                slot="footer"
+                class="md-simple md-success md-lg"
+                >注册</md-button
+              >
             </login-card>
           </div>
         </div>
@@ -97,8 +106,8 @@ export default {
             let resData = res.data;
             if (resData.code === 0) {
               this.$router.push({ path: "/login" });
-            }else{
-              alert('注册失败！')
+            } else {
+              alert("注册失败！");
             }
           }
         })

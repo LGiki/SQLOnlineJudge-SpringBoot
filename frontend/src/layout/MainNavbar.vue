@@ -73,7 +73,7 @@
                 <md-list-item :href="`#/profile/${userDetail.id}`">
                   <i class="material-icons">person</i>
                   <p>
-                    <b>{{userDetail.username}}</b>
+                    <b>{{ userDetail.username }}</b>
                   </p>
                 </md-list-item>
                 <md-list-item href="#" @click="logout">
@@ -135,7 +135,7 @@ export default {
     return {
       extraNavClasses: "",
       toggledClass: false,
-      userDetail: null,
+      userDetail: null
     };
   },
   computed: {
@@ -146,29 +146,29 @@ export default {
   },
   methods: {
     logout() {
-      localStorage.removeItem('JWT_TOKEN');
-      localStorage.removeItem('USER_ID');
+      localStorage.removeItem("JWT_TOKEN");
+      localStorage.removeItem("USER_ID");
       this.userDetail = null;
     },
     fetchUserInformation(userId) {
       this.$axios
-          .get(this.Url.userDetail + userId)
-          .then(res => {
-            if (res.status !== 200) {
-              alert("获取用户详细信息失败，网络错误！");
+        .get(this.Url.userDetail + userId)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("获取用户详细信息失败，网络错误！");
+          } else {
+            const resData = res.data;
+            if (resData.code === 0) {
+              this.userDetail = resData.data;
             } else {
-              const resData = res.data;
-              if (resData.code === 0) {
-                this.userDetail = resData.data
-              } else {
-                alert(resData.message);
-              }
+              alert(resData.message);
             }
-          })
-          .catch(err => {
-            alert("获取用户详细信息失败，未知错误！");
-            console.log(err);
-          });
+          }
+        })
+        .catch(err => {
+          alert("获取用户详细信息失败，未知错误！");
+          console.log(err);
+        });
     },
     bodyClick() {
       let bodyClick = document.getElementById("bodyClick");
@@ -226,5 +226,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

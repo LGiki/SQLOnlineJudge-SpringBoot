@@ -17,9 +17,18 @@
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>lock_outline</md-icon>
                 <label>密码</label>
-                <md-input @keyup.enter.native="login" v-model="password" type="password"></md-input>
+                <md-input
+                  @keyup.enter.native="login"
+                  v-model="password"
+                  type="password"
+                ></md-input>
               </md-field>
-              <md-button @click="login" slot="footer" class="md-simple md-success md-lg">登录</md-button>
+              <md-button
+                @click="login"
+                slot="footer"
+                class="md-simple md-success md-lg"
+                >登录</md-button
+              >
             </login-card>
           </div>
         </div>
@@ -39,8 +48,8 @@ export default {
   bodyClass: "login-page",
   data() {
     return {
-      username: '',
-      password: ''
+      username: "",
+      password: ""
     };
   },
   props: {
@@ -61,9 +70,9 @@ export default {
           if (res.status !== 200) {
             alert("登录失败，网路错误!");
           } else {
-            localStorage.setItem('JWT_TOKEN', res.data.data.token);
-            localStorage.setItem('USER_ID', res.data.data.id);
-            window.location.href="/"
+            localStorage.setItem("JWT_TOKEN", res.data.data.token);
+            localStorage.setItem("USER_ID", res.data.data.id);
+            window.location.href = "/";
           }
         })
         .catch(err => {
@@ -78,9 +87,7 @@ export default {
       };
     }
   },
-  created: function() {
-    
-  }
+  created: function() {}
 };
 </script>
 
