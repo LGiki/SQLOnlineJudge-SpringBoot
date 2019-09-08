@@ -33,7 +33,7 @@ SOLUTION_RESULT = {
 
 
 # 根据数据库ID获取sqlite文件路径，如果sqlite文件还未被创建则创建并返回路径
-def get_sqlite_db_file_path(conn, cursor, database_id):
+def get_sqlite_db_file_path(cursor, database_id):
     sql = '''
     select `create_table`, `test_data`, `is_created`
     from `data_base`
@@ -50,7 +50,6 @@ def get_sqlite_db_file_path(conn, cursor, database_id):
         test_data = select_result[0][1]
         sqlite_conn = sqlite3.connect(sqlite_db_file_path)
         sqlite_cursor = sqlite_conn.cursor()
-        print(create_table)
         sqlite_cursor.executescript(create_table)
         sqlite_cursor.executescript(test_data)
         sqlite_conn.commit()
@@ -112,7 +111,7 @@ def get_solution_detail_by_solution_id(cursor, solution_id):
     cursor.execute(sql, [solution_id])
     select_result = cursor.fetchall()
     problem_id = select_result[0][0]
-    source_code = select_result[0][0]
+    source_code = select_result[0][1]
     return problem_id, source_code
 
 
@@ -121,7 +120,8 @@ def judge(conn, cursor, solution_id):
     problem_id, source_code = get_solution_detail_by_solution_id(cursor, solution_id)
     # logging.info('Start judging solution {}'.format(solution_id))
     database_id = get_database_id_by_problem_id(cursor, problem_id)
-    sqlite_db_file_path = get_sqlite_db_file_path(conn, cursor, database_id)
+    sqlite_db_file_path = get_sqlite_db_file_path(cursor, database_id)
+    print(sqlite_db_file_path)
     _, db_file_name = os.path.split(sqlite_db_file_path)
     db_file_name, _ = os.path.splitext(db_file_name)
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(db_file_name))
