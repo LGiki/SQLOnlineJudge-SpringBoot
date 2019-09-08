@@ -258,9 +258,10 @@ def main():
         charset=DB_CHARSET
     )
     cursor = conn.cursor()
-    judge(conn, cursor)
+    result = judge(conn, cursor)
     cursor.close()
     conn.close()
+    return result
 
 
 if __name__ == '__main__':
