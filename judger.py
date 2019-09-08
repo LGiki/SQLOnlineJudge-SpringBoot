@@ -32,29 +32,6 @@ SOLUTION_RESULT = {
 }
 
 
-# 通过解答ID更新判题结果
-# def update_judge_result(conn, cursor, solution_id, result):
-#     sql = '''
-#     update `solution`
-#     set `result` = %s
-#     where `id` = %s
-#     '''
-#     cursor.execute(sql, [result, solution_id])
-#     conn.commit()
-#     return cursor.rowcount == 1
-
-
-# 查询还未判题的解答列表
-def select_need_judge_solution(cursor):
-    sql = '''
-    select `id`, `uid`, `pid`, `source_code`
-    from `solution`
-    where `result` = %s
-    '''
-    cursor.execute(sql, [SOLUTION_RESULT['Unknown']])
-    return cursor.fetchall()
-
-
 # 根据数据库ID获取sqlite文件路径，如果sqlite文件还未被创建则创建并返回路径
 def get_sqlite_db_file_path(conn, cursor, database_id):
     sql = '''
@@ -81,18 +58,6 @@ def get_sqlite_db_file_path(conn, cursor, database_id):
         sqlite_conn.close()
         # set_database_created(conn, cursor, database_id)
     return sqlite_db_file_path
-
-
-# 设置数据库的is_created位为1
-# def set_database_created(conn, cursor, database_id):
-#     sql = '''
-#     update `data_base`
-#     set `is_created` = 1
-#     where `id` = %s
-#     '''
-#     cursor.execute(sql, [database_id])
-#     conn.commit()
-#     return cursor.rowcount == 1
 
 
 # 通过题目ID获取数据库ID
@@ -138,105 +103,61 @@ def get_true_result_by_problem_id(conn, cursor, problem_id, sqlite_db_file_path)
     return select_result[0][0], True
 
 
-# 通过题目ID更新正确结果
-# def update_true_result_by_problem_id(conn, cursor, problem_id, true_result):
-#     sql = '''
-#     update `problem`
-#     set `true_result` = %s
-#     where `id` = %s
-#     '''
-#     cursor.execute(sql, [true_result, problem_id])
-#     conn.commit()
-#     return cursor.rowcount == 1
-
-
-# 增加用户的通过数
-# def increase_user_solve(conn, cursor, user_id):
-#     sql = '''
-#     update `sys_user`
-#     set `solved` = `solved` + 1
-#     where `id` = %s
-#     '''
-#     cursor.execute(sql, [user_id])
-#     conn.commit()
-#     return cursor.rowcount == 1
-
-
-# 增加题目的通过数
-# def increase_problem_solve(conn, cursor, problem_id):
-#     sql = '''
-#     update `problem`
-#     set `solve` = `solve` + 1
-#     where `id` = %s
-#     '''
-#     cursor.execute(sql, [problem_id])
-#     conn.commit()
-#     return cursor.rowcount == 1
-
-
-# 通过提交ID更新运行错误信息
-# def update_run_error(conn, cursor, solution_id, run_error):
-#     sql = '''
-#     update `solution`
-#     set `run_error` = %s
-#     where `id` = %s
-#     '''
-#     cursor.execute(sql, [run_error, solution_id])
-#     conn.commit()
-#     return cursor.rowcount == 1
+def get_solution_detail_by_solution_id(cursor, solution_id):
+    sql = '''
+        select `pid`, `source_code`
+        from `solution`
+        where id = %s 
+        '''
+    cursor.execute(sql, [solution_id])
+    select_result = cursor.fetchall()
+    problem_id = select_result[0][0]
+    source_code = select_result[0][0]
+    return problem_id, source_code
 
 
 # 判题
-def judge(conn, cursor):
-    need_judge_solution_list = select_need_judge_solution(cursor)
-    if len(need_judge_solution_list) == 0:
-        pass
-        # logger.info('No any solution need judge.')
+def judge(conn, cursor, solution_id):
+    problem_id, source_code = get_solution_detail_by_solution_id(cursor, solution_id)
+    # logging.info('Start judging solution {}'.format(solution_id))
+    database_id = get_database_id_by_problem_id(cursor, problem_id)
+    sqlite_db_file_path = get_sqlite_db_file_path(conn, cursor, database_id)
+    _, db_file_name = os.path.split(sqlite_db_file_path)
+    db_file_name, _ = os.path.splitext(db_file_name)
+    temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(db_file_name))
+    shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
+    exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, source_code)
+    true_result, is_true_result_exist = get_true_result_by_problem_id(conn, cursor, problem_id,
+                                                                      temp_sqlite_db_file_path)
+    if exec_result is None:
+        # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Compile Error'])
+        # update_run_error(conn, cursor, solution_id, exec_exception)
+        judge_result = 'Compile Error'
+        judge_result_index = SOLUTION_RESULT['Compile Error']
     else:
-        for need_judge_item in select_need_judge_solution(cursor):
-            solution_id = need_judge_item[0]
-            user_id = need_judge_item[1]
-            problem_id = need_judge_item[2]
-            source_code = need_judge_item[3]
-            # logging.info('Start judging solution {}'.format(solution_id))
-            database_id = get_database_id_by_problem_id(cursor, problem_id)
-            sqlite_db_file_path = get_sqlite_db_file_path(conn, cursor, database_id)
-            _, db_file_name = os.path.split(sqlite_db_file_path)
-            db_file_name, _ = os.path.splitext(db_file_name)
-            temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(db_file_name))
-            shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
-            exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, source_code)
-            true_result, is_true_result_exist = get_true_result_by_problem_id(conn, cursor, problem_id,
-                                                                              temp_sqlite_db_file_path)
-            if exec_result is None:
-                # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Compile Error'])
-                # update_run_error(conn, cursor, solution_id, exec_exception)
-                judge_result = 'Compile Error'
-                judge_result_index = SOLUTION_RESULT['Compile Error']
-            else:
-                if exec_result == true_result:
-                    # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Accepted'])
-                    # increase_user_solve(conn, cursor, user_id)
-                    # increase_problem_solve(conn, cursor, problem_id)
-                    judge_result = 'Accepted'
-                    judge_result_index = SOLUTION_RESULT['Accepted']
+        if exec_result == true_result:
+            # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Accepted'])
+            # increase_user_solve(conn, cursor, user_id)
+            # increase_problem_solve(conn, cursor, problem_id)
+            judge_result = 'Accepted'
+            judge_result_index = SOLUTION_RESULT['Accepted']
 
-                else:
-                    # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Wrong Answer'])
-                    judge_result = 'Wrong Answer'
-                    judge_result_index = SOLUTION_RESULT['Wrong Answer']
+        else:
+            # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Wrong Answer'])
+            judge_result = 'Wrong Answer'
+            judge_result_index = SOLUTION_RESULT['Wrong Answer']
 
-            os.remove(temp_sqlite_db_file_path)
-            result = json.dumps(
-                {
-                    'solutionId': solution_id,
-                    'result': judge_result_index,
-                    'runError': exec_exception,
-                    'trueResult': None if is_true_result_exist else true_result,
-                }
-            )
-            return result
-            # logger.info('Judge completed solution {}: {}'.format(solution_id, judge_result))
+    os.remove(temp_sqlite_db_file_path)
+    result = json.dumps(
+        {
+            'solutionId': solution_id,
+            'result': judge_result_index,
+            'runError': exec_exception,
+            'trueResult': None if is_true_result_exist else true_result,
+        }
+    )
+    return result
+    # logger.info('Judge completed solution {}: {}'.format(solution_id, judge_result))
 
 
 def init():
@@ -248,7 +169,7 @@ def init():
         # logger.info('Create Temp SQLite Dir: {}'.format(SQLITE_TEMP_DIR))
 
 
-def main():
+def main(solution_id):
     init()
     conn = pymysql.connect(
         host=DB_HOST,
@@ -258,7 +179,7 @@ def main():
         charset=DB_CHARSET
     )
     cursor = conn.cursor()
-    result = judge(conn, cursor)
+    result = judge(conn, cursor, solution_id)
     cursor.close()
     conn.close()
     return result
@@ -271,4 +192,4 @@ if __name__ == '__main__':
     #     datefmt="%Y-%m-%d %H:%M:%S"
     # )
     # logger = logging.getLogger()
-    main()
+    print(main(1))
