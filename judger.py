@@ -31,8 +31,14 @@ SOLUTION_RESULT = {
     'Judging': 4  # 正在判题（未使用）
 }
 
+RESPONSE_CODE = {
+    'OK': 0,
+    'FAIL': 1
+}
+
 
 # 根据数据库ID获取sqlite文件路径，如果sqlite文件还未被创建则创建并返回路径
+# Return: sqlite3FilePath, runException
 def get_sqlite_db_file_path(cursor, database_id):
     sql = '''
     select `create_table`, `test_data`, `is_created`
@@ -50,13 +56,16 @@ def get_sqlite_db_file_path(cursor, database_id):
         test_data = select_result[0][1]
         sqlite_conn = sqlite3.connect(sqlite_db_file_path)
         sqlite_cursor = sqlite_conn.cursor()
-        sqlite_cursor.executescript(create_table)
-        sqlite_cursor.executescript(test_data)
-        sqlite_conn.commit()
+        try:
+            sqlite_cursor.executescript(create_table)
+            sqlite_cursor.executescript(test_data)
+            sqlite_conn.commit()
+        except BaseException as e:
+            return None, str(e)
         sqlite_cursor.close()
         sqlite_conn.close()
         # set_database_created(conn, cursor, database_id)
-    return sqlite_db_file_path
+    return sqlite_db_file_path, None
 
 
 # 通过题目ID获取数据库ID
@@ -85,7 +94,8 @@ def exec_code(sqlite_db_file_path, source_code):
 
 
 # 通过题目ID获取正确的结果，如果结果不存在就执行一次正确答案获得正确结果
-def get_true_result_by_problem_id(conn, cursor, problem_id, sqlite_db_file_path):
+# Return: trueResult, isTrueResultExists, runException
+def get_true_result_by_problem_id(cursor, problem_id, sqlite_db_file_path):
     sql = '''
     select `true_result`, `answer`
     from `problem`
@@ -96,10 +106,12 @@ def get_true_result_by_problem_id(conn, cursor, problem_id, sqlite_db_file_path)
     # Get true result when it is null
     if select_result[0][0] is None:
         answer = select_result[0][1]
-        true_result, _ = exec_code(sqlite_db_file_path, answer)
+        true_result, run_exception = exec_code(sqlite_db_file_path, answer)
+        if true_result is None:
+            return true_result, False, run_exception
         # update_true_result_by_problem_id(conn, cursor, problem_id, true_result)
-        return true_result, False
-    return select_result[0][0], True
+        return true_result, False, None
+    return select_result[0][0], True, None
 
 
 def get_solution_detail_by_solution_id(cursor, solution_id):
@@ -116,44 +128,49 @@ def get_solution_detail_by_solution_id(cursor, solution_id):
 
 
 # 判题
-def judge(conn, cursor, solution_id):
+def judge(cursor, solution_id):
     problem_id, source_code = get_solution_detail_by_solution_id(cursor, solution_id)
     # logging.info('Start judging solution {}'.format(solution_id))
     database_id = get_database_id_by_problem_id(cursor, problem_id)
-    sqlite_db_file_path = get_sqlite_db_file_path(cursor, database_id)
-    print(sqlite_db_file_path)
+    sqlite_db_file_path, db_file_run_exception = get_sqlite_db_file_path(cursor, database_id)
+    if db_file_run_exception is not None:
+        return json.dumps({
+            'code': RESPONSE_CODE['FAIL'],
+            'data': None,
+            'message': db_file_run_exception
+        })
     _, db_file_name = os.path.split(sqlite_db_file_path)
     db_file_name, _ = os.path.splitext(db_file_name)
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(db_file_name))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
-    exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, source_code)
-    true_result, is_true_result_exist = get_true_result_by_problem_id(conn, cursor, problem_id,
-                                                                      temp_sqlite_db_file_path)
-    if exec_result is None:
-        # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Compile Error'])
-        # update_run_error(conn, cursor, solution_id, exec_exception)
-        judge_result = 'Compile Error'
-        judge_result_index = SOLUTION_RESULT['Compile Error']
+    true_result, is_true_result_exist, true_result_exec_exception = get_true_result_by_problem_id(cursor, problem_id,
+                                                                                                  temp_sqlite_db_file_path)
+    if true_result_exec_exception is not None:
+        return json.dumps({
+            'code': RESPONSE_CODE['FAIL'],
+            'data': None,
+            'message': true_result_exec_exception
+        })
     else:
-        if exec_result == true_result:
-            # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Accepted'])
-            # increase_user_solve(conn, cursor, user_id)
-            # increase_problem_solve(conn, cursor, problem_id)
-            judge_result = 'Accepted'
-            judge_result_index = SOLUTION_RESULT['Accepted']
-
+        exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, source_code)
+        if exec_result is None:
+            judge_result_index = SOLUTION_RESULT['Compile Error']
         else:
-            # update_judge_result(conn, cursor, solution_id, SOLUTION_RESULT['Wrong Answer'])
-            judge_result = 'Wrong Answer'
-            judge_result_index = SOLUTION_RESULT['Wrong Answer']
-
-    os.remove(temp_sqlite_db_file_path)
+            if exec_result == true_result:
+                judge_result_index = SOLUTION_RESULT['Accepted']
+            else:
+                judge_result_index = SOLUTION_RESULT['Wrong Answer']
+        os.remove(temp_sqlite_db_file_path)
     result = json.dumps(
         {
-            'solutionId': solution_id,
-            'result': judge_result_index,
-            'runError': exec_exception,
-            'trueResult': None if is_true_result_exist else true_result,
+            'code': RESPONSE_CODE['OK'],
+            'data': {
+                'solutionId': solution_id,
+                'result': judge_result_index,
+                'runError': exec_exception,
+                'trueResult': None if is_true_result_exist else true_result,
+            },
+            'message': 'None'
         }
     )
     return result
@@ -179,7 +196,7 @@ def main(solution_id):
         charset=DB_CHARSET
     )
     cursor = conn.cursor()
-    result = judge(conn, cursor, solution_id)
+    result = judge(cursor, solution_id)
     cursor.close()
     conn.close()
     return result
