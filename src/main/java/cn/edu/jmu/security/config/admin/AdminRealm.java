@@ -1,12 +1,12 @@
 package cn.edu.jmu.security.config.admin;
 
 import cn.edu.jmu.security.config.UserToken;
-import cn.edu.jmu.sqlonlinejudge.entity.Admin;
-import cn.edu.jmu.sqlonlinejudge.entity.Permission;
-import cn.edu.jmu.sqlonlinejudge.entity.Role;
-import cn.edu.jmu.sqlonlinejudge.service.AdminService;
-import cn.edu.jmu.sqlonlinejudge.service.PermissionService;
-import cn.edu.jmu.sqlonlinejudge.service.RoleService;
+import cn.edu.jmu.system.entity.Admin;
+import cn.edu.jmu.system.entity.Permission;
+import cn.edu.jmu.system.entity.Role;
+import cn.edu.jmu.system.service.AdminService;
+import cn.edu.jmu.system.service.PermissionService;
+import cn.edu.jmu.system.service.RoleService;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;

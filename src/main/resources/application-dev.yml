@@ -48,12 +48,12 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatisConfig.xml
-  type-aliases-package: cn.edu.jmu.sqlonlinejudge.entity
+  type-aliases-package: cn.edu.jmu.system.entity
 
 # MP配置
 mybatis-plus:
   # 支持统配符 * 或者 ; 分割
-  typeEnumsPackage: cn.edu.jmu.sqlonlinejudge.service.enums
+  typeEnumsPackage: cn.edu.jmu.system.service.enums
   configuration:
     default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
     #是否开启自动驼峰命名规则（camel case）映射
@@ -76,6 +76,6 @@ mybatis-plus:
       #逻辑未删除值
       logic-not-delete-value: 1
   mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: cn.edu.jmu.sqlonlinejudge.entity
+  type-aliases-package: cn.edu.jmu.system.entity
   check-config-location: true
 

@@ -13,18 +13,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
-@MapperScan("cn.edu.jmu.sqlonlinejudge.mapper")
+@MapperScan("cn.edu.jmu.system.mapper")
 public class SqlOnlineJudgeApplication {
     public static void main(String[] args) {
         SpringApplication.run(SqlOnlineJudgeApplication.class, args);
     }
 
-    public static void test(String[] args) {
-        PythonInterpreter interpreter = new PythonInterpreter();
-        interpreter.execfile("");
-        PyFunction func = interpreter.get("test2", PyFunction.class);
-        PyObject pyobj = func.__call__();
-        System.out.println("answer = " + pyobj.toString());
-    }
+
 }
 

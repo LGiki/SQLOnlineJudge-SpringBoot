@@ -12,12 +12,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for sqlonlinejudge
+-- Dumping database structure for system
 DROP DATABASE IF EXISTS `sqlonlinejudge`;
 CREATE DATABASE IF NOT EXISTS `sqlonlinejudge` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `sqlonlinejudge`;
 
--- Dumping structure for table sqlonlinejudge.data_base
+-- Dumping structure for table system.data_base
 DROP TABLE IF EXISTS `data_base`;
 CREATE TABLE IF NOT EXISTS `data_base` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据库ID',
@@ -26,15 +26,15 @@ CREATE TABLE IF NOT EXISTS `data_base` (
   `test_data` text COMMENT '数据插入语句',
   `is_created` bit(1) NOT NULL DEFAULT b'0' COMMENT '数据库是否已创建',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table sqlonlinejudge.data_base: ~1 rows (大约)
+-- Dumping data for table system.data_base: ~1 rows (大约)
 /*!40000 ALTER TABLE `data_base` DISABLE KEYS */;
 INSERT INTO `data_base` (`id`, `name`, `create_table`, `test_data`, `is_created`) VALUES
 	(1, '1', '1', '1', b'1');
 /*!40000 ALTER TABLE `data_base` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.problem
+-- Dumping structure for table system.problem
 DROP TABLE IF EXISTS `problem`;
 CREATE TABLE IF NOT EXISTS `problem` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '题目ID',
@@ -52,14 +52,14 @@ CREATE TABLE IF NOT EXISTS `problem` (
   KEY `FK_problem_database` (`database_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Dumping data for table sqlonlinejudge.problem: ~2 rows (大约)
+-- Dumping data for table system.problem: ~2 rows (大约)
 /*!40000 ALTER TABLE `problem` DISABLE KEYS */;
 INSERT INTO `problem` (`id`, `title`, `description`, `sample_output`, `hint`, `answer`, `solve`, `submit`, `true_result`, `need_order`, `database_id`) VALUES
 	(1, '1', '1', '1', '1', '1', 0, 0, '1', b'1', 1),
 	(2, '2', '2', '2', '2', '2', 0, 0, NULL, b'0', 0);
 /*!40000 ALTER TABLE `problem` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.solution
+-- Dumping structure for table system.solution
 DROP TABLE IF EXISTS `solution`;
 CREATE TABLE IF NOT EXISTS `solution` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '解答ID',
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `solution` (
   KEY `pid` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Dumping data for table sqlonlinejudge.solution: ~3 rows (大约)
+-- Dumping data for table system.solution: ~3 rows (大约)
 /*!40000 ALTER TABLE `solution` DISABLE KEYS */;
 INSERT INTO `solution` (`id`, `uid`, `pid`, `source_code`, `submit_time`, `run_error`, `result`) VALUES
 	(1, 1, 1, '1', '2011-06-24 18:37:39', '', '0'),
@@ -82,7 +82,7 @@ INSERT INTO `solution` (`id`, `uid`, `pid`, `source_code`, `submit_time`, `run_e
 	(3, 2, 2, '3', '2019-08-26 13:47:45', NULL, '1');
 /*!40000 ALTER TABLE `solution` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.sys_admin
+-- Dumping structure for table system.sys_admin
 DROP TABLE IF EXISTS `sys_admin`;
 CREATE TABLE IF NOT EXISTS `sys_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -93,14 +93,14 @@ CREATE TABLE IF NOT EXISTS `sys_admin` (
   UNIQUE KEY `username` (`username`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table sqlonlinejudge.sys_admin: ~2 rows (大约)
+-- Dumping data for table system.sys_admin: ~2 rows (大约)
 /*!40000 ALTER TABLE `sys_admin` DISABLE KEYS */;
 INSERT INTO `sys_admin` (`id`, `username`, `password`, `salt`) VALUES
 	(1, 'admin', 'admin', '8d78869f470951332959580424d4bf4f'),
 	(2, 'a', 'a', 'a');
 /*!40000 ALTER TABLE `sys_admin` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.sys_admin_role
+-- Dumping structure for table system.sys_admin_role
 DROP TABLE IF EXISTS `sys_admin_role`;
 CREATE TABLE IF NOT EXISTS `sys_admin_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -109,13 +109,13 @@ CREATE TABLE IF NOT EXISTS `sys_admin_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table sqlonlinejudge.sys_admin_role: ~1 rows (大约)
+-- Dumping data for table system.sys_admin_role: ~1 rows (大约)
 /*!40000 ALTER TABLE `sys_admin_role` DISABLE KEYS */;
 INSERT INTO `sys_admin_role` (`id`, `a_id`, `r_id`) VALUES
 	(1, 1, 1);
 /*!40000 ALTER TABLE `sys_admin_role` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.sys_permission
+-- Dumping structure for table system.sys_permission
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE IF NOT EXISTS `sys_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -124,13 +124,13 @@ CREATE TABLE IF NOT EXISTS `sys_permission` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table sqlonlinejudge.sys_permission: ~1 rows (大约)
+-- Dumping data for table system.sys_permission: ~1 rows (大约)
 /*!40000 ALTER TABLE `sys_permission` DISABLE KEYS */;
 INSERT INTO `sys_permission` (`id`, `name`, `permission`) VALUES
 	(1, '总权限', '*:*');
 /*!40000 ALTER TABLE `sys_permission` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.sys_role
+-- Dumping structure for table system.sys_role
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE IF NOT EXISTS `sys_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -140,13 +140,13 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
   UNIQUE KEY `role_name` (`role_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table sqlonlinejudge.sys_role: ~1 rows (大约)
+-- Dumping data for table system.sys_role: ~1 rows (大约)
 /*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
 INSERT INTO `sys_role` (`id`, `role_name`, `description`) VALUES
 	(1, 'admin', '总管理员');
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.sys_role_permission
+-- Dumping structure for table system.sys_role_permission
 DROP TABLE IF EXISTS `sys_role_permission`;
 CREATE TABLE IF NOT EXISTS `sys_role_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -155,13 +155,13 @@ CREATE TABLE IF NOT EXISTS `sys_role_permission` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table sqlonlinejudge.sys_role_permission: ~1 rows (大约)
+-- Dumping data for table system.sys_role_permission: ~1 rows (大约)
 /*!40000 ALTER TABLE `sys_role_permission` DISABLE KEYS */;
 INSERT INTO `sys_role_permission` (`id`, `r_id`, `p_id`) VALUES
 	(1, 1, 1);
 /*!40000 ALTER TABLE `sys_role_permission` ENABLE KEYS */;
 
--- Dumping structure for table sqlonlinejudge.sys_user
+-- Dumping structure for table system.sys_user
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE IF NOT EXISTS `sys_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- Dumping data for table sqlonlinejudge.sys_user: ~3 rows (大约)
+-- Dumping data for table system.sys_user: ~3 rows (大约)
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
 INSERT INTO `sys_user` (`id`, `username`, `email`, `password`, `salt`, `submit`, `solved`, `avatar`, `status`) VALUES
 	(1, '1', '1', '1', '', 100, 5, 'default.jpg', '1'),

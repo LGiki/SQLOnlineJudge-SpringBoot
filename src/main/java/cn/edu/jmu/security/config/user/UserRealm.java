@@ -1,9 +1,9 @@
 package cn.edu.jmu.security.config.user;
 
 import cn.edu.jmu.security.config.UserToken;
-import cn.edu.jmu.sqlonlinejudge.entity.User;
-import cn.edu.jmu.sqlonlinejudge.service.UserService;
-import cn.edu.jmu.sqlonlinejudge.service.enums.UserStatusEnum;
+import cn.edu.jmu.system.entity.User;
+import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
