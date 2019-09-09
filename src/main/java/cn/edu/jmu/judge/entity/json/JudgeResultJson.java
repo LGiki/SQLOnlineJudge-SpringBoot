@@ -10,12 +10,21 @@ import lombok.Data;
 @Data
 public class JudgeResultJson {
 
+    /**
+     * 结果代码
+     */
     @SerializedName("code")
     public String code;
 
+    /**
+     * 判题结果数据
+     */
     @SerializedName("data")
     public JudgeResultDataJson data;
 
+    /**
+     * 判题结果信息
+     */
     @SerializedName("message")
     public String message;
 }

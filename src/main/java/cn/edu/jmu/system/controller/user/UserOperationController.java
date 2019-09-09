@@ -2,6 +2,7 @@ package cn.edu.jmu.system.controller.user;
 
 import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
@@ -33,6 +34,9 @@ public class UserOperationController {
 
     @Resource
     private SolutionService solutionService;
+
+    @Resource
+    private JudgeService judgeService;
 
     /**
      * 获取登录用户的信息
@@ -84,6 +88,12 @@ public class UserOperationController {
         }
     }
 
+
+    /**
+     * 判题
+     * @param solutionDto
+     * @return
+     */
     @PostMapping(value = "/solutions/")
     public ResponseEntity<BasicResponse> submit(@RequestBody @Validated SolutionDto solutionDto) {
         Subject subject = SecurityUtils.getSubject();
@@ -91,8 +101,15 @@ public class UserOperationController {
         solutionDto.setUid(user.getId());
         BasicResponse response = new BasicResponse();
         if (solutionService.add(solutionDto)) {
-            response.wrapper(AbstractResponseCode.OK, "提交成功");
+            if(judgeService.judge(solutionDto)) {
+                response.wrapper(AbstractResponseCode.OK, "判题成功");
+            }else {
+                //判题错误,待修改！
+                response.wrapper(AbstractResponseCode.FAIL, "判题失败");
+            }
             return ResponseEntity.ok(response);
+
+
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
