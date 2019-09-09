@@ -1,12 +1,14 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+import sys
 import pymysql
 import os
 import sqlite3
 import shutil
 import logging
 import json
+from sys import argv
 
 # 主 SQLite 数据库目录
 SQLITE_DIR = './judgeDB'
@@ -209,4 +211,6 @@ if __name__ == '__main__':
     #     datefmt="%Y-%m-%d %H:%M:%S"
     # )
     # logger = logging.getLogger()
-    print(main(1))
+    # print("脚本名：", argv[0])
+    # print("参数：", argv[1])
+    print(main(argv[1]))

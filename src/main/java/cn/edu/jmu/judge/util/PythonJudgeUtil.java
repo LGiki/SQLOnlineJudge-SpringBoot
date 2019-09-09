@@ -1,10 +1,11 @@
 package cn.edu.jmu.judge.util;
 
-import cn.edu.jmu.judge.entity.dto.JudgeResultDto;
-import org.python.core.*;
-import org.python.util.PythonInterpreter;
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
+import com.google.gson.Gson;
 
-import java.util.Properties;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * @author xeathen
@@ -13,26 +14,23 @@ import java.util.Properties;
 public class PythonJudgeUtil {
 
 
-    public static void sqlJudge(Long sulutionID){
-//        Properties props = new Properties();
-//        props.put("python.console.encoding", "UTF-8"); // Used to prevent: console: Failed to install '': java.nio.charset.UnsupportedCharsetException: cp0.
-//        props.put("python.security.respectJavaAccessibility", "false"); //don't respect java accessibility, so that we can access protected members on subclasses
-//        props.put("python.import.site","false");
-//        Properties preprops = System.getProperties();
-//        PythonInterpreter.initialize(preprops, props, new String[0]);
-//
-//        PySystemState sys = Py.getSystemState();
-//        System.out.println(sys.path.toString());    // previous
-//        sys.path.add("C:\\Users\\Savage\\.m2\\repository\\org\\python\\jython-standalone\\2.7.0\\jython-standalone-2.7.0.jar\\Lib");
-//        sys.path.add("C:\\Users\\Savage\\AppData\\Local\\Programs\\Python\\Python37-32\\Lib\\site-packages");
-//        sys.path.add("C:\\Users\\Savage\\AppData\\Local\\Programs\\Python\\Python37-32\\Lib");
-//        System.out.println(sys.path.toString());   // later
-
-        PythonInterpreter interpreter = new PythonInterpreter();
-        interpreter.execfile("./judger.py");
-        PyFunction func = interpreter.get("main", PyFunction.class);
-        PyObject pyObj = func.__call__(new PyLong(sulutionID));
-//        JudgeResultDto result = new JudgeResultDto();
-        System.out.println("answer = " + pyObj.toString());
+    public static JudgeResultJson sqlJudge(Long solutionID){
+        try {
+            String[] args = new String[] { "python", "./judger.py", String.valueOf(solutionID)};
+            // 执行py文件
+            Process proc = Runtime.getRuntime().exec(args);
+            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), "GBK"));
+            String line = null;
+            if ((line = in.readLine()) != null) {
+                return new Gson().fromJson(line, JudgeResultJson.class);
+            }
+            in.close();
+            proc.waitFor();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
