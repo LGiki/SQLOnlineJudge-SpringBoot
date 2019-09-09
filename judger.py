@@ -170,7 +170,7 @@ def judge(cursor, solution_id):
                 'runError': exec_exception,
                 'trueResult': None if is_true_result_exist else true_result,
             },
-            'message': 'None'
+            'message': None
         }
     )
     return result
