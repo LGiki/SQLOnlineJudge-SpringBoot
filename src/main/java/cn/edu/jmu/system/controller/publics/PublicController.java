@@ -1,7 +1,7 @@
 package cn.edu.jmu.system.controller.publics;
 
-import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
@@ -42,14 +42,10 @@ public class PublicController {
      * 查询所有题目
      */
     @GetMapping(value = "/problems")
-    public ResponseEntity<BasicResponse> selectAll(ProblemDto problemDto,
-                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        BasicResponse basicResponse = new BasicResponse();
+    public ResponseEntity<BasicResponse> selectAll(ProblemDto problemDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Problem> page = new Page<>(pageNum, pageSize);
         IPage<ProblemDto> iPage = problemService.getAll(problemDto, page);
-        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
-        return ResponseEntity.ok().body(basicResponse);
+        return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
     /**
@@ -57,26 +53,21 @@ public class PublicController {
      */
     @GetMapping(value = "/problems/{id}")
     public ResponseEntity<BasicResponse> selectById(@PathVariable("id") Integer id) {
-        BasicResponse response = new BasicResponse();
         Problem problem = problemService.getById(id);
         ProblemDetailToUserDto problemDetailToUserDto = ProblemMapper.toDetailDto(problem);
-        response.wrapper(AbstractResponseCode.OK, "查询成功", problemDetailToUserDto);
-        return ResponseEntity.ok().body(response);
+        return ResponseUtil.buildResponse("查询成功", problemDetailToUserDto);
     }
 
     /**
      * Rank榜
      */
     @GetMapping(value = "/rank")
-    public ResponseEntity<BasicResponse> rank(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        BasicResponse response = new BasicResponse();
+    public ResponseEntity<BasicResponse> rank(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<User> userPage = new Page<>(pageNum, pageSize);
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.NORMAL);
         IPage<UserDto> iPage = userService.getAll(userDto, userPage);
-        response.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
-        return ResponseEntity.ok().body(response);
+        return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
     /**
@@ -84,24 +75,18 @@ public class PublicController {
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getSolutionById(@PathVariable("id") Integer id) {
-        BasicResponse basicResponse = new BasicResponse();
         Solution solution = solutionService.getById(id);
-        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", solution);
-        return ResponseEntity.ok().body(basicResponse);
+        return ResponseUtil.buildResponse("查询成功", solution);
     }
 
     /**
      * 查询所有解答
      */
     @GetMapping(value = "/solutions")
-    public ResponseEntity<BasicResponse> selectAll(
-            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        BasicResponse basicResponse = new BasicResponse();
+    public ResponseEntity<BasicResponse> selectAll(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Solution> page = new Page<>(pageNum, pageSize);
         IPage<SolutionDto> iPage = solutionService.get(null, page);
-        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
-        return ResponseEntity.ok().body(basicResponse);
+        return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
     /**
@@ -109,8 +94,7 @@ public class PublicController {
      */
     @GetMapping(value = "/solutions/count")
     public ResponseEntity<BasicResponse> count() {
-        BasicResponse response = new BasicResponse();
-        response.wrapper(AbstractResponseCode.OK, "获取数量成功", solutionService.count());
-        return ResponseEntity.ok().body(response);
+        int count = solutionService.count();
+        return ResponseUtil.buildResponse(count);
     }
 }

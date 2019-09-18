@@ -64,9 +64,6 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
     @Override
     public boolean add(DatabaseDto databaseDto) {
         JudgeResultJson judgeResultJson = PythonJudgeUtil.createDatabase(databaseDto.getId());
-        if (CreateDatabaseResultEnum.OK.getValue().equals(judgeResultJson.code)) {
-            return true;
-        }
-        return false;
+        return CreateDatabaseResultEnum.OK.getValue().equals(judgeResultJson.code);
     }
 }

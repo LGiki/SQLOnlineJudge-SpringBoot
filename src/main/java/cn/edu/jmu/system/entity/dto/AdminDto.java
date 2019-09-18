@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -23,7 +24,7 @@ public class AdminDto implements Serializable {
     /**
      * 管理员用户名
      */
-    @NotBlank
+    @NotBlank(message = "username不能为空")
     private String username;
 
     /**

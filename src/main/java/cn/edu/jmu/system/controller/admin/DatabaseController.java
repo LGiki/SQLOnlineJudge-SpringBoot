@@ -1,7 +1,7 @@
 package cn.edu.jmu.system.controller.admin;
 
-import cn.edu.jmu.common.response.AbstractResponseCode;
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.service.DatabaseService;
@@ -9,7 +9,6 @@ import cn.edu.jmu.system.service.mapper.DatabaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +31,10 @@ public class DatabaseController {
      * 查询所有数据库
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(DatabaseDto databaseDto,
-                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        BasicResponse basicResponse = new BasicResponse();
+    public ResponseEntity<BasicResponse> getAll(DatabaseDto databaseDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Database> page = new Page<>(pageNum, pageSize);
         IPage<DatabaseDto> iPage = databaseService.getAll(databaseDto, page);
-        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", iPage);
-        return ResponseEntity.ok().body(basicResponse);
+        return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
 
@@ -48,26 +43,19 @@ public class DatabaseController {
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getDatabaseById(@PathVariable("id") Integer id) {
-        BasicResponse basicResponse = new BasicResponse();
         Database database = databaseService.getById(id);
         DatabaseDto databaseDto = DatabaseMapper.toDto(database);
-        basicResponse.wrapper(AbstractResponseCode.OK, "查询成功", databaseDto);
-        return ResponseEntity.ok().body(basicResponse);
+        return ResponseUtil.buildResponse("查询成功", databaseDto);
     }
 
     /**
      * 通过ID删除数据库
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
-        BasicResponse response = new BasicResponse();
+    public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
         // 删除数据库
-        if (databaseService.removeById(id)) {
-            response.wrapper(AbstractResponseCode.OK, "删除成功");
-        } else {
-            response.wrapper(AbstractResponseCode.FAIL, "删除失败");
-        }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        boolean success = databaseService.removeById(id);
+        return ResponseUtil.buildResponse(success, "删除成功", "删除失败");
     }
 
     /**
@@ -75,45 +63,23 @@ public class DatabaseController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
-        BasicResponse response = new BasicResponse();
-        if (databaseDto != null && databaseDto.getId() == null) {
-            Database database = DatabaseMapper.toEntity(databaseDto);
-            //新数据库要将是否已生成字段设置为 false
-            database.setIsCreated(false);
-            if (databaseService.saveOrUpdate(database)) {
-                response.wrapper(AbstractResponseCode.OK, "新增数据库成功", database);
-            } else {
-                response.wrapper(AbstractResponseCode.FAIL, "新增数据库失败");
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        Database database = DatabaseMapper.toEntity(databaseDto);
+        boolean success = databaseService.saveOrUpdate(database);
+        return ResponseUtil.buildResponse(success, "新增数据库成功", "新增数据库失败");
     }
 
     /**
      * 通过ID更新数据库
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id,
-                                                            @RequestBody DatabaseDto databaseDto) {
-        BasicResponse response = new BasicResponse();
-        if (databaseDto != null && databaseDto.getId() != null && databaseDto.getId().equals(id)) {
+    public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id, @RequestBody @Validated DatabaseDto databaseDto) {
+        if (databaseDto.getId() != null && databaseDto.getId().equals(id)) {
             // 更新数据库信息
             Database database = DatabaseMapper.toEntity(databaseDto);
-            if(databaseService.add(databaseDto)){
-                if (databaseService.saveOrUpdate(database)) {
-                    response.wrapper(AbstractResponseCode.OK, "更新数据库信息成功", database);
-                } else {
-                    response.wrapper(AbstractResponseCode.FAIL, "更新数据库信息失败");
-                }
-            }else {
-                response.wrapper(AbstractResponseCode.FAIL, "创建数据库失败");
-            }
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            boolean success = databaseService.add(databaseDto) && databaseService.saveOrUpdate(database);
+            return ResponseUtil.buildResponse(success, "更新数据库成功", "更新数据库信息失败");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseUtil.fail("id不一致");
         }
     }
 
@@ -122,8 +88,7 @@ public class DatabaseController {
      */
     @GetMapping(value = "/count")
     public ResponseEntity<BasicResponse> count() {
-        BasicResponse response = new BasicResponse();
-        response.wrapper(AbstractResponseCode.OK, "获取数量成功", databaseService.count());
-        return ResponseEntity.ok().body(response);
+        int count = databaseService.count();
+        return ResponseUtil.buildResponse(count);
     }
 }

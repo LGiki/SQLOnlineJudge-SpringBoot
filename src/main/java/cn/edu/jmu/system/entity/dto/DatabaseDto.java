@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class DatabaseDto implements Serializable {
 
+    private static final long serialVersionUID = 8718590801292445875L;
     /**
      * 数据库ID
      */
@@ -34,9 +35,4 @@ public class DatabaseDto implements Serializable {
      */
     @NotBlank
     private String testData;
-
-    /**
-     * 数据库是否已创建
-     */
-    private Boolean isCreated;
 }

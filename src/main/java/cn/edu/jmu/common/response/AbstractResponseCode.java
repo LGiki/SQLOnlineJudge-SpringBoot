@@ -6,7 +6,7 @@ package cn.edu.jmu.common.response;
  */
 public abstract class AbstractResponseCode {
     /**
-     *
+     * 自定义响应code
      */
 
     public static final Integer OK = 0;
