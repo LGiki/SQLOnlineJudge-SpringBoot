@@ -78,12 +78,6 @@ public class Problem implements Serializable {
     private String trueResult;
 
     /**
-     * 是否需要答案有序
-     */
-    @TableField(value = "need_order")
-    private Boolean needOrder;
-
-    /**
      * 数据库ID
      */
     @TableField(value = "database_id")

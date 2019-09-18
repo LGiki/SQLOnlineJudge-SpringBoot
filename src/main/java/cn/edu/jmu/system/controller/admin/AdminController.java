@@ -2,6 +2,7 @@ package cn.edu.jmu.system.controller.admin;
 
 
 import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.dto.AdminDto;
@@ -34,9 +35,7 @@ public class AdminController {
      * 查询所有管理员
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(AdminDto adminDto,
-                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> getAll(AdminDto adminDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Admin> page = new Page<>(pageNum, pageSize);
         IPage<AdminDto> iPage = adminService.getAll(adminDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
@@ -91,10 +90,10 @@ public class AdminController {
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated AdminDto adminDto) {
         Admin admin = AdminMapper.toEntity(adminDto);
-//            String salt = EncryptUtil.generatorSalt();
-//            admin.setSalt(salt);
+        String salt = EncryptUtil.generatorSalt();
+        admin.setSalt(salt);
 //            admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), salt));
-        boolean success = adminService.saveOrUpdate(admin);
+        boolean success = adminService.insert(admin);
         return ResponseUtil.buildResponse(success, "新增管理员成功", "新增管理员失败");
     }
 }

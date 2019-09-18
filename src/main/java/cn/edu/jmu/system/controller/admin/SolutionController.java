@@ -4,6 +4,7 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.service.SolutionService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ import javax.annotation.Resource;
  * @date 2019/08/28 13:34:54
  */
 @RestController
-@RequiresRoles(value = {"admin"})
+@RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
 @RequestMapping(value = "/api/admin/solutions")
 public class SolutionController {
 

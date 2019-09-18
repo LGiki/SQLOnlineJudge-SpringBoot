@@ -31,10 +31,9 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public List<Permission> findAllPermissionByRoleId(Integer roleId) {
         List<Integer> roleIdList = baseMapper.selectAllPermissionIdByRoleIdFromSysRolePermission(roleId);
         if (ObjectUtils.isEmpty(roleIdList)) {
-            return baseMapper.selectBatchIds(roleIdList);
-        } else {
             return null;
+        } else {
+            return baseMapper.selectBatchIds(roleIdList);
         }
-
     }
 }

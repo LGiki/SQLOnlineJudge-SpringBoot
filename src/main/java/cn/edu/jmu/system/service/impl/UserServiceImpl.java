@@ -5,6 +5,7 @@ import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.mapper.UserMapper;
 import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -47,6 +48,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userDto.setPassword(EncryptUtil.encryption(userDto.getUsername(), userDto.getPassword(), user.getSalt()));
         }
         cn.edu.jmu.system.service.mapper.UserMapper.toEntity(userDto, user);
+        return baseMapper.updateById(user) >= 1;
+    }
+
+    /**
+     * 更改用户状态
+     *
+     * @param id id
+     * @return boolean
+     */
+    @Override
+    public boolean changeUserStatus(Integer id) {
+        User user = baseMapper.selectById(id);
+        if (user.getStatus() == UserStatusEnum.NORMAL) {
+            user.setStatus(UserStatusEnum.LOCK);
+        } else {
+            user.setStatus(UserStatusEnum.NORMAL);
+        }
         return baseMapper.updateById(user) >= 1;
     }
 

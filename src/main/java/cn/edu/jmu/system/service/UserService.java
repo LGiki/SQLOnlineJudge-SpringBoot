@@ -28,4 +28,12 @@ public interface UserService extends IService<User> {
      * @return boolean
      */
     boolean update(UserDto userDto);
+
+    /**
+     * 更改用户状态
+     *
+     * @param id id
+     * @return boolean
+     */
+    boolean changeUserStatus(Integer id);
 }

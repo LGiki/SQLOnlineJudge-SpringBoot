@@ -9,6 +9,7 @@ import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
  * @date 2019/6/18 19:17
  */
 @RestController
-@RequiresRoles(value = {"admin"})
+@RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
 @RequestMapping("/api/admin/users")
 public class UserController {
 
@@ -41,8 +42,6 @@ public class UserController {
 
     /**
      * 通过ID查询用户详情
-     *
-     * @param id 用户ID
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
@@ -52,24 +51,10 @@ public class UserController {
     }
 
     /**
-     * 通过用户ID删除用户
-     *
-     * @param id 用户ID
-     */
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
-        // 删除用户
-        boolean success = userService.removeById(id);
-        return ResponseUtil.buildResponse(success, "删除成功", "删除失败");
-    }
-
-    /**
      * 更新用户
-     *
-     * @param userDto 新的用户信息
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> update(@RequestBody @Validated UserDto userDto, @PathVariable(value = "id") Integer id) {
+    public ResponseEntity<BasicResponse> update(@RequestBody @Validated UserDto userDto, @PathVariable("id") Integer id) {
         if (userDto.getId() != null && userDto.getId().equals(id)) {
             // 更新用户信息
             boolean success = userService.update(userDto);
@@ -80,9 +65,17 @@ public class UserController {
     }
 
     /**
+     * 更新用户状态
+     */
+    @PutMapping(value = "/status/{id}")
+    public ResponseEntity<BasicResponse> status(@PathVariable("id") Integer id) {
+        boolean success = userService.changeUserStatus(id);
+        return ResponseUtil.buildResponse(success, "更改成功", "更改失败");
+    }
+
+
+    /**
      * 添加用户
-     *
-     * @param userDto 新的用户
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated UserDto userDto) {

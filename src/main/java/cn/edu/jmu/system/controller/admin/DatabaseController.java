@@ -8,6 +8,7 @@ import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.mapper.DatabaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +21,7 @@ import javax.annotation.Resource;
  * @date 2019/06/23 09:27
  */
 @RestController
-@RequiresRoles(value = {"admin"})
+@RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
 @RequestMapping("/api/admin/databases")
 public class DatabaseController {
 
@@ -36,7 +37,6 @@ public class DatabaseController {
         IPage<DatabaseDto> iPage = databaseService.getAll(databaseDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
-
 
     /**
      * 通过ID查询数据库详情

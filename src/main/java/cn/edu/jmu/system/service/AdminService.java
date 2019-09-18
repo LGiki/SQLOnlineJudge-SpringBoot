@@ -32,4 +32,8 @@ public interface AdminService extends IService<Admin> {
      * @return boolean
      */
     boolean update(Admin admin);
+
+    boolean delete(Long id);
+
+    boolean insert(Admin admin);
 }

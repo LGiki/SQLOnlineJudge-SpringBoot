@@ -23,4 +23,5 @@ public interface RoleMapper extends BaseMapper<Role> {
      */
     List<Integer> selectAllRoleIdByAdminIdFromSysAdminRole(@Param("adminId") Integer adminId);
 
+    Integer insertAdminIdAndRoleId(@Param("adminId") Integer adminId, @Param("roleId") Integer roleId);
 }

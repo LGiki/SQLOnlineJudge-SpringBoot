@@ -4,6 +4,7 @@ import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.dto.AdminDto;
 import cn.edu.jmu.system.mapper.AdminMapper;
+import cn.edu.jmu.system.mapper.RoleMapper;
 import cn.edu.jmu.system.service.AdminService;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -13,6 +14,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -24,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+
+    @Resource
+    private RoleMapper roleMapper;
 
     /**
      * 得到所有管理员
@@ -57,6 +64,34 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
                         .setIgnoreError(true)
                         .setIgnoreProperties("id", "username", "salt"));
         return baseMapper.updateById(select) >= 1;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(Long id) {
+        Admin admin = baseMapper.selectById(id);
+        if (isAdmin(admin)) {
+            return false;
+        } else {
+            return baseMapper.deleteById(id) >= 1;
+        }
+    }
+
+    @Override
+    public boolean insert(Admin admin) {
+        baseMapper.insert(admin);
+        Integer id = admin.getId();
+        return roleMapper.insertAdminIdAndRoleId(id, 2) >= 1;
+    }
+
+    private boolean isAdmin(Admin admin) {
+        List<Integer> integers = roleMapper.selectAllRoleIdByAdminIdFromSysAdminRole(admin.getId());
+        for (Integer integer : integers) {
+            if (integer == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

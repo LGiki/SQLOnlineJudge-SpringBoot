@@ -9,6 +9,7 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.mapper.ProblemMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
  */
 
 @RestController
-@RequiresRoles(value = {"admin"})
+@RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
 @RequestMapping("/api/admin/problems")
 public class ProblemController {
 

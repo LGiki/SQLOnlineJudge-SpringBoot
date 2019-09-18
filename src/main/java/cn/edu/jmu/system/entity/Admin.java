@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author sgh
@@ -44,4 +46,7 @@ public class Admin implements Serializable {
      */
     @TableField(value = "salt")
     private String salt;
+
+    @TableField(exist = false)
+    private Integer roleId;
 }

@@ -47,6 +47,7 @@ public class AdminRealm extends AuthorizingRealm {
         }
         List<Role> roles = roleService.findAllRoleByAdminId(admin.getId());
         if (ObjectUtils.isEmpty(roles)) {
+            info.addRole("teacher");
             return info;
         }
         roles.forEach(role -> {

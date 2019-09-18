@@ -46,10 +46,4 @@ public class Database implements Serializable {
     @TableField(value = "test_data")
     @NotBlank
     private String testData;
-
-    /**
-     * 数据库是否已创建
-     */
-    @TableField(value = "is_created")
-    private Boolean isCreated;
 }
