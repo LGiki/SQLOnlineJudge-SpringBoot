@@ -101,11 +101,16 @@ public class DatabaseController {
         if (databaseDto != null && databaseDto.getId() != null && databaseDto.getId().equals(id)) {
             // 更新数据库信息
             Database database = DatabaseMapper.toEntity(databaseDto);
-            if (databaseService.saveOrUpdate(database)) {
-                response.wrapper(AbstractResponseCode.OK, "更新数据库信息成功", database);
-            } else {
-                response.wrapper(AbstractResponseCode.FAIL, "更新数据库信息失败");
+            if(databaseService.add(databaseDto)){
+                if (databaseService.saveOrUpdate(database)) {
+                    response.wrapper(AbstractResponseCode.OK, "更新数据库信息成功", database);
+                } else {
+                    response.wrapper(AbstractResponseCode.FAIL, "更新数据库信息失败");
+                }
+            }else {
+                response.wrapper(AbstractResponseCode.FAIL, "创建数据库失败");
             }
+
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

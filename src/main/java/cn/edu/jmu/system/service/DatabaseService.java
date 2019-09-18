@@ -21,4 +21,11 @@ public interface DatabaseService extends IService<Database> {
      * @return IPage<database>
      */
     IPage<DatabaseDto> getAll(DatabaseDto databaseDto, Page page);
+
+    /**
+     * 添加数据库
+     * @param databaseDto databaseDto
+     * @return boolean
+     */
+    boolean add(DatabaseDto databaseDto);
 }

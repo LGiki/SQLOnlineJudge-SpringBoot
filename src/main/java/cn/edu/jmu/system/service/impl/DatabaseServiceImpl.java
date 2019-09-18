@@ -1,5 +1,8 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
+import cn.edu.jmu.judge.enums.CreateDatabaseResultEnum;
+import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.mapper.DatabaseMapper;
@@ -50,5 +53,20 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
             }
             return queryWrapper;
         }
+    }
+
+    /**
+     * 添加数据库
+     *
+     * @param databaseDto databaseDto
+     * @return boolean
+     */
+    @Override
+    public boolean add(DatabaseDto databaseDto) {
+        JudgeResultJson judgeResultJson = PythonJudgeUtil.createDatabase(databaseDto.getId());
+        if (CreateDatabaseResultEnum.OK.getValue().equals(judgeResultJson.code)) {
+            return true;
+        }
+        return false;
     }
 }
