@@ -8,9 +8,10 @@ import shutil
 import logging
 import json
 import configparser
+from sys import argv
 
 # 配置文件路径
-CONFIG_FILE_PATH = './config.ini'
+CONFIG_FILE_PATH = './judger/config.ini'
 # 提交状态Dict
 SOLUTION_RESULT = {
     'Unknown': 0,  # 未知
@@ -67,8 +68,8 @@ def exec_code(sqlite_db_file_path, source_code):
     return str(exec_result), None
 
 
-# 通过题目ID获取正确的结果，如果结果不存在就执行一次正确答案获得正确结果
-# Return: trueResult, isTrueResultExists, runException
+# 通过题目ID获取正确的结果
+# Return: trueResult
 def get_true_result_by_problem_id(cursor, problem_id):
     sql = '''
     select `true_result`
@@ -166,4 +167,4 @@ if __name__ == '__main__':
     #     datefmt="%Y-%m-%d %H:%M:%S"
     # )
     # logger = logging.getLogger()
-    print(main(1))
+    print(main(argv[1]))

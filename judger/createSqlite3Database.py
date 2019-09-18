@@ -6,9 +6,10 @@ import os
 import sqlite3
 import json
 import configparser
+from sys import argv
 
 # 配置文件路径
-CONFIG_FILE_PATH = './config.ini'
+CONFIG_FILE_PATH = './judger/config.ini'
 # 返回状态码
 RESPONSE_CODE = {
     'OK': 0,
@@ -102,4 +103,4 @@ def main(database_id):
 
 
 if __name__ == '__main__':
-    print(main(1))
+    print(main(argv[1]))

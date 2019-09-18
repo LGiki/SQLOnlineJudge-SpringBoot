@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
@@ -8,6 +9,7 @@ import cn.edu.jmu.system.mapper.SolutionMapper;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.enums.SolutionResultEnum;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,6 +32,9 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
     @Resource
     private ProblemService problemService;
 
+    @Resource
+    private JudgeService judgeService;
+
     /**
      * 得到所有解答
      *
@@ -48,7 +53,13 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
 
     @Override
     public boolean add(SolutionDto solutionDto) {
+        //add
+        solutionDto.setResult(SolutionResultEnum.UNKNOWN);
+        baseMapper.insert(cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto));
+
+
         return true;
+
     }
 
     private void addMessage(SolutionDto solutionDto) {
