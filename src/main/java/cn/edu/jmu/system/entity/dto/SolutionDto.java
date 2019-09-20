@@ -56,7 +56,7 @@ public class SolutionDto implements Serializable {
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String code;
+    private String sourceCode;
 
     /**
      * 结果

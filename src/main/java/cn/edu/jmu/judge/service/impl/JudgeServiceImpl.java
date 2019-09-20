@@ -27,7 +27,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
     /**
      * 判题
      *
-     * @param solutionDto solutionDto
+     * @param solutionDto
      * @return boolean
      */
     @Override
@@ -45,7 +45,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
     /**
      * 获取正确答案
      *
-     * @param problemId problemId
+     * @param problemId
      * @return boolean
      */
     @Override

@@ -78,10 +78,10 @@ public class UserOperationController {
 
 
     /**
-     * 判题
+     * 用户提交判题
      *
      * @param solutionDto
-     * @return
+     * @return ResponseEntity
      */
     @PostMapping(value = "/solutions/")
     public ResponseEntity<BasicResponse> submit(@RequestBody @Validated SolutionDto solutionDto) {

@@ -55,7 +55,7 @@ def init_work_directory(SQLITE_DIR):
 # 创建数据库
 def create_database(SQLITE_DIR, cursor, database_id):
     sql = '''
-        select `create_table`, `test_data`, `is_created`
+        select `create_table`, `test_data`
         from `data_base`
         where id = %s 
         '''
