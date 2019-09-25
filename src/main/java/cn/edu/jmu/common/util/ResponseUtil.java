@@ -2,7 +2,6 @@ package cn.edu.jmu.common.util;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import org.springframework.http.ResponseEntity;
-import sun.plugin2.message.Message;
 
 /**
  * 接口返回工具类
