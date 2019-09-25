@@ -7,6 +7,7 @@ import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.mapper.UserMapper;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
@@ -79,6 +80,10 @@ public class UserController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated UserDto userDto) {
+        User byId = userService.getById(userDto.getId());
+        if (ObjectUtil.isNotNull(byId)) {
+            return ResponseUtil.fail("该用户名已存在");
+        }
         User user = UserMapper.toEntity(userDto);
         String salt = EncryptUtil.generatorSalt();
         user.setSalt(salt);
