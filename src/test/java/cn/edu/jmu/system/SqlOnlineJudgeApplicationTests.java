@@ -1,5 +1,6 @@
 package cn.edu.jmu.system;
 
+import cn.edu.jmu.judge.service.impl.JudgeServiceImpl;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.mapper.DatabaseMapper;
 import cn.edu.jmu.system.service.AdminService;
@@ -25,6 +26,10 @@ public class SqlOnlineJudgeApplicationTests {
     @Resource
     private DatabaseMapper databaseMapper;
 
+
+    @Resource
+    private JudgeServiceImpl judgeService;
+
     @Test
     @Transactional
     public void contextLoads() {
@@ -34,6 +39,12 @@ public class SqlOnlineJudgeApplicationTests {
         IPage<Database> iPage = databaseMapper.selectPage(databasePage, null);
 
         iPage.getRecords().forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    public void getTrueResult(){
+        judgeService.getTrueResult(1);
     }
 
 }

@@ -18,5 +18,13 @@ public interface JudgeService extends IService<Solution> {
      */
     boolean judge(SolutionDto solutionDto);
 
+    /**
+     * 获取正确答案
+     *
+     * @param problemId
+     * @return String
+     */
+    String getTrueResult(Integer problemId);
+
 
 }

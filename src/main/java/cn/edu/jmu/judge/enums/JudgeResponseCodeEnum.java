@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
  * @author xeathen
  * @date 2019/9/18 15:52
  */
-public enum CreateDatabaseResultEnum {
+public enum JudgeResponseCodeEnum {
     /**
      * CreateDatabaseResult
      */
@@ -18,7 +18,7 @@ public enum CreateDatabaseResultEnum {
 
     private final String msg;
 
-    CreateDatabaseResultEnum(String value, String msg) {
+    JudgeResponseCodeEnum(String value, String msg) {
         this.value = value;
         this.msg = msg;
     }

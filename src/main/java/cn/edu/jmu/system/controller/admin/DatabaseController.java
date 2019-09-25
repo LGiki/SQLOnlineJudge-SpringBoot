@@ -7,6 +7,7 @@ import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.mapper.DatabaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -64,8 +65,18 @@ public class DatabaseController {
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
         Database database = DatabaseMapper.toEntity(databaseDto);
-        boolean success = databaseService.saveOrUpdate(database);
-        return ResponseUtil.buildResponse(success, "新增数据库成功", "新增数据库失败");
+        if (databaseService.saveOrUpdate(database)) {
+            databaseDto.setId(database.getId());
+            if (databaseService.add(databaseDto)) {
+                return ResponseUtil.ok("新增数据库成功");
+            } else {
+                return ResponseUtil.fail("建表失败");
+            }
+        } else {
+            return ResponseUtil.fail("新增数据库失败");
+
+        }
+
     }
 
     /**
@@ -73,11 +84,16 @@ public class DatabaseController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id, @RequestBody @Validated DatabaseDto databaseDto) {
-        if (databaseDto.getId() != null && databaseDto.getId().equals(id)) {
+        if (databaseDto.getId() != null && id.equals(databaseDto.getId())) {
             // 更新数据库信息
             Database database = DatabaseMapper.toEntity(databaseDto);
-            boolean success = databaseService.add(databaseDto) && databaseService.saveOrUpdate(database);
-            return ResponseUtil.buildResponse(success, "更新数据库成功", "更新数据库信息失败");
+            if (!databaseService.add(databaseDto)) {
+                return ResponseUtil.fail("建表失败");
+            } else {
+                databaseService.saveOrUpdate(database);
+                return ResponseUtil.ok("更新数据库成功");
+            }
+
         } else {
             return ResponseUtil.fail("id不一致");
         }
