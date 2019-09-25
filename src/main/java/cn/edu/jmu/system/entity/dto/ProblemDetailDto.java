@@ -40,8 +40,8 @@ public class ProblemDetailDto extends ProblemDto implements Serializable {
     private String answer;
 
     /**
-     * 数据库ID
+     * 建表语句
      */
     @NotNull
-    private Integer databaseId;
+    private String createTable;
 }

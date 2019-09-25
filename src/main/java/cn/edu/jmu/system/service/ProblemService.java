@@ -1,6 +1,8 @@
 package cn.edu.jmu.system.service;
 
 import cn.edu.jmu.system.entity.Problem;
+import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
+import cn.edu.jmu.system.entity.dto.ProblemDetailToUserDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,6 +14,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 
 public interface ProblemService extends IService<Problem> {
+
+    /**
+     * 通过id查找problem
+     *
+     * @param id id
+     * @return ProblemDetailDto
+     */
+    ProblemDetailDto findById(Integer id);
 
     /**
      * 得到所有题目

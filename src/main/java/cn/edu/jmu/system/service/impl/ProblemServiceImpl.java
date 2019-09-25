@@ -1,8 +1,11 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
+import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
 import cn.edu.jmu.system.mapper.ProblemMapper;
+import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -13,6 +16,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 /**
  * @author LGiki
  * @date 2019/06/21 13:19
@@ -20,6 +25,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> implements ProblemService {
+
+    @Resource
+    private DatabaseService databaseService;
+
+
+    /**
+     * 通过id查找problem
+     *
+     * @param id id
+     * @return ProblemDto
+     */
+    @Override
+    public ProblemDetailDto findById(Integer id) {
+        Problem problem = baseMapper.selectById(id);
+        ProblemDetailDto problemDetailDto = cn.edu.jmu.system.service.mapper.ProblemMapper.toDetail(problem);
+        Database database = databaseService.getById(problem.getDatabaseId());
+        problemDetailDto.setCreateTable(database.getCreateTable());
+        return problemDetailDto;
+    }
+
     /**
      * 得到所有题目
      *

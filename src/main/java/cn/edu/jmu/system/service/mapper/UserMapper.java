@@ -21,7 +21,7 @@ public class UserMapper {
         User user = new User();
         BeanUtil.copyProperties(userDto, user, true, CopyOptions.create()
                 .setIgnoreNullValue(true)
-                .setIgnoreProperties("id", "username", "submit", "solved"));
+                .setIgnoreProperties("id", "submit", "solved"));
         return user;
     }
 
