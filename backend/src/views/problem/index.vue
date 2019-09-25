@@ -168,7 +168,7 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              this.$message.error('搜索失败，网络错误！')
+              this.$message.error('搜索失败，内部错误！')
             } else {
               const resData = res.data
               if (resData.code === 0) {
@@ -228,7 +228,7 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取题目列表失败，网络错误！')
+            this.$message.error('获取题目列表失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -251,8 +251,8 @@ export default {
       this.$axios
         .delete(apiUrl + problemId)
         .then(res => {
-          if (res.status !== 204) {
-            this.$message.error('删除题目失败，网络错误！')
+          if (res.status !== 200) {
+            this.$message.error('删除题目失败，内部错误！')
           } else {
             successCallback()
           }

@@ -125,7 +125,7 @@ export default {
         .get(apiUrl + "/" + databaseId)
         .then(res => {
           if (res.status !== 200) {
-            alert("获取题目详情失败，网络错误！");
+            alert("获取题目详情失败，内部错误！");
           } else {
             let resData = res.data;
             if (resData.code === 0) {
@@ -150,7 +150,7 @@ export default {
         .post(apiUrl, postData)
         .then(res => {
           if (res.status !== 200) {
-            alert("提交解答代码失败，网络错误！");
+            alert("提交解答代码失败，内部错误！");
           } else {
             let resData = res.data;
             if (resData.code === 0) {

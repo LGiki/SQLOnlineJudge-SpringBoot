@@ -144,7 +144,7 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              this.$message.error('搜索失败，网络错误！')
+              this.$message.error('搜索失败，内部错误！')
             } else {
               const resData = res.data
               if (resData.code === 0) {
@@ -204,7 +204,7 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取管理员列表失败，网络错误！')
+            this.$message.error('获取管理员列表失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -227,8 +227,8 @@ export default {
       this.$axios
         .delete(apiUrl + userId)
         .then(res => {
-          if (res.status !== 204) {
-            this.$message.error('删除管理员失败，网络错误！')
+          if (res.status !== 200) {
+            this.$message.error('删除管理员失败，内部错误！')
           } else {
             successCallback()
           }

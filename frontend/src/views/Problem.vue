@@ -219,7 +219,7 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("获取题目列表失败，网络错误！");
+            alert("获取题目列表失败，内部错误！");
           } else {
             let resData = res.data;
             if (resData.code === 0) {
@@ -262,7 +262,7 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              alert("题目搜索失败，网络错误！");
+              alert("题目搜索失败，内部错误！");
             } else {
               const resData = res.data;
               if (resData.code === 0) {

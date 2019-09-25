@@ -4,7 +4,7 @@ const Url = {
   //用户登录接口
   login: ApiHost + "/auth/user/login",
   //题目基础接口
-  problemBaseUrl: ApiHost + "/api/public/problems/",
+  problemBaseUrl: ApiHost + "/api/public/problems",
   //排行榜基础接口
   rankListBaseUrl: ApiHost + "/api/public/rank",
   //用户提交基础接口

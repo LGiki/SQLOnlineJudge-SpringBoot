@@ -113,7 +113,7 @@ export default {
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取用户数量失败，网络错误！')
+            this.$message.error('获取用户数量失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -131,7 +131,7 @@ export default {
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取数据库数量失败，网络错误！')
+            this.$message.error('获取数据库数量失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -149,7 +149,7 @@ export default {
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取题目数量失败，网络错误！')
+            this.$message.error('获取题目数量失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -167,7 +167,7 @@ export default {
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取用户提交数量失败，网络错误！')
+            this.$message.error('获取用户提交数量失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {

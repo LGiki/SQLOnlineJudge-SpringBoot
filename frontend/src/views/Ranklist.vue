@@ -170,7 +170,7 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("获取排名失败，网络错误！");
+            alert("获取排名失败，内部错误！");
           } else {
             let resData = res.data;
             if (resData.code === 0) {

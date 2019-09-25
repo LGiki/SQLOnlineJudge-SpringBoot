@@ -151,8 +151,8 @@ export default {
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
-          if (res.status !== 201) {
-            this.$message.error('添加题目失败，网络错误！')
+          if (res.status !== 200) {
+            this.$message.error('添加题目失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -176,7 +176,7 @@ export default {
         .get(apiUrl)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取数据库列表失败，网络错误！')
+            this.$message.error('获取数据库列表失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {

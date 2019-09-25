@@ -44,6 +44,8 @@ Axios.interceptors.response.use(
               path: "/login"
             });
             location.reload();
+          } else {
+            return Promise.resolve(error.response)
           }
       }
     }

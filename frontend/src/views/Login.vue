@@ -17,18 +17,9 @@
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>lock_outline</md-icon>
                 <label>密码</label>
-                <md-input
-                  @keyup.enter.native="login"
-                  v-model="password"
-                  type="password"
-                ></md-input>
+                <md-input @keyup.enter.native="login" v-model="password" type="password"></md-input>
               </md-field>
-              <md-button
-                @click="login"
-                slot="footer"
-                class="md-simple md-success md-lg"
-                >登录</md-button
-              >
+              <md-button @click="login" slot="footer" class="md-simple md-success md-lg">登录</md-button>
             </login-card>
           </div>
         </div>
@@ -67,12 +58,14 @@ export default {
       this.$axios
         .post(this.Url.login, postData)
         .then(res => {
-          if (res.status !== 200) {
-            alert("登录失败，网路错误!");
-          } else {
+          if (res.status === 401) {
+            alert(res.data.message);
+          } else if (res.status === 200) {
             localStorage.setItem("JWT_TOKEN", res.data.data.token);
             localStorage.setItem("USER_ID", res.data.data.id);
             window.location.href = "/";
+          }else{
+            alert("登录失败，内部错误!");
           }
         })
         .catch(err => {

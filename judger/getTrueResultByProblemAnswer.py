@@ -60,16 +60,7 @@ def exec_code(sqlite_db_file_path, source_code):
 
 
 # 通过问题ID获取正确答案
-def get_true_result_by_problem_id(SQLITE_DIR, SQLITE_TEMP_DIR, cursor, problem_id):
-    sql = '''
-    select `answer`, `database_id`
-    from `problem`
-    where `id` = %s
-    '''
-    cursor.execute(sql, [problem_id])
-    select_result = cursor.fetchall()
-    answer = select_result[0][0]
-    database_id = select_result[0][1]
+def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(database_id))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
@@ -87,23 +78,13 @@ def init_work_directory(SQLITE_TEMP_DIR):
         # logger.info('Create Temp SQLite Dir: {}'.format(SQLITE_TEMP_DIR))
 
 
-def main(problem_id):
+def main(answer, database_id):
     config_parser = configparser.ConfigParser()
     if len(config_parser.read(CONFIG_FILE_PATH)) == 0:
         return construct_json_response(RESPONSE_CODE['FAIL'], None, 'Can not load config.ini.')
     SQLITE_DIR, SQLITE_TEMP_DIR, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(config_parser)
     init_work_directory(SQLITE_TEMP_DIR)
-    conn = pymysql.connect(
-        host=DB_HOST,
-        user=DB_USERNAME,
-        password=DB_PASSWORD,
-        database=DB_DATABASE,
-        charset=DB_CHARSET
-    )
-    cursor = conn.cursor()
-    true_result, run_exception = get_true_result_by_problem_id(SQLITE_DIR, SQLITE_TEMP_DIR, cursor, problem_id)
-    cursor.close()
-    conn.close()
+    true_result, run_exception = get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id)
     if true_result is None:
         return construct_json_response(RESPONSE_CODE['FAIL'], None, run_exception)
     else:

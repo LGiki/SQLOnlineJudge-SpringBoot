@@ -124,7 +124,7 @@ export default {
         .get(apiUrl + databaseId)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取数据库详情失败，网络错误！')
+            this.$message.error('获取数据库详情失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -143,8 +143,8 @@ export default {
       this.$axios
         .put(apiUrl + databaseId, database)
         .then(res => {
-          if (res.status !== 201) {
-            this.$message.error('更新数据库失败，网络错误！')
+          if (res.status !== 200) {
+            this.$message.error('更新数据库失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {

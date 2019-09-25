@@ -106,7 +106,7 @@ export default {
         .get(apiUrl + userId)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取用户信息失败，网络错误！')
+            this.$message.error('获取用户信息失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -124,8 +124,8 @@ export default {
       this.$axios
         .put(apiUrl + userId, user)
         .then(res => {
-          if (res.status !== 201) {
-            this.$message.error('更新用户资料失败，网络错误！')
+          if (res.status !== 200) {
+            this.$message.error('更新用户资料失败，内部错误！')
           } else {
             const resData = res.data
             if (resData.code === 0) {
