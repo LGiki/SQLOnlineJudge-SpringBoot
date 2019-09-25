@@ -12,7 +12,7 @@
           <h3>题目描述</h3>
           <p>{{ problemDetail.description }}</p>
           <h3>建表语句</h3>
-          <highlight-code lang="sql">{{ createTableCode }}</highlight-code>
+          <highlight-code lang="sql">{{ problemDetail.createTable }}</highlight-code>
           <template v-if="problemDetail.sampleOutput">
             <h3>样例输出</h3>
             <p>{{ problemDetail.sampleOutput }}</p>
@@ -111,27 +111,6 @@ export default {
             let resData = res.data;
             if (resData.code === 0) {
               this.problemDetail = resData.data;
-            }
-            this.getCreateTableCode(this.problemDetail.databaseId);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getCreateTableCode(databaseId) {
-      let apiUrl = this.Url.databaseBaseUrl;
-      this.$axios
-        .get(apiUrl + "/" + databaseId)
-        .then(res => {
-          if (res.status !== 200) {
-            alert("获取题目详情失败，内部错误！");
-          } else {
-            let resData = res.data;
-            if (resData.code === 0) {
-              this.createTableCode = resData.data.createTable;
-            } else {
-              alert(resData.message);
             }
           }
         })
