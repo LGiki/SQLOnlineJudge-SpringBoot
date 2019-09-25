@@ -9,6 +9,7 @@ import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.service.UserService;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -72,17 +73,21 @@ public class AuthController {
     public ResponseEntity<BasicResponse> userRegister(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
         if (!ValidateUtil.isEmail(email)) {
             return ResponseUtil.fail("注册失败");
-        } else {
-            User user = new User();
-            user.setUsername(username);
-            String salt = EncryptUtil.generatorSalt();
-            user.setSalt(salt);
-            password = EncryptUtil.encryption(username, password, salt);
-            user.setPassword(password);
-            user.setEmail(email);
-            boolean success = userService.save(user);
-            return ResponseUtil.buildResponse(success, "注册成功", "注册失败");
         }
+        User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        if (ObjectUtil.isNotNull(byId)) {
+            return ResponseUtil.fail("注册失败,该用户名已存在");
+        }
+        User user = new User();
+        user.setUsername(username);
+        String salt = EncryptUtil.generatorSalt();
+        user.setSalt(salt);
+        password = EncryptUtil.encryption(username, password, salt);
+        user.setPassword(password);
+        user.setEmail(email);
+        boolean success = userService.save(user);
+        return ResponseUtil.buildResponse(success, "注册成功", "注册失败");
+
     }
 
 }

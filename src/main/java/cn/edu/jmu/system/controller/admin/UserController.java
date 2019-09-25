@@ -9,6 +9,7 @@ import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.mapper.UserMapper;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -80,7 +81,7 @@ public class UserController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated UserDto userDto) {
-        User byId = userService.getById(userDto.getId());
+        User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, userDto.getUsername()));
         if (ObjectUtil.isNotNull(byId)) {
             return ResponseUtil.fail("该用户名已存在");
         }
