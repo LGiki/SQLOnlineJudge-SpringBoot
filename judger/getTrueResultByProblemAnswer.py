@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import pymysql
 import os
 import sqlite3
 import json
@@ -94,4 +93,4 @@ def main(answer, database_id):
 
 
 if __name__ == '__main__':
-    print(main(argv[1]))
+    print(main(argv[1], argv[2]))

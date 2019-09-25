@@ -5,7 +5,6 @@ import pymysql
 import os
 import sqlite3
 import shutil
-import logging
 import json
 import configparser
 from sys import argv
