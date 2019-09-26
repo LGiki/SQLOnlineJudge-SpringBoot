@@ -45,7 +45,7 @@ Axios.interceptors.response.use(
             });
             location.reload();
           } else {
-            return Promise.resolve(error.response)
+            return Promise.resolve(error.response);
           }
       }
     }

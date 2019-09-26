@@ -12,7 +12,9 @@
           <h3>题目描述</h3>
           <p>{{ problemDetail.description }}</p>
           <h3>建表语句</h3>
-          <highlight-code lang="sql">{{ problemDetail.createTable }}</highlight-code>
+          <highlight-code lang="sql">{{
+            problemDetail.createTable
+          }}</highlight-code>
           <template v-if="problemDetail.sampleOutput">
             <h3>样例输出</h3>
             <p>{{ problemDetail.sampleOutput }}</p>

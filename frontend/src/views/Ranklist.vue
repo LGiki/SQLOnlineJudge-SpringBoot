@@ -1,64 +1,33 @@
 <template>
   <div class="wrapper">
-    <parallax
-      class="section page-header header-filter"
-      :style="headerStyle"
-    ></parallax>
+    <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
-      <div class="section profile-content">
-        <div class="container">
-          <div class="md-layout">
-            <div class="md-layout-item md-size-50 mx-auto">
-              <div class="profile">
-                <div class="avatar">
-                  <div class="icon icon-danger">
-                    <md-icon
-                      alt="Circle Image"
-                      class="md-size-6x img-raised rounded-circle img-fluid img-middle"
-                      >assessment</md-icon
-                    >
-                  </div>
-                </div>
-                <div class="name">
-                  <h3 class="title">排行榜</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="name">
+        <h2 class="title">排行榜</h2>
       </div>
-      <div class="section section-with-padding">
+      <div class="section no-padding">
         <div class="container">
           <div class="features text-center">
-            <div class="md-layout">
-              <template>
-                <v-table
-                  :is-loading="isLoading"
-                  is-horizontal-resize
-                  style="width:100%"
-                  :columns="tableConfig.columns"
-                  :table-data="tableConfig.tableData"
-                  row-hover-color="#eee"
-                  row-click-color="#edf7ff"
-                  :row-click="rowClick"
-                ></v-table>
-              </template>
-              <div class="bd">
-                <v-pagination
-                  @page-change="pageChange"
-                  @page-size-change="pageSizeChange"
-                  :showPagingCount="3"
-                  :total="totalItems"
-                  :layout="[
-                    'total',
-                    'sizer',
-                    'prev',
-                    'pager',
-                    'next',
-                    'jumper'
-                  ]"
-                ></v-pagination>
-              </div>
+            <template>
+              <v-table
+                :is-loading="isLoading"
+                is-horizontal-resize
+                style="width:100%"
+                :columns="tableConfig.columns"
+                :table-data="tableConfig.tableData"
+                row-hover-color="#eee"
+                row-click-color="#edf7ff"
+                :row-click="rowClick"
+              ></v-table>
+            </template>
+            <div class="bd">
+              <v-pagination
+                @page-change="pageChange"
+                @page-size-change="pageSizeChange"
+                :showPagingCount="3"
+                :total="totalItems"
+                :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+              ></v-pagination>
             </div>
           </div>
         </div>
@@ -201,42 +170,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.section {
-  padding: 0;
-}
+// .section {
+//   padding: 0;
+// }
 
-.section-with-padding {
-  padding-bottom: 40px;
-}
+// .section-with-padding {
+//   padding-bottom: 40px;
+// }
 
-.img-middle {
-  transform: translate3d(0, -50%, 0);
-  background: rgba(255, 255, 255, 0.835);
-}
+// .img-middle {
+//   transform: translate3d(0, -50%, 0);
+//   background: rgba(255, 255, 255, 0.835);
+// }
 
-.md-size-6x {
-  width: 150px;
-  min-width: 150px;
-  height: 150px;
-  font-size: 120px !important;
-}
-
-.title {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  min-height: 20px;
-}
+// .md-size-6x {
+//   width: 150px;
+//   min-width: 150px;
+//   height: 150px;
+//   font-size: 120px !important;
+// }
 
 .bd {
-  padding-top: 10px;
+  padding-top: 25px;
   width: 100%;
+  padding-bottom: 25px;
 }
 
 .bd /deep/ a {
   color: #333 !important;
 }
 
+.name {
+  padding-top: 10px;
+  text-align: center;
+  width: 100%;
+}
+
 .justify-content-center {
   justify-content: center !important;
+}
+
+.no-padding {
+  padding: 0 !important;
 }
 </style>

@@ -1,40 +1,17 @@
 <template>
   <div class="wrapper">
-    <parallax
-      class="section page-header header-filter"
-      :style="headerStyle"
-    ></parallax>
+    <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
-      <div class="section profile-content">
-        <div class="container">
-          <div class="md-layout">
-            <div class="md-layout-item md-size-50 mx-auto">
-              <div class="profile">
-                <div class="avatar">
-                  <div class="icon icon-success">
-                    <md-icon
-                      alt="Circle Image"
-                      class="md-size-6x img-raised rounded-circle img-fluid img-middle"
-                      >assignment</md-icon
-                    >
-                  </div>
-                </div>
-                <div class="name">
-                  <h3 class="title">题目列表</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="name">
+        <h2 class="title">题目列表</h2>
       </div>
-      <div class="section section-with-padding">
+      <div class="section no-padding">
         <div class="container">
           <div class="search">
             <md-field class="md-form-group" slot="inputs">
               <md-icon>search</md-icon>
               <label>请输入搜索关键字</label>
               <md-input v-model="searchKeyword"></md-input>
-
               <li class="md-list-item">
                 <a
                   href="javascript:void(0)"
@@ -119,11 +96,11 @@ export default {
     VPagination,
     Pagination
   },
-  bodyClass: "profile-page",
+  bodyClass: "landing-page",
   props: {
     header: {
       type: String,
-      default: require("@/assets/img/city-profile.jpg")
+      default: require("@/assets/img/bg7.jpg")
     }
   },
   data() {
@@ -296,47 +273,39 @@ export default {
   },
   mounted: function() {
     this.getProblemList();
+  },
+  computed: {
+    headerStyle() {
+      return {
+        backgroundImage: `url(${this.header})`
+      };
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.section {
-  padding: 0;
-}
-
-.section-with-padding {
-  padding-bottom: 40px;
-}
-
-.img-middle {
-  transform: translate3d(0, -50%, 0);
-  background: rgba(255, 255, 255, 0.835);
-}
-
-.md-size-6x {
-  width: 150px;
-  min-width: 150px;
-  height: 150px;
-  font-size: 120px !important;
-}
-
-.title {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  min-height: 20px;
-}
-
 .bd {
-  padding-top: 10px;
+  padding-top: 25px;
   width: 100%;
+  padding-bottom: 25px;
 }
 
 .bd /deep/ a {
   color: #333 !important;
 }
 
+.name {
+  padding-top: 10px;
+  text-align: center;
+  width: 100%;
+}
+
 .justify-content-center {
   justify-content: center !important;
+}
+
+.no-padding {
+  padding: 0 !important;
 }
 </style>
