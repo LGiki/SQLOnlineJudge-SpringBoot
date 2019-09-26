@@ -38,10 +38,4 @@ public class ProblemDetailDto extends ProblemDto implements Serializable {
      */
     @NotBlank
     private String answer;
-
-    /**
-     * 建表语句
-     */
-    @NotNull
-    private String createTable;
 }

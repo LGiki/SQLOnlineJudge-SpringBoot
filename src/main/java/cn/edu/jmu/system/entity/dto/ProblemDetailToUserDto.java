@@ -39,4 +39,9 @@ public class ProblemDetailToUserDto extends ProblemDto implements Serializable {
      * 提示
      */
     private String hint;
+
+    /**
+     * 建表语句
+     */
+    private String createTable;
 }

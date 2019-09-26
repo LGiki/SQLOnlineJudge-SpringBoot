@@ -31,17 +31,12 @@ public class ResponseUtil {
         return ResponseEntity.ok(BasicResponse.ok(data));
     }
 
-    public static ResponseEntity<BasicResponse> badRequest() {
-        return ResponseEntity.badRequest().build();
-    }
-
     public static ResponseEntity<BasicResponse> fail(String message) {
         return ResponseEntity.ok(BasicResponse.fail(message));
     }
 
     public static ResponseEntity<BasicResponse> ok(String message) {
         return ResponseEntity.ok(BasicResponse.ok(message).build());
-
     }
 }
 

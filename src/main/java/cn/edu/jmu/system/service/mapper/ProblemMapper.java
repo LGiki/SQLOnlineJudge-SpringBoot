@@ -19,10 +19,9 @@ public class ProblemMapper {
         return problemDto;
     }
 
-    public static ProblemDetailToUserDto toUserDetailDto(Problem problem) {
-        ProblemDetailToUserDto problemDetailToUserDto = new ProblemDetailToUserDto();
-        BeanUtil.copyProperties(problem, problemDetailToUserDto);
-        return problemDetailToUserDto;
+    public static void toUserDetailDto(Problem problem, ProblemDetailToUserDto problemDetailToUserDto) {
+        BeanUtil.copyProperties(problem, problemDetailToUserDto, true, CopyOptions.create()
+                .setIgnoreNullValue(true));
     }
 
     public static ProblemDetailDto toDetail(Problem problem) {

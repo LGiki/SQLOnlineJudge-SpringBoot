@@ -2,7 +2,7 @@ package cn.edu.jmu.system.service.impl;
 
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
-import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
+import cn.edu.jmu.system.entity.dto.ProblemDetailToUserDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
 import cn.edu.jmu.system.mapper.ProblemMapper;
 import cn.edu.jmu.system.service.DatabaseService;
@@ -28,22 +28,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
 
     @Resource
     private DatabaseService databaseService;
-
-
-    /**
-     * 通过id查找problem
-     *
-     * @param id id
-     * @return ProblemDto
-     */
-    @Override
-    public ProblemDetailDto findById(Integer id) {
-        Problem problem = baseMapper.selectById(id);
-        ProblemDetailDto problemDetailDto = cn.edu.jmu.system.service.mapper.ProblemMapper.toDetail(problem);
-        Database database = databaseService.getById(problem.getDatabaseId());
-        problemDetailDto.setCreateTable(database.getCreateTable());
-        return problemDetailDto;
-    }
 
     /**
      * 得到所有题目
@@ -74,6 +58,16 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
                         .setIgnoreError(true)
                         .setIgnoreProperties("id", "solve", "submit"));
         return baseMapper.updateById(select) >= 1;
+    }
+
+    @Override
+    public ProblemDetailToUserDto getToUserById(Integer id) {
+        Problem problem = baseMapper.selectById(id);
+        Database database = databaseService.getById(problem.getDatabaseId());
+        ProblemDetailToUserDto problemDetailToUserDto = new ProblemDetailToUserDto();
+        problemDetailToUserDto.setCreateTable(database.getCreateTable());
+        cn.edu.jmu.system.service.mapper.ProblemMapper.toUserDetailDto(problem, problemDetailToUserDto);
+        return problemDetailToUserDto;
     }
 
     /**

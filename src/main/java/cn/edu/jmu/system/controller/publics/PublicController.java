@@ -13,7 +13,6 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
-import cn.edu.jmu.system.service.mapper.ProblemMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.http.ResponseEntity;
@@ -53,9 +52,8 @@ public class PublicController {
      */
     @GetMapping(value = "/problems/{id}")
     public ResponseEntity<BasicResponse> selectById(@PathVariable("id") Integer id) {
-        Problem problem = problemService.getById(id);
-        ProblemDetailToUserDto problemDetailToUserDto = ProblemMapper.toUserDetailDto(problem);
-        return ResponseUtil.buildResponse("查询成功", problemDetailToUserDto);
+        ProblemDetailToUserDto detailToUserDto = problemService.getToUserById(id);
+        return ResponseUtil.buildResponse("查询成功", detailToUserDto);
     }
 
     /**

@@ -49,7 +49,8 @@ public class ProblemController {
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getProblemById(@PathVariable("id") Integer id) {
-        ProblemDetailDto problemDetailDto = problemService.findById(id);
+        Problem problem = problemService.getById(id);
+        ProblemDetailDto problemDetailDto = ProblemMapper.toDetail(problem);
         return ResponseUtil.buildResponse("查询成功", problemDetailDto);
     }
 
