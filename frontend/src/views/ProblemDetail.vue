@@ -106,7 +106,7 @@ export default {
         .get(apiUrl + "/" + problemId)
         .then(res => {
           if (res.status !== 200) {
-            alert("Network error");
+            alert("获取题目详情失败，内部错误！");
           } else {
             let resData = res.data;
             if (resData.code === 0) {

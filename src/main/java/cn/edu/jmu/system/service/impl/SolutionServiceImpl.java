@@ -44,8 +44,8 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
      */
     @Override
     public IPage<SolutionDto> get(SolutionDto solutionDto, Page page) {
-        Page<Solution> problemPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<Solution> iPage = baseMapper.selectPage(problemPage, Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getSubmitTime));
+        Page<Solution> solutionPage = new Page<>(page.getCurrent(), page.getSize());
+        IPage<Solution> iPage = baseMapper.selectPage(solutionPage, Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getSubmitTime));
         IPage<SolutionDto> convert = iPage.convert(cn.edu.jmu.system.service.mapper.SolutionMapper::toDto);
         convert.getRecords().forEach(this::addMessage);
         return convert;

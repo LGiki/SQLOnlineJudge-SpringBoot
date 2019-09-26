@@ -1,6 +1,7 @@
 package cn.edu.jmu.system.entity;
 
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
  */
 
 @Data
+@TableName(value = "solution")
 public class Solution implements Serializable {
 
     private static final long serialVersionUID = -1536199246828489364L;
