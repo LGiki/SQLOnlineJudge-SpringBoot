@@ -1,5 +1,7 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.judge.executor.ThreadPoolUtils;
+import cn.edu.jmu.judge.executor.thread.JudgeThread;
 import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.Solution;
@@ -56,8 +58,11 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         //add
         solutionDto.setResult(SolutionResultEnum.UNKNOWN);
         baseMapper.insert(cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto));
-
-
+        try {
+            ThreadPoolUtils.getInstance().submit(new JudgeThread(solutionDto.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
 
     }

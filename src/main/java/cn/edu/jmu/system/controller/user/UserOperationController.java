@@ -2,6 +2,8 @@ package cn.edu.jmu.system.controller.user;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.judge.executor.ThreadPoolUtils;
+import cn.edu.jmu.judge.executor.thread.JudgeThread;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
