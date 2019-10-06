@@ -10,12 +10,22 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UserProblemService extends IService<UserProblem> {
 
     /**
-     *
+     * 根据uid与pid查找记录
      * @param uid
      * @param pid
      * @return
      */
-    boolean isExist(Integer uid, Integer pid);
+    Integer find(Integer uid, Integer pid);
 
-//    boolean update(UserProblem userProblem);
+    /**
+     * 根据uid与pid及state差找
+     * @param uid
+     * @param pid
+     * @param state
+     * @return
+     */
+    Integer find(Integer uid, Integer pid, String state);
+
+
+
 }

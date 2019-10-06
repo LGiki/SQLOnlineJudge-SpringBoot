@@ -49,7 +49,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
     public boolean judge(SolutionDto solutionDto) {
 
         //调用线程池判题
-        log.debug("id: " + solutionDto.getId().toString());
+        log.debug("solutionDtoId: " + solutionDto.getId().toString());
         JudgeResultJson result = executeTask(solutionDto.getId());
         //判题脚本结束
         Solution solution = cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto);
@@ -63,8 +63,9 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             Integer pid = solution.getPid();
             UserProblem userProblem = new UserProblem();
             userProblem.setUid(uid);
-            userProblem.setPid(uid);
+            userProblem.setPid(pid);
             User user = userService.getById(uid);
+            Integer userProblemId = userProblemService.find(uid, pid);
             //判题状态正确
             if (JudgeResponseCodeEnum.OK.getValue().equals(code)) {
                 //结果正确
@@ -72,8 +73,13 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                     //修改solution表状态
                     solution.setResult(SolutionResultEnum.ACCEPTED);
                     //修改user表状态——solved-通过数+1
-                    increaseSolvedCount(user);
+                    if (userProblemService.find(uid, pid, JudgeResponseCodeEnum.OK.getValue()) == 0){
+                        increaseSolvedCount(user);
+                    }
                     //修改user_problem表
+                    if (userProblemId != 0) {
+                        userProblem.setId(userProblemId);
+                    }
                     userProblem.setState(JudgeResponseCodeEnum.OK.getValue());
                 } else {
                     //修改solution表状态
@@ -88,14 +94,14 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                         solution.setRunError(runError);
                     }
                     //修改user_problem表状态
-                    if (!userProblemService.isExist(uid, pid)) {
+                    if (userProblemId == 0) {
                         userProblem.setState(JudgeResponseCodeEnum.FAIL.getValue());
+                    } else {
+                        userProblem.setId(userProblemId);
                     }
                 }
-
                 //修改user表状态——submit-提交数+1
                 increaseSubmitCount(user);
-
             }
             //判题状态错误
             else if (JudgeResponseCodeEnum.FAIL.getValue().equals(code)) {
