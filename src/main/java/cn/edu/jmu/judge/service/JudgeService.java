@@ -20,11 +20,11 @@ public interface JudgeService extends IService<Solution> {
 
     /**
      * 获取正确答案
-     *
-     * @param problemId
-     * @return String
+     * @param answer
+     * @param databaseId
+     * @return
      */
-    String getTrueResult(Integer problemId);
+    String getTrueResult(String answer, Integer databaseId);
 
 
 }

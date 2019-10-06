@@ -109,12 +109,14 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
     /**
      * 获取正确答案
      *
-     * @param problemId
+     * @param answer
+     * @param databaseId
      * @return boolean
      */
     @Override
-    public String getTrueResult(Integer problemId) {
-        JudgeResultJson judgeResultJson = PythonJudgeUtil.getTrueResult(problemId);
+    public String getTrueResult(String answer, Integer databaseId) {
+        JudgeResultJson judgeResultJson = PythonJudgeUtil.getTrueResult(answer, databaseId);
+        log.debug(judgeResultJson.toString());
         if (JudgeResponseCodeEnum.OK.getValue().equals(judgeResultJson.getCode())) {
             return judgeResultJson.getData().getTrueResult();
         }

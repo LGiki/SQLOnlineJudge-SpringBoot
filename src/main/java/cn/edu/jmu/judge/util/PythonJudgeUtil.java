@@ -33,11 +33,12 @@ public class PythonJudgeUtil {
     /**
      * 调用Python脚本获取正确答案
      *
-     * @param problemId
-     * @return judgeResultJson
+     * @param answer
+     * @param databaseId
+     * @return
      */
-    public static JudgeResultJson getTrueResult(Integer problemId) {
-        String[] args = new String[]{"python", "./judger/getTrueResultByProblemAnswer.py", String.valueOf(problemId)};
+    public static JudgeResultJson getTrueResult(String answer, Integer databaseId) {
+        String[] args = new String[]{"python", "./judger/getTrueResultByProblemAnswer.py", answer, String.valueOf(databaseId)};
         log.debug("开始获取正确答案");
         return pythonAction(args);
     }

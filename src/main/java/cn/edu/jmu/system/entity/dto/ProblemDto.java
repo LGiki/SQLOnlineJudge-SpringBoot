@@ -3,6 +3,7 @@ package cn.edu.jmu.system.entity.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -34,4 +35,10 @@ public class ProblemDto implements Serializable {
      * 提交数
      */
     private Integer submit;
+
+    /**
+     * 数据库ID
+     */
+    @NotNull
+    private Integer databaseId;
 }

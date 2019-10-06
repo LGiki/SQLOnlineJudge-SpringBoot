@@ -46,11 +46,7 @@ public class SqlOnlineJudgeApplicationTests {
         iPage.getRecords().forEach(System.out::println);
     }
 
-    @Test
-    @Transactional
-    public void getTrueResult() {
-        judgeService.getTrueResult(1);
-    }
+
 
     @Test
     @Transactional

@@ -38,4 +38,6 @@ public class ProblemDetailDto extends ProblemDto implements Serializable {
      */
     @NotBlank
     private String answer;
+
+
 }

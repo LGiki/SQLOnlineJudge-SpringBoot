@@ -2,6 +2,7 @@ package cn.edu.jmu.judge.entity.json;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * @date 2019/9/9 12:18
  */
 @Data
+@ToString
 public class JudgeResultJson implements Serializable {
 
     private static final long serialVersionUID = 8788508995412552674L;
@@ -31,10 +33,5 @@ public class JudgeResultJson implements Serializable {
     @SerializedName("message")
     private String message;
 
-    @Override
-    public String toString(){
-        return "code: " + getCode()
-                + ",data: " + (getData() == null? "null" : toString())
-                + ",message: " + getMessage();
-    }
+
 }

@@ -10,6 +10,7 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.mapper.ProblemMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
 @RestController
 @RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
 @RequestMapping("/api/admin/problems")
+@Slf4j
 public class ProblemController {
 
     @Resource
@@ -71,15 +73,18 @@ public class ProblemController {
     public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated ProblemDetailDto problemDetailDto) {
         Problem problem = ProblemMapper.toEntity(problemDetailDto);
         if (problemService.saveOrUpdate(problem)) {
-            String trueResult = judgeService.getTrueResult(problem.getId());
+            log.debug(problem.toString());
+            String trueResult = judgeService.getTrueResult(problem.getAnswer(), problem.getDatabaseId());
             if (trueResult != null) {
                 problem.setTrueResult(trueResult);
                 problemService.update(problem);
                 return ResponseUtil.ok("新增题目成功");
             } else {
+                problemService.removeById(problem.getId());
                 return ResponseUtil.fail("给出的答案有误");
             }
         } else {
+            problemService.removeById(problem.getId());
             return ResponseUtil.fail("新增题目失败");
 
         }
