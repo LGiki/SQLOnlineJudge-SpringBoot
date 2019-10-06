@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author xeathen
  * @date 2019/9/7 16:48
@@ -14,8 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JudgeResultDto {
+public class JudgeResultDto implements Serializable {
 
+    private static final long serialVersionUID = -6281476316187992530L;
     /**
      * 用户ID
      */

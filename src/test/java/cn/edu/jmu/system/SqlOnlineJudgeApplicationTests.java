@@ -1,9 +1,11 @@
 package cn.edu.jmu.system;
 
+import cn.edu.jmu.judge.executor.thread.JudgeCallable;
 import cn.edu.jmu.judge.service.impl.JudgeServiceImpl;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.mapper.DatabaseMapper;
 import cn.edu.jmu.system.service.AdminService;
+import cn.edu.jmu.system.service.impl.UserProblemServiceImpl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,9 @@ public class SqlOnlineJudgeApplicationTests {
     @Resource
     private JudgeServiceImpl judgeService;
 
+    @Resource
+    private UserProblemServiceImpl userProblemService;
+
     @Test
     @Transactional
     public void contextLoads() {
@@ -43,8 +48,17 @@ public class SqlOnlineJudgeApplicationTests {
 
     @Test
     @Transactional
-    public void getTrueResult(){
+    public void getTrueResult() {
         judgeService.getTrueResult(1);
+    }
+
+    @Test
+    @Transactional
+    public void test() {
+//        boolean b = userProblemService.isExist(7, 1);
+//        System.out.println(b ? "存在" : "不存在");
+        JudgeCallable thread = new JudgeCallable(4);
+
     }
 
 }

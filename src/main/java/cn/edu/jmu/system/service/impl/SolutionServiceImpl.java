@@ -1,11 +1,16 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
+import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
 import cn.edu.jmu.judge.executor.ThreadPoolUtils;
-import cn.edu.jmu.judge.executor.thread.JudgeThread;
+import cn.edu.jmu.judge.executor.thread.JudgeCallable;
+import cn.edu.jmu.judge.executor.thread.JudgeRunnable;
 import cn.edu.jmu.judge.service.JudgeService;
+import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
+import cn.edu.jmu.system.entity.UserProblem;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.mapper.SolutionMapper;
 import cn.edu.jmu.system.service.ProblemService;
@@ -16,9 +21,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * @author LGiki
@@ -26,6 +34,7 @@ import javax.annotation.Resource;
  */
 
 @Service
+@Slf4j
 public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> implements SolutionService {
 
     @Resource
@@ -36,6 +45,9 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
 
     @Resource
     private JudgeService judgeService;
+
+    @Resource
+    private UserProblemServiceImpl userProblemService;
 
     /**
      * 得到所有解答
@@ -55,15 +67,13 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
 
     @Override
     public boolean add(SolutionDto solutionDto) {
-        //add
-        solutionDto.setResult(SolutionResultEnum.UNKNOWN);
-        baseMapper.insert(cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto));
-        try {
-            ThreadPoolUtils.getInstance().submit(new JudgeThread(solutionDto.getId()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
+        //设置状态值
+        solutionDto.setResult(SolutionResultEnum.JUDGING);
+        //向solution表插入记录
+        Solution solution = cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto);
+        int num = baseMapper.insert(solution);
+        judgeService.judge(cn.edu.jmu.system.service.mapper.SolutionMapper.toDto(solution));
+        return num >= 1;
 
     }
 
@@ -73,4 +83,6 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         Problem problem = problemService.getById(solutionDto.getPid());
         solutionDto.setTitle(problem.getTitle());
     }
+
+
 }

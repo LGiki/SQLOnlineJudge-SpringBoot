@@ -2,6 +2,8 @@ package cn.edu.jmu.judge.util;
 
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import com.google.gson.Gson;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.io.InputStreamReader;
  * @author xeathen
  * @date 2019/9/8 10:47
  */
+@Slf4j
 public class PythonJudgeUtil {
 
     /**
@@ -23,6 +26,7 @@ public class PythonJudgeUtil {
      */
     public static JudgeResultJson createDatabase(Integer databaseId) {
         String[] args = new String[]{"python", "./judger/createSqlite3Database.py", String.valueOf(databaseId)};
+        log.debug("开始创建数据库");
         return pythonAction(args);
     }
 
@@ -34,6 +38,7 @@ public class PythonJudgeUtil {
      */
     public static JudgeResultJson getTrueResult(Integer problemId) {
         String[] args = new String[]{"python", "./judger/getTrueResultByProblemAnswer.py", String.valueOf(problemId)};
+        log.debug("开始获取正确答案");
         return pythonAction(args);
     }
 
@@ -45,6 +50,7 @@ public class PythonJudgeUtil {
      */
     public static JudgeResultJson sqlJudge(Integer solutionId) {
         String[] args = new String[]{"python", "./judger/judger.py", String.valueOf(solutionId)};
+        log.debug("开始判题");
         return pythonAction(args);
 
     }

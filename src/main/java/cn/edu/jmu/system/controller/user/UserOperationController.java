@@ -2,8 +2,6 @@ package cn.edu.jmu.system.controller.user;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
-import cn.edu.jmu.judge.executor.ThreadPoolUtils;
-import cn.edu.jmu.judge.executor.thread.JudgeThread;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
@@ -93,4 +91,6 @@ public class UserOperationController {
         boolean success = solutionService.add(solutionDto);
         return ResponseUtil.buildResponse(success, "提交成功", "提交失败");
     }
+
+
 }
