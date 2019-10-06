@@ -24,8 +24,8 @@ public class PythonJudgeUtil {
      * @param databaseId
      * @return judgeResultJson
      */
-    public static JudgeResultJson createDatabase(Integer databaseId) {
-        String[] args = new String[]{"python", "./judger/createSqlite3Database.py", String.valueOf(databaseId)};
+    public static JudgeResultJson createDatabase(Integer databaseId, String createTable, String testData) {
+        String[] args = new String[]{"python", "./judger/createSqlite3Database.py", String.valueOf(databaseId), createTable, testData};
         log.debug("开始创建数据库");
         return pythonAction(args);
     }

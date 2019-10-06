@@ -34,7 +34,7 @@ public class JudgeResultJson implements Serializable {
     @Override
     public String toString(){
         return "code: " + getCode()
-                + ",data: " + getData().toString()
+                + ",data: " + (getData() == null? "null" : toString())
                 + ",message: " + getMessage();
     }
 }

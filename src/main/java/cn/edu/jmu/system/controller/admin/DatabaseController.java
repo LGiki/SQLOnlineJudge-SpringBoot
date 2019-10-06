@@ -64,7 +64,6 @@ public class DatabaseController {
      * 添加数据库
      */
     @PostMapping(value = "/")
-    @Transactional(rollbackFor=ClassCastException.class)
     public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
         Database database = DatabaseMapper.toEntity(databaseDto);
         if (databaseService.saveOrUpdate(database)) {
