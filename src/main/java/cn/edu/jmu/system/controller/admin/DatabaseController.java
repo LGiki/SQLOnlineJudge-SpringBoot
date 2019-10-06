@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,7 @@ public class DatabaseController {
      * 添加数据库
      */
     @PostMapping(value = "/")
+    @Transactional(rollbackFor=ClassCastException.class)
     public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
         Database database = DatabaseMapper.toEntity(databaseDto);
         if (databaseService.saveOrUpdate(database)) {
@@ -70,11 +72,12 @@ public class DatabaseController {
             if (databaseService.add(databaseDto)) {
                 return ResponseUtil.ok("新增数据库成功");
             } else {
+                databaseService.removeById(database.getId());
                 return ResponseUtil.fail("建表失败");
             }
         } else {
+            databaseService.removeById(database.getId());
             return ResponseUtil.fail("新增数据库失败");
-
         }
 
     }

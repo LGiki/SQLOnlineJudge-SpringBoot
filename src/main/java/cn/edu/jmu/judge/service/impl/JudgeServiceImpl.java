@@ -47,7 +47,6 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
      */
     @Override
     public boolean judge(SolutionDto solutionDto) {
-
         //调用线程池判题
         log.debug("solutionDtoId: " + solutionDto.getId().toString());
         JudgeResultJson result = executeTask(solutionDto.getId());
@@ -56,7 +55,6 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
         if (result != null) {
             String code = result.getCode();
             String resultCode = result.getData().getResult();
-            String message = result.getMessage();
             String runError = result.getData().getRunError();
             //检查UserProblem表，插入记录
             Integer uid = solution.getUid();
@@ -66,23 +64,17 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             userProblem.setPid(pid);
             User user = userService.getById(uid);
             Integer userProblemId = userProblemService.find(uid, pid);
-            //判题状态正确
             if (JudgeResponseCodeEnum.OK.getValue().equals(code)) {
-                //结果正确
                 if (SolutionResultEnum.ACCEPTED.getValue().equals(resultCode)) {
-                    //修改solution表状态
                     solution.setResult(SolutionResultEnum.ACCEPTED);
-                    //修改user表状态——solved-通过数+1
-                    if (userProblemService.find(uid, pid, JudgeResponseCodeEnum.OK.getValue()) == 0){
+                    if (userProblemService.find(uid, pid, JudgeResponseCodeEnum.OK.getValue()) == 0) {
                         increaseSolvedCount(user);
                     }
-                    //修改user_problem表
                     if (userProblemId != 0) {
                         userProblem.setId(userProblemId);
                     }
                     userProblem.setState(JudgeResponseCodeEnum.OK.getValue());
                 } else {
-                    //修改solution表状态
                     if (SolutionResultEnum.COMPILE_ERROR.getValue().equals(resultCode)) {
                         solution.setResult(SolutionResultEnum.COMPILE_ERROR);
                     } else if (SolutionResultEnum.WRONG_ANSWER.getValue().equals(resultCode)) {
@@ -93,31 +85,22 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                     if (runError != null) {
                         solution.setRunError(runError);
                     }
-                    //修改user_problem表状态
                     if (userProblemId == 0) {
                         userProblem.setState(JudgeResponseCodeEnum.FAIL.getValue());
                     } else {
                         userProblem.setId(userProblemId);
                     }
                 }
-                //修改user表状态——submit-提交数+1
                 increaseSubmitCount(user);
-            }
-            //判题状态错误
-            else if (JudgeResponseCodeEnum.FAIL.getValue().equals(code)) {
-
+            } else if (JudgeResponseCodeEnum.FAIL.getValue().equals(code)) {
                 baseMapper.deleteById(solution.getId());
                 return false;
             }
-            //update表
             userProblemService.saveOrUpdate(userProblem);
             baseMapper.updateById(solution);
             userService.saveOrUpdate(user);
-
             return true;
-        }
-        //判题结果返回值为null
-        else {
+        } else {
             baseMapper.deleteById(solution.getId());
             return false;
         }
