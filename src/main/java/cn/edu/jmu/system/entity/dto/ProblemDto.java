@@ -29,7 +29,7 @@ public class ProblemDto implements Serializable {
     /**
      * 通过数
      */
-    private Integer solve;
+    private Integer solved;
 
     /**
      * 提交数

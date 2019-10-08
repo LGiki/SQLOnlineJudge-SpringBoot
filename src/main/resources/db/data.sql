@@ -58,7 +58,7 @@ CREATE TABLE `problem`
     `sample_output` text CHARACTER SET utf8 COLLATE utf8_general_ci         NULL COMMENT '样例输出',
     `hint`          text CHARACTER SET utf8 COLLATE utf8_general_ci         NULL COMMENT '提示',
     `answer`        text CHARACTER SET utf8 COLLATE utf8_general_ci         NOT NULL COMMENT '答案',
-    `solved`         int(11)                                                 NOT NULL DEFAULT 0 COMMENT '通过数',
+    `solved`        int(11)                                                 NOT NULL DEFAULT 0 COMMENT '通过数',
     `submit`        int(11)                                                 NOT NULL DEFAULT 0 COMMENT '提交数',
     `true_result`   text CHARACTER SET utf8 COLLATE utf8_general_ci         NULL COMMENT '正确输出',
     `database_id`   int(11)                                                 NOT NULL DEFAULT 0 COMMENT '数据库ID',
