@@ -108,7 +108,7 @@ def judge(SQLITE_DIR, SQLITE_TEMP_DIR, cursor, solution_id):
     if exec_result is None:
         judge_result_index = SOLUTION_RESULT['Compile Error']
     else:
-        exec_result = hashlib.md5(exec_result.encode(encoding='UTF-8')).hexdigest()
+        exec_result = hashlib.md5(exec_result.encode(encoding='UTF-8')).hexdigest().upper()
         if exec_result == true_result:
             judge_result_index = SOLUTION_RESULT['Accepted']
         else:
