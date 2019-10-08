@@ -80,7 +80,7 @@ export default {
             message: '答案不能为空',
             trigger: 'blur'
           }
-        ],
+        ]
       },
       cmOptions: {
         tabSize: 4,

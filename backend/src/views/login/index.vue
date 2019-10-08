@@ -123,7 +123,9 @@ export default {
               } else {
                 // this.$store.dispatch('user/login', this.loginForm).then(() => {
                 localStorage.setItem('JWT_TOKEN', res.data.data.token)
-                this.$router.push({ path: this.redirect || '/' })
+                localStorage.setItem('role', res.data.data.role)
+                // this.$router.push({ path: this.redirect || '/' })
+                window.location.href = '/'
                 //   this.loading = false
                 // }).catch(() => {
                 //   this.loading = false

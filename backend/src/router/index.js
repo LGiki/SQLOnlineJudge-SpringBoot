@@ -143,6 +143,7 @@ export const constantRoutes = [
     path: '/admin',
     component: Layout,
     redirect: '/admin/index',
+    hidden: localStorage.role !== 'admin',
     meta: { title: '管理员管理', icon: 'peoples' },
     children: [
       {

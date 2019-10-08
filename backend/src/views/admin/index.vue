@@ -110,6 +110,14 @@ export default {
             }
           },
           {
+            field: 'status',
+            title: '管理员状态',
+            width: 80,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
             field: 'action',
             title: '操作',
             width: 80,
@@ -175,8 +183,14 @@ export default {
       const index = params.index
       const userId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
-        if (confirm('您确定要删除该管理员吗？')) {
-          this.deleteUser(userId, () => {
+        let confirmMessage = '您确定要锁定该管理员吗？'
+        let operationTypeString = '锁定'
+        if (this.tableConfig.tableData[index].status !== '正常') {
+          confirmMessage = '您确定要解锁该管理员吗？'
+          operationTypeString = '解锁'
+        }
+        if (confirm(confirmMessage)) {
+          this.deleteUser(userId, operationTypeString, () => {
             this.fetchUserList()
           })
         }
@@ -222,19 +236,19 @@ export default {
           console.log(err)
         })
     },
-    deleteUser(userId, successCallback) {
-      const apiUrl = this.Url.adminBaseUrl
+    deleteUser(userId, operationTypeString, successCallback) {
+      const apiUrl = this.Url.adminStatusUrl
       this.$axios
-        .delete(apiUrl + userId)
+        .put(apiUrl + userId)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('删除管理员失败，内部错误！')
+            this.$message.error(operationTypeString + '管理员失败，内部错误！')
           } else {
             successCallback()
           }
         })
         .catch(err => {
-          this.$message.error('删除管理员失败！')
+          this.$message.error(operationTypeString + '管理员失败！')
           console.log(err)
         })
     }

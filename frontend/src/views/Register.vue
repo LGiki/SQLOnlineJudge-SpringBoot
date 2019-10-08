@@ -96,7 +96,7 @@ export default {
         alert("两次密码输入不一致！");
         return;
       }
-      if(!this.validateEmail(this.email)) {
+      if (!this.validateEmail(this.email)) {
         alert("邮箱地址格式错误！");
         return;
       }

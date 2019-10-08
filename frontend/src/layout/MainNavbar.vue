@@ -156,6 +156,7 @@ export default {
         .then(res => {
           if (res.status !== 200) {
             alert("获取用户详细信息失败，内部错误！");
+            this.logout();
           } else {
             const resData = res.data;
             if (resData.code === 0) {

@@ -106,7 +106,7 @@ export default {
             }
           },
           {
-            field: 'solve',
+            field: 'solved',
             title: '通过数',
             width: 80,
             titleAlign: 'center',

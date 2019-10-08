@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: 'SQL在线考试系统 - 后台管理',
 
   /**
    * @type {boolean} true | false

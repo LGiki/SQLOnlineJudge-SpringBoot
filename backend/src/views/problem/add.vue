@@ -96,7 +96,7 @@ export default {
             message: '答案不能为空',
             trigger: 'blur'
           }
-        ],
+        ]
       },
       problemDetail: {
         title: '',
