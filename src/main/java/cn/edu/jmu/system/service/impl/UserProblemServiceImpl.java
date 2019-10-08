@@ -39,7 +39,7 @@ public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserP
      * @return
      */
     @Override
-    public Integer find(Integer uid, Integer pid, String state) {
+    public Integer find(Integer uid, Integer pid, Boolean state) {
         UserProblem userProblem = new UserProblem();
         userProblem.setUid(uid);
         userProblem.setPid(pid);

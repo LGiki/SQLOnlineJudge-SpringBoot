@@ -26,5 +26,5 @@ public interface UserProblemService extends IService<UserProblem> {
      * @param state
      * @return
      */
-    Integer find(Integer uid, Integer pid, String state);
+    Integer find(Integer uid, Integer pid, Boolean state);
 }

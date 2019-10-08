@@ -72,13 +72,13 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             if (JudgeResponseCodeEnum.OK.getValue().equals(code)) {
                 if (SolutionResultEnum.ACCEPTED.getValue().equals(resultCode)) {
                     solution.setResult(SolutionResultEnum.ACCEPTED);
-                    if (userProblemService.find(uid, pid, JudgeResponseCodeEnum.OK.getValue()) == 0) {
+                    if (userProblemService.find(uid, pid, true) == 0) {
                         increaseSolvedCount(user, problem);
                     }
                     if (userProblemId != 0) {
                         userProblem.setId(userProblemId);
                     }
-                    userProblem.setState(JudgeResponseCodeEnum.OK.getValue());
+                    userProblem.setState(true);
                 } else {
                     if (SolutionResultEnum.COMPILE_ERROR.getValue().equals(resultCode)) {
                         solution.setResult(SolutionResultEnum.COMPILE_ERROR);
@@ -91,7 +91,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                         solution.setRunError(runError);
                     }
                     if (userProblemId == 0) {
-                        userProblem.setState(JudgeResponseCodeEnum.FAIL.getValue());
+                        userProblem.setState(false);
                     } else {
                         userProblem.setId(userProblemId);
                     }

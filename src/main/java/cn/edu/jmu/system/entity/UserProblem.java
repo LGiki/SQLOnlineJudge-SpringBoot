@@ -40,6 +40,6 @@ public class UserProblem implements Serializable {
      * 状态
      */
     @TableField(value = "state")
-    private String state;
+    private Boolean state;
 
 }
