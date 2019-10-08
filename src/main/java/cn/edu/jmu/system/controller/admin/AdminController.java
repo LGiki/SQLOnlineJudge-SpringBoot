@@ -8,7 +8,9 @@ import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.dto.AdminDto;
 import cn.edu.jmu.system.service.AdminService;
 import cn.edu.jmu.system.service.mapper.AdminMapper;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +91,10 @@ public class AdminController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated AdminDto adminDto) {
+        Admin byId = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, adminDto.getUsername()));
+        if (ObjectUtil.isNotNull(byId)) {
+            return ResponseUtil.fail("该管理员已存在");
+        }
         Admin admin = AdminMapper.toEntity(adminDto);
         String salt = EncryptUtil.generatorSalt();
         admin.setSalt(salt);

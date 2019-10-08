@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <p>
@@ -69,12 +68,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(Long id) {
-        Admin admin = baseMapper.selectById(id);
-        if (isAdmin(admin)) {
-            return false;
-        } else {
-            return baseMapper.deleteById(id) >= 1;
-        }
+        return baseMapper.deleteById(id) >= 1;
     }
 
     @Override
@@ -82,16 +76,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         baseMapper.insert(admin);
         Integer id = admin.getId();
         return roleMapper.insertAdminIdAndRoleId(id, 2) >= 1;
-    }
-
-    private boolean isAdmin(Admin admin) {
-        List<Integer> integers = roleMapper.selectAllRoleIdByAdminIdFromSysAdminRole(admin.getId());
-        for (Integer integer : integers) {
-            if (integer == 1) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

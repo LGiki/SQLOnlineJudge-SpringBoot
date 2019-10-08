@@ -6,9 +6,6 @@ import cn.edu.jmu.system.service.RoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
-
-import java.util.List;
 
 /**
  * <p>
@@ -23,12 +20,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Role> findAllRoleByAdminId(Integer adminId) {
-        List<Integer> roleIdList = baseMapper.selectAllRoleIdByAdminIdFromSysAdminRole(adminId);
-        if (ObjectUtils.isEmpty(roleIdList)) {
+    public Role findRoleByAdminId(Integer adminId) {
+        Integer roleId = baseMapper.selectRoleIdByAdminIdFromSysAdminRole(adminId);
+        if (roleId == null) {
             return null;
         } else {
-            return baseMapper.selectBatchIds(roleIdList);
+            return baseMapper.selectById(roleId);
         }
     }
 }

@@ -7,7 +7,10 @@ import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.common.util.ValidateUtil;
 import cn.edu.jmu.security.config.UserToken;
 import cn.edu.jmu.security.util.JwtTokenUtil;
+import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.User;
+import cn.edu.jmu.system.service.AdminService;
+import cn.edu.jmu.system.service.RoleService;
 import cn.edu.jmu.system.service.UserService;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -34,6 +37,12 @@ public class AuthController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private AdminService adminService;
+
+    @Resource
+    private RoleService roleService;
+
     /**
      * 用户登录
      */
@@ -44,7 +53,7 @@ public class AuthController {
         UserToken userToken = new UserToken(username, password, LoginTypeEnum.USER.getType());
         subject.login(userToken);
         String token = JwtTokenUtil.generateToken(userToken);
-        Map<String, String> data = new HashMap<>(5);
+        Map<String, String> data = new HashMap<>(2);
         data.put("token", token);
         User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
         data.put("id", user.getId().toString());
@@ -61,8 +70,11 @@ public class AuthController {
         UserToken userToken = new UserToken(username, password, LoginTypeEnum.ADMIN.getType());
         subject.login(userToken);
         String token = JwtTokenUtil.generateToken(userToken);
-        Map<String, String> data = new HashMap<>(1);
+        Map<String, String> data = new HashMap<>(2);
         data.put("token", token);
+        Admin admin = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, username));
+        String roleName = roleService.findRoleByAdminId(admin.getId()).getRoleName();
+        data.put("role", roleName);
         return ResponseUtil.buildResponse("登录成功", data);
     }
 
@@ -87,7 +99,6 @@ public class AuthController {
         user.setEmail(email);
         boolean success = userService.save(user);
         return ResponseUtil.buildResponse(success, "注册成功", "注册失败");
-
     }
 
 }

@@ -21,5 +21,5 @@ public interface RoleService extends IService<Role> {
      * @param adminId adminId
      * @return List<Role>
      */
-    List<Role> findAllRoleByAdminId(Integer adminId);
+    Role findRoleByAdminId(Integer adminId);
 }

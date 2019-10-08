@@ -46,18 +46,16 @@ public class AdminRealm extends AuthorizingRealm {
         if (ObjectUtils.isEmpty(admin)) {
             return info;
         }
-        List<Role> roles = roleService.findAllRoleByAdminId(admin.getId());
-        if (ObjectUtils.isEmpty(roles)) {
+        Role role = roleService.findRoleByAdminId(admin.getId());
+        if (ObjectUtils.isEmpty(role)) {
             info.addRole("teacher");
             return info;
         }
-        roles.forEach(role -> {
-            info.addRole(role.getRoleName());
-            List<Permission> permissions = permissionService.findAllPermissionByRoleId(role.getId());
-            if (!ObjectUtils.isEmpty(permissions)) {
-                permissions.forEach(permission -> info.addStringPermission(permission.getPermission()));
-            }
-        });
+        info.addRole(role.getRoleName());
+        List<Permission> permissions = permissionService.findAllPermissionByRoleId(role.getId());
+        if (!ObjectUtils.isEmpty(permissions)) {
+            permissions.forEach(permission -> info.addStringPermission(permission.getPermission()));
+        }
         return info;
     }
 
