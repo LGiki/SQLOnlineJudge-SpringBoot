@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.entity.dto;
 
+import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -33,4 +34,9 @@ public class AdminDto implements Serializable {
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    /**
+     * 状态
+     */
+    private UserStatusEnum status;
 }
