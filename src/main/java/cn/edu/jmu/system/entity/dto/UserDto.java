@@ -1,6 +1,7 @@
 package cn.edu.jmu.system.entity.dto;
 
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @date 2019/8/26 下午3:28
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements Serializable {
 
     private static final long serialVersionUID = -7990570472264848692L;

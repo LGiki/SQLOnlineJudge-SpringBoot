@@ -57,13 +57,21 @@ public class UserController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> update(@RequestBody @Validated UserDto userDto, @PathVariable("id") Integer id) {
-        if (userDto.getId() != null && userDto.getId().equals(id)) {
-            // 更新用户信息
-            boolean success = userService.update(userDto);
-            return ResponseUtil.buildResponse(success, "更新用户信息成功", "更新用户信息失败");
-        } else {
-            return ResponseUtil.fail("id不一致");
+        if (userDto.getId() == null) {
+            return ResponseUtil.fail("用户id不能为空");
         }
+        User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
+        if (ObjectUtil.isNull(byId) || byId.getId().equals(id)) {
+            if (userDto.getId().equals(id)) {
+                boolean success = userService.update(userDto);
+                return ResponseUtil.buildResponse(success, "更新用户信息成功", "更新用户信息失败");
+            } else {
+                return ResponseUtil.fail("用户id不一致");
+            }
+        } else {
+            return ResponseUtil.fail("该邮箱已被注册");
+        }
+
     }
 
     /**
@@ -84,6 +92,10 @@ public class UserController {
         User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, userDto.getUsername()));
         if (ObjectUtil.isNotNull(byId)) {
             return ResponseUtil.fail("该用户名已存在");
+        }
+        byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
+        if (ObjectUtil.isNotNull(byId)) {
+            return ResponseUtil.fail("该邮箱已被注册");
         }
         User user = UserMapper.toEntity(userDto);
         String salt = EncryptUtil.generatorSalt();

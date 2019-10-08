@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProblemDetailToUserDto extends ProblemDto implements Serializable {
 
     private static final long serialVersionUID = 3952059359065232418L;

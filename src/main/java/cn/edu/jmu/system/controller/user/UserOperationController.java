@@ -4,15 +4,18 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
+import cn.edu.jmu.system.entity.dto.SolutionCodeDto;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.mapper.SolutionMapper;
 import cn.edu.jmu.system.service.mapper.UserMapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +36,6 @@ public class UserOperationController {
     @Resource
     private SolutionService solutionService;
 
-
     /**
      * 获取登录用户的信息
      */
@@ -48,7 +50,10 @@ public class UserOperationController {
      * 更改用户信息
      */
     @PutMapping(value = "users/")
-    public ResponseEntity<BasicResponse> update(@RequestBody UserDto userDto) {
+    public ResponseEntity<BasicResponse> update(@RequestBody @Validated UserDto userDto) {
+        if (userDto.getId() == null) {
+            return ResponseUtil.fail("用户id不能为空");
+        }
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
         if (user.getId().equals(userDto.getId())) {
@@ -68,19 +73,18 @@ public class UserOperationController {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
         Solution solution = solutionService.getById(id);
-        if (solution.getUid().equals(user.getId())) {
-            String code = solution.getSourceCode();
-            return ResponseUtil.buildResponse(code);
+        if (!ObjectUtils.isEmpty(solution) && solution.getUid().equals(user.getId())) {
+            SolutionCodeDto solutionCodeDto = SolutionMapper.toSolutionCodeDto(solution);
+            return ResponseUtil.buildResponse(solutionCodeDto);
         } else {
             return ResponseUtil.fail("无权限");
         }
     }
 
-
     /**
      * 用户提交判题
      *
-     * @param solutionDto
+     * @param solutionDto solutionDto
      * @return ResponseEntity
      */
     @PostMapping(value = "/solutions/")
@@ -91,6 +95,4 @@ public class UserOperationController {
         boolean success = solutionService.add(solutionDto);
         return ResponseUtil.buildResponse(success, "提交成功", "提交失败");
     }
-
-
 }
