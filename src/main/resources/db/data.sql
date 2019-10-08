@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 18/09/2019 17:01:01
+ Date: 08/10/2019 10:56:50
 */
 
 SET NAMES utf8mb4;
@@ -27,12 +27,7 @@ CREATE TABLE `data_base`  (
   `create_table` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '建表语句',
   `test_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '数据插入语句',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of data_base
--- ----------------------------
-INSERT INTO `data_base` VALUES (1, '1', 'create table t_coffee (\r\n    id INTEGER  PRIMARY KEY autoincrement,\r\n    name varchar(255),\r\n    price int\r\n);\r\n\r\n', 'insert into t_coffee (name, price) values (\'espresso\', 2000);\r\ninsert into t_coffee (name, price) values (\'latte\', 2500);\r\ninsert into t_coffee (name, price) values (\'capuccino\', 2500);\r\ninsert into t_coffee (name, price) values (\'mocha\', 3000);\r\ninsert into t_coffee (name, price) values (\'macchiato\', 3000);');
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for problem
@@ -51,13 +46,7 @@ CREATE TABLE `problem`  (
   `database_id` int(11) NOT NULL DEFAULT 0 COMMENT '数据库ID',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK_problem_database`(`database_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of problem
--- ----------------------------
-INSERT INTO `problem` VALUES (1, '1', '1', '1', '1', 'select * from t_coffee', 0, 0, NULL, 1);
-INSERT INTO `problem` VALUES (2, '2', '2', '2', '2', '2', 0, 0, NULL, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for solution
@@ -74,14 +63,7 @@ CREATE TABLE `solution`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `uid`(`uid`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of solution
--- ----------------------------
-INSERT INTO `solution` VALUES (1, 1, 1, 'select * from t_coffee', '2011-06-24 18:37:39', '', '0');
-INSERT INTO `solution` VALUES (2, 1, 1, '2', '2019-08-26 21:46:51', NULL, '1');
-INSERT INTO `solution` VALUES (3, 2, 2, '3', '2019-08-26 13:47:45', NULL, '1');
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for sys_admin
@@ -97,12 +79,6 @@ CREATE TABLE `sys_admin`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_admin
--- ----------------------------
-INSERT INTO `sys_admin` VALUES (1, 'admin', 'admin', '8d78869f470951332959580424d4bf4f');
-INSERT INTO `sys_admin` VALUES (2, 'a', 'a', 'a');
-
--- ----------------------------
 -- Table structure for sys_admin_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_admin_role`;
@@ -114,11 +90,6 @@ CREATE TABLE `sys_admin_role`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_admin_role
--- ----------------------------
-INSERT INTO `sys_admin_role` VALUES (1, 1, 1);
-
--- ----------------------------
 -- Table structure for sys_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
@@ -128,11 +99,6 @@ CREATE TABLE `sys_permission`  (
   `permission` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of sys_permission
--- ----------------------------
-INSERT INTO `sys_permission` VALUES (1, '总权限', '*:*');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -147,11 +113,6 @@ CREATE TABLE `sys_role`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_role
--- ----------------------------
-INSERT INTO `sys_role` VALUES (1, 'admin', '总管理员');
-
--- ----------------------------
 -- Table structure for sys_role_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_permission`;
@@ -161,11 +122,6 @@ CREATE TABLE `sys_role_permission`  (
   `p_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of sys_role_permission
--- ----------------------------
-INSERT INTO `sys_role_permission` VALUES (1, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -187,10 +143,15 @@ CREATE TABLE `sys_user`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_user
+-- Table structure for user_problem
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, '1', '1', '1', '', 100, 5, 'default.jpg', '1');
-INSERT INTO `sys_user` VALUES (2, '2', '2', '2', '2', 5555, 6, 'default.jpg', '1');
-INSERT INTO `sys_user` VALUES (7, 'sgh', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 0, 7, 'default.jpg', '1');
+DROP TABLE IF EXISTS `user_problem`;
+CREATE TABLE `user_problem`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户题库ID',
+  `uid` int(11) NULL DEFAULT NULL COMMENT '用户ID',
+  `pid` int(11) NULL DEFAULT NULL COMMENT '题目ID',
+  `state` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户题目状态',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
