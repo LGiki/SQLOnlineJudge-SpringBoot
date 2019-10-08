@@ -63,6 +63,9 @@ def create_database(SQLITE_DIR, database_id, create_table, test_data):
         sqlite_cursor.executescript(test_data)
         sqlite_conn.commit()
     except BaseException as e:
+        sqlite_cursor.close()
+        sqlite_conn.close()
+        os.remove(sqlite_db_file_path)
         return False, str(e)
     sqlite_cursor.close()
     sqlite_conn.close()
