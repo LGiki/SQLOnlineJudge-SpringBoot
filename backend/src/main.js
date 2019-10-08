@@ -110,6 +110,37 @@ Vue.component('table-operation', {
         </span>`
 })
 
+Vue.component('user-operation', {
+  props: {
+    rowData: {
+      type: Object
+    },
+    field: {
+      type: String
+    },
+    index: {
+      type: Number
+    }
+  },
+  methods: {
+    update() {
+      // 参数根据业务场景随意构造
+      const params = { type: 'edit', index: this.index, rowData: this.rowData }
+      this.$emit('on-custom-comp', params)
+    },
+
+    deleteRow() {
+      // 参数根据业务场景随意构造
+      const params = { type: 'delete', index: this.index }
+      this.$emit('on-custom-comp', params)
+    }
+  },
+  template: `<span>
+        <a href="" @click.stop.prevent="update(rowData,index)"><svg-icon icon-class="edit" /></a>&nbsp;
+        <a href="" @click.stop.prevent="deleteRow(rowData,index)"><svg-icon icon-class="lock" /></a>
+        </span>`
+})
+
 Vue.config.productionTip = false
 
 new Vue({

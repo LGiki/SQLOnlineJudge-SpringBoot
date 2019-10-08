@@ -5,9 +5,7 @@
     :data-background-color="backgroundColor"
   >
     <div class="copyright justify-content-center ft" align="center">
-      &copy; {{ year }}, made with <md-icon>favorite</md-icon>by
-      <a href="https://www.creative-tim.com/" target="_blank">Creative Tim</a>
-      for a better web.
+      &copy; {{ year }}, JiMei University
     </div>
   </footer>
 </template>

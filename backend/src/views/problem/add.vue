@@ -27,9 +27,6 @@
         <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
         <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入提示" />
       </el-form-item>
-      <el-form-item label="结果是否必须有序" prop="needOrder">
-        <el-switch v-model="problemDetail.needOrder" />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
         <el-button @click="onCancel">取消</el-button>
@@ -72,6 +69,11 @@ export default {
             required: true,
             message: '题目标题不能为空',
             trigger: 'blur'
+          },
+          {
+            max: 100,
+            message: '题目标题长度最大为100',
+            trigger: 'blur'
           }
         ],
         description: [
@@ -95,13 +97,6 @@ export default {
             trigger: 'blur'
           }
         ],
-        needOrder: [
-          {
-            required: true,
-            message: '必须确定结果是否必须有序',
-            trigger: 'blur'
-          }
-        ]
       },
       problemDetail: {
         title: '',
@@ -109,7 +104,6 @@ export default {
         sampleOutput: '',
         hint: '',
         answer: '',
-        needOrder: false,
         databaseId: null
       },
       databaseList: []

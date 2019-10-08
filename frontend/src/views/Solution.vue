@@ -93,6 +93,12 @@
             <p>
               <highlight-code lang="sql">{{ code }}</highlight-code>
             </p>
+            <template v-if="runError">
+              <h5>错误详情</h5>
+              <p>
+                <highlight-code>{{ runError }}</highlight-code>
+              </p>
+            </template>
           </template>
           <template slot="footer">
             <md-button class="md-danger md-simple" @click="codeModalHide"
@@ -248,7 +254,8 @@ export default {
           } else {
             let resData = res.data;
             if (resData.code === 0) {
-              this.code = resData.data;
+              this.code = resData.data.sourceCode;
+              this.runError = resData.data.runError;
               this.codeModal = true;
             } else {
               alert(resData.message);

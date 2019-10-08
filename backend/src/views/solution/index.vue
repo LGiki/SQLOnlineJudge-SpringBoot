@@ -39,9 +39,10 @@
       title="查看代码"
       :visible.sync="dialogVisible"
       width="50%"
-      :before-close="handleClose"
     >
       <code>{{ sourceCode }}</code>
+      <h3 v-if="runError">运行错误详情：</h3>
+      <code v-if="runError">{{ runError }}</code>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
@@ -89,6 +90,7 @@ export default {
       ],
       sourceCode: '',
       dialogVisible: false,
+      runError: null,
       searchType: 'id',
       inSearch: false,
       searchKeyword: '',
@@ -179,13 +181,6 @@ export default {
     this.fetchSolutionList()
   },
   methods: {
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {})
-    },
     rowClick(rowIndex, rowData, column) {
       if (column.field == 'sourceCode') {
         this.fetchSolutionCode(rowData.id)
@@ -278,7 +273,8 @@ export default {
           } else {
             const resData = res.data
             if (resData.code === 0) {
-              this.sourceCode = resData.data
+              this.sourceCode = resData.data.sourceCode
+              this.runError = resData.data.runError
               this.dialogVisible = true
             }
           }
