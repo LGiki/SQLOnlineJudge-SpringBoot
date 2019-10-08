@@ -46,23 +46,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return iPage.convert(cn.edu.jmu.system.service.mapper.AdminMapper::toDto);
     }
 
-    /**
-     * 更新管理员
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean update(AdminDto adminDto) {
-        Admin admin = baseMapper.selectById(adminDto.getId());
-        if (adminDto.getPassword() != null) {
-            admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), admin.getSalt()));
-        }
-        BeanUtil.copyProperties(adminDto, admin, true,
-                CopyOptions.create().setIgnoreNullValue(true)
-                        .setIgnoreError(true)
-                        .setIgnoreProperties("id", "username", "salt"));
-        return baseMapper.updateById(admin) >= 1;
-    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(Long id) {
