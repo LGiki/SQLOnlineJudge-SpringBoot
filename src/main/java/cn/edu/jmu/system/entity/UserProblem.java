@@ -1,9 +1,9 @@
 package cn.edu.jmu.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,27 +19,27 @@ public class UserProblem implements Serializable {
     private static final long serialVersionUID = -3270267373811937646L;
 
     /**
-     * 题目ID
+     * ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**
+    /**i
      * 用户ID
      */
-    @TableId(value = "uid", type = IdType.AUTO)
+    @TableField(value = "uid")
     private Integer uid;
 
     /**
      * 题目ID
      */
-    @TableId(value = "pid", type = IdType.AUTO)
+    @TableField(value = "pid")
     private Integer pid;
 
     /**
-     *
+     * 状态
      */
-    @TableId(value = "state", type = IdType.AUTO)
+    @TableField(value = "state")
     private String state;
 
 }

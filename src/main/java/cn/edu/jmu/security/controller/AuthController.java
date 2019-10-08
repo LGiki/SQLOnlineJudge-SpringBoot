@@ -44,7 +44,7 @@ public class AuthController {
         UserToken userToken = new UserToken(username, password, LoginTypeEnum.USER.getType());
         subject.login(userToken);
         String token = JwtTokenUtil.generateToken(userToken);
-        Map<String, String> data = new HashMap<>(1);
+        Map<String, String> data = new HashMap<>(5);
         data.put("token", token);
         User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
         data.put("id", user.getId().toString());

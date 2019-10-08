@@ -46,7 +46,7 @@ public class JwtFilter extends AuthenticatingFilter {
      * 如果这个Filter在之前isAccessAllowed（）方法中返回false,则会进入这个方法。我们这里直接返回错误的response
      */
     @Override
-    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) {
         log.debug("JwtFilter--------------------------->onAccessDenied");
         HttpServletResponse httpResponse = WebUtils.toHttp(servletResponse);
         httpResponse.setCharacterEncoding("UTF-8");
@@ -56,7 +56,7 @@ public class JwtFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+    protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
         String token = ((HttpServletRequest) servletRequest).getHeader(JwtTokenUtil.HEADER);
         // 判断请求头是否带上了token
         if (!StringUtils.isBlank(token) && token.startsWith(JwtTokenUtil.BEARER)) {

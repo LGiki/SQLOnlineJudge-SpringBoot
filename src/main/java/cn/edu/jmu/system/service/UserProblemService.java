@@ -11,21 +11,20 @@ public interface UserProblemService extends IService<UserProblem> {
 
     /**
      * 根据uid与pid查找记录
-     * @param uid
-     * @param pid
-     * @return
+     *
+     * @param uid 用户id
+     * @param pid 题目id
+     * @return Integer
      */
     Integer find(Integer uid, Integer pid);
 
     /**
-     * 根据uid与pid及state差找
+     * 根据uid与pid及state查找
+     *
      * @param uid
      * @param pid
      * @param state
      * @return
      */
     Integer find(Integer uid, Integer pid, String state);
-
-
-
 }

@@ -53,7 +53,7 @@ public class JwtRealm extends AuthorizingRealm {
         String loginType = JwtTokenUtil.getLoginTypeFromToken(token);
         String username = JwtTokenUtil.getUsernameFromToken(token);
         AuthenticationInfo authenticationInfo;
-        if (loginType.equals(LoginTypeEnum.ADMIN.getType())) {
+        if (LoginTypeEnum.ADMIN.getType().equals(loginType)) {
             Admin admin = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, username));
             if (admin == null) {
                 throw new AuthenticationException("token过期，请重新登录");

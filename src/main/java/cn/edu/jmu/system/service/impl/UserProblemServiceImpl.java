@@ -3,7 +3,6 @@ package cn.edu.jmu.system.service.impl;
 import cn.edu.jmu.system.entity.UserProblem;
 import cn.edu.jmu.system.mapper.UserProblemMapper;
 import cn.edu.jmu.system.service.UserProblemService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserProblem> implements UserProblemService {
 
     /**
-     *
-     *
      * @param uid
      * @param pid
      * @return
@@ -36,7 +33,6 @@ public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserP
     }
 
     /**
-     *
      * @param uid
      * @param pid
      * @param state
@@ -60,6 +56,4 @@ public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserP
         QueryWrapper<UserProblem> queryWrapper = new QueryWrapper<>(userProblem);
         return baseMapper.selectOne(queryWrapper);
     }
-
-
 }
