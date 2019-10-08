@@ -24,6 +24,8 @@ const Url = {
   // 管理员基础接口
   adminBaseUrl: BaseUrl + '/admins/',
   // 管理员数量接口
-  adminCount: BaseUrl + '/admins/count'
+  adminCount: BaseUrl + '/admins/count',
+  // 更改用户状态接口
+  userStatusUrl: BaseUrl + '/users/status/'
 }
 export default Url

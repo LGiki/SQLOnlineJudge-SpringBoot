@@ -8,7 +8,7 @@
         <el-input v-model="userDetail.username" />
       </el-form-item>
       <el-form-item label="密码">
-        <el-input v-model="userDetail.password" :type="passwordType" placeholder="留空则不修改密码" />
+        <el-input v-model="password" :type="passwordType" placeholder="留空则不修改密码" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
@@ -26,10 +26,10 @@ export default {
   data() {
     return {
       passwordType: 'password',
+      password: '',
       userDetail: {
         id: '',
         username: '',
-        password: '',
         submit: '',
         solved: ''
       },
@@ -67,8 +67,8 @@ export default {
             id: this.userDetail.id,
             username: this.userDetail.username.trim()
           }
-          if (this.userDetail.password) {
-            user[password] = this.userDetail.password.trim()
+          if (this.password) {
+            user.password = this.password.trim()
           }
           this.updateUser(userId, user, () => {
             this.$router.back(-1)
@@ -92,7 +92,6 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.userDetail = resData.data
-              this.userDetail.password = null
             }
           }
         })

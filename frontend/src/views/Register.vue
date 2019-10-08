@@ -78,6 +78,10 @@ export default {
         return false;
       }
     },
+    validateEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    },
     register() {
       if (
         this.isEmpty(this.username) ||
@@ -90,6 +94,10 @@ export default {
       }
       if (this.password !== this.repassword) {
         alert("两次密码输入不一致！");
+        return;
+      }
+      if(!this.validateEmail(this.email)) {
+        alert("邮箱地址格式错误！");
         return;
       }
       let postData = qs.stringify({
@@ -105,6 +113,7 @@ export default {
           } else {
             let resData = res.data;
             if (resData.code === 0) {
+              alert("注册成功，请登录！");
               this.$router.push({ path: "/login" });
             } else {
               alert("注册失败！");

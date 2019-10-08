@@ -147,13 +147,21 @@ export default {
             }
           },
           {
+            field: 'status',
+            title: '用户状态',
+            width: 80,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
             field: 'action',
             title: '操作',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'table-operation'
+            componentName: 'user-operation'
           }
         ]
       }
@@ -212,8 +220,14 @@ export default {
       const index = params.index
       const userId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
-        if (confirm('您确定要删除该用户吗？')) {
-          this.deleteUser(userId, () => {
+        let confirmMessage = '您确定要锁定该用户吗？'
+        let operationTypeString = '锁定'
+        if (this.tableConfig.tableData[index].status !== '正常状态') {
+          confirmMessage = '您确定要解锁该用户吗？'
+          operationTypeString = '解锁'
+        }
+        if (confirm(confirmMessage)) {
+          this.deleteUser(userId, operationTypeString, () => {
             this.fetchUserList()
           })
         }
@@ -259,19 +273,19 @@ export default {
           console.log(err)
         })
     },
-    deleteUser(userId, successCallback) {
-      const apiUrl = this.Url.userBaseUrl
+    deleteUser(userId, operationTypeString, successCallback) {
+      const apiUrl = this.Url.userStatusUrl
       this.$axios
-        .delete(apiUrl + userId)
+        .put(apiUrl + userId)
         .then(res => {
-          if (res.status !== 204) {
-            this.$message.error('删除用户失败，内部错误！')
+          if (res.status !== 200) {
+            this.$message.error(operationTypeString + '用户失败，内部错误！')
           } else {
             successCallback()
           }
         })
         .catch(err => {
-          this.$message.error('删除用户失败！')
+          this.$message.error(operationTypeString + '用户失败！')
           console.log(err)
         })
     }

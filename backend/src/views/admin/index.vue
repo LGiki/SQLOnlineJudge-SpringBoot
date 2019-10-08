@@ -116,7 +116,7 @@ export default {
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'table-operation'
+            componentName: 'user-operation'
           }
         ]
       }
