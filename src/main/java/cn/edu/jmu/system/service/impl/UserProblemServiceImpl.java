@@ -7,6 +7,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * @author xeathen
  * @date 2019/10/5 10:36
@@ -55,5 +60,13 @@ public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserP
     private UserProblem query(UserProblem userProblem) {
         QueryWrapper<UserProblem> queryWrapper = new QueryWrapper<>(userProblem);
         return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public List<Integer> findByUidAndState(Integer uid, Boolean state) {
+        Map<String, Object> columnMap = new HashMap<>();
+        columnMap.put("uid", uid);
+        columnMap.put("state", state);
+        return baseMapper.selectByMap(columnMap).stream().map(UserProblem::getPid).collect(Collectors.toList());
     }
 }

@@ -8,6 +8,7 @@ import cn.edu.jmu.system.entity.dto.SolutionCodeDto;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.service.SolutionService;
+import cn.edu.jmu.system.service.UserProblemService;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.mapper.SolutionMapper;
 import cn.edu.jmu.system.service.mapper.UserMapper;
@@ -20,6 +21,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author sgh
@@ -35,6 +39,9 @@ public class UserOperationController {
 
     @Resource
     private SolutionService solutionService;
+
+    @Resource
+    private UserProblemService userProblemService;
 
     /**
      * 获取登录用户的信息
@@ -94,5 +101,15 @@ public class UserOperationController {
         solutionDto.setUid(user.getId());
         boolean success = solutionService.add(solutionDto);
         return ResponseUtil.buildResponse(success, "提交成功", "提交失败");
+    }
+
+    @GetMapping(value = "/problems")
+    public ResponseEntity<BasicResponse> getProblemStatus() {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        Map<String, List> data = new HashMap<>();
+        data.put("accept", userProblemService.findByUidAndState(user.getId(), true));
+        data.put("try", userProblemService.findByUidAndState(user.getId(), false));
+        return ResponseUtil.buildResponse(data);
     }
 }

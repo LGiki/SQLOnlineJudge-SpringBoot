@@ -3,6 +3,8 @@ package cn.edu.jmu.system.service;
 import cn.edu.jmu.system.entity.UserProblem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author xeathen
  * @date 2019/10/5 10:35
@@ -27,4 +29,6 @@ public interface UserProblemService extends IService<UserProblem> {
      * @return
      */
     Integer find(Integer uid, Integer pid, Boolean state);
+
+    List<Integer> findByUidAndState(Integer uid, Boolean state);
 }

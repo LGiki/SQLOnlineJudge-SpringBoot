@@ -33,7 +33,6 @@ public class UserDto implements Serializable {
     /**
      * 密码
      */
-    @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
