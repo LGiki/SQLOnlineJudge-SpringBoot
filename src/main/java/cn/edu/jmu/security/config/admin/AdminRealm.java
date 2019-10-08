@@ -15,6 +15,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -73,6 +74,7 @@ public class AdminRealm extends AuthorizingRealm {
             throw new UnknownAccountException("用户不存在！");
         }
         // 4. 根据用户的情况，来构建AuthenticationInfo对象并返回，通常使用的实现类为SimpleAuthenticationInfo
-        return new SimpleAuthenticationInfo(admin, admin.getPassword(), getName());
+        return new SimpleAuthenticationInfo(admin, admin.getPassword()
+                , ByteSource.Util.bytes(admin.getUsername() + admin.getSalt()), getName());
     }
 }

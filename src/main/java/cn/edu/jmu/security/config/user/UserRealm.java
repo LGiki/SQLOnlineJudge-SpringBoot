@@ -56,9 +56,7 @@ public class UserRealm extends AuthorizingRealm {
             throw new AuthenticationException("该用户账号被锁定！");
         }
         // 4. 根据用户的情况，来构建AuthenticationInfo对象并返回，通常使用的实现类为SimpleAuthenticationInfo
-        return new SimpleAuthenticationInfo(user,
-                user.getPassword(),
-                ByteSource.Util.bytes(user.getUsername() + user.getSalt()),
-                getName());
+        return new SimpleAuthenticationInfo(user, user.getPassword()
+                , ByteSource.Util.bytes(user.getUsername() + user.getSalt()), getName());
     }
 }

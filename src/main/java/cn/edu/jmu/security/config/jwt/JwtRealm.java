@@ -58,17 +58,13 @@ public class JwtRealm extends AuthorizingRealm {
             if (admin == null) {
                 throw new AuthenticationException("token过期，请重新登录");
             }
-            authenticationInfo = new SimpleAuthenticationInfo(admin,
-                    admin.getSalt(),
-                    getName());
+            authenticationInfo = new SimpleAuthenticationInfo(admin, admin.getSalt(), getName());
         } else {
             User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
             if (user == null) {
                 throw new AuthenticationException("token过期，请重新登录");
             }
-            authenticationInfo = new SimpleAuthenticationInfo(user,
-                    user.getSalt(),
-                    getName());
+            authenticationInfo = new SimpleAuthenticationInfo(user, user.getSalt(), getName());
         }
         return authenticationInfo;
     }

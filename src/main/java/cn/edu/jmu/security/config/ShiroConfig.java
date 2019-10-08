@@ -112,9 +112,9 @@ public class ShiroConfig {
     @Bean
     public AdminRealm adminRealm() {
         AdminRealm adminRealm = new AdminRealm();
-//        告诉realm,使用credentialsMatcher加密算法类来验证密文
-//        myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-//        myShiroRealm.setCachingEnabled(false);
+        // 告诉realm,使用credentialsMatcher加密算法类来验证密文
+        adminRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        adminRealm.setCachingEnabled(false);
         return adminRealm;
     }
 

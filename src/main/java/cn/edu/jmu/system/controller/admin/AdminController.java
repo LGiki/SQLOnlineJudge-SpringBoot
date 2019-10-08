@@ -92,7 +92,7 @@ public class AdminController {
         Admin admin = AdminMapper.toEntity(adminDto);
         String salt = EncryptUtil.generatorSalt();
         admin.setSalt(salt);
-//            admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), salt));
+        admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), salt));
         boolean success = adminService.insert(admin);
         return ResponseUtil.buildResponse(success, "新增管理员成功", "新增管理员失败");
     }
