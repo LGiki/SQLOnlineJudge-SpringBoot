@@ -8,6 +8,7 @@ import shutil
 import json
 import configparser
 from sys import argv
+import hashlib
 
 # 配置文件路径
 CONFIG_FILE_PATH = './judger/config.ini'
@@ -26,7 +27,7 @@ RESPONSE_CODE = {
 }
 
 
-# 生成json返回值
+# 构造json返回值
 def construct_json_response(code, data, message):
     return json.dumps(
         {
@@ -107,6 +108,7 @@ def judge(SQLITE_DIR, SQLITE_TEMP_DIR, cursor, solution_id):
     if exec_result is None:
         judge_result_index = SOLUTION_RESULT['Compile Error']
     else:
+        exec_result = hashlib.md5(exec_result.encode(encoding='UTF-8')).hexdigest().upper()
         if exec_result == true_result:
             judge_result_index = SOLUTION_RESULT['Accepted']
         else:

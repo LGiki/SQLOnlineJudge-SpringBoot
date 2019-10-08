@@ -74,7 +74,7 @@ public class ProblemController {
         Problem problem = ProblemMapper.toEntity(problemDetailDto);
         if (problemService.saveOrUpdate(problem)) {
             log.debug(problem.toString());
-            String trueResult = judgeService.getTrueResult(problem.getAnswer(), problem.getDatabaseId());
+            String trueResult = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
             if (trueResult != null) {
                 problem.setTrueResult(trueResult);
                 problemService.update(problem);

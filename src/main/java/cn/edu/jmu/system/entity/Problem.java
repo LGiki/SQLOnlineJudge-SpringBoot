@@ -62,8 +62,8 @@ public class Problem implements Serializable {
     /**
      * 通过数
      */
-    @TableField(value = "solve")
-    private Integer solve;
+    @TableField(value = "solved")
+    private Integer solved;
 
     /**
      * 提交数
