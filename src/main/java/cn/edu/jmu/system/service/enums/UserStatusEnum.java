@@ -10,31 +10,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum UserStatusEnum {
 
     /**
-     * 未激活
+     * 账号被锁定
      */
-    INACTIVATED("0", "未激活状态"),
+    LOCK(false, "账号被锁定"),
+
     /**
-     * 正常状态
+     * 正常
      */
-    NORMAL("1", "正常状态"),
-    /**
-     * 锁定状态
-     */
-    LOCK("2", "账号被锁定状态"),
-    ;
+    NORMAL(true, "正常");
 
     @EnumValue
-    private final String value;
+    private final Boolean value;
 
     private final String displayName;
 
 
-    UserStatusEnum(String value, String displayName) {
+    UserStatusEnum(Boolean value, String displayName) {
         this.value = value;
         this.displayName = displayName;
     }
 
-    public String getValue() {
+    public Boolean getValue() {
         return this.value;
     }
 

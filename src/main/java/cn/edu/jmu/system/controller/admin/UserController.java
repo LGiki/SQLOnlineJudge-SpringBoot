@@ -9,6 +9,7 @@ import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.mapper.UserMapper;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
@@ -71,7 +72,6 @@ public class UserController {
         } else {
             return ResponseUtil.fail("该邮箱已被注册");
         }
-
     }
 
     /**
@@ -92,6 +92,9 @@ public class UserController {
         User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, userDto.getUsername()));
         if (ObjectUtil.isNotNull(byId)) {
             return ResponseUtil.fail("该用户名已存在");
+        }
+        if (ObjectUtils.isEmpty(userDto.getPassword())) {
+            return ResponseUtil.fail("密码不能为空");
         }
         byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
         if (ObjectUtil.isNotNull(byId)) {

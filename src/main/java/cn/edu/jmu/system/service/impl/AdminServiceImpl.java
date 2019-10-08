@@ -6,6 +6,7 @@ import cn.edu.jmu.system.entity.dto.AdminDto;
 import cn.edu.jmu.system.mapper.AdminMapper;
 import cn.edu.jmu.system.mapper.RoleMapper;
 import cn.edu.jmu.system.service.AdminService;
+import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -47,22 +48,19 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     /**
      * 更新管理员
-     *
-     * @param admin admin
-     * @return boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean update(Admin admin) {
-        if (admin.getPassword() != null) {
+    public boolean update(AdminDto adminDto) {
+        Admin admin = baseMapper.selectById(adminDto.getId());
+        if (adminDto.getPassword() != null) {
             admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), admin.getSalt()));
         }
-        Admin select = baseMapper.selectById(admin.getId());
-        BeanUtil.copyProperties(admin, select, true,
+        BeanUtil.copyProperties(adminDto, admin, true,
                 CopyOptions.create().setIgnoreNullValue(true)
                         .setIgnoreError(true)
                         .setIgnoreProperties("id", "username", "salt"));
-        return baseMapper.updateById(select) >= 1;
+        return baseMapper.updateById(admin) >= 1;
     }
 
     @Override
@@ -76,6 +74,24 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         baseMapper.insert(admin);
         Integer id = admin.getId();
         return roleMapper.insertAdminIdAndRoleId(id, 2) >= 1;
+    }
+
+
+    /**
+     * 更改用户状态
+     *
+     * @param id id
+     * @return boolean
+     */
+    @Override
+    public boolean changeAdminStatus(Integer id) {
+        Admin admin = baseMapper.selectById(id);
+        if (admin.getStatus() == UserStatusEnum.NORMAL) {
+            admin.setStatus(UserStatusEnum.LOCK);
+        } else {
+            admin.setStatus(UserStatusEnum.NORMAL);
+        }
+        return baseMapper.updateById(admin) >= 1;
     }
 
     /**

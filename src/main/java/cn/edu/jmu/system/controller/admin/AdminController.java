@@ -10,6 +10,7 @@ import cn.edu.jmu.system.service.AdminService;
 import cn.edu.jmu.system.service.mapper.AdminMapper;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -56,15 +57,12 @@ public class AdminController {
     }
 
     /**
-     * 通过用户ID删除管理员
-     *
-     * @param id 用户ID
+     * 更新管理员状态
      */
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
-        // 删除用户
-        boolean success = adminService.removeById(id);
-        return ResponseUtil.buildResponse(success, "删除成功", "删除失败");
+    @PutMapping(value = "/status/{id}")
+    public ResponseEntity<BasicResponse> status(@PathVariable("id") Integer id) {
+        boolean success = adminService.changeAdminStatus(id);
+        return ResponseUtil.buildResponse(success, "更改成功", "更改失败");
     }
 
     /**
@@ -74,10 +72,11 @@ public class AdminController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> update(@RequestBody @Validated AdminDto adminDto, @PathVariable(value = "id") Integer id) {
-        if (adminDto.getId() != null && adminDto.getId().equals(id)) {
-            // 更新用户信息
-            Admin admin = AdminMapper.toEntity(adminDto);
-            boolean success = adminService.saveOrUpdate(admin);
+        if (adminDto.getId() == null) {
+            return ResponseUtil.fail("id不能为空");
+        }
+        if (adminDto.getId().equals(id)) {
+            boolean success = adminService.update(adminDto);
             return ResponseUtil.buildResponse(success, "更新管理员信息成功", "更新管理员信息失败");
         } else {
             return ResponseUtil.fail("id不一致");
@@ -94,6 +93,9 @@ public class AdminController {
         Admin byId = adminService.getOne(Wrappers.<Admin>lambdaQuery().eq(Admin::getUsername, adminDto.getUsername()));
         if (ObjectUtil.isNotNull(byId)) {
             return ResponseUtil.fail("该管理员已存在");
+        }
+        if (ObjectUtils.isEmpty(adminDto.getPassword())) {
+            return ResponseUtil.fail("密码不能为空");
         }
         Admin admin = AdminMapper.toEntity(adminDto);
         String salt = EncryptUtil.generatorSalt();

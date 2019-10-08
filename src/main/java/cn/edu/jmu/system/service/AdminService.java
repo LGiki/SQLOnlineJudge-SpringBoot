@@ -28,12 +28,20 @@ public interface AdminService extends IService<Admin> {
     /**
      * 更新管理员
      *
-     * @param admin admin
+     * @param adminDto adminDto
      * @return boolean
      */
-    boolean update(Admin admin);
+    boolean update(AdminDto adminDto);
 
     boolean delete(Long id);
 
     boolean insert(Admin admin);
+
+    /**
+     * 更改管理员状态
+     *
+     * @param id id
+     * @return boolean
+     */
+    boolean changeAdminStatus(Integer id);
 }

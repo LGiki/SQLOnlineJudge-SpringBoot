@@ -1,15 +1,11 @@
 package cn.edu.jmu.system.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import cn.edu.jmu.system.service.enums.UserStatusEnum;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author sgh
@@ -46,6 +42,13 @@ public class Admin implements Serializable {
      */
     @TableField(value = "salt")
     private String salt;
+
+    /**
+     * 状态
+     */
+    @EnumValue
+    @TableField(value = "status")
+    private UserStatusEnum status;
 
     @TableField(exist = false)
     private Integer roleId;

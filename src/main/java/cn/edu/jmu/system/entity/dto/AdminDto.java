@@ -31,7 +31,6 @@ public class AdminDto implements Serializable {
     /**
      * 管理员密码
      */
-    @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }
