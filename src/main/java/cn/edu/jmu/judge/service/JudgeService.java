@@ -22,9 +22,16 @@ public interface JudgeService extends IService<Solution> {
      * 获取正确答案
      * @param answer
      * @param databaseId
-     * @return
+     * @return String
      */
     String getTrueResult(String answer, Integer databaseId);
 
+    /**
+     * 获取正确答案的md5值
+     * @param answer
+     * @param databaseId
+     * @return String
+     */
+    String getTrueResultMd5(String answer, Integer databaseId);
 
 }

@@ -1,6 +1,7 @@
 package cn.edu.jmu.system.entity.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class UserProblemDto implements Serializable {
     private static final long serialVersionUID = -4224603356254738248L;
 
     /**
-     * 题目ID
+     * ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -22,18 +23,18 @@ public class UserProblemDto implements Serializable {
     /**
      * 用户ID
      */
-    @TableId(value = "uid", type = IdType.AUTO)
+    @TableField(value = "uid")
     private Integer uid;
 
     /**
      * 题目ID
      */
-    @TableId(value = "pid", type = IdType.AUTO)
+    @TableField(value = "pid")
     private Integer pid;
 
     /**
-     *
+     * 状态
      */
-    @TableId(value = "state", type = IdType.AUTO)
+    @TableField(value = "state")
     private String state;
 }

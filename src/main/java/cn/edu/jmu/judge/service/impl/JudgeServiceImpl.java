@@ -5,15 +5,16 @@ import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
 import cn.edu.jmu.judge.executor.ThreadPoolUtils;
 import cn.edu.jmu.judge.executor.thread.JudgeCallable;
 import cn.edu.jmu.judge.service.JudgeService;
+import cn.edu.jmu.judge.util.Md5Util;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
+import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.UserProblem;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
-import cn.edu.jmu.system.mapper.ProblemMapper;
 import cn.edu.jmu.system.mapper.SolutionMapper;
-import cn.edu.jmu.system.mapper.UserMapper;
 import cn.edu.jmu.system.service.ProblemService;
+import cn.edu.jmu.system.service.UserProblemService;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
 import cn.edu.jmu.system.service.impl.UserProblemServiceImpl;
@@ -36,7 +37,10 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
 
 
     @Resource
-    private UserProblemServiceImpl userProblemService;
+    private UserProblemService userProblemService;
+
+    @Resource
+    private ProblemService problemService;
 
 
     /**
@@ -63,12 +67,13 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             userProblem.setUid(uid);
             userProblem.setPid(pid);
             User user = userService.getById(uid);
+            Problem problem = problemService.getById(pid);
             Integer userProblemId = userProblemService.find(uid, pid);
             if (JudgeResponseCodeEnum.OK.getValue().equals(code)) {
                 if (SolutionResultEnum.ACCEPTED.getValue().equals(resultCode)) {
                     solution.setResult(SolutionResultEnum.ACCEPTED);
                     if (userProblemService.find(uid, pid, JudgeResponseCodeEnum.OK.getValue()) == 0) {
-                        increaseSolvedCount(user);
+                        increaseSolvedCount(user, problem);
                     }
                     if (userProblemId != 0) {
                         userProblem.setId(userProblemId);
@@ -91,7 +96,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                         userProblem.setId(userProblemId);
                     }
                 }
-                increaseSubmitCount(user);
+                increaseSubmitCount(user, problem);
             } else if (JudgeResponseCodeEnum.FAIL.getValue().equals(code)) {
                 baseMapper.deleteById(solution.getId());
                 return false;
@@ -123,12 +128,32 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
         return null;
     }
 
-    private void increaseSubmitCount(User user) {
-        user.setSubmit(user.getSubmit() + 1);
+    /**
+     * 获取正确答案的Md5值
+     *
+     * @param answer
+     * @param databaseId
+     * @return boolean
+     */
+    @Override
+    public String getTrueResultMd5(String answer, Integer databaseId) {
+        JudgeResultJson judgeResultJson = PythonJudgeUtil.getTrueResult(answer, databaseId);
+        log.debug(judgeResultJson.toString());
+        if (JudgeResponseCodeEnum.OK.getValue().equals(judgeResultJson.getCode())) {
+            return Md5Util.getStringMd5(judgeResultJson.getData().getTrueResult());
+        }
+        return null;
     }
 
-    private void increaseSolvedCount(User user) {
+
+    private void increaseSubmitCount(User user, Problem problem) {
+        user.setSubmit(user.getSubmit() + 1);
+        problem.setSubmit(problem.getSubmit() + 1);
+    }
+
+    private void increaseSolvedCount(User user, Problem problem) {
         user.setSolved(user.getSolved() + 1);
+        problem.setSolved(problem.getSolved() + 1);
     }
 
     private JudgeResultJson executeTask(Integer solutionId) {
