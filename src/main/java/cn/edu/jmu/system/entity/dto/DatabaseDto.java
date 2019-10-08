@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * @date 2019/8/26 下午8:15
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DatabaseDto implements Serializable {
 
     private static final long serialVersionUID = 8718590801292445875L;
