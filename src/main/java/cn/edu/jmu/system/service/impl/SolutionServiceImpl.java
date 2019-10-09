@@ -52,7 +52,7 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         } else {
             iPage = baseMapper.selectPage(solutionPage
                     , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
-                            .toEntity(solutionDto)).orderByDesc());
+                            .toEntity(solutionDto)).lambda().orderByDesc(Solution::getId));
         }
         IPage<SolutionDto> convert = iPage.convert(cn.edu.jmu.system.service.mapper.SolutionMapper::toDto);
         convert.getRecords().forEach(this::addMessage);
