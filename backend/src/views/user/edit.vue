@@ -111,6 +111,8 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.userDetail = resData.data
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })
@@ -133,7 +135,7 @@ export default {
                 type: 'success'
               })
               successCallback()
-            } else if (resData.code === 1) {
+            } else {
               this.$message.error(resData.message)
             }
           }
