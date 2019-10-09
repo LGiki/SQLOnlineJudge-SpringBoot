@@ -1,8 +1,8 @@
 {
-  "name": "vue-material-kit",
-  "author": "Creative Tim https://www.creative-tim.com/",
-  "description": "Vue Material Kit",
-  "version": "1.1.0",
+  "name": "SQL-Online-Judge",
+  "author": "JiMei University",
+  "description": "SQL Online Judge frontend",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
