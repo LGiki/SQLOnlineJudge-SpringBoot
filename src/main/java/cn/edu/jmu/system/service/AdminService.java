@@ -25,14 +25,6 @@ public interface AdminService extends IService<Admin> {
      */
     IPage<AdminDto> getAll(AdminDto adminDto, Page page);
 
-    /**
-     * 更新管理员
-     *
-     * @param adminDto adminDto
-     * @return boolean
-     */
-    boolean update(AdminDto adminDto);
-
     boolean delete(Long id);
 
     boolean insert(Admin admin);

@@ -222,7 +222,7 @@ export default {
       if (params.type === 'delete') {
         let confirmMessage = '您确定要锁定该用户吗？'
         let operationTypeString = '锁定'
-        if (this.tableConfig.tableData[index].status !== '正常状态') {
+        if (this.tableConfig.tableData[index].status !== '正常') {
           confirmMessage = '您确定要解锁该用户吗？'
           operationTypeString = '解锁'
         }

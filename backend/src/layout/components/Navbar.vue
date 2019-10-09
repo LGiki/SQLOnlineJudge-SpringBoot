@@ -42,6 +42,7 @@ export default {
     },
     async logout() {
       localStorage.removeItem('JWT_TOKEN')
+      localStorage.removeItem('role')
       // localStorage.JWT_TOKEN = null
       // await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)

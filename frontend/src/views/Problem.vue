@@ -119,6 +119,7 @@ export default {
         label: "题目ID",
         value: "id"
       },
+      userDoProblem: {},
       searchKeyword: "",
       inSearch: false,
       pageNum: 1,
@@ -128,6 +129,27 @@ export default {
       tableConfig: {
         tableData: [],
         columns: [
+          {
+            field: "progress",
+            title: "做题进度",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              switch (rowData.progress) {
+                case 1:
+                  // 已经通过
+                  return '<i class="material-icons status-icon">check_box</i>';
+                case 2:
+                  // 尝试过
+                  return '<i class="material-icons status-icon">indeterminate_check_box</i>';
+                case 0:
+                  // 未尝试
+                  return '<i class="material-icons status-icon">check_box_outline_blank</i>';
+              }
+            }
+          },
           {
             field: "id",
             title: "题目ID",
@@ -145,7 +167,7 @@ export default {
             isResize: true
           },
           {
-            field: "solve",
+            field: "solved",
             title: "通过数",
             width: 80,
             titleAlign: "center",
@@ -201,6 +223,23 @@ export default {
             let resData = res.data;
             if (resData.code === 0) {
               this.tableConfig.tableData = resData.data.records;
+              for (let i = 0; i < this.tableConfig.tableData.length; i++) {
+                let problemItem = this.tableConfig.tableData[i];
+                let problemId = problemItem.id;
+                if (
+                  this.userDoProblem.accept &&
+                  this.userDoProblem.accept.indexOf(problemId) != -1
+                ) {
+                  problemItem.progress = 1;
+                } else if (
+                  this.userDoProblem.try &&
+                  this.userDoProblem.try.indexOf(problemId) != -1
+                ) {
+                  problemItem.progress = 2;
+                } else {
+                  problemItem.progress = 0;
+                }
+              }
               this.totalItems = resData.data.total;
             } else {
               alert(resData.message);
@@ -212,6 +251,29 @@ export default {
           this.isLoading = false;
           alert("获取题目列表失败！");
           console.log(err);
+        });
+    },
+    fetchUserDoProblemList(callback) {
+      let apiUrl = this.Url.userDoProblemList;
+      this.$axios
+        .get(apiUrl)
+        .then(res => {
+          if (res.status !== 200) {
+            alert("获取用户已做题目列表失败，内部错误！");
+          } else {
+            let resData = res.data;
+            if (resData.code === 0) {
+              this.userDoProblem = resData.data;
+            } else {
+              alert(resData.message);
+            }
+          }
+          callback();
+        })
+        .catch(err => {
+          alert("获取用户已做题目列表失败！");
+          console.log(err);
+          callback();
         });
     },
     pageChange(pageNum) {
@@ -272,19 +334,12 @@ export default {
     }
   },
   mounted: function() {
-    this.getProblemList();
-  },
-  computed: {
-    headerStyle() {
-      return {
-        backgroundImage: `url(${this.header})`
-      };
-    }
+    this.fetchUserDoProblemList(this.getProblemList);
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .bd {
   padding-top: 25px;
   width: 100%;
@@ -307,5 +362,11 @@ export default {
 
 .no-padding {
   padding: 0 !important;
+}
+
+.status-icon {
+  width: 24px;
+  height: 24px;
+  margin: 6px !important;
 }
 </style>

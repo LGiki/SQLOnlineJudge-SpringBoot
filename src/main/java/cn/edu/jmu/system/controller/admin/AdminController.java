@@ -66,21 +66,19 @@ public class AdminController {
     }
 
     /**
-     * 更新管理员信息
+     * 更新管理员密码
      *
-     * @param adminDto 新的管理员信息
+     * @param password 新密码
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> update(@RequestBody @Validated AdminDto adminDto, @PathVariable(value = "id") Integer id) {
-        if (adminDto.getId() == null) {
-            return ResponseUtil.fail("id不能为空");
+    public ResponseEntity<BasicResponse> password(@RequestParam String password, @PathVariable(value = "id") Integer id) {
+        Admin admin = adminService.getById(id);
+        if (admin == null) {
+            return ResponseUtil.fail("id无效");
         }
-        if (adminDto.getId().equals(id)) {
-            boolean success = adminService.update(adminDto);
-            return ResponseUtil.buildResponse(success, "更新管理员信息成功", "更新管理员信息失败");
-        } else {
-            return ResponseUtil.fail("id不一致");
-        }
+        admin.setPassword(EncryptUtil.encryption(admin.getUsername(), password, admin.getSalt()));
+        boolean success = adminService.saveOrUpdate(admin);
+        return ResponseUtil.buildResponse(success, "更新管理员信息成功", "更新管理员信息失败");
     }
 
     /**
