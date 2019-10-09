@@ -90,9 +90,6 @@ public class UserOperationController {
 
     /**
      * 用户提交判题
-     *
-     * @param solutionDto solutionDto
-     * @return ResponseEntity
      */
     @PostMapping(value = "/solutions/")
     public ResponseEntity<BasicResponse> submit(@RequestBody @Validated SolutionDto solutionDto) {
@@ -103,6 +100,9 @@ public class UserOperationController {
         return ResponseUtil.buildResponse(success, "提交成功", "提交失败");
     }
 
+    /**
+     * 得到用户通过题目和尝试题目的集合
+     */
     @GetMapping(value = "/problems")
     public ResponseEntity<BasicResponse> getProblemStatus() {
         Subject subject = SecurityUtils.getSubject();

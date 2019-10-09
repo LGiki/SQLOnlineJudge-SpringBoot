@@ -10,6 +10,8 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -39,15 +41,19 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
 
     /**
      * 得到所有解答
-     *
-     * @param solutionDto solutionDto
-     * @param page        page
-     * @return IPage<solution>
      */
     @Override
     public IPage<SolutionDto> get(SolutionDto solutionDto, Page page) {
         Page<Solution> solutionPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<Solution> iPage = baseMapper.selectPage(solutionPage, Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getSubmitTime));
+        IPage<Solution> iPage;
+        if (ObjectUtil.isNull(solutionDto)) {
+            iPage = baseMapper.selectPage(solutionPage
+                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+        } else {
+            iPage = baseMapper.selectPage(solutionPage
+                    , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
+                            .toEntity(solutionDto)).orderByDesc());
+        }
         IPage<SolutionDto> convert = iPage.convert(cn.edu.jmu.system.service.mapper.SolutionMapper::toDto);
         convert.getRecords().forEach(this::addMessage);
         return convert;
@@ -64,6 +70,9 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         return num >= 1;
     }
 
+    /**
+     * 在solutionDto中增加Username和title
+     */
     private void addMessage(SolutionDto solutionDto) {
         solutionDto.setSourceCode(null);
         User user = userService.getById(solutionDto.getUid());

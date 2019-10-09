@@ -69,21 +69,12 @@ public class PublicController {
     }
 
     /**
-     * 通过ID查询解答详情
-     */
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> getSolutionById(@PathVariable("id") Integer id) {
-        Solution solution = solutionService.getById(id);
-        return ResponseUtil.buildResponse("查询成功", solution);
-    }
-
-    /**
      * 查询所有解答
      */
     @GetMapping(value = "/solutions")
-    public ResponseEntity<BasicResponse> selectAll(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> selectAll(@RequestBody(required = false) SolutionDto solutionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Solution> page = new Page<>(pageNum, pageSize);
-        IPage<SolutionDto> iPage = solutionService.get(null, page);
+        IPage<SolutionDto> iPage = solutionService.get(solutionDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
