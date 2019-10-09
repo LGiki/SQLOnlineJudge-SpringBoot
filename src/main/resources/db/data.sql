@@ -209,7 +209,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'user_sgh', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 0, 0, 'default.jpg', b'1');
+INSERT INTO `sys_user` VALUES (1, 'user_sgh', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 5, 2, 'default.jpg', b'1');
 INSERT INTO `sys_user` VALUES (2, 'user_xdh', 'xdh@qq.com', 'c51f9c7eba223c36a9e79aef5dbe3dd1', 'stFp0Nc4hYuiLaiN2aNe', 0, 0, 'default.jpg', b'1');
 INSERT INTO `sys_user` VALUES (3, 'user_ljq', 'ljq@qq.com', 'd1abfc1dcd61244bed23b54ad3e67142', 'u5EUoEIF0yerJVoQLye8', 0, 0, 'default.jpg', b'1');
 
