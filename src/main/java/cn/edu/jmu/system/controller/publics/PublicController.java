@@ -72,7 +72,7 @@ public class PublicController {
      * 查询所有解答
      */
     @GetMapping(value = "/solutions")
-    public ResponseEntity<BasicResponse> selectAll(@RequestBody(required = false) SolutionDto solutionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> selectAll(SolutionDto solutionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Solution> page = new Page<>(pageNum, pageSize);
         IPage<SolutionDto> iPage = solutionService.get(solutionDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
