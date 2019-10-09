@@ -20,7 +20,7 @@ export default new Router({
       name: "index",
       components: { default: Index, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 200 },
         footer: { backgroundColor: "black" }
       }
     },
@@ -29,7 +29,7 @@ export default new Router({
       name: "problem",
       components: { default: Problem, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 80 },
         footer: { backgroundColor: "black" }
       }
     },
@@ -42,7 +42,7 @@ export default new Router({
         footer: MainFooter
       },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 80 },
         footer: { backgroundColor: "black" }
       }
     },
@@ -51,7 +51,7 @@ export default new Router({
       name: "ranklist",
       components: { default: Ranklist, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 80 },
         footer: { backgroundColor: "black" }
       }
     },
@@ -60,7 +60,7 @@ export default new Router({
       name: "solution",
       components: { default: Solution, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 80 },
         footer: { backgroundColor: "black" }
       }
     },
@@ -69,7 +69,7 @@ export default new Router({
       name: "register",
       components: { default: Register, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 }
+        header: { colorOnScroll: 80 }
       }
     },
     {
@@ -77,7 +77,7 @@ export default new Router({
       name: "login",
       components: { default: Login, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 }
+        header: { colorOnScroll: 80 }
       }
     },
     {
@@ -85,7 +85,7 @@ export default new Router({
       name: "profile",
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 200 },
         footer: { backgroundColor: "black" }
       }
     }

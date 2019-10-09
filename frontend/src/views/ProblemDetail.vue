@@ -42,10 +42,11 @@
           <template v-else>
             <div style="width:100%;padding-top:20px">
               <div class="text-center justify-content-center">
-                <p>您还未登录，请登录后再提交代码。</p><br>
+                <p>您还未登录，请登录后再提交代码。</p>
+                <br />
                 <md-button class="md-success md-lg" href="#/login"
-                    >登录</md-button
-                  >
+                  >登录</md-button
+                >
               </div>
             </div>
           </template>
@@ -74,7 +75,6 @@ import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/sql-hint.js";
 import "codemirror/addon/edit/matchbrackets.js";
 import "codemirror/addon/hint/show-hint.css";
-import qs from "qs";
 
 export default {
   components: {

@@ -311,7 +311,9 @@ export default {
                 this.tableConfig.tableData = resData.data.records;
                 this.totalItems = resData.data.total;
                 this.inSearch = true;
-                this.calcProblemProgress();
+                if (localStorage.JWT_TOKEN) {
+                  this.calcProblemProgress();
+                }
               } else {
                 alert(resData.message);
               }
