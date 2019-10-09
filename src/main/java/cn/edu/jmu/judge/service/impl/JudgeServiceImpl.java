@@ -104,6 +104,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             userProblemService.saveOrUpdate(userProblem);
             baseMapper.updateById(solution);
             userService.saveOrUpdate(user);
+            problemService.saveOrUpdate(problem);
             return true;
         } else {
             baseMapper.deleteById(solution.getId());
