@@ -35,7 +35,7 @@ public class SolutionController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getCode(@PathVariable(value = "id") Integer id) {
         Solution solution = solutionService.getById(id);
-        if (ObjectUtils.isEmpty(solution)) {
+        if (!ObjectUtils.isEmpty(solution)) {
             SolutionCodeDto solutionCodeDto = SolutionMapper.toSolutionCodeDto(solution);
             return ResponseUtil.buildResponse("查询成功", solutionCodeDto);
         } else {
