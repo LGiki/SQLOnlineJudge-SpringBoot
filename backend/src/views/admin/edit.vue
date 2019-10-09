@@ -5,7 +5,7 @@
         <el-input v-model="userDetail.id" disabled />
       </el-form-item>
       <el-form-item label="管理员用户名" prop="username">
-        <el-input v-model="userDetail.username" disabled/>
+        <el-input v-model="userDetail.username" disabled />
       </el-form-item>
       <el-form-item label="密码">
         <el-input v-model="password" :type="passwordType" placeholder="留空则不修改密码" />
@@ -58,10 +58,10 @@ export default {
             this.updateUserPassword(userId, 'password=' + this.password.trim(), () => {
               this.$router.back(-1)
             })
-          }else{
+          } else {
             this.$message({
-                message: '没做任何修改',
-                type: 'warning'
+              message: '没做任何修改',
+              type: 'warning'
             })
             this.$router.back(-1)
           }

@@ -338,7 +338,11 @@ export default {
     }
   },
   mounted: function() {
-    this.fetchUserDoProblemList(this.getProblemList);
+    if (localStorage.JWT_TOKEN) {
+      this.fetchUserDoProblemList(this.getProblemList);
+    } else {
+      this.getProblemList();
+    }
   }
 };
 </script>

@@ -23,20 +23,32 @@
             <h3>提示</h3>
             <p>{{ problemDetail.hint }}</p>
           </template>
-          <h3>提交代码</h3>
-          <codemirror
-            v-model="code"
-            :options="cmOptions"
-            @ready="onCmReady"
-          ></codemirror>
-          <div style="width:100%;padding-top:20px">
-            <div class="md-layout text-center justify-content-center">
-              <!-- <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp; -->
-              <md-button class="md-success md-lg" @click="submitSolution"
-                >提交</md-button
-              >
+          <template v-if="isLogin">
+            <h3>提交代码</h3>
+            <codemirror
+              v-model="code"
+              :options="cmOptions"
+              @ready="onCmReady"
+            ></codemirror>
+            <div style="width:100%;padding-top:20px">
+              <div class="md-layout text-center justify-content-center">
+                <!-- <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp; -->
+                <md-button class="md-success md-lg" @click="submitSolution"
+                  >提交</md-button
+                >
+              </div>
             </div>
-          </div>
+          </template>
+          <template v-else>
+            <div style="width:100%;padding-top:20px">
+              <div class="text-center justify-content-center">
+                <p>您还未登录，请登录后再提交代码。</p><br>
+                <md-button class="md-success md-lg" href="#/login"
+                    >登录</md-button
+                  >
+              </div>
+            </div>
+          </template>
         </div>
       </div>
       <div class="section section-with-padding">
@@ -93,7 +105,8 @@ export default {
         line: true
       },
       problemDetail: {},
-      createTableCode: ""
+      createTableCode: "",
+      isLogin: localStorage.JWT_TOKEN != null
     };
   },
   methods: {
