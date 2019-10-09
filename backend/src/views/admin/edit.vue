@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form ref="userDetail" :model="userDetail" :rules="checkRules" label-width="120px">
+    <el-form ref="userDetail" :model="userDetail" label-width="120px">
       <el-form-item label="管理员ID">
         <el-input v-model="userDetail.id" disabled />
       </el-form-item>
       <el-form-item label="管理员用户名" prop="username">
-        <el-input v-model="userDetail.username" />
+        <el-input v-model="userDetail.username" disabled/>
       </el-form-item>
       <el-form-item label="密码">
         <el-input v-model="password" :type="passwordType" placeholder="留空则不修改密码" />
@@ -32,15 +32,6 @@ export default {
         username: '',
         submit: '',
         solved: ''
-      },
-      checkRules: {
-        username: [
-          {
-            required: true,
-            message: '管理员用户名不能为空',
-            trigger: 'blur'
-          }
-        ]
       }
     }
   },
@@ -63,16 +54,21 @@ export default {
       this.$refs.userDetail.validate(valid => {
         if (valid) {
           const userId = this.$route.params.id
-          const user = {
-            id: this.userDetail.id,
-            username: this.userDetail.username.trim()
-          }
           if (this.password) {
+            let user = {
+              id: this.userDetail.id
+            }
             user.password = this.password.trim()
-          }
-          this.updateUser(userId, user, () => {
+            this.updateUser(userId, user, () => {
+              this.$router.back(-1)
+            })
+          }else{
+            this.$message({
+                message: '没做任何修改',
+                type: 'warning'
+            })
             this.$router.back(-1)
-          })
+          }
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
