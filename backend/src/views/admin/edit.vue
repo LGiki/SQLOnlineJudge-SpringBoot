@@ -55,11 +55,7 @@ export default {
         if (valid) {
           const userId = this.$route.params.id
           if (this.password) {
-            let user = {
-              id: this.userDetail.id
-            }
-            user.password = this.password.trim()
-            this.updateUser(userId, user, () => {
+            this.updateUserPassword(userId, 'password=' + this.password.trim(), () => {
               this.$router.back(-1)
             })
           }else{
@@ -95,10 +91,10 @@ export default {
           console.log(err)
         })
     },
-    updateUser(userId, user, successCallback) {
+    updateUserPassword(userId, newPassword, successCallback) {
       const apiUrl = this.Url.adminBaseUrl
       this.$axios
-        .put(apiUrl + userId, user)
+        .put(apiUrl + userId, newPassword)
         .then(res => {
           if (res.status !== 200) {
             this.$message.error('更新管理员资料失败，内部错误！')
