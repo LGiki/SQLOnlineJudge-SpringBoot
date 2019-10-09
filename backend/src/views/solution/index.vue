@@ -253,6 +253,8 @@ export default {
             if (resData.code === 0) {
               this.tableConfig.tableData = resData.data.records
               this.totalItems = resData.data.total
+            } else {
+              this.$message.error(resData.message)
             }
           }
           this.isLoading = false
@@ -276,6 +278,8 @@ export default {
               this.sourceCode = resData.data.sourceCode
               this.runError = resData.data.runError
               this.dialogVisible = true
+            } else {
+              this.$message.error(resData.message)
             }
           }
           this.isLoading = false

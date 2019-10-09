@@ -223,24 +223,8 @@ export default {
             let resData = res.data;
             if (resData.code === 0) {
               this.tableConfig.tableData = resData.data.records;
-              for (let i = 0; i < this.tableConfig.tableData.length; i++) {
-                let problemItem = this.tableConfig.tableData[i];
-                let problemId = problemItem.id;
-                if (
-                  this.userDoProblem.accept &&
-                  this.userDoProblem.accept.indexOf(problemId) != -1
-                ) {
-                  problemItem.progress = 1;
-                } else if (
-                  this.userDoProblem.try &&
-                  this.userDoProblem.try.indexOf(problemId) != -1
-                ) {
-                  problemItem.progress = 2;
-                } else {
-                  problemItem.progress = 0;
-                }
-              }
               this.totalItems = resData.data.total;
+              this.calcProblemProgress();
             } else {
               alert(resData.message);
             }
@@ -252,6 +236,25 @@ export default {
           alert("获取题目列表失败！");
           console.log(err);
         });
+    },
+    calcProblemProgress() {
+      for (let i = 0; i < this.tableConfig.tableData.length; i++) {
+        let problemItem = this.tableConfig.tableData[i];
+        let problemId = problemItem.id;
+        if (
+          this.userDoProblem.accept &&
+          this.userDoProblem.accept.indexOf(problemId) != -1
+        ) {
+          problemItem.progress = 1;
+        } else if (
+          this.userDoProblem.try &&
+          this.userDoProblem.try.indexOf(problemId) != -1
+        ) {
+          problemItem.progress = 2;
+        } else {
+          problemItem.progress = 0;
+        }
+      }
     },
     fetchUserDoProblemList(callback) {
       let apiUrl = this.Url.userDoProblemList;
@@ -308,6 +311,7 @@ export default {
                 this.tableConfig.tableData = resData.data.records;
                 this.totalItems = resData.data.total;
                 this.inSearch = true;
+                this.calcProblemProgress();
               } else {
                 alert(resData.message);
               }

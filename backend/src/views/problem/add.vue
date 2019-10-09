@@ -175,6 +175,8 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.databaseList = resData.data.records
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })

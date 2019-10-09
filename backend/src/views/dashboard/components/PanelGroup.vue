@@ -118,6 +118,8 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.systemDetail.userCount = resData.data
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })
@@ -136,6 +138,8 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.systemDetail.databaseCount = resData.data
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })
@@ -154,6 +158,8 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.systemDetail.problemCount = resData.data
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })
@@ -172,6 +178,8 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.systemDetail.solutionCount = resData.data
+            } else {
+              this.$message.error(resData.message)
             }
           }
         })
