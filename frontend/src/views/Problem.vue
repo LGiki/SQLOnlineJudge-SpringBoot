@@ -192,7 +192,7 @@ export default {
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return rowData.submit == 0
                 ? 0
-                : (rowData.solve / rowData.submit).toFixed(2);
+                : (rowData.solved / rowData.submit).toFixed(2);
             }
           }
         ]
