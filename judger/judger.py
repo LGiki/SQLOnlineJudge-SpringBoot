@@ -45,15 +45,15 @@ def get_config_value(config_parser, category, name):
 
 
 # 通过题目ID获取数据库ID
-def get_database_id_by_problem_id(cursor, problem_id):
+def get_problem_detail_by_problem_id(cursor, problem_id):
     sql = '''
-    select `database_id`
+    select `database_id`, `answer`
     from `problem`
     where `id` = %s
     '''
     cursor.execute(sql, [problem_id])
     select_result = cursor.fetchall()
-    return select_result[0][0]
+    return select_result[0][0], select_result[0][1]
 
 
 # 执行sqlite代码
@@ -95,19 +95,56 @@ def get_solution_detail_by_solution_id(cursor, solution_id):
     source_code = select_result[0][1]
     return problem_id, source_code
 
+# 执行sqlite脚本
+def exec_script(sqlite_db_file_path, source_code):
+    try:
+        sqlite_conn = sqlite3.connect(sqlite_db_file_path)
+        sqlite_cursor = sqlite_conn.cursor()
+        sqlite_cursor.executescript(source_code)
+        sqlite_conn.commit()
+    except BaseException as e:
+        return False, str(e)
+    return True, None
+
+# 判断是否是select类型的题目
+def is_select_problem(answer):
+    if answer.endswith(';'):
+        answer = answer[:-1]
+    splitted_answer = answer.split(';')
+    if len(splitted_answer) > 1:
+        return False
+    return True
+
+
+# 分割答案，取出update/delete语句与select语句
+def get_last_select_code_in_answer(answer):
+    if answer.endswith(';'):
+        answer = answer[:-1]
+    splitted_answer = answer.split(';')
+    return splitted_answer[-1]
+
 
 # 判题
 def judge(SQLITE_DIR, SQLITE_TEMP_DIR, cursor, solution_id):
     problem_id, source_code = get_solution_detail_by_solution_id(cursor, solution_id)
     # logging.info('Start judging solution {}'.format(solution_id))
-    database_id = get_database_id_by_problem_id(cursor, problem_id)
+    database_id, answer = get_problem_detail_by_problem_id(cursor, problem_id)
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
     if not os.path.exists(sqlite_db_file_path):
         return construct_json_response(RESPONSE_CODE['NO_DB_FILE'], None, '无法找到该题目对应数据库文件')
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_{}_temp.db'.format(database_id, solution_id))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
     true_result = get_true_result_by_problem_id(cursor, problem_id)
-    exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, source_code)
+    if not is_select_problem(answer):
+        last_select_code = get_last_select_code_in_answer(answer)
+        exec_script_result, run_exception = exec_script(temp_sqlite_db_file_path, source_code)
+        if exec_script_result:
+            exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, last_select_code)
+        else:
+            exec_result = None
+            exec_exception = run_exception
+    else:
+        exec_result, exec_exception = exec_code(temp_sqlite_db_file_path, source_code)
     if exec_result is None:
         judge_result_index = SOLUTION_RESULT['Compile Error']
     else:

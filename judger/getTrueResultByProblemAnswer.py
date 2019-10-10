@@ -60,12 +60,52 @@ def exec_code(sqlite_db_file_path, source_code):
     return str(exec_result), None
 
 
+# 执行sqlite脚本
+def exec_script(sqlite_db_file_path, source_code):
+    try:
+        sqlite_conn = sqlite3.connect(sqlite_db_file_path)
+        sqlite_cursor = sqlite_conn.cursor()
+        sqlite_cursor.executescript(source_code)
+        sqlite_conn.commit()
+    except BaseException as e:
+        return False, str(e)
+    return True, None
+
+
+# 判断是否是select类型的题目
+def is_select_problem(answer):
+    if answer.endswith(';'):
+        answer = answer[:-1]
+    splitted_answer = answer.split(';')
+    if len(splitted_answer) > 1:
+        return False
+    return True
+
+# 分割答案，取出update/delete语句与select语句
+def split_answer(answer):
+    if answer.endswith(';'):
+        answer = answer[:-1]
+    splitted_answer = answer.split(';')
+    operation_code = ';'.join(splitted_answer[:-1]) + ';'
+    select_code = splitted_answer[-1]
+    return operation_code, select_code
+
+
 # 通过问题ID获取正确答案
 def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_{}_temp.db'.format(database_id, uuid.uuid4()))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
-    true_result, run_exception = exec_code(sqlite_db_file_path, answer)
+    if not is_select_problem(answer):
+        operation_code, select_code = split_answer(answer)
+        exec_script(temp_sqlite_db_file_path, operation_code)
+        exec_result, run_exception = exec_script(temp_sqlite_db_file_path, operation_code)
+        if exec_result:
+            true_result, run_exception = exec_code(temp_sqlite_db_file_path, select_code)
+        else:
+            true_result = None
+    else:
+        true_result, run_exception = exec_code(temp_sqlite_db_file_path, answer)
     os.remove(temp_sqlite_db_file_path)
     if true_result is None:
         return None, run_exception

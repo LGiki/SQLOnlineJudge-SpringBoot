@@ -38,10 +38,50 @@
       <el-form-item label="提示" prop="hint">
         <el-input v-model="problemDetail.hint" type="textarea" />
       </el-form-item>
+      <el-form-item>
+        <el-button @click="updateAndDeleteProblemHintdialogVisible = true">查看答案填写说明</el-button>
+      </el-form-item>
       <el-form-item label="答案" prop="answer">
         <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
-        <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入提示" />
+        <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入答案" />
       </el-form-item>
+      <el-dialog
+        title="答案填写说明"
+        :visible.sync="updateAndDeleteProblemHintdialogVisible"
+        width="50%"
+      >
+        若有表如下：
+        <highlight-code lang="sql">
+          CREATE TABLE `employees` (
+          `emp_no` int(11) NOT NULL,
+          `birth_date` date NOT NULL,
+          `first_name` varchar(14) NOT NULL,
+          `last_name` varchar(16) NOT NULL,
+          `gender` char(1) NOT NULL,
+          `hire_date` date NOT NULL,
+          PRIMARY KEY (`emp_no`));
+        </highlight-code>
+          <p><h3>1. 对于select操作的题目</h3></p>
+          <p>例如查找表employees中dept_no为奇数的记录</p>
+          答案只需给出任意一种可行的答案即可，例如
+          <highlight-code lang="sql">
+          select * from employees where dept_no % 2 = 1;
+          </highlight-code>
+
+          <p><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
+          <p>例如删除表employees中dept_no为奇数的记录</p>
+          <p>答案应该这样给出：</p>
+          <highlight-code lang="sql">
+          delete from employees where dept_no % 2 = 1;
+          select * from employees;
+          </highlight-code>
+          <p>其中最后一行需要给出有进行修改操作的表的select *操作，这样可以用来记录修改后表中数据的变化</p>
+          <p>此判题系统根据最后一行的select语句进行用户解答的正确性判断，请确保最后一行语句的正确性</p>
+          <p><b>每条语句之间请严格使用';'进行分割</b></p>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="updateAndDeleteProblemHintdialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
         <el-button @click="onCancel">取消</el-button>
@@ -70,6 +110,7 @@ export default {
   },
   data() {
     return {
+      updateAndDeleteProblemHintdialogVisible: false,
       dialogVisible: false,
       createTable: '',
       checkRules: {
