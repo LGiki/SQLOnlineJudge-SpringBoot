@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
  * @date 2019/9/8 10:47
  */
 @Slf4j
-public final class PythonJudgeUtil {
+public  class PythonJudgeUtil {
 
     /**
      * 调用Python脚本创建数据库
