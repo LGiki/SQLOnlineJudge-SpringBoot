@@ -62,17 +62,17 @@
           PRIMARY KEY (`emp_no`));
         </highlight-code>
           <p><h3>1. 对于select操作的题目</h3></p>
-          <p>例如查找表employees中dept_no为奇数的记录</p>
+          <p>例如查找表employees中emp_no为奇数的记录</p>
           答案只需给出任意一种可行的答案即可，例如
           <highlight-code lang="sql">
-          select * from employees where dept_no % 2 = 1;
+          select * from employees where emp_no % 2 = 1;
           </highlight-code>
 
           <p><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
-          <p>例如删除表employees中dept_no为奇数的记录</p>
+          <p>例如删除表employees中emp_no为奇数的记录</p>
           <p>答案应该这样给出：</p>
           <highlight-code lang="sql">
-          delete from employees where dept_no % 2 = 1;
+          delete from employees where emp_no % 2 = 1;
           select * from employees;
           </highlight-code>
           <p>其中最后一行需要给出有进行修改操作的表的select *操作，这样可以用来记录修改后表中数据的变化</p>
