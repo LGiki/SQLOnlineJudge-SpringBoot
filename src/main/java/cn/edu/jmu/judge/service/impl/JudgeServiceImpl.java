@@ -144,11 +144,12 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
      * @return boolean
      */
     @Override
-    public String getTrueResultMd5(String answer, Integer databaseId) {
+    public JudgeResultJson getTrueResultMd5(String answer, Integer databaseId) {
         JudgeResultJson judgeResultJson = PythonJudgeUtil.getTrueResult(answer, databaseId);
         log.debug(judgeResultJson.toString());
         if (JudgeResponseCodeEnum.OK.getValue().equals(judgeResultJson.getCode())) {
-            return Md5Util.getStringMd5(judgeResultJson.getData().getTrueResult());
+            judgeResultJson.getData().setTrueResult(Md5Util.getStringMd5(judgeResultJson.getData().getTrueResult()));
+            return judgeResultJson;
         }
         return null;
     }

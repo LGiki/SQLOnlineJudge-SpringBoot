@@ -1,5 +1,6 @@
 package cn.edu.jmu.judge.service;
 
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -32,6 +33,6 @@ public interface JudgeService extends IService<Solution> {
      * @param databaseId
      * @return String
      */
-    String getTrueResultMd5(String answer, Integer databaseId);
+    JudgeResultJson getTrueResultMd5(String answer, Integer databaseId);
 
 }

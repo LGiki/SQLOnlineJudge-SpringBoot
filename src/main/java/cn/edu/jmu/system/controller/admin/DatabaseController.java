@@ -2,6 +2,7 @@ package cn.edu.jmu.system.controller.admin;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
@@ -72,11 +73,12 @@ public class DatabaseController {
         Database database = DatabaseMapper.toEntity(databaseDto);
         if (databaseService.saveOrUpdate(database)) {
             databaseDto.setId(database.getId());
-            if (databaseService.add(databaseDto)) {
+            JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
+            if ("0".equals(judgeResultJson.getCode())) {
                 return ResponseUtil.ok("新增数据库成功");
             } else {
                 databaseService.removeById(database.getId());
-                return ResponseUtil.fail("建表失败");
+                return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
             }
         } else {
             databaseService.removeById(database.getId());
@@ -93,8 +95,9 @@ public class DatabaseController {
         if (databaseDto.getId() != null && id.equals(databaseDto.getId())) {
             // 更新数据库信息
             Database database = DatabaseMapper.toEntity(databaseDto);
-            if (!databaseService.add(databaseDto)) {
-                return ResponseUtil.fail("建表失败");
+            JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
+            if ("1".equals(judgeResultJson.getCode())) {
+                return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
             } else {
                 List<Problem> problemList = problemService.getByDatabaseId(database.getId());
                 if (problemService.updateTrueResult(problemList)){

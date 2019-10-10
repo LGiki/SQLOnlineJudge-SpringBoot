@@ -2,6 +2,7 @@ package cn.edu.jmu.system.controller.admin;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
@@ -74,14 +75,14 @@ public class ProblemController {
         Problem problem = ProblemMapper.toEntity(problemDetailDto);
         if (problemService.saveOrUpdate(problem)) {
             log.debug(problem.toString());
-            String trueResult = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
-            if (trueResult != null) {
-                problem.setTrueResult(trueResult);
+            JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
+            if ("0".equals(judgeResultJson.getCode())) {
+                problem.setTrueResult(judgeResultJson.getData().getTrueResult());
                 problemService.update(problem);
                 return ResponseUtil.ok("新增题目成功");
             } else {
                 problemService.removeById(problem.getId());
-                return ResponseUtil.fail("给出的答案有误");
+                return ResponseUtil.fail("给出的答案有误," + judgeResultJson.getMessage());
             }
         } else {
             problemService.removeById(problem.getId());
@@ -101,13 +102,13 @@ public class ProblemController {
         if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
             Problem problem = ProblemMapper.toEntity(problemDetailDto);
             // 更新数据库信息
-            String trueResult = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
-            if (trueResult != null) {
-                problem.setTrueResult(trueResult);
+            JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
+            if ("0".equals(judgeResultJson.getCode())) {
+                problem.setTrueResult(judgeResultJson.getData().getTrueResult());
                 problemService.update(problem);
                 return ResponseUtil.ok("更新题目信息成功");
             } else {
-                return ResponseUtil.fail("给出的答案有误");
+                return ResponseUtil.fail("给出的答案有误," + judgeResultJson.getMessage());
             }
         } else {
             return ResponseUtil.fail("id不一致");

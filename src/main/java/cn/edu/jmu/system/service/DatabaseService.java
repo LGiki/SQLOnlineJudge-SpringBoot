@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.service;
 
+import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -27,5 +28,5 @@ public interface DatabaseService extends IService<Database> {
      * @param databaseDto databaseDto
      * @return boolean
      */
-    boolean add(DatabaseDto databaseDto);
+    JudgeResultJson add(DatabaseDto databaseDto);
 }
