@@ -221,23 +221,23 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              let fontColor = 'black';
-              switch(rowData.result) {
-                case 'Accepted':
-                  fontColor = 'blue';
+              let fontColor = "black";
+              switch (rowData.result) {
+                case "Accepted":
+                  fontColor = "blue";
                   break;
-                case 'Wrong Answer':
-                  fontColor = 'red';
+                case "Wrong Answer":
+                  fontColor = "red";
                   break;
-                case 'Compile Error':
-                  fontColor = 'green';
+                case "Compile Error":
+                  fontColor = "green";
                   break;
-                case 'Unknown':
-                case 'Judging':
-                  fontColor = 'grey';
+                case "Unknown":
+                case "Judging":
+                  fontColor = "grey";
                   break;
               }
-              return `<font color="${fontColor}">${rowData.result}</font>`
+              return `<font color="${fontColor}">${rowData.result}</font>`;
             }
           }
         ]
