@@ -153,7 +153,7 @@ export default {
           {
             field: "id",
             title: "题目ID",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -161,7 +161,7 @@ export default {
           {
             field: "title",
             title: "标题",
-            width: 280,
+            width: 400,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -169,7 +169,7 @@ export default {
           {
             field: "solved",
             title: "通过数",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -177,7 +177,7 @@ export default {
           {
             field: "submit",
             title: "提交数",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -185,7 +185,7 @@ export default {
           {
             field: "accept_rate",
             title: "通过率",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
