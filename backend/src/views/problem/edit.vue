@@ -180,6 +180,15 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               this.problemDetail = resData.data
+              if (!this.problemDetail.description) {
+                this.problemDetail.description = ''
+              }
+              if (!this.problemDetail.sampleOutput) {
+                this.problemDetail.sampleOutput = ''
+              }
+              if (!this.problemDetail.hint) {
+                this.problemDetail.hint = ''
+              }
             } else {
               this.$message.error('获取题目详情失败！')
             }

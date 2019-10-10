@@ -14,7 +14,8 @@ CONFIG_FILE_PATH = './judger/config.ini'
 # 返回状态码
 RESPONSE_CODE = {
     'OK': 0,
-    'FAIL': 1
+    'FAIL': 1,
+    'NO_DB_FILE': 2
 }
 
 
@@ -62,6 +63,8 @@ def exec_code(sqlite_db_file_path, source_code):
 # 通过问题ID获取正确答案
 def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
+    if not os.path.exists(sqlite_db_file_path):
+            return construct_json_response(RESPONSE_CODE['NO_DB_FILE'], None, '无法找到该题目对应数据库文件')
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_{}_temp.db'.format(database_id, uuid.uuid4()))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
     true_result, run_exception = exec_code(sqlite_db_file_path, answer)

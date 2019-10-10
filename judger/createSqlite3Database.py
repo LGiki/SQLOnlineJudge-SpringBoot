@@ -12,7 +12,8 @@ CONFIG_FILE_PATH = './judger/config.ini'
 # 返回状态码
 RESPONSE_CODE = {
     'OK': 0,
-    'FAIL': 1
+    'FAIL': 1,
+    'NO_DB_FILE': 2
 }
 
 
