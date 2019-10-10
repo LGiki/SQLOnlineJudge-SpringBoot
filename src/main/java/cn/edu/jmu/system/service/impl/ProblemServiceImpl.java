@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailToUserDto;
@@ -11,12 +12,15 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LGiki
@@ -86,5 +90,24 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
             }
             return queryWrapper;
         }
+    }
+
+    @Override
+    public List<Problem> getByDatabaseId(Integer databaseId){
+        return baseMapper.selectList(Wrappers.<Problem>lambdaQuery().eq(Problem::getDatabaseId, databaseId));
+
+    }
+
+    @Override
+    public Boolean updateTrueResult(List<Problem> problemDtoList) {
+        boolean success = true;
+        for (Problem problem : problemDtoList){
+            String trueResult = PythonJudgeUtil.getTrueResult(problem.getAnswer(), problem.getDatabaseId())
+                    .getData()
+                    .getTrueResult();
+            problem.setTrueResult(trueResult);
+            success =  baseMapper.updateById(problem) == 1;
+        }
+        return success;
     }
 }

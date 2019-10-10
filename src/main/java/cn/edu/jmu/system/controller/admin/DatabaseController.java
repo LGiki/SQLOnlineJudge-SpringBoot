@@ -3,20 +3,21 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Database;
+import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.service.DatabaseService;
+import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.mapper.DatabaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author LGiki
@@ -29,6 +30,9 @@ public class DatabaseController {
 
     @Resource
     private DatabaseService databaseService;
+
+    @Resource
+    private ProblemService problemService;
 
     /**
      * 查询所有数据库
@@ -92,13 +96,17 @@ public class DatabaseController {
             if (!databaseService.add(databaseDto)) {
                 return ResponseUtil.fail("建表失败");
             } else {
-
-                databaseService.saveOrUpdate(database);
-
-
-                return ResponseUtil.ok("更新数据库成功");
+                List<Problem> problemList = problemService.getByDatabaseId(database.getId());
+                if (problemService.updateTrueResult(problemList)){
+                    if (databaseService.saveOrUpdate(database)){
+                        return ResponseUtil.ok("更新数据库成功");
+                    }else {
+                        return ResponseUtil.fail("更新数据库失败");
+                    }
+                }else {
+                    return ResponseUtil.fail("更新题目正确答案失败");
+                }
             }
-
         } else {
             return ResponseUtil.fail("id不一致");
         }

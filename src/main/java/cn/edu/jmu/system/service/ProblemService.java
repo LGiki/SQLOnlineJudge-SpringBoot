@@ -6,6 +6,7 @@ import cn.edu.jmu.system.entity.dto.ProblemDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * @author LGiki
@@ -38,4 +39,21 @@ public interface ProblemService extends IService<Problem> {
      * @return ProblemDetailToUserDto
      */
     ProblemDetailToUserDto getToUserById(Integer id);
+
+
+    /**
+     * 通过数据库id获取记录集合
+     * @param databaseId
+     * @return
+     */
+    List<Problem> getByDatabaseId(Integer databaseId);
+
+    /**
+     * 更新题目List的TrueResult
+     * @param problemList
+     * @return
+     */
+    Boolean updateTrueResult(List<Problem> problemList);
+
+
 }

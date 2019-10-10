@@ -95,8 +95,8 @@ public class ProblemController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("id") Integer id, @RequestBody @Validated ProblemDetailDto problemDetailDto) {
-        if (problemService.getById(id) != null) {
-            return ResponseUtil.fail("id不存在");
+        if (problemService.getById(id) == null) {
+            return ResponseUtil.fail("题目ID不存在");
         }
         if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
             Problem problem = ProblemMapper.toEntity(problemDetailDto);
