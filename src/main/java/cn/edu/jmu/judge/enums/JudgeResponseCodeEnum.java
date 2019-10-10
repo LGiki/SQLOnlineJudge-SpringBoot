@@ -11,7 +11,8 @@ public enum JudgeResponseCodeEnum {
      * CreateDatabaseResult
      */
     OK("0", "OK"),
-    FAIL("1", "FAIL");
+    FAIL("1", "Fail"),
+    NO_DB_FILE("2", "No DB File");
 
     @EnumValue
     private final String value;

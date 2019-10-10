@@ -102,6 +102,9 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             } else if (JudgeResponseCodeEnum.FAIL.getValue().equals(code)) {
                 baseMapper.deleteById(solution.getId());
                 return false;
+            } else if (JudgeResponseCodeEnum.NO_DB_FILE.getValue().equals(code)) {
+                baseMapper.deleteById(solution.getId());
+                return false;
             }
             userProblemService.saveOrUpdate(userProblem);
             baseMapper.updateById(solution);
