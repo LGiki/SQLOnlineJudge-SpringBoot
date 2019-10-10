@@ -101,6 +101,8 @@ def judge(SQLITE_DIR, SQLITE_TEMP_DIR, cursor, solution_id):
     # logging.info('Start judging solution {}'.format(solution_id))
     database_id = get_database_id_by_problem_id(cursor, problem_id)
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
+    if not os.path.exists(sqlite_db_file_path):
+        return construct_json_response(RESPONSE_CODE['FAIL'], None, '无法找到该题目对应数据库文件')
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(database_id))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
     true_result = get_true_result_by_problem_id(cursor, problem_id)
