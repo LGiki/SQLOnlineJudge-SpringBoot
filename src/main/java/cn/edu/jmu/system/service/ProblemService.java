@@ -24,7 +24,7 @@ public interface ProblemService extends IService<Problem> {
     IPage<ProblemDto> getAll(ProblemDto problemDto, Page page);
 
     /**
-     * 更新用户
+     * 更新题目
      *
      * @param problem problem
      * @return boolean

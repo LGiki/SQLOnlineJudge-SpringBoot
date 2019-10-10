@@ -95,11 +95,20 @@ public class ProblemController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("id") Integer id, @RequestBody @Validated ProblemDetailDto problemDetailDto) {
+        if (problemService.getById(id) != null) {
+            return ResponseUtil.fail("id不存在");
+        }
         if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
             Problem problem = ProblemMapper.toEntity(problemDetailDto);
             // 更新数据库信息
-            boolean success = problemService.update(problem);
-            return ResponseUtil.buildResponse(success, "更新题目信息成功", "更新题目信息失败");
+            String trueResult = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
+            if (trueResult != null) {
+                problem.setTrueResult(trueResult);
+                problemService.update(problem);
+                return ResponseUtil.ok("更新题目信息成功");
+            } else {
+                return ResponseUtil.fail("给出的答案有误");
+            }
         } else {
             return ResponseUtil.fail("id不一致");
         }

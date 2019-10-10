@@ -16,7 +16,8 @@ public enum SolutionResultEnum {
     ACCEPTED("1", "Accepted"),
     COMPILE_ERROR("2", "Compile Error"),
     WRONG_ANSWER("3", "Wrong Answer"),
-    JUDGING("4","Judging")
+    JUDGING("4","Judging"),
+    SYSTEM_ERROR("5", "System Error")
     ;
 
     @EnumValue
