@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.service.impl;
 
+import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
@@ -32,6 +33,9 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
 
     @Resource
     private DatabaseService databaseService;
+
+    @Resource
+    private JudgeService judgeService;
 
     /**
      * 得到所有题目
@@ -102,9 +106,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     public Boolean updateTrueResult(List<Problem> problemDtoList) {
         boolean success = true;
         for (Problem problem : problemDtoList){
-            String trueResult = PythonJudgeUtil.getTrueResult(problem.getAnswer(), problem.getDatabaseId())
-                    .getData()
-                    .getTrueResult();
+            String trueResult = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
             problem.setTrueResult(trueResult);
             success =  baseMapper.updateById(problem) == 1;
         }
