@@ -92,7 +92,10 @@ public class DatabaseController {
             if (!databaseService.add(databaseDto)) {
                 return ResponseUtil.fail("建表失败");
             } else {
+
                 databaseService.saveOrUpdate(database);
+
+
                 return ResponseUtil.ok("更新数据库成功");
             }
 

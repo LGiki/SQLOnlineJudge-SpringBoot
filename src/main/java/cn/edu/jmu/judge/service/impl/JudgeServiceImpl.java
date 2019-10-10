@@ -51,8 +51,10 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
      */
     @Override
     public boolean judge(SolutionDto solutionDto) {
-        //TODO:判断solutionId是否合法
-
+        //判断solutionId是否合法
+        if(baseMapper.selectById(solutionDto.getId()) == null){
+            return false;
+        }
         //调用线程池判题
         log.debug("solutionDtoId: " + solutionDto.getId().toString());
         JudgeResultJson result = executeTask(solutionDto.getId());
