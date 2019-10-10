@@ -151,7 +151,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
             judgeResultJson.getData().setTrueResult(Md5Util.getStringMd5(judgeResultJson.getData().getTrueResult()));
             return judgeResultJson;
         }
-        return null;
+        return judgeResultJson;
     }
 
 
