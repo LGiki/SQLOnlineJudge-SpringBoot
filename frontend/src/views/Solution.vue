@@ -168,7 +168,7 @@ export default {
           {
             field: "id",
             title: "ID",
-            width: 100,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -176,6 +176,14 @@ export default {
           {
             field: "uid",
             title: "用户ID",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "username",
+            title: "用户名",
             width: 100,
             titleAlign: "center",
             columnAlign: "center",
@@ -184,7 +192,15 @@ export default {
           {
             field: "pid",
             title: "题目ID",
-            width: 100,
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "title",
+            title: "题目标题",
+            width: 300,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -203,7 +219,26 @@ export default {
             width: 100,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              let fontColor = 'black';
+              switch(rowData.result) {
+                case 'Accepted':
+                  fontColor = 'blue';
+                  break;
+                case 'Wrong Answer':
+                  fontColor = 'red';
+                  break;
+                case 'Compile Error':
+                  fontColor = 'green';
+                  break;
+                case 'Unknown':
+                case 'Judging':
+                  fontColor = 'grey';
+                  break;
+              }
+              return `<font color="${fontColor}">${rowData.result}</font>`
+            }
           }
         ]
       }
@@ -233,11 +268,13 @@ export default {
           }
           break;
         case "uid":
+        case "username":
           this.$router.push({
             path: "/profile/" + this.tableConfig.tableData[rowIndex].uid
           });
           break;
         case "pid":
+        case "title":
           this.$router.push({
             path: "/problem/" + this.tableConfig.tableData[rowIndex].pid
           });
