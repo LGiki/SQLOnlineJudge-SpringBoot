@@ -7,6 +7,7 @@ import json
 import configparser
 import shutil
 from sys import argv
+import uuid
 
 # 配置文件路径
 CONFIG_FILE_PATH = './judger/config.ini'
@@ -61,7 +62,8 @@ def exec_code(sqlite_db_file_path, source_code):
 # 通过问题ID获取正确答案
 def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
-    temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(database_id))
+    # temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_{}_temp.db'.format(database_id, uuid.uuid4())
+    temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_temp.db'.format(database_id)
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
     true_result, run_exception = exec_code(sqlite_db_file_path, answer)
     os.remove(temp_sqlite_db_file_path)
