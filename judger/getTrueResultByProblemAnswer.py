@@ -64,7 +64,7 @@ def exec_code(sqlite_db_file_path, source_code):
 def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
     if not os.path.exists(sqlite_db_file_path):
-            return construct_json_response(RESPONSE_CODE['NO_DB_FILE'], None, '无法找到该题目对应数据库文件')
+        return construct_json_response(RESPONSE_CODE['NO_DB_FILE'], None, '无法找到该题目对应数据库文件')
     temp_sqlite_db_file_path = os.path.join(SQLITE_TEMP_DIR, '{}_{}_temp.db'.format(database_id, uuid.uuid4()))
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
     true_result, run_exception = exec_code(sqlite_db_file_path, answer)
