@@ -16,7 +16,19 @@
             :value="databaseItem.id"
           />
         </el-select>
+        <el-button v-if="problemDetail.databaseId" @click="showCreateTable(problemDetail.databaseId)">查看该数据库的建表语句</el-button>
       </el-form-item>
+      <el-dialog
+        title="查看建表语句"
+        :visible.sync="dialogVisible"
+        width="50%"
+      >
+        <!-- <code>{{ createTable }}</code> -->
+        <highlight-code lang="sql">{{ createTable }}</highlight-code>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
       <el-form-item label="题目描述" prop="description">
         <el-input v-model="problemDetail.description" type="textarea" />
       </el-form-item>
@@ -39,6 +51,9 @@
 </template>
 
 <script>
+import VueHighlightJS from "vue-highlight.js";
+import "vue-highlight.js/lib/allLanguages";
+import "highlight.js/styles/atom-one-light.css";
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/sql/sql.js'
@@ -50,10 +65,13 @@ import 'codemirror/addon/hint/show-hint.css'
 
 export default {
   components: {
+    VueHighlightJS,
     codemirror
   },
   data() {
     return {
+      dialogVisible: false,
+      createTable: '',
       checkRules: {
         title: [
           {
@@ -206,6 +224,27 @@ export default {
                 type: 'success'
               })
               successCallback()
+            } else {
+              this.$message.error(resData.message)
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    showCreateTable(databaseId) {
+      const apiUrl = this.Url.databaseBaseUrl
+      this.$axios
+        .get(apiUrl + databaseId)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('获取数据库建表语句失败，内部错误！')
+          } else {
+            const resData = res.data
+            if (resData.code === 0) {
+              this.createTable = resData.data.createTable
+              this.dialogVisible = true
             } else {
               this.$message.error(resData.message)
             }

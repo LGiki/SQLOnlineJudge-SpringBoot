@@ -40,7 +40,8 @@
       :visible.sync="dialogVisible"
       width="50%"
     >
-      <code>{{ sourceCode }}</code>
+      <!-- <code>{{ sourceCode }}</code> -->
+      <highlight-code lang="sql">{{ sourceCode }}</highlight-code>
       <h3 v-if="runError">运行错误详情：</h3>
       <code v-if="runError">{{ runError }}</code>
       <span slot="footer" class="dialog-footer">
@@ -62,6 +63,9 @@
 </template>
 
 <script>
+import VueHighlightJS from "vue-highlight.js";
+import "vue-highlight.js/lib/allLanguages";
+import "highlight.js/styles/atom-one-light.css";
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
 import 'vue-highlight.js/lib/allLanguages'
@@ -69,6 +73,7 @@ import 'highlight.js/styles/atom-one-light.css'
 
 export default {
   components: {
+    VueHighlightJS,
     VTable,
     VPagination
   },
