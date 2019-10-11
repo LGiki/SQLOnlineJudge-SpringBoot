@@ -1,6 +1,6 @@
 import defaultSettings from '@/settings'
 
-const title = defaultSettings.title || 'SQL在线考试系统 - 后台管理'
+const title = defaultSettings.title || 'SQL自动评测系统 - 后台管理'
 
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {

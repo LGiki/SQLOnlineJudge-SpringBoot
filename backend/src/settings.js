@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'SQL在线考试系统 - 后台管理',
+  title: 'SQL自动评测系统 - 后台管理',
 
   /**
    * @type {boolean} true | false
