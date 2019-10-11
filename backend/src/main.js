@@ -56,6 +56,7 @@ Axios.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           localStorage.removeItem('JWT_TOKEN')
+          localStorage.removeItem('role')
           router.replace({
             path: '/login'
           })
