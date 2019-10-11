@@ -63,9 +63,9 @@
 </template>
 
 <script>
-import VueHighlightJS from "vue-highlight.js";
-import "vue-highlight.js/lib/allLanguages";
-import "highlight.js/styles/atom-one-light.css";
+import VueHighlightJS from 'vue-highlight.js'
+import 'vue-highlight.js/lib/allLanguages'
+import 'highlight.js/styles/atom-one-light.css'
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
 import 'vue-highlight.js/lib/allLanguages'
@@ -177,21 +177,21 @@ export default {
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              let fontColor = 'black';
-              switch(rowData.result) {
+              let fontColor = 'black'
+              switch (rowData.result) {
                 case 'Accepted':
-                  fontColor = 'blue';
-                  break;
+                  fontColor = 'blue'
+                  break
                 case 'Wrong Answer':
-                  fontColor = 'red';
-                  break;
+                  fontColor = 'red'
+                  break
                 case 'Compile Error':
-                  fontColor = 'green';
-                  break;
+                  fontColor = 'green'
+                  break
                 case 'Unknown':
                 case 'Judging':
-                  fontColor = 'grey';
-                  break;
+                  fontColor = 'grey'
+                  break
               }
               return `<font color="${fontColor}">${rowData.result}</font>`
             }

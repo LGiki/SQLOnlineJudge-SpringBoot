@@ -22,6 +22,6 @@ const Url = {
   // 获取用户通过和尝试过的题目列表
   userDoProblemList: BaseUrl + "/problems",
   // 运行调试SQL代码接口
-  runCode: BaseUrl + "/judgement/",
+  runCode: BaseUrl + "/judgement/"
 };
 export default Url;

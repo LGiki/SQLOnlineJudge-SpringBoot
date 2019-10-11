@@ -32,7 +32,7 @@
         <tinymce v-model="problemDetail.sampleOutput" :height="250" />
       </el-form-item>
       <el-form-item label="提示" prop="hint">
-        <tinymce v-model="problemDetail.hint" :height="250" />        
+        <tinymce v-model="problemDetail.hint" :height="250" />
       </el-form-item>
       <el-form-item>
         <el-button @click="updateAndDeleteProblemHintdialogVisible = true">查看答案填写说明</el-button>
@@ -57,23 +57,23 @@
           `hire_date` date NOT NULL,
           PRIMARY KEY (`emp_no`));
         </highlight-code>
-          <p><h3>1. 对于select操作的题目</h3></p>
-          <p>例如查找表employees中emp_no为奇数的记录</p>
-          答案只需给出任意一种可行的答案即可，例如
-          <highlight-code lang="sql">
+        <p /><h3>1. 对于select操作的题目</h3></p>
+        <p>例如查找表employees中emp_no为奇数的记录</p>
+        答案只需给出任意一种可行的答案即可，例如
+        <highlight-code lang="sql">
           select * from employees where emp_no % 2 = 1;
-          </highlight-code>
+        </highlight-code>
 
-          <p><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
-          <p>例如删除表employees中emp_no为奇数的记录</p>
-          <p>答案应该这样给出：</p>
-          <highlight-code lang="sql">
+        <p /><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
+        <p>例如删除表employees中emp_no为奇数的记录</p>
+        <p>答案应该这样给出：</p>
+        <highlight-code lang="sql">
           delete from employees where emp_no % 2 = 1;
           select * from employees;
-          </highlight-code>
-          <p>其中最后一行需要给出有进行修改操作的表的select *操作，这样可以用来记录修改后表中数据的变化</p>
-          <p>此判题系统根据最后一行的select语句进行用户解答的正确性判断，请确保最后一行语句的正确性</p>
-          <p><b>每条语句之间请严格使用';'进行分割</b></p>
+        </highlight-code>
+        <p>其中最后一行需要给出有进行修改操作的表的select *操作，这样可以用来记录修改后表中数据的变化</p>
+        <p>此判题系统根据最后一行的select语句进行用户解答的正确性判断，请确保最后一行语句的正确性</p>
+        <p><b>每条语句之间请严格使用';'进行分割</b></p>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="updateAndDeleteProblemHintdialogVisible = false">确 定</el-button>
         </span>
@@ -87,9 +87,9 @@
 </template>
 
 <script>
-import VueHighlightJS from "vue-highlight.js";
-import "vue-highlight.js/lib/allLanguages";
-import "highlight.js/styles/atom-one-light.css";
+import VueHighlightJS from 'vue-highlight.js'
+import 'vue-highlight.js/lib/allLanguages'
+import 'highlight.js/styles/atom-one-light.css'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/sql/sql.js'
