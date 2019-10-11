@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class SolutionDto implements Serializable {
 
     private static final long serialVersionUID = -8322780947820151796L;

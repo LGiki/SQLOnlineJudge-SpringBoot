@@ -1,6 +1,5 @@
 package cn.edu.jmu.system.service.impl;
 
-import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.judge.util.Md5Util;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Database;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author LGiki
@@ -114,4 +112,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
         }
         return success;
     }
+
+
 }

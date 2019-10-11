@@ -84,7 +84,6 @@ public class DatabaseController {
             databaseService.removeById(database.getId());
             return ResponseUtil.fail("新增数据库失败");
         }
-
     }
 
     /**

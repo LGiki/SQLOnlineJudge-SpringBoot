@@ -2,7 +2,6 @@ package cn.edu.jmu.judge.util;
 
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import com.google.gson.Gson;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
