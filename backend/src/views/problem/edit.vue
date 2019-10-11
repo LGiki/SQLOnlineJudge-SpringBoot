@@ -23,20 +23,19 @@
         :visible.sync="dialogVisible"
         width="50%"
       >
-        <!-- <code>{{ createTable }}</code> -->
         <highlight-code lang="sql">{{ createTable }}</highlight-code>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
       <el-form-item label="题目描述" prop="description">
-        <el-input v-model="problemDetail.description" type="textarea" />
+        <tinymce v-model="problemDetail.description" :height="250" />
       </el-form-item>
       <el-form-item label="样例输出" prop="sampleOutput">
-        <el-input v-model="problemDetail.sampleOutput" type="textarea" />
+        <tinymce v-model="problemDetail.sampleOutput" :height="250" />
       </el-form-item>
       <el-form-item label="提示" prop="hint">
-        <el-input v-model="problemDetail.hint" type="textarea" />
+        <tinymce v-model="problemDetail.hint" :height="250" />        
       </el-form-item>
       <el-form-item>
         <el-button @click="updateAndDeleteProblemHintdialogVisible = true">查看答案填写说明</el-button>
@@ -102,11 +101,13 @@ import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/sql-hint.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 import 'codemirror/addon/hint/show-hint.css'
+import Tinymce from '@/components/Tinymce'
 
 export default {
   components: {
     VueHighlightJS,
-    codemirror
+    codemirror,
+    Tinymce
   },
   data() {
     return {

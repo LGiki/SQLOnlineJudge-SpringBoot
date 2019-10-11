@@ -10,18 +10,18 @@
             </div>
           </div>
           <h3>题目描述</h3>
-          <p>{{ problemDetail.description }}</p>
+          <div v-html="problemDetail.description" />
           <h3>建表语句</h3>
           <highlight-code lang="sql">{{
             problemDetail.createTable
           }}</highlight-code>
           <template v-if="problemDetail.sampleOutput">
             <h3>样例输出</h3>
-            <p>{{ problemDetail.sampleOutput }}</p>
+            <div v-html="problemDetail.sampleOutput" />
           </template>
           <template v-if="problemDetail.hint">
             <h3>提示</h3>
-            <p>{{ problemDetail.hint }}</p>
+            <div v-html="problemDetail.hint" />
           </template>
           <template v-if="isLogin">
             <h3>提交代码</h3>
@@ -32,7 +32,7 @@
             ></codemirror>
             <div style="width:100%;padding-top:20px">
               <div class="md-layout text-center justify-content-center">
-                <!-- <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp; -->
+                <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp;
                 <md-button class="md-success md-lg" @click="submitSolution"
                   >提交</md-button
                 >
@@ -50,6 +50,33 @@
               </div>
             </div>
           </template>
+          <modal v-if="runResultModal" @close="runResultModalHide">
+          <template slot="header">
+            <h4 class="modal-title">代码</h4>
+            <md-button
+              class="md-simple md-just-icon md-round modal-default-button"
+              @click="runResultModalHide"
+            >
+              <md-icon>clear</md-icon>
+            </md-button>
+          </template>
+          <template slot="body">
+            <p>
+              <highlight-code lang="sql">{{ code }}</highlight-code>
+            </p>
+            <template v-if="runError">
+              <h5>错误详情</h5>
+              <p>
+                <highlight-code>{{ runError }}</highlight-code>
+              </p>
+            </template>
+          </template>
+          <template slot="footer">
+            <md-button class="md-danger md-simple" @click="runResultModalHide"
+              >关闭</md-button
+            >
+          </template>
+        </modal>
         </div>
       </div>
       <div class="section section-with-padding">
@@ -75,10 +102,12 @@ import "codemirror/addon/hint/show-hint.js";
 import "codemirror/addon/hint/sql-hint.js";
 import "codemirror/addon/edit/matchbrackets.js";
 import "codemirror/addon/hint/show-hint.css";
+import { Modal } from "@/components";
 
 export default {
   components: {
     VueHighlightJS,
+    Modal,
     codemirror
   },
   bodyClass: "profile-page",
@@ -90,6 +119,7 @@ export default {
   },
   data() {
     return {
+      runResultModal: false,
       code: "",
       cmOptions: {
         tabSize: 4,
@@ -110,6 +140,12 @@ export default {
     };
   },
   methods: {
+    runResultModalHide() {
+      this.runResultModal = false;
+    },
+    runResultShow() {
+      this.runResultModal = true;
+    },
     onCmReady(cm) {
       cm.on("keypress", () => {
         cm.showHint();

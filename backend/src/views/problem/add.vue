@@ -25,14 +25,14 @@
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
-      <el-form-item label="题目介绍" prop="description">
-        <el-input v-model="problemDetail.description" placeholder="请输入题目介绍" type="textarea" />
+      <el-form-item label="题目描述" prop="description">
+        <tinymce v-model="problemDetail.description" :height="250" />
       </el-form-item>
       <el-form-item label="样例输出" prop="sampleOutput">
-        <el-input v-model="problemDetail.sampleOutput" placeholder="请输入样例输出" type="textarea" />
+        <tinymce v-model="problemDetail.sampleOutput" :height="250" />
       </el-form-item>
       <el-form-item label="提示" prop="hint">
-        <el-input v-model="problemDetail.hint" placeholder="请输入提示" type="textarea" />
+        <tinymce v-model="problemDetail.hint" :height="250" />        
       </el-form-item>
       <el-form-item>
         <el-button @click="updateAndDeleteProblemHintdialogVisible = true">查看答案填写说明</el-button>
@@ -98,13 +98,19 @@ import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/sql-hint.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 import 'codemirror/addon/hint/show-hint.css'
+import Tinymce from '@/components/Tinymce'
 export default {
   components: {
     VueHighlightJS,
-    codemirror
+    codemirror,
+    Tinymce
   },
   data() {
     return {
+      content:
+      `<h1 style="text-align: center;">Welcome to the TinyMCE demo!</h1><p style="text-align: center; font-size: 15px;"><img title="TinyMCE Logo" src="//www.tinymce.com/images/glyph-tinymce@2x.png" alt="TinyMCE Logo" width="110" height="97" /><ul>
+        <li>Our <a href="//www.tinymce.com/docs/">documentation</a> is a great resource for learning how to configure TinyMCE.</li><li>Have a specific question? Visit the <a href="https://community.tinymce.com/forum/">Community Forum</a>.</li><li>We also offer enterprise grade support as part of <a href="https://tinymce.com/pricing">TinyMCE premium subscriptions</a>.</li>
+      </ul>`,
       updateAndDeleteProblemHintdialogVisible: false,
       dialogVisible: false,
       createTable: '',
