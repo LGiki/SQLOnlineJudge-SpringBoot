@@ -20,6 +20,8 @@ const Url = {
   // 用户提交解答接口
   solutionSubmit: BaseUrl + "/solutions/",
   // 获取用户通过和尝试过的题目列表
-  userDoProblemList: BaseUrl + "/problems"
+  userDoProblemList: BaseUrl + "/problems",
+  // 运行调试SQL代码接口
+  runCode: BaseUrl + "/judgement/",
 };
 export default Url;

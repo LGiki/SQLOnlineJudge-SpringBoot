@@ -116,7 +116,7 @@ export default {
               alert("注册成功，请登录！");
               this.$router.push({ path: "/login" });
             } else {
-              alert("注册失败！");
+              alert(resData.message);
             }
           }
         })

@@ -32,7 +32,7 @@
             ></codemirror>
             <div style="width:100%;padding-top:20px">
               <div class="md-layout text-center justify-content-center">
-                <md-button class="md-info md-lg">运行</md-button>&nbsp;&nbsp;&nbsp;
+                <md-button class="md-info md-lg" @click="runCode">调试运行</md-button>&nbsp;&nbsp;&nbsp;
                 <md-button class="md-success md-lg" @click="submitSolution"
                   >提交</md-button
                 >
@@ -52,7 +52,7 @@
           </template>
           <modal v-if="runResultModal" @close="runResultModalHide">
           <template slot="header">
-            <h4 class="modal-title">代码</h4>
+            <h4 class="modal-title">调试运行结果</h4>
             <md-button
               class="md-simple md-just-icon md-round modal-default-button"
               @click="runResultModalHide"
@@ -62,14 +62,8 @@
           </template>
           <template slot="body">
             <p>
-              <highlight-code lang="sql">{{ code }}</highlight-code>
+              <highlight-code>{{ runResult }}</highlight-code>
             </p>
-            <template v-if="runError">
-              <h5>错误详情</h5>
-              <p>
-                <highlight-code>{{ runError }}</highlight-code>
-              </p>
-            </template>
           </template>
           <template slot="footer">
             <md-button class="md-danger md-simple" @click="runResultModalHide"
@@ -119,6 +113,7 @@ export default {
   },
   data() {
     return {
+      runResult: '',
       runResultModal: false,
       code: "",
       cmOptions: {
@@ -140,6 +135,37 @@ export default {
     };
   },
   methods: {
+    runCode() {
+      const apiUrl = this.Url.runCode;
+      this.$axios
+        .post(apiUrl, {
+          'pid': this.problemDetail.id,
+          'sourceCode': this.code
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            alert("调试运行失败，内部错误！");
+          } else {
+            this.runResult = ''
+            let resData = res.data;
+            if (resData.code === 0) {
+              let runResult = resData.data;
+              let reg = /\((.*?)\)/g;
+              let res = reg.exec(runResult);
+              while (res) {
+                this.runResult += res[0] + '\r\n';
+                res = reg.exec(runResult);
+              }
+              this.runResultShow();
+            } else {
+              alert(resData.message);
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     runResultModalHide() {
       this.runResultModal = false;
     },
@@ -162,6 +188,8 @@ export default {
             let resData = res.data;
             if (resData.code === 0) {
               this.problemDetail = resData.data;
+            } else {
+              alert(resData.message);
             }
           }
         })
