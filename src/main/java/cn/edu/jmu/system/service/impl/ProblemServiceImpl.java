@@ -94,7 +94,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     }
 
     @Override
-    public List<Problem> getByDatabaseId(Integer databaseId){
+    public List<Problem> getByDatabaseId(Integer databaseId) {
         return baseMapper.selectList(Wrappers.<Problem>lambdaQuery().eq(Problem::getDatabaseId, databaseId));
 
     }
@@ -102,13 +102,13 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Override
     public Boolean updateTrueResult(List<Problem> problemDtoList) {
         boolean success = true;
-        for (Problem problem : problemDtoList){
+        for (Problem problem : problemDtoList) {
             String trueResult = PythonJudgeUtil.getTrueResult(problem.getAnswer(), problem.getDatabaseId())
                     .getData()
                     .getTrueResult();
             String trueResultMd5 = Md5Util.getStringMd5(trueResult);
             problem.setTrueResult(trueResultMd5);
-            success =  baseMapper.updateById(problem) == 1;
+            success = baseMapper.updateById(problem) == 1;
         }
         return success;
     }
