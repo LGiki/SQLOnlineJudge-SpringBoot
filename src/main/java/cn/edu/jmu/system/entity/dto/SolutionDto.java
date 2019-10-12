@@ -53,7 +53,7 @@ public class SolutionDto implements Serializable {
      * 提交时间
      * 格式化显示为 yyyy/MM/dd HH:mm:ss
      */
-    @JsonFormat(timezone="GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
     private Timestamp submitTime;
 
     /**
