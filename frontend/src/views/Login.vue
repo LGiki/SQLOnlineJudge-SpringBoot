@@ -59,7 +59,18 @@ export default {
     }
   },
   methods: {
+    isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     login() {
+      if (this.isEmpty(this.username) || this.isEmpty(this.password)) {
+        alert("请检查所有项是否都填写完整！");
+        return;
+      }
       let postData = qs.stringify({
         username: this.username,
         password: this.password

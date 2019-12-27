@@ -137,7 +137,18 @@ export default {
     };
   },
   methods: {
+    isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     runCode() {
+      if (this.isEmpty(this.code)) {
+        alert("请检查SQL代码是否已输入！");
+        return;
+      }
       const apiUrl = this.Url.runCode;
       this.$axios
         .post(apiUrl, {
@@ -200,6 +211,10 @@ export default {
         });
     },
     submitSolution() {
+      if (this.isEmpty(this.code)) {
+        alert("请检查SQL代码是否已输入！");
+        return;
+      }
       const apiUrl = this.Url.solutionSubmit;
       const problemId = this.$route.params.id;
       let postData = {
