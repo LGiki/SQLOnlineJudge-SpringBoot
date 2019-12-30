@@ -11,7 +11,25 @@
         <codemirror v-model="databaseDetail.createTable" :options="cmOptions" @ready="onCmReady" />
         <el-input v-if="false" v-model="databaseDetail.createTable" />
       </el-form-item>
+      <el-dialog
+        title="从Excel导入测试数据 (BETA)"
+        :visible.sync="importFromExcelDialogVisible"
+        width="50%"
+      >
+        <p><strong><h3>Excel中的数据需要严格按照下图中的要求：</h3></strong></p>
+        <img id="hint-image" src="@/assets/import_excel_description.png" alt="import_excel_description">
+        <br>
+        <form enctype="multipart/form-data">
+          <label for="excel-file">选择要导入的Excel: &nbsp;</label>
+            <input @change="onExcelFileChange" id="excel-file" type=file name="files[]" />
+        </form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="importFromExcelDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="importFromExcel()">确定导入</el-button>
+        </span>
+      </el-dialog>
       <el-form-item label="测试数据" prop="testData">
+        <p><el-button @click="importFromExcelDialogVisible = true">从Excel导入测试数据 (BETA)</el-button></p>
         <codemirror v-model="databaseDetail.testData" :options="cmOptions" @ready="onCmReady" />
         <el-input v-if="false" v-model="databaseDetail.testData" />
       </el-form-item>
@@ -38,6 +56,8 @@ export default {
   },
   data() {
     return {
+      selectedFile: '',
+      importFromExcelDialogVisible: false,
       cmOptions: {
         tabSize: 4,
         mode: 'text/x-mysql',
@@ -92,6 +112,47 @@ export default {
     this.getDatabaseDetail(databaseId)
   },
   methods: {
+    parseExcel(that, file) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+          var data = e.target.result;
+          var workbook = XLSX.read(data, {
+              type: 'binary'
+          });
+          that.databaseDetail.testData = '';
+          workbook.SheetNames.forEach(function (sheetName) {
+              var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+              var json_object = JSON.stringify(XL_row_object);
+              var jsonResult = JSON.parse(json_object);
+              for (let index in jsonResult) {
+                  let row = jsonResult[index];
+                  let tableFieldList = [];
+                  let tableValues = [];
+                  for (let keyName in row) {
+                      tableFieldList.push(keyName);
+                      tableValues.push(row[keyName]);
+                  }
+                  let sqlExpression = that.constructSQLExpression(sheetName, tableFieldList, tableValues);
+                  that.databaseDetail.testData += sqlExpression + '\n';
+              }
+          })
+      };
+      reader.onerror = function (ex) {
+          console.log(ex);
+      };
+      reader.readAsBinaryString(file);
+    },
+    onExcelFileChange(event) {
+      this.selectedFile = event.target.files[0];
+    },
+    importFromExcel() {
+      if (this.selectedFile == null || this.selectedFile === '' || (!this.selectedFile.name.endsWith('xls') && !this.selectedFile.name.endsWith('xlsx'))) {
+        this.$message.error('请正确选择Excel文件！')
+      }else{
+        this.parseExcel(this, this.selectedFile);
+      }
+      this.importFromExcelDialogVisible = false;
+    },
     onCmReady(cm) {
       cm.on('keypress', () => {
         cm.showHint()
