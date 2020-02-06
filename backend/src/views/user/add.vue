@@ -4,6 +4,9 @@
       <el-form-item label="用户名" prop="username">
         <el-input v-model="userDetail.username" placeholder="请输入用户名" />
       </el-form-item>
+      <el-form-item label="学号" prop="studentNo">
+        <el-input v-model="userDetail.studentNo" placeholder="请输入学号" />
+      </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="userDetail.email" placeholder="请输入邮箱" />
       </el-form-item>
@@ -54,13 +57,16 @@ export default {
             message: '密码不能为空',
             trigger: 'blur'
           }
+        ],
+        studentNo: [
+          {
+            required: true,
+            message: '学号不能为空',
+            trigger: 'blur'
+          }
         ]
       },
-      userDetail: {
-        username: '',
-        password: '',
-        email: ''
-      }
+      userDetail: {}
     }
   },
   methods: {

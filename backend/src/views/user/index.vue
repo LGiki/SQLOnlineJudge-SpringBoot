@@ -23,8 +23,43 @@
         <i class="el-icon-close" />&nbsp;取消搜索
       </el-button>
       <el-button type="danger" @click="onNewUser">
-        <i class="el-icon-plus" />&nbsp;新建用户
+        <i class="el-icon-plus" />&nbsp;添加用户
       </el-button>
+      <el-button type="warning" @click="newUserBatchDialogVisible = true">
+        <i class="el-icon-plus" />&nbsp;批量添加用户
+      </el-button>
+      <el-dialog
+        title="批量添加用户"
+        :visible.sync="newUserBatchDialogVisible"
+        width="50%"
+      >
+        <el-tabs v-model="activeName" type="card">
+          <el-tab-pane label="根据学号批量添加" name="addByStudentNo">
+            <el-form>
+              <el-form-item label="起始学号">
+                <el-input v-model="newUserBatchByStudentNoData.from" placeholder="请输入起始学号" />
+              </el-form-item>
+              <el-form-item label="终止学号">
+                <el-input v-model="newUserBatchByStudentNoData.to" placeholder="请输入终止学号" />
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="从Excel文件中导入" name="addFromExcel">
+            <el-form>
+              <form enctype="multipart/form-data">
+                <el-form-item label="选择要导入的Excel">
+                  <input @change="onExcelFileChange" id="excel-file" type=file name="files[]" class="el-button"/>
+                </el-form-item>
+              </form>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+        <br>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="newUserBatchDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="importFromExcel()">确定添加</el-button>
+        </span>
+      </el-dialog>
     </div>
     <template>
       <v-table
@@ -75,8 +110,19 @@ export default {
         {
           label: '邮箱',
           value: 'email'
+        },
+        {
+          label: '学号',
+          value: 'studentNo'
         }
       ],
+      selectedFile: '',
+      newUserBatchByStudentNoData: {
+        from: '',
+        to: ''
+      },
+      activeName: 'addByStudentNo',
+      newUserBatchDialogVisible: false,
       searchType: 'id',
       inSearch: false,
       searchKeyword: '',
@@ -108,6 +154,14 @@ export default {
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`
             }
+          },
+          {
+            field: 'studentNo',
+            title: '学号',
+            width: 80,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
           },
           {
             field: 'email',
@@ -172,6 +226,9 @@ export default {
     this.fetchUserList()
   },
   methods: {
+    onExcelFileChange(event) {
+      this.selectedFile = event.target.files[0];
+    },
     onSearch() {
       const keyword = this.searchKeyword.trim()
       if (keyword.length === 0) {
@@ -212,6 +269,9 @@ export default {
     onCancelSearch() {
       this.inSearch = false
       this.fetchUserList()
+    },
+    onNewUserBatch() {
+
     },
     onNewUser() {
       this.$router.push({ path: '/user/add/' })

@@ -5,10 +5,13 @@
         <el-input v-model="userDetail.id" disabled />
       </el-form-item>
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="userDetail.username" />
+        <el-input v-model="userDetail.username" placeholder="请输入用户名" />
+      </el-form-item>
+      <el-form-item label="学号" prop="studentNo">
+        <el-input v-model="userDetail.studentNo" placeholder="请输入学号" />
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="userDetail.email" />
+        <el-input v-model="userDetail.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item label="密码">
         <el-input v-model="password" :type="passwordType" placeholder="留空则不修改密码" />
@@ -35,13 +38,7 @@ export default {
   data() {
     return {
       passwordType: 'password',
-      userDetail: {
-        id: '',
-        username: '',
-        email: '',
-        submit: '',
-        solved: ''
-      },
+      userDetail: {},
       password: '',
       checkRules: {
         username: [
@@ -56,6 +53,13 @@ export default {
             required: true,
             type: 'email',
             message: '邮箱格式错误',
+            trigger: 'blur'
+          }
+        ],
+        studentNo: [
+          {
+            required: true,
+            message: '学号不能为空',
             trigger: 'blur'
           }
         ]
@@ -84,7 +88,8 @@ export default {
           const user = {
             id: this.userDetail.id,
             username: this.userDetail.username.trim(),
-            email: this.userDetail.email.trim()
+            email: this.userDetail.email.trim(),
+            studentNo: this.userDetail.studentNo.trim()
           }
           if (this.password) {
             user.password = this.password.trim()
