@@ -13,13 +13,16 @@
         :visible.sync="importFromExcelDialogVisible"
         width="50%"
       >
-        <p><strong><h3>Excel中的数据需要严格按照下图中的要求：</h3></strong></p>
-        <img id="hint-image" src="@/assets/import_excel_description.png" alt="import_excel_description">
-        <br>
-        <form enctype="multipart/form-data">
-          <label for="excel-file">选择要导入的Excel: &nbsp;</label>
-            <input @change="onExcelFileChange" id="excel-file" type=file name="files[]" />
-        </form>
+        <el-form>
+          <p><strong><h3>Excel中的数据需要严格按照下图中的要求：</h3></strong></p>
+          <br>
+          <img id="hint-image" src="@/assets/import_excel_description.png" alt="import_excel_description">
+          <form enctype="multipart/form-data">
+            <el-form-item label="选择要导入的Excel">
+              <input @change="onExcelFileChange" id="excel-file" type=file name="files[]" class="el-button"/>
+            </el-form-item>
+          </form>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="importFromExcelDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="importFromExcel()">确定导入</el-button>
