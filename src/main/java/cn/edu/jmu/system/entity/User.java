@@ -31,6 +31,12 @@ public class User implements Serializable {
     private String username;
 
     /**
+     * 学号
+     */
+    @TableField(value = "student_no")
+    private String studentNo;
+
+    /**
      * 密码
      */
     @NotBlank

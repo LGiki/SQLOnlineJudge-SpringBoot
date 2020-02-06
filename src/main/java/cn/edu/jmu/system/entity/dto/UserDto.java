@@ -31,6 +31,11 @@ public class UserDto implements Serializable {
     private String username;
 
     /**
+     * 学号
+     */
+    private String studentNo;
+
+    /**
      * 密码
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

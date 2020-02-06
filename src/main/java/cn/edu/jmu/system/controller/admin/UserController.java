@@ -96,8 +96,8 @@ public class UserController {
         if (ObjectUtils.isEmpty(userDto.getPassword())) {
             return ResponseUtil.fail("密码不能为空");
         }
-        byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
-        if (ObjectUtil.isNotNull(byId)) {
+        User byEmail = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
+        if (ObjectUtil.isNotNull(byEmail)) {
             return ResponseUtil.fail("该邮箱已被注册");
         }
         User user = UserMapper.toEntity(userDto);

@@ -193,25 +193,26 @@ INSERT INTO `sys_role_permission` VALUES (1, 1, 1);
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '用户名',
-  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱地址',
-  `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
-  `salt` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码盐',
+  `username` varchar(50) NOT NULL DEFAULT '0' COMMENT '用户名',
+  `email` varchar(50) NOT NULL COMMENT '邮箱地址',
+  `password` varchar(50) NOT NULL COMMENT '密码',
+  `salt` varchar(50) NOT NULL COMMENT '密码盐',
   `submit` int(11) NOT NULL DEFAULT 0 COMMENT '提交数',
   `solved` int(11) NOT NULL DEFAULT 0 COMMENT '通过数',
-  `avatar` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'default.jpg' COMMENT '头像',
-  `status` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态,0锁定，1正常',
+  `avatar` varchar(50) DEFAULT 'default.jpg' COMMENT '头像',
+  `status` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态,0未激活，1正常，2锁定',
+  `student_no` tinytext DEFAULT NULL COMMENT '学号',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE,
-  UNIQUE INDEX `email`(`email`) USING BTREE
+  UNIQUE KEY `username` (`username`) USING BTREE,
+  UNIQUE KEY `email` (`email`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'user_sgh', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 5, 2, 'default.jpg', b'1');
-INSERT INTO `sys_user` VALUES (2, 'user_xdh', 'xdh@qq.com', 'c51f9c7eba223c36a9e79aef5dbe3dd1', 'stFp0Nc4hYuiLaiN2aNe', 0, 0, 'default.jpg', b'1');
-INSERT INTO `sys_user` VALUES (3, 'user_ljq', 'ljq@qq.com', 'd1abfc1dcd61244bed23b54ad3e67142', 'u5EUoEIF0yerJVoQLye8', 0, 0, 'default.jpg', b'1');
+INSERT INTO `sys_user` VALUES (1, 'user_sgh', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 5, 2, 'default.jpg', b'1', '201621121000');
+INSERT INTO `sys_user` VALUES (2, 'user_xdh', 'xdh@qq.com', 'c51f9c7eba223c36a9e79aef5dbe3dd1', 'stFp0Nc4hYuiLaiN2aNe', 0, 0, 'default.jpg', b'1', '201621121001');
+INSERT INTO `sys_user` VALUES (3, 'user_ljq', 'ljq@qq.com', 'd1abfc1dcd61244bed23b54ad3e67142', 'u5EUoEIF0yerJVoQLye8', 0, 0, 'default.jpg', b'1', '201621121002');
 
 -- ----------------------------
 -- Table structure for user_problem

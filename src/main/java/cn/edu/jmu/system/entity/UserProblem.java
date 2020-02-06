@@ -24,7 +24,7 @@ public class UserProblem implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    /**i
+    /**
      * 用户ID
      */
     @TableField(value = "uid")
