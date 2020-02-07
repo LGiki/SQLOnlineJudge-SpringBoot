@@ -102,7 +102,7 @@
               <strong>待添加用户</strong>
             </p>
             <select class="newStudentList" multiple="multiple" size="8">
-              <option v-for="item in newStudentNoList">{{ item }}</option>
+              <option v-for="item in newStudentNoList">{{ item.studentNo }}</option>
             </select>
           </el-col>
           <el-col :span="12">
@@ -378,31 +378,31 @@ export default {
       if (this.newStudentNoList) {
         this.newStudentNoListCount = this.newStudentNoList.length;
         this.newStudentNoListStr = ""; // Clear
-        for (let newStudentNo of this.newStudentNoList) {
-          this.newStudentNoListStr += newStudentNo + "\n";
+        for (let newStudent of this.newStudentNoList) {
+          this.newStudentNoListStr += newStudent.studentNo + "\n";
         }
       }
     },
-    addUserInBulk(studentNo) {
+    addUserInBulk(student) {
       const apiUrl = this.Url.userBaseUrl;
       let postData = {
-        username: studentNo,
-        studentNo: studentNo,
-        email: studentNo + "@jmu.edu.cn",
-        password: studentNo
+        username: student.username,
+        studentNo: student.studentNo,
+        email: student.studentNo + "@jmu.edu.cn",
+        password: student.studentNo
       };
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("添加用户" + studentNo + "失败，内部错误！");
+            // this.$message.error("添加用户" + student.studentNo + "失败，内部错误！");
           } else {
             const resData = res.data;
             if (resData.code === 0) {
-              let sutdentNoIndexOf = this.newStudentNoList.indexOf(studentNo);
-              if (sutdentNoIndexOf != -1) {
-                this.newStudentNoList.splice(sutdentNoIndexOf, 1);
-                this.studentNoAddedList.push(studentNo);
+              let studentNoIndexOf = this.newStudentNoList.indexOf(student);
+              if (studentNoIndexOf != -1) {
+                this.newStudentNoList.splice(studentNoIndexOf, 1);
+                this.studentNoAddedList.push(student.studentNo);
               }
             }
           }
@@ -440,11 +440,14 @@ export default {
               this.$message.error("起始学号不能大于终止学号！");
             } else {
               for (let i = startNo; i <= endNo; i++) {
-                this.newStudentNoList.push(i);
+                this.newStudentNoList.push({
+                  username: i,
+                  studentNo: i
+                });
               }
+              this.refreshStudentNoListStr();
               this.newUserBatchConfirmDialogVisible = true;
               this.newUserBatchDialogVisible = false;
-              this.refreshStudentNoListStr();
             }
           }
           break;
