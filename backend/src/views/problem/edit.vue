@@ -31,7 +31,7 @@
       <el-form-item label="题目描述" prop="description">
         <tinymce v-model="problemDetail.description" :height="250" />
       </el-form-item>
-      <el-form-item label="样例输出" prop="sampleOutput">
+      <el-form-item label="表的样例" prop="sampleOutput">
         <tinymce v-model="problemDetail.sampleOutput" :height="250" />
       </el-form-item>
       <el-form-item label="提示" prop="hint">

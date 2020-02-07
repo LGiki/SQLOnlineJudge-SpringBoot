@@ -16,7 +16,7 @@
             problemDetail.createTable
           }}</highlight-code>
           <template v-if="problemDetail.sampleOutput">
-            <h3>样例输出</h3>
+            <h3>表的样例</h3>
             <div v-html="problemDetail.sampleOutput" />
           </template>
           <template v-if="problemDetail.hint">

@@ -5,7 +5,7 @@
         <el-input v-model="userDetail.username" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="学号" prop="studentNo">
-        <el-input v-model="userDetail.studentNo" placeholder="请输入学号" />
+        <el-input type="number" v-model="userDetail.studentNo" placeholder="请输入学号" />
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="userDetail.email" placeholder="请输入邮箱" />
@@ -98,6 +98,7 @@ export default {
       postData.username.trim()
       postData.password.trim()
       postData.email.trim()
+      postData.studentNo.trim()
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
