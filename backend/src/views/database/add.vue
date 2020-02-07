@@ -11,11 +11,10 @@
       <el-dialog
         title="从Excel导入测试数据 (BETA)"
         :visible.sync="importFromExcelDialogVisible"
-        width="50%"
+        width="60%"
       >
         <el-form>
           <p><strong><h3>Excel中的数据需要严格按照下图中的要求：</h3></strong></p>
-          <br>
           <img id="hint-image" src="@/assets/import_excel_description.png" alt="import_excel_description">
           <form enctype="multipart/form-data">
             <el-form-item label="选择要导入的Excel">
