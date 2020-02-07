@@ -2,6 +2,7 @@
   <div class="app-container">
     <div class="operation-button">
       <el-input
+        prefix-icon="el-icon-search"
         v-model="searchKeyword"
         placeholder="请输入搜索关键字"
         style="width: 200px;"
@@ -28,19 +29,27 @@
       <el-button type="warning" @click="newUserBatchDialogVisible = true">
         <i class="el-icon-plus" />&nbsp;批量添加用户
       </el-button>
-      <el-dialog
-        title="批量添加用户"
-        :visible.sync="newUserBatchDialogVisible"
-        width="50%"
-      >
+      <el-dialog title="批量添加用户" :visible.sync="newUserBatchDialogVisible" width="70%">
         <el-tabs v-model="activeName" type="card">
           <el-tab-pane label="根据学号批量添加" name="addByStudentNo">
-            <el-form>
-              <el-form-item label="起始学号">
-                <el-input v-model="newUserBatchByStudentNoData.from" placeholder="请输入起始学号" />
+            <el-form
+              ref="newUserBatchByStudentNoData"
+              :model="newUserBatchByStudentNoData"
+              :rules="checkRules.addByStudentNoForm"
+            >
+              <el-form-item label="起始学号" prop="start">
+                <el-input
+                  type="number"
+                  v-model="newUserBatchByStudentNoData.start"
+                  placeholder="请输入起始学号"
+                />
               </el-form-item>
-              <el-form-item label="终止学号">
-                <el-input v-model="newUserBatchByStudentNoData.to" placeholder="请输入终止学号" />
+              <el-form-item label="终止学号" prop="end">
+                <el-input
+                  type="number"
+                  v-model="newUserBatchByStudentNoData.end"
+                  placeholder="请输入终止学号"
+                />
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -48,16 +57,68 @@
             <el-form>
               <form enctype="multipart/form-data">
                 <el-form-item label="选择要导入的Excel">
-                  <input @change="onExcelFileChange" id="excel-file" type=file name="files[]" class="el-button"/>
+                  <input
+                    @change="onExcelFileChange"
+                    id="excel-file"
+                    type="file"
+                    name="files[]"
+                    class="el-button"
+                  />
                 </el-form-item>
               </form>
             </el-form>
           </el-tab-pane>
         </el-tabs>
-        <br>
+        <br />
         <span slot="footer" class="dialog-footer">
           <el-button @click="newUserBatchDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="importFromExcel()">确定添加</el-button>
+          <el-button type="primary" @click="onNewUserBatch()">确定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="批量添加用户确认" :visible.sync="newUserBatchConfirmDialogVisible" width="70%">
+        <el-form>
+          <el-form-item label="确认添加以下用户：">
+            <el-input
+              v-model="newStudentNoListStr"
+              type="textarea"
+              :disabled="true"
+              :autosize="{ minRows: 8, maxRows: 8}"
+            />
+          </el-form-item>
+          <p>
+            将会添加
+            <strong>{{newStudentNoListCount}}</strong> 个用户
+          </p>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="newUserBatchConfirmDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="onNewUserBatchConfirmed()">确定添加</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="正在批量添加用户" :visible.sync="newUserBatchProgressDialogVisible" width="60%">
+        <el-row>
+          <el-col :span="12">
+            <p class="center">
+              <strong>待添加用户</strong>
+            </p>
+            <select class="newStudentList" multiple="multiple" size="8">
+              <option v-for="item in newStudentNoList">{{ item }}</option>
+            </select>
+          </el-col>
+          <el-col :span="12">
+            <p class="center">
+              <strong>已添加用户</strong>
+            </p>
+            <select class="newStudentList" multiple="multiple" size="8">
+              <option v-for="item in studentNoAddedList">{{ item }}</option>
+            </select>
+          </el-col>
+        </el-row>
+        <p>
+          <strong>请等待新用户批量添加完成之后再关闭该窗口！</strong>
+        </p>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="closeNewUserBatchProgressDialog">关闭</el-button>
         </span>
       </el-dialog>
     </div>
@@ -88,8 +149,8 @@
 </template>
 
 <script>
-import 'vue-easytable/libs/themes-base/index.css'
-import { VTable, VPagination } from 'vue-easytable'
+import "vue-easytable/libs/themes-base/index.css";
+import { VTable, VPagination } from "vue-easytable";
 
 export default {
   components: {
@@ -98,34 +159,59 @@ export default {
   },
   data() {
     return {
+      newStudentNoListCount: 0, //要批量添加的新用户的数量
+      newStudentNoListStr: "", //要批量添加的新用户学号字符串，一行一个学号
+      newStudentNoList: [], //要批量添加的新用户学号列表
+      studentNoAddedList: [], //已经添加成功的新用户学号列表
+      currentAddProgress: 0,
+      checkRules: {
+        addByStudentNoForm: {
+          start: [
+            {
+              required: true,
+              message: "起始学号不能为空",
+              trigger: "blur"
+            }
+          ],
+          end: [
+            {
+              required: true,
+              message: "终止学号不能为空",
+              trigger: "blur"
+            }
+          ]
+        }
+      },
       searchTypeList: [
         {
-          label: '用户ID',
-          value: 'id'
+          label: "用户ID",
+          value: "id"
         },
         {
-          label: '用户名',
-          value: 'username'
+          label: "用户名",
+          value: "username"
         },
         {
-          label: '邮箱',
-          value: 'email'
+          label: "邮箱",
+          value: "email"
         },
         {
-          label: '学号',
-          value: 'studentNo'
+          label: "学号",
+          value: "studentNo"
         }
       ],
-      selectedFile: '',
+      selectedFile: "",
       newUserBatchByStudentNoData: {
-        from: '',
-        to: ''
+        start: "",
+        end: ""
       },
-      activeName: 'addByStudentNo',
+      activeName: "addByStudentNo",
       newUserBatchDialogVisible: false,
-      searchType: 'id',
+      newUserBatchConfirmDialogVisible: false,
+      newUserBatchProgressDialogVisible: false,
+      searchType: "id",
       inSearch: false,
-      searchKeyword: '',
+      searchKeyword: "",
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
@@ -134,108 +220,119 @@ export default {
         tableData: [],
         columns: [
           {
-            field: 'id',
-            title: '用户ID',
+            field: "id",
+            title: "用户ID",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}">${rowData.id}</a>`
+              return `<a href="#/user/edit/${rowData.id}">${rowData.id}</a>`;
             }
           },
           {
-            field: 'username',
-            title: '用户名',
+            field: "username",
+            title: "用户名",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`
+              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`;
             }
           },
           {
-            field: 'studentNo',
-            title: '学号',
+            field: "studentNo",
+            title: "学号",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'email',
-            title: '邮箱',
+            field: "email",
+            title: "邮箱",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'solved',
-            title: '通过数',
+            field: "solved",
+            title: "通过数",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'submit',
-            title: '提交数',
+            field: "submit",
+            title: "提交数",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'accept_rate',
-            title: '通过率',
+            field: "accept_rate",
+            title: "通过率",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return rowData.submit === 0
                 ? 0
-                : (rowData.solved / rowData.submit).toFixed(2)
+                : (rowData.solved / rowData.submit).toFixed(2);
             }
           },
           {
-            field: 'status',
-            title: '用户状态',
+            field: "status",
+            title: "用户状态",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true
           },
           {
-            field: 'action',
-            title: '操作',
+            field: "action",
+            title: "操作",
             width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
+            titleAlign: "center",
+            columnAlign: "center",
             isResize: true,
-            componentName: 'user-operation'
+            componentName: "user-operation"
           }
         ]
       }
-    }
+    };
   },
   created() {},
   mounted: function() {
-    this.fetchUserList()
+    this.fetchUserList();
   },
   methods: {
+    closeNewUserBatchProgressDialog() {
+      this.newUserBatchProgressDialogVisible = false;
+      this.fetchUserList();
+    },
+    isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     onExcelFileChange(event) {
       this.selectedFile = event.target.files[0];
     },
     onSearch() {
-      const keyword = this.searchKeyword.trim()
+      const keyword = this.searchKeyword.trim();
       if (keyword.length === 0) {
-        this.$message.error('请输入关键字！')
+        this.$message.error("请输入关键字！");
       } else {
-        this.isLoading = true
-        const apiUrl = this.Url.userBaseUrl
+        this.isLoading = true;
+        const apiUrl = this.Url.userBaseUrl;
         this.$axios
           .get(apiUrl, {
             params: {
@@ -246,66 +343,150 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
+              this.$message.error("搜索失败，内部错误！");
             } else {
-              const resData = res.data
+              const resData = res.data;
               if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
+                this.tableConfig.tableData = resData.data.records;
+                this.totalItems = resData.data.total;
+                this.inSearch = true;
               } else {
-                this.$message.error(resData.message)
+                this.$message.error(resData.message);
               }
             }
-            this.isLoading = false
+            this.isLoading = false;
           })
           .catch(err => {
-            this.isLoading = false
-            this.$message.error('搜索失败！')
-            console.log(err)
-          })
+            this.isLoading = false;
+            this.$message.error("搜索失败！");
+            console.log(err);
+          });
+      }
+    },
+    onNewUserBatchConfirmed() {
+      this.newUserBatchConfirmDialogVisible = false;
+      this.newUserBatchProgressDialogVisible = true;
+      for (let studentNo of this.newStudentNoList) {
+        this.addUserInBulk(studentNo);
       }
     },
     onCancelSearch() {
-      this.inSearch = false
-      this.fetchUserList()
+      this.inSearch = false;
+      this.fetchUserList();
+    },
+    refreshStudentNoListStr() {
+      if (this.newStudentNoList) {
+        this.newStudentNoListCount = this.newStudentNoList.length;
+        this.newStudentNoListStr = ""; // Clear
+        for (let newStudentNo of this.newStudentNoList) {
+          this.newStudentNoListStr += newStudentNo + "\n";
+        }
+      }
+    },
+    addUserInBulk(studentNo) {
+      const apiUrl = this.Url.userBaseUrl;
+      let postData = {
+        username: studentNo,
+        studentNo: studentNo,
+        email: studentNo + "@jmu.edu.cn",
+        password: studentNo
+      };
+      this.$axios
+        .post(apiUrl, postData)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error("添加用户" + studentNo + "失败，内部错误！");
+          } else {
+            const resData = res.data;
+            if (resData.code === 0) {
+              let sutdentNoIndexOf = this.newStudentNoList.indexOf(studentNo);
+              if (sutdentNoIndexOf != -1) {
+                this.newStudentNoList.splice(sutdentNoIndexOf, 1);
+                this.studentNoAddedList.push(studentNo);
+              }
+            }
+          }
+          this.currentAddProgress += 1;
+          if (this.currentAddProgress == this.newStudentNoListCount) {
+            if (this.newStudentNoList.length == 0) {
+              this.$message({
+                message: "批量添加用户操作完成，全部用户均添加成功！",
+                type: "success"
+              });
+            } else {
+              this.$message.error("批量添加用户操作完成，部分用户添加失败！");
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     onNewUserBatch() {
-
+      this.newStudentNoList.length = 0;
+      this.studentNoAddedList.length = 0;
+      this.currentAddProgress = 0;
+      switch (this.activeName) {
+        case "addByStudentNo":
+          if (
+            this.isEmpty(this.newUserBatchByStudentNoData.start) ||
+            this.isEmpty(this.newUserBatchByStudentNoData.end)
+          ) {
+            this.$message.error("请检查起始学号与终止学号是否输入完整！");
+          } else {
+            let startNo = Number(this.newUserBatchByStudentNoData.start);
+            let endNo = Number(this.newUserBatchByStudentNoData.end);
+            if (startNo > endNo) {
+              this.$message.error("起始学号不能大于终止学号！");
+            } else {
+              for (let i = startNo; i <= endNo; i++) {
+                this.newStudentNoList.push(i);
+              }
+              this.newUserBatchConfirmDialogVisible = true;
+              this.newUserBatchDialogVisible = false;
+              this.refreshStudentNoListStr();
+            }
+          }
+          break;
+        case "addFromExcel":
+          break;
+        default:
+          break;
+      }
     },
     onNewUser() {
-      this.$router.push({ path: '/user/add/' })
+      this.$router.push({ path: "/user/add/" });
     },
     customCompFunc(params) {
-      const index = params.index
-      const userId = this.tableConfig.tableData[index].id
-      if (params.type === 'delete') {
-        let confirmMessage = '您确定要锁定该用户吗？'
-        let operationTypeString = '锁定'
-        if (this.tableConfig.tableData[index].status !== '正常') {
-          confirmMessage = '您确定要解锁该用户吗？'
-          operationTypeString = '解锁'
+      const index = params.index;
+      const userId = this.tableConfig.tableData[index].id;
+      if (params.type === "delete") {
+        let confirmMessage = "您确定要锁定该用户吗？";
+        let operationTypeString = "锁定";
+        if (this.tableConfig.tableData[index].status !== "正常") {
+          confirmMessage = "您确定要解锁该用户吗？";
+          operationTypeString = "解锁";
         }
         if (confirm(confirmMessage)) {
           this.deleteUser(userId, operationTypeString, () => {
-            this.fetchUserList()
-          })
+            this.fetchUserList();
+          });
         }
-      } else if (params.type === 'edit') {
-        this.$router.push({ path: '/user/edit/' + userId })
+      } else if (params.type === "edit") {
+        this.$router.push({ path: "/user/edit/" + userId });
       }
     },
     pageChange(pageNum) {
-      this.pageNum = pageNum
-      this.fetchUserList()
+      this.pageNum = pageNum;
+      this.fetchUserList();
     },
     pageSizeChange(newPageSize) {
-      this.pageSize = newPageSize
-      this.fetchUserList()
+      this.pageSize = newPageSize;
+      this.fetchUserList();
     },
     fetchUserList() {
-      this.isLoading = true
-      const apiUrl = this.Url.userBaseUrl
+      this.isLoading = true;
+      const apiUrl = this.Url.userBaseUrl;
       this.$axios
         .get(apiUrl, {
           params: {
@@ -315,42 +496,42 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取用户列表失败，内部错误！')
+            this.$message.error("获取用户列表失败，内部错误！");
           } else {
-            const resData = res.data
+            const resData = res.data;
             if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
+              this.tableConfig.tableData = resData.data.records;
+              this.totalItems = resData.data.total;
             } else {
-              this.$message.error(resData.message)
+              this.$message.error(resData.message);
             }
           }
-          this.isLoading = false
+          this.isLoading = false;
         })
         .catch(err => {
-          this.$message.error('获取用户列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
+          this.$message.error("获取用户列表失败！");
+          this.isLoading = false;
+          console.log(err);
+        });
     },
     deleteUser(userId, operationTypeString, successCallback) {
-      const apiUrl = this.Url.userStatusUrl
+      const apiUrl = this.Url.userStatusUrl;
       this.$axios
         .put(apiUrl + userId)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error(operationTypeString + '用户失败，内部错误！')
+            this.$message.error(operationTypeString + "用户失败，内部错误！");
           } else {
-            successCallback()
+            successCallback();
           }
         })
         .catch(err => {
-          this.$message.error(operationTypeString + '用户失败！')
-          console.log(err)
-        })
+          this.$message.error(operationTypeString + "用户失败！");
+          console.log(err);
+        });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .bd {
@@ -361,5 +542,14 @@ export default {
 .operation-button {
   float: right;
   padding-bottom: 10px;
+}
+
+.newStudentList {
+  text-align: center;
+  width: 100%;
+}
+
+.center {
+  text-align: center;
 }
 </style>

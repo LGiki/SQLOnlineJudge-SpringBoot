@@ -2,6 +2,7 @@
   <div class="app-container">
     <div class="operation-button">
       <el-input
+        prefix-icon="el-icon-search"
         v-model="searchKeyword"
         placeholder="请输入搜索关键字"
         style="width: 200px;"
