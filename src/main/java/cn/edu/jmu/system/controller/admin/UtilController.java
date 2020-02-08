@@ -4,7 +4,11 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.GenerateUtil;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.common.util.ValidateUtil;
+import cn.edu.jmu.system.entity.Admin;
+import cn.edu.jmu.system.entity.UploadImage;
+import cn.edu.jmu.system.service.UploadImageService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -24,6 +28,9 @@ import java.util.UUID;
 @RequestMapping("/api/admin/util")
 public class UtilController {
     private static final String DEFAULT_UPLOAD_DIR = "uploaded_images/";
+
+    @Resource
+    private UploadImageService uploadImageService;
 
     @PostMapping("/upload")
     public ResponseEntity<BasicResponse> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -44,7 +51,12 @@ public class UtilController {
         File dest = new File(destFilePath);
         try {
             file.transferTo(dest);
-            return ResponseUtil.ok("文件上传成功！");
+            Admin admin = (Admin) SecurityUtils.getSubject().getPrincipal();
+            UploadImage uploadImage = new UploadImage();
+            uploadImage.setFileName(destFileName);
+            uploadImage.setUid(admin.getId());
+            uploadImageService.save(uploadImage);
+            return ResponseUtil.buildResponse("文件上传成功！", uploadImage);
         } catch (IOException e) {
             log.error("Upload file error: {}", e.getMessage());
         }
