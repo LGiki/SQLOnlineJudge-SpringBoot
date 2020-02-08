@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> getAll(UserDto userDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<User> page = new Page<>(pageNum, pageSize);
-        IPage<UserDto> iPage = userService.getAll(userDto, page);
+        IPage<UserDto> iPage = userService.getAll(userDto, page, User::getId);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 

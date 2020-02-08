@@ -8,6 +8,7 @@ import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return IPage<User>
      */
     @Override
-    public IPage<UserDto> getAll(UserDto userDto, Page page) {
+    public IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column) {
         Page<User> userPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<User> iPage = baseMapper.selectPage(userPage, predicate(userDto));
+        IPage<User> iPage = baseMapper.selectPage(userPage, predicate(userDto, column));
         return iPage.convert(cn.edu.jmu.system.service.mapper.UserMapper::toDto);
     }
 
@@ -74,9 +75,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param userDto userDto
      * @return LambdaQueryWrapper<User>
      */
-    private LambdaQueryWrapper<User> predicate(UserDto userDto) {
+    private LambdaQueryWrapper<User> predicate(UserDto userDto, SFunction<User, ?> column) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByDesc(User::getSolved);
+        queryWrapper.orderByDesc(column);
         if (userDto == null) {
             return queryWrapper;
         } else {

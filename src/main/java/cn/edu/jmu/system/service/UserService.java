@@ -3,6 +3,7 @@ package cn.edu.jmu.system.service;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,7 +20,7 @@ public interface UserService extends IService<User> {
      * @param page    page
      * @return IPage<User>
      */
-    IPage<UserDto> getAll(UserDto userDto, Page page);
+    IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column);
 
     /**
      * 更新用户
