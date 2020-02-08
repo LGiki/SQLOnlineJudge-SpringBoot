@@ -50,9 +50,22 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
             iPage = baseMapper.selectPage(solutionPage
                     , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
         } else {
-            iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
-                            .toEntity(solutionDto)).lambda().orderByDesc(Solution::getId));
+            if (solutionDto.getId() != null) {
+                iPage = baseMapper.selectPage(solutionPage
+                        , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
+                                .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
+            } else if (solutionDto.getUid() != null) {
+                iPage = baseMapper.selectPage(solutionPage
+                        , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
+                                .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
+            } else if (solutionDto.getPid() != null) {
+                iPage = baseMapper.selectPage(solutionPage
+                        , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
+                                .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
+            } else {
+                iPage = baseMapper.selectPage(solutionPage
+                        , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+            }
         }
         IPage<SolutionDto> convert = iPage.convert(cn.edu.jmu.system.service.mapper.SolutionMapper::toDto);
         convert.getRecords().forEach(this::addMessage);
