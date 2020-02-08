@@ -222,7 +222,7 @@ export default {
           {
             field: "id",
             title: "用户ID",
-            width: 80,
+            width: 35,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -233,7 +233,7 @@ export default {
           {
             field: "username",
             title: "用户名",
-            width: 80,
+            width: 60,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -252,7 +252,7 @@ export default {
           {
             field: "email",
             title: "邮箱",
-            width: 80,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -260,7 +260,7 @@ export default {
           {
             field: "solved",
             title: "通过数",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -268,7 +268,7 @@ export default {
           {
             field: "submit",
             title: "提交数",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -276,7 +276,7 @@ export default {
           {
             field: "accept_rate",
             title: "通过率",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -289,7 +289,7 @@ export default {
           {
             field: "status",
             title: "用户状态",
-            width: 80,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -312,6 +312,53 @@ export default {
     this.fetchUserList();
   },
   methods: {
+    parseExcel(file) {
+      let that = this;
+      let isFileFormatCorrect = true;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var data = e.target.result;
+        var workbook = XLSX.read(data, {
+          type: "binary"
+        });
+        workbook.SheetNames.forEach(function(sheetName) {
+          var XL_row_object = XLSX.utils.sheet_to_row_object_array(
+            workbook.Sheets[sheetName]
+          );
+          var json_object = JSON.stringify(XL_row_object);
+          var jsonResult = JSON.parse(json_object);
+          for (let row of jsonResult) {
+            if (isFileFormatCorrect && row.hasOwnProperty("学号")) {
+              let newStudent = {};
+              if (row.hasOwnProperty("姓名")) {
+                newStudent.username = row["姓名"];
+                newStudent.studentNo = row["学号"];
+              } else {
+                newStudent.username = row["学号"];
+                newStudent.studentNo = row["学号"];
+              }
+              // console.log(sheetName);
+              // console.log(newStudent);
+              that.newStudentNoList.push(newStudent);
+            } else {
+              isFileFormatCorrect = false;
+              break;
+            }
+          }
+        });
+        if (isFileFormatCorrect) {
+          that.refreshStudentNoListStr();
+          that.newUserBatchConfirmDialogVisible = true;
+          that.newUserBatchDialogVisible = false;
+        } else {
+          that.$message.error("请检查 Excel 文件格式是否正确！");
+        }
+      };
+      reader.onerror = function(ex) {
+        console.log(ex);
+      };
+      reader.readAsBinaryString(file);
+    },
     closeNewUserBatchProgressDialog() {
       this.newUserBatchProgressDialogVisible = false;
       this.fetchUserList();
@@ -452,6 +499,16 @@ export default {
           }
           break;
         case "addFromExcel":
+          if (
+            this.selectedFile == null ||
+            this.selectedFile === "" ||
+            (!this.selectedFile.name.endsWith("xls") &&
+              !this.selectedFile.name.endsWith("xlsx"))
+          ) {
+            this.$message.error("请正确选择Excel文件！");
+          } else {
+            this.parseExcel(this.selectedFile);
+          }
           break;
         default:
           break;

@@ -114,7 +114,8 @@ export default {
     this.getDatabaseDetail(databaseId)
   },
   methods: {
-    parseExcel(that, file) {
+    parseExcel(file) {
+      let that = this;
       var reader = new FileReader();
       reader.onload = function (e) {
           var data = e.target.result;
@@ -151,7 +152,7 @@ export default {
       if (this.selectedFile == null || this.selectedFile === '' || (!this.selectedFile.name.endsWith('xls') && !this.selectedFile.name.endsWith('xlsx'))) {
         this.$message.error('请正确选择Excel文件！')
       }else{
-        this.parseExcel(this, this.selectedFile);
+        this.parseExcel(this.selectedFile);
       }
       this.importFromExcelDialogVisible = false;
     },
