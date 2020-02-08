@@ -12,6 +12,11 @@ import java.util.regex.Pattern;
 public class ValidateUtil {
 
     /**
+     * 允许的图片文件扩展名
+     */
+    private static final String[] allowFileNameExtensions = {".jpg", ".jpeg", ".webp", ".gif", ".png", ".bmp"};
+
+    /**
      * 验证字符串是否为null
      */
     public static boolean isEmpty(final CharSequence cs) {
@@ -115,5 +120,23 @@ public class ValidateUtil {
         } else {
             return Pattern.compile(regex).matcher(str).matches();
         }
+    }
+
+    /**
+     * 根据文件名判断是否是图片
+     *
+     * @param fileName 文件名
+     * @return boolean 如果文件名符合规定的图片格式扩展名则返回true，否则返回false
+     */
+    public static boolean isImage(String fileName) {
+        if (fileName == null || isEmpty(fileName)) {
+            return false;
+        }
+        for (String allowFileNameExtension : allowFileNameExtensions) {
+            if (fileName.endsWith(allowFileNameExtension)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
