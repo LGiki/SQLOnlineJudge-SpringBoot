@@ -201,11 +201,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      this.fetchUserList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchUserList()
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      this.fetchUserList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchUserList()
+      }
     },
     fetchUserList() {
       this.isLoading = true

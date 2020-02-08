@@ -254,11 +254,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      this.fetchSolutionList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchSolutionList()
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      this.fetchSolutionList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchSolutionList()
+      }
     },
     fetchSolutionList() {
       this.isLoading = true

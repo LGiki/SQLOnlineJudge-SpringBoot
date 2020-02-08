@@ -211,11 +211,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      this.fetchProblemList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchProblemList()
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      this.fetchProblemList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchProblemList()
+      }
     },
     fetchProblemList() {
       this.isLoading = true

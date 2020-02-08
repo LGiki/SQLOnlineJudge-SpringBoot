@@ -29,7 +29,7 @@
       <el-button type="warning" @click="newUserBatchDialogVisible = true">
         <i class="el-icon-plus" />&nbsp;批量添加用户
       </el-button>
-      <el-dialog title="批量添加用户" :visible.sync="newUserBatchDialogVisible" width="70%">
+      <el-dialog title="批量添加用户" :visible.sync="newUserBatchDialogVisible" width="60%">
         <el-tabs v-model="activeName" type="card">
           <el-tab-pane label="根据学号批量添加" name="addByStudentNo">
             <el-form
@@ -42,6 +42,7 @@
                   type="number"
                   v-model="newUserBatchByStudentNoData.start"
                   placeholder="请输入起始学号"
+                  @keyup.enter.native="onNewUserBatch"
                 />
               </el-form-item>
               <el-form-item label="终止学号" prop="end">
@@ -49,11 +50,22 @@
                   type="number"
                   v-model="newUserBatchByStudentNoData.end"
                   placeholder="请输入终止学号"
+                  @keyup.enter.native="onNewUserBatch"
                 />
               </el-form-item>
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="从Excel文件中导入" name="addFromExcel">
+            <p>
+              <strong>
+                <h3>Excel中的数据需要严格按照下图中的要求：</h3>
+              </strong>
+            </p>
+            <img
+              id="hint-image"
+              src="@/assets/create_users_in_bulk_hint.png"
+              alt="import_excel_description"
+            />
             <el-form>
               <form enctype="multipart/form-data">
                 <el-form-item label="选择要导入的Excel">
@@ -72,7 +84,7 @@
         <br />
         <span slot="footer" class="dialog-footer">
           <el-button @click="newUserBatchDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="onNewUserBatch()">确定</el-button>
+          <el-button type="primary" @click="onNewUserBatch">确定</el-button>
         </span>
       </el-dialog>
       <el-dialog title="批量添加用户确认" :visible.sync="newUserBatchConfirmDialogVisible" width="70%">
@@ -92,7 +104,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="newUserBatchConfirmDialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="onNewUserBatchConfirmed()">确定添加</el-button>
+          <el-button type="primary" @click="onNewUserBatchConfirmed">确定添加</el-button>
         </span>
       </el-dialog>
       <el-dialog title="正在批量添加用户" :visible.sync="newUserBatchProgressDialogVisible" width="60%">
@@ -426,7 +438,12 @@ export default {
         this.newStudentNoListCount = this.newStudentNoList.length;
         this.newStudentNoListStr = ""; // Clear
         for (let newStudent of this.newStudentNoList) {
-          this.newStudentNoListStr += newStudent.studentNo + "\n";
+          if (newStudent.studentNo === newStudent.username) {
+            this.newStudentNoListStr += newStudent.studentNo + "\n";
+          } else {
+            this.newStudentNoListStr +=
+              newStudent.studentNo + " - " + newStudent.username + "\n";
+          }
         }
       }
     },
@@ -538,11 +555,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
-      this.fetchUserList();
+      if (this.inSearch) {
+        this.onSearch();
+      } else {
+        this.fetchUserList();
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize;
-      this.fetchUserList();
+      if (this.inSearch) {
+        this.onSearch();
+      } else {
+        this.fetchUserList();
+      }
     },
     fetchUserList() {
       this.isLoading = true;
@@ -611,5 +636,13 @@ export default {
 
 .center {
   text-align: center;
+}
+
+#hint-image {
+  margin-bottom: 5px;
+  width: auto;
+  height: auto;
+  max-width: 90%;
+  max-height: 90%;
 }
 </style>

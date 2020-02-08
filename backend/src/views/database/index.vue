@@ -182,11 +182,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      this.fetchDatabaseList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchDatabaseList()
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      this.fetchDatabaseList()
+      if (this.inSearch) {
+        this.onSearch()
+      } else {
+        this.fetchDatabaseList()
+      }
     },
     fetchDatabaseList() {
       this.isLoading = true
