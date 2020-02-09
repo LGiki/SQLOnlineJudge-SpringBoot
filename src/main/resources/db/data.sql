@@ -221,7 +221,7 @@ INSERT INTO `sys_user` VALUES (3, 'user_ljq', '201621121108', 'ljq@qq.com', 'd1a
 DROP TABLE IF EXISTS `sys_user_group`;
 CREATE TABLE `sys_user_group`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户组名称',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT NULL COMMENT '用户组名称',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户组描述',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
