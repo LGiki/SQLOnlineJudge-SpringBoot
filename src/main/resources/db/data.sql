@@ -253,4 +253,17 @@ CREATE TABLE `user_problem`  (
 INSERT INTO `user_problem` VALUES (1, 1, 1, b'1');
 INSERT INTO `user_problem` VALUES (2, 1, 2, b'1');
 
+-- ----------------------------
+-- Table structure for upload_image
+-- ----------------------------
+DROP TABLE IF EXISTS `upload_image`;
+CREATE TABLE IF NOT EXISTS `upload_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `filename` tinytext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `uid` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `FK__sys_user` (`uid`),
+  CONSTRAINT `FK__sys_user` FOREIGN KEY (`uid`) REFERENCES `sys_admin` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
