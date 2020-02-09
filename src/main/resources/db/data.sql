@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : mysql-local
  Source Server Type    : MySQL
- Source Server Version : 50553
+ Source Server Version : 50728
  Source Host           : localhost:3306
  Source Schema         : sqlonlinejudge
 
  Target Server Type    : MySQL
- Target Server Version : 50553
+ Target Server Version : 50728
  File Encoding         : 65001
 
- Date: 09/10/2019 19:03:03
+ Date: 09/02/2020 16:54:02
 */
 
 SET NAMES utf8mb4;
@@ -69,7 +69,7 @@ CREATE TABLE `solution`  (
   `uid` int(11) NOT NULL COMMENT '用户ID',
   `pid` int(11) NOT NULL COMMENT '题目ID',
   `source_code` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '源代码',
-  `submit_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '提交时间',
+  `submit_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '提交时间',
   `run_error` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '错误信息',
   `result` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '结果',
   PRIMARY KEY (`id`) USING BTREE,
@@ -193,26 +193,43 @@ INSERT INTO `sys_role_permission` VALUES (1, 1, 1);
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(50) NOT NULL DEFAULT '0' COMMENT '用户名',
-  `email` varchar(50) NOT NULL COMMENT '邮箱地址',
-  `password` varchar(50) NOT NULL COMMENT '密码',
-  `salt` varchar(50) NOT NULL COMMENT '密码盐',
+  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '用户名',
+  `student_no` tinytext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '学号',
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱地址',
+  `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `salt` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码盐',
   `submit` int(11) NOT NULL DEFAULT 0 COMMENT '提交数',
   `solved` int(11) NOT NULL DEFAULT 0 COMMENT '通过数',
-  `avatar` varchar(50) DEFAULT 'default.jpg' COMMENT '头像',
+  `avatar` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'default.jpg' COMMENT '头像',
   `status` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态,0未激活，1正常，2锁定',
-  `student_no` tinytext DEFAULT NULL COMMENT '学号',
+  `group_id` int(11) NULL DEFAULT NULL COMMENT '用户组ID',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `username` (`username`) USING BTREE,
-  UNIQUE KEY `email` (`email`) USING BTREE
+  UNIQUE INDEX `username`(`username`) USING BTREE,
+  UNIQUE INDEX `email`(`email`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'user_sgh', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 5, 2, 'default.jpg', b'1', '201621121000');
-INSERT INTO `sys_user` VALUES (2, 'user_xdh', 'xdh@qq.com', 'c51f9c7eba223c36a9e79aef5dbe3dd1', 'stFp0Nc4hYuiLaiN2aNe', 0, 0, 'default.jpg', b'1', '201621121001');
-INSERT INTO `sys_user` VALUES (3, 'user_ljq', 'ljq@qq.com', 'd1abfc1dcd61244bed23b54ad3e67142', 'u5EUoEIF0yerJVoQLye8', 0, 0, 'default.jpg', b'1', '201621121002');
+INSERT INTO `sys_user` VALUES (1, 'user_sgh', '201621121110', 'sgh@qq.com', '7078553a2476e9c86ea74234145febef', 'yK5o/VZdWdpJplm+5VVt', 5, 2, 'default.jpg', b'1', 1);
+INSERT INTO `sys_user` VALUES (2, 'user_xdh', '201621121101', 'xdh@qq.com', 'c51f9c7eba223c36a9e79aef5dbe3dd1', 'stFp0Nc4hYuiLaiN2aNe', 0, 0, 'default.jpg', b'1', 1);
+INSERT INTO `sys_user` VALUES (3, 'user_ljq', '201621121108', 'ljq@qq.com', 'd1abfc1dcd61244bed23b54ad3e67142', 'u5EUoEIF0yerJVoQLye8', 0, 0, 'default.jpg', b'1', 1);
+
+-- ----------------------------
+-- Table structure for sys_user_group
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_group`;
+CREATE TABLE `sys_user_group`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户组名称',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户组描述',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user_group
+-- ----------------------------
+INSERT INTO `sys_user_group` VALUES (1, '计算1614', '计算机科学与技术16级4班');
 
 -- ----------------------------
 -- Table structure for user_problem
@@ -235,18 +252,5 @@ CREATE TABLE `user_problem`  (
 -- ----------------------------
 INSERT INTO `user_problem` VALUES (1, 1, 1, b'1');
 INSERT INTO `user_problem` VALUES (2, 1, 2, b'1');
-
--- ----------------------------
--- Table structure for upload_image
--- ----------------------------
-DROP TABLE IF EXISTS `upload_image`;
-CREATE TABLE IF NOT EXISTS `upload_image` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `filename` tinytext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `uid` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `FK__sys_user` (`uid`),
-  CONSTRAINT `FK__sys_user` FOREIGN KEY (`uid`) REFERENCES `sys_admin` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
