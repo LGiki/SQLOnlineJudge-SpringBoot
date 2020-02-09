@@ -239,6 +239,7 @@ INSERT INTO `user_problem` VALUES (2, 1, 2, b'1');
 -- ----------------------------
 -- Table structure for upload_image
 -- ----------------------------
+DROP TABLE IF EXISTS `upload_image`;
 CREATE TABLE IF NOT EXISTS `upload_image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `filename` tinytext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
