@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="operation-button">
       <el-input
-        prefix-icon="el-icon-search"
         v-model="searchKeyword"
+        prefix-icon="el-icon-search"
         placeholder="请输入搜索关键字"
         style="width: 200px;"
         class="filter-item"
@@ -39,16 +39,16 @@
             >
               <el-form-item label="起始学号" prop="start">
                 <el-input
-                  type="number"
                   v-model="newUserBatchByStudentNoData.start"
+                  type="number"
                   placeholder="请输入起始学号"
                   @keyup.enter.native="onNewUserBatch"
                 />
               </el-form-item>
               <el-form-item label="终止学号" prop="end">
                 <el-input
-                  type="number"
                   v-model="newUserBatchByStudentNoData.end"
+                  type="number"
                   placeholder="请输入终止学号"
                   @keyup.enter.native="onNewUserBatch"
                 />
@@ -65,23 +65,23 @@
               id="hint-image"
               src="@/assets/create_users_in_bulk_hint.png"
               alt="import_excel_description"
-            />
+            >
             <el-form>
               <form enctype="multipart/form-data">
                 <el-form-item label="选择要导入的Excel">
                   <input
-                    @change="onExcelFileChange"
                     id="excel-file"
                     type="file"
                     name="files[]"
                     class="el-button"
-                  />
+                    @change="onExcelFileChange"
+                  >
                 </el-form-item>
               </form>
             </el-form>
           </el-tab-pane>
         </el-tabs>
-        <br />
+        <br>
         <span slot="footer" class="dialog-footer">
           <el-button @click="newUserBatchDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="onNewUserBatch">确定</el-button>
@@ -99,7 +99,7 @@
           </el-form-item>
           <p>
             将会添加
-            <strong>{{newStudentNoListCount}}</strong> 个用户
+            <strong>{{ newStudentNoListCount }}</strong> 个用户
           </p>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -161,8 +161,8 @@
 </template>
 
 <script>
-import "vue-easytable/libs/themes-base/index.css";
-import { VTable, VPagination } from "vue-easytable";
+import 'vue-easytable/libs/themes-base/index.css'
+import { VTable, VPagination } from 'vue-easytable'
 
 export default {
   components: {
@@ -171,59 +171,59 @@ export default {
   },
   data() {
     return {
-      newStudentNoListCount: 0, //要批量添加的新用户的数量
-      newStudentNoListStr: "", //要批量添加的新用户学号字符串，一行一个学号
-      newStudentNoList: [], //要批量添加的新用户学号列表
-      studentNoAddedList: [], //已经添加成功的新用户学号列表
+      newStudentNoListCount: 0, // 要批量添加的新用户的数量
+      newStudentNoListStr: '', // 要批量添加的新用户学号字符串，一行一个学号
+      newStudentNoList: [], // 要批量添加的新用户学号列表
+      studentNoAddedList: [], // 已经添加成功的新用户学号列表
       currentAddProgress: 0,
       checkRules: {
         addByStudentNoForm: {
           start: [
             {
               required: true,
-              message: "起始学号不能为空",
-              trigger: "blur"
+              message: '起始学号不能为空',
+              trigger: 'blur'
             }
           ],
           end: [
             {
               required: true,
-              message: "终止学号不能为空",
-              trigger: "blur"
+              message: '终止学号不能为空',
+              trigger: 'blur'
             }
           ]
         }
       },
       searchTypeList: [
         {
-          label: "用户ID",
-          value: "id"
+          label: '用户ID',
+          value: 'id'
         },
         {
-          label: "用户名",
-          value: "username"
+          label: '用户名',
+          value: 'username'
         },
         {
-          label: "邮箱",
-          value: "email"
+          label: '邮箱',
+          value: 'email'
         },
         {
-          label: "学号",
-          value: "studentNo"
+          label: '学号',
+          value: 'studentNo'
         }
       ],
-      selectedFile: "",
+      selectedFile: '',
       newUserBatchByStudentNoData: {
-        start: "",
-        end: ""
+        start: '',
+        end: ''
       },
-      activeName: "addByStudentNo",
+      activeName: 'addByStudentNo',
       newUserBatchDialogVisible: false,
       newUserBatchConfirmDialogVisible: false,
       newUserBatchProgressDialogVisible: false,
-      searchType: "id",
+      searchType: 'id',
       inSearch: false,
-      searchKeyword: "",
+      searchKeyword: '',
       pageNum: 1,
       pageSize: 10,
       totalItems: 0,
@@ -232,166 +232,166 @@ export default {
         tableData: [],
         columns: [
           {
-            field: "id",
-            title: "用户ID",
+            field: 'id',
+            title: '用户ID',
             width: 35,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}">${rowData.id}</a>`;
+              return `<a href="#/user/edit/${rowData.id}">${rowData.id}</a>`
             }
           },
           {
-            field: "username",
-            title: "用户名",
+            field: 'username',
+            title: '用户名',
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`;
+              return `<a href="#/user/edit/${rowData.id}" title="${rowData.username}">${rowData.username}</a>`
             }
           },
           {
-            field: "studentNo",
-            title: "学号",
+            field: 'studentNo',
+            title: '学号',
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "email",
-            title: "邮箱",
+            field: 'email',
+            title: '邮箱',
             width: 100,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "solved",
-            title: "通过数",
+            field: 'solved',
+            title: '通过数',
             width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "submit",
-            title: "提交数",
+            field: 'submit',
+            title: '提交数',
             width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "accept_rate",
-            title: "通过率",
+            field: 'accept_rate',
+            title: '通过率',
             width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return rowData.submit === 0
                 ? 0
-                : (rowData.solved / rowData.submit).toFixed(2);
+                : (rowData.solved / rowData.submit).toFixed(2)
             }
           },
           {
-            field: "status",
-            title: "用户状态",
+            field: 'status',
+            title: '用户状态',
             width: 50,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "action",
-            title: "操作",
+            field: 'action',
+            title: '操作',
             width: 80,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true,
-            componentName: "user-operation"
+            componentName: 'user-operation'
           }
         ]
       }
-    };
+    }
   },
   created() {},
   mounted: function() {
-    this.fetchUserList();
+    this.fetchUserList()
   },
   methods: {
     parseExcel(file) {
-      let that = this;
-      let isFileFormatCorrect = true;
-      var reader = new FileReader();
+      const that = this
+      let isFileFormatCorrect = true
+      var reader = new FileReader()
       reader.onload = function(e) {
-        var data = e.target.result;
+        var data = e.target.result
         var workbook = XLSX.read(data, {
-          type: "binary"
-        });
+          type: 'binary'
+        })
         workbook.SheetNames.forEach(function(sheetName) {
           var XL_row_object = XLSX.utils.sheet_to_row_object_array(
             workbook.Sheets[sheetName]
-          );
-          var json_object = JSON.stringify(XL_row_object);
-          var jsonResult = JSON.parse(json_object);
-          for (let row of jsonResult) {
-            if (isFileFormatCorrect && row.hasOwnProperty("学号")) {
-              let newStudent = {};
-              if (row.hasOwnProperty("姓名")) {
-                newStudent.username = row["姓名"];
-                newStudent.studentNo = row["学号"];
+          )
+          var json_object = JSON.stringify(XL_row_object)
+          var jsonResult = JSON.parse(json_object)
+          for (const row of jsonResult) {
+            if (isFileFormatCorrect && row.hasOwnProperty('学号')) {
+              const newStudent = {}
+              if (row.hasOwnProperty('姓名')) {
+                newStudent.username = row['姓名']
+                newStudent.studentNo = row['学号']
               } else {
-                newStudent.username = row["学号"];
-                newStudent.studentNo = row["学号"];
+                newStudent.username = row['学号']
+                newStudent.studentNo = row['学号']
               }
               // console.log(sheetName);
               // console.log(newStudent);
-              that.newStudentNoList.push(newStudent);
+              that.newStudentNoList.push(newStudent)
             } else {
-              isFileFormatCorrect = false;
-              break;
+              isFileFormatCorrect = false
+              break
             }
           }
-        });
+        })
         if (isFileFormatCorrect) {
-          that.refreshStudentNoListStr();
-          that.newUserBatchConfirmDialogVisible = true;
-          that.newUserBatchDialogVisible = false;
+          that.refreshStudentNoListStr()
+          that.newUserBatchConfirmDialogVisible = true
+          that.newUserBatchDialogVisible = false
         } else {
-          that.$message.error("请检查 Excel 文件格式是否正确！");
+          that.$message.error('请检查 Excel 文件格式是否正确！')
         }
-      };
+      }
       reader.onerror = function(ex) {
-        console.log(ex);
-      };
-      reader.readAsBinaryString(file);
+        console.log(ex)
+      }
+      reader.readAsBinaryString(file)
     },
     closeNewUserBatchProgressDialog() {
-      this.newUserBatchProgressDialogVisible = false;
-      this.fetchUserList();
+      this.newUserBatchProgressDialogVisible = false
+      this.fetchUserList()
     },
     isEmpty(obj) {
-      if (typeof obj == "undefined" || obj == null || obj == "") {
-        return true;
+      if (typeof obj === 'undefined' || obj == null || obj == '') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
     onExcelFileChange(event) {
-      this.selectedFile = event.target.files[0];
+      this.selectedFile = event.target.files[0]
     },
     onSearch() {
-      const keyword = this.searchKeyword.trim();
+      const keyword = this.searchKeyword.trim()
       if (keyword.length === 0) {
-        this.$message.error("请输入关键字！");
+        this.$message.error('请输入关键字！')
       } else {
-        this.isLoading = true;
-        const apiUrl = this.Url.userBaseUrl;
+        this.isLoading = true
+        const apiUrl = this.Url.userBaseUrl
         this.$axios
           .get(apiUrl, {
             params: {
@@ -402,176 +402,176 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              this.$message.error("搜索失败，内部错误！");
+              this.$message.error('搜索失败，内部错误！')
             } else {
-              const resData = res.data;
+              const resData = res.data
               if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records;
-                this.totalItems = resData.data.total;
-                this.inSearch = true;
+                this.tableConfig.tableData = resData.data.records
+                this.totalItems = resData.data.total
+                this.inSearch = true
               } else {
-                this.$message.error(resData.message);
+                this.$message.error(resData.message)
               }
             }
-            this.isLoading = false;
+            this.isLoading = false
           })
           .catch(err => {
-            this.isLoading = false;
-            this.$message.error("搜索失败！");
-            console.log(err);
-          });
+            this.isLoading = false
+            this.$message.error('搜索失败！')
+            console.log(err)
+          })
       }
     },
     onNewUserBatchConfirmed() {
-      this.newUserBatchConfirmDialogVisible = false;
-      this.newUserBatchProgressDialogVisible = true;
-      for (let studentNo of this.newStudentNoList) {
-        this.addUserInBulk(studentNo);
+      this.newUserBatchConfirmDialogVisible = false
+      this.newUserBatchProgressDialogVisible = true
+      for (const studentNo of this.newStudentNoList) {
+        this.addUserInBulk(studentNo)
       }
     },
     onCancelSearch() {
-      this.inSearch = false;
-      this.fetchUserList();
+      this.inSearch = false
+      this.fetchUserList()
     },
     refreshStudentNoListStr() {
       if (this.newStudentNoList) {
-        this.newStudentNoListCount = this.newStudentNoList.length;
-        this.newStudentNoListStr = ""; // Clear
-        for (let newStudent of this.newStudentNoList) {
+        this.newStudentNoListCount = this.newStudentNoList.length
+        this.newStudentNoListStr = '' // Clear
+        for (const newStudent of this.newStudentNoList) {
           if (newStudent.studentNo === newStudent.username) {
-            this.newStudentNoListStr += newStudent.studentNo + "\n";
+            this.newStudentNoListStr += newStudent.studentNo + '\n'
           } else {
             this.newStudentNoListStr +=
-              newStudent.studentNo + " - " + newStudent.username + "\n";
+              newStudent.studentNo + ' - ' + newStudent.username + '\n'
           }
         }
       }
     },
     addUserInBulk(student) {
-      const apiUrl = this.Url.userBaseUrl;
-      let postData = {
+      const apiUrl = this.Url.userBaseUrl
+      const postData = {
         username: student.username,
         studentNo: student.studentNo,
-        email: student.studentNo + "@jmu.edu.cn",
+        email: student.studentNo + '@jmu.edu.cn',
         password: student.studentNo
-      };
+      }
       this.$axios
         .post(apiUrl, postData)
         .then(res => {
           if (res.status !== 200) {
             // this.$message.error("添加用户" + student.studentNo + "失败，内部错误！");
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
-              let studentNoIndexOf = this.newStudentNoList.indexOf(student);
+              const studentNoIndexOf = this.newStudentNoList.indexOf(student)
               if (studentNoIndexOf != -1) {
-                this.newStudentNoList.splice(studentNoIndexOf, 1);
-                this.studentNoAddedList.push(student.studentNo);
+                this.newStudentNoList.splice(studentNoIndexOf, 1)
+                this.studentNoAddedList.push(student.studentNo)
               }
             }
           }
-          this.currentAddProgress += 1;
+          this.currentAddProgress += 1
           if (this.currentAddProgress == this.newStudentNoListCount) {
             if (this.newStudentNoList.length == 0) {
               this.$message({
-                message: "批量添加用户操作完成，全部用户均添加成功！",
-                type: "success"
-              });
+                message: '批量添加用户操作完成，全部用户均添加成功！',
+                type: 'success'
+              })
             } else {
-              this.$message.error("批量添加用户操作完成，部分用户添加失败！");
+              this.$message.error('批量添加用户操作完成，部分用户添加失败！')
             }
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     onNewUserBatch() {
-      this.newStudentNoList.length = 0;
-      this.studentNoAddedList.length = 0;
-      this.currentAddProgress = 0;
+      this.newStudentNoList.length = 0
+      this.studentNoAddedList.length = 0
+      this.currentAddProgress = 0
       switch (this.activeName) {
-        case "addByStudentNo":
+        case 'addByStudentNo':
           if (
             this.isEmpty(this.newUserBatchByStudentNoData.start) ||
             this.isEmpty(this.newUserBatchByStudentNoData.end)
           ) {
-            this.$message.error("请检查起始学号与终止学号是否输入完整！");
+            this.$message.error('请检查起始学号与终止学号是否输入完整！')
           } else {
-            let startNo = Number(this.newUserBatchByStudentNoData.start);
-            let endNo = Number(this.newUserBatchByStudentNoData.end);
+            const startNo = Number(this.newUserBatchByStudentNoData.start)
+            const endNo = Number(this.newUserBatchByStudentNoData.end)
             if (startNo > endNo) {
-              this.$message.error("起始学号不能大于终止学号！");
+              this.$message.error('起始学号不能大于终止学号！')
             } else {
               for (let i = startNo; i <= endNo; i++) {
                 this.newStudentNoList.push({
                   username: i,
                   studentNo: i
-                });
+                })
               }
-              this.refreshStudentNoListStr();
-              this.newUserBatchConfirmDialogVisible = true;
-              this.newUserBatchDialogVisible = false;
+              this.refreshStudentNoListStr()
+              this.newUserBatchConfirmDialogVisible = true
+              this.newUserBatchDialogVisible = false
             }
           }
-          break;
-        case "addFromExcel":
+          break
+        case 'addFromExcel':
           if (
             this.selectedFile == null ||
-            this.selectedFile === "" ||
-            (!this.selectedFile.name.endsWith("xls") &&
-              !this.selectedFile.name.endsWith("xlsx"))
+            this.selectedFile === '' ||
+            (!this.selectedFile.name.endsWith('xls') &&
+              !this.selectedFile.name.endsWith('xlsx'))
           ) {
-            this.$message.error("请正确选择Excel文件！");
+            this.$message.error('请正确选择Excel文件！')
           } else {
-            this.parseExcel(this.selectedFile);
+            this.parseExcel(this.selectedFile)
           }
-          break;
+          break
         default:
-          break;
+          break
       }
     },
     onNewUser() {
-      this.$router.push({ path: "/user/add/" });
+      this.$router.push({ path: '/user/add/' })
     },
     customCompFunc(params) {
-      const index = params.index;
-      const userId = this.tableConfig.tableData[index].id;
-      if (params.type === "delete") {
-        let confirmMessage = "您确定要锁定该用户吗？";
-        let operationTypeString = "锁定";
-        if (this.tableConfig.tableData[index].status !== "正常") {
-          confirmMessage = "您确定要解锁该用户吗？";
-          operationTypeString = "解锁";
+      const index = params.index
+      const userId = this.tableConfig.tableData[index].id
+      if (params.type === 'delete') {
+        let confirmMessage = '您确定要锁定该用户吗？'
+        let operationTypeString = '锁定'
+        if (this.tableConfig.tableData[index].status !== '正常') {
+          confirmMessage = '您确定要解锁该用户吗？'
+          operationTypeString = '解锁'
         }
         if (confirm(confirmMessage)) {
           this.deleteUser(userId, operationTypeString, () => {
-            this.fetchUserList();
-          });
+            this.fetchUserList()
+          })
         }
-      } else if (params.type === "edit") {
-        this.$router.push({ path: "/user/edit/" + userId });
+      } else if (params.type === 'edit') {
+        this.$router.push({ path: '/user/edit/' + userId })
       }
     },
     pageChange(pageNum) {
-      this.pageNum = pageNum;
+      this.pageNum = pageNum
       if (this.inSearch) {
-        this.onSearch();
+        this.onSearch()
       } else {
-        this.fetchUserList();
+        this.fetchUserList()
       }
     },
     pageSizeChange(newPageSize) {
-      this.pageSize = newPageSize;
+      this.pageSize = newPageSize
       if (this.inSearch) {
-        this.onSearch();
+        this.onSearch()
       } else {
-        this.fetchUserList();
+        this.fetchUserList()
       }
     },
     fetchUserList() {
-      this.isLoading = true;
-      const apiUrl = this.Url.userBaseUrl;
+      this.isLoading = true
+      const apiUrl = this.Url.userBaseUrl
       this.$axios
         .get(apiUrl, {
           params: {
@@ -581,42 +581,42 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("获取用户列表失败，内部错误！");
+            this.$message.error('获取用户列表失败，内部错误！')
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records;
-              this.totalItems = resData.data.total;
+              this.tableConfig.tableData = resData.data.records
+              this.totalItems = resData.data.total
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
-          this.isLoading = false;
+          this.isLoading = false
         })
         .catch(err => {
-          this.$message.error("获取用户列表失败！");
-          this.isLoading = false;
-          console.log(err);
-        });
+          this.$message.error('获取用户列表失败！')
+          this.isLoading = false
+          console.log(err)
+        })
     },
     deleteUser(userId, operationTypeString, successCallback) {
-      const apiUrl = this.Url.userStatusUrl;
+      const apiUrl = this.Url.userStatusUrl
       this.$axios
         .put(apiUrl + userId)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error(operationTypeString + "用户失败，内部错误！");
+            this.$message.error(operationTypeString + '用户失败，内部错误！')
           } else {
-            successCallback();
+            successCallback()
           }
         })
         .catch(err => {
-          this.$message.error(operationTypeString + "用户失败！");
-          console.log(err);
-        });
+          this.$message.error(operationTypeString + '用户失败！')
+          console.log(err)
+        })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .bd {

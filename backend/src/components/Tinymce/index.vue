@@ -153,22 +153,22 @@ export default {
         // 整合七牛上传
         images_dataimg_filter(img) {
           setTimeout(() => {
-            const $image = $(img);
-            $image.removeAttr('width');
-            $image.removeAttr('height');
+            const $image = $(img)
+            $image.removeAttr('width')
+            $image.removeAttr('height')
             if ($image[0].height && $image[0].width) {
-              $image.attr('data-wscntype', 'image');
-              $image.attr('data-wscnh', $image[0].height);
-              $image.attr('data-wscnw', $image[0].width);
-              $image.addClass('wscnph');
+              $image.attr('data-wscntype', 'image')
+              $image.attr('data-wscnh', $image[0].height)
+              $image.attr('data-wscnw', $image[0].width)
+              $image.addClass('wscnph')
             }
-          }, 0);
+          }, 0)
           return img
         },
         images_upload_handler(blobInfo, success, failure, progress) {
-          progress(0);
-          let formData = new FormData();
-          formData.append('file', blobInfo.blob(), blobInfo.filename());
+          progress(0)
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob(), blobInfo.filename())
           Axios({
             method: 'POST',
             url: Url.uploadImageUrl,
@@ -177,10 +177,10 @@ export default {
             success(Url.showImageUrl + res.data.data.id)
             progress(100)
           })
-          .catch(() => {
-            failure('图片上传失败！')
-          })
-        },
+            .catch(() => {
+              failure('图片上传失败！')
+            })
+        }
       })
     },
     destroyTinymce() {

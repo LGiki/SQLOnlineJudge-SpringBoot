@@ -18,7 +18,7 @@
           <img id="hint-image" src="@/assets/import_excel_description.png" alt="import_excel_description">
           <form enctype="multipart/form-data">
             <el-form-item label="选择要导入的Excel">
-              <input @change="onExcelFileChange" id="excel-file" type=file name="files[]" class="el-button"/>
+              <input id="excel-file" type="file" name="files[]" class="el-button" @change="onExcelFileChange">
             </el-form-item>
           </form>
         </el-form>
@@ -124,46 +124,46 @@ export default {
       this.$router.back(-1)
     },
     parseExcel(file) {
-      let that = this;
-      var reader = new FileReader();
-      reader.onload = function (e) {
-          var data = e.target.result;
-          var workbook = XLSX.read(data, {
-              type: 'binary'
-          });
-          that.databaseDetail.testData = '';
-          workbook.SheetNames.forEach(function (sheetName) {
-              var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-              var json_object = JSON.stringify(XL_row_object);
-              var jsonResult = JSON.parse(json_object);
-              for (let index in jsonResult) {
-                  let row = jsonResult[index];
-                  let tableFieldList = [];
-                  let tableValues = [];
-                  for (let keyName in row) {
-                      tableFieldList.push(keyName);
-                      tableValues.push(row[keyName]);
-                  }
-                  let sqlExpression = that.constructSQLExpression(sheetName, tableFieldList, tableValues);
-                  that.databaseDetail.testData += sqlExpression + '\n';
-              }
-          })
-      };
-      reader.onerror = function (ex) {
-          console.log(ex);
-      };
-      reader.readAsBinaryString(file);
+      const that = this
+      var reader = new FileReader()
+      reader.onload = function(e) {
+        var data = e.target.result
+        var workbook = XLSX.read(data, {
+          type: 'binary'
+        })
+        that.databaseDetail.testData = ''
+        workbook.SheetNames.forEach(function(sheetName) {
+          var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName])
+          var json_object = JSON.stringify(XL_row_object)
+          var jsonResult = JSON.parse(json_object)
+          for (const index in jsonResult) {
+            const row = jsonResult[index]
+            const tableFieldList = []
+            const tableValues = []
+            for (const keyName in row) {
+              tableFieldList.push(keyName)
+              tableValues.push(row[keyName])
+            }
+            const sqlExpression = that.constructSQLExpression(sheetName, tableFieldList, tableValues)
+            that.databaseDetail.testData += sqlExpression + '\n'
+          }
+        })
+      }
+      reader.onerror = function(ex) {
+        console.log(ex)
+      }
+      reader.readAsBinaryString(file)
     },
     onExcelFileChange(event) {
-      this.selectedFile = event.target.files[0];
+      this.selectedFile = event.target.files[0]
     },
     importFromExcel() {
       if (this.selectedFile == null || this.selectedFile === '' || (!this.selectedFile.name.endsWith('xls') && !this.selectedFile.name.endsWith('xlsx'))) {
         this.$message.error('请正确选择Excel文件！')
-      }else{
-        this.parseExcel(this.selectedFile);
+      } else {
+        this.parseExcel(this.selectedFile)
       }
-      this.importFromExcelDialogVisible = false;
+      this.importFromExcelDialogVisible = false
     },
     addDatabase() {
       const apiUrl = this.Url.databaseBaseUrl
@@ -206,7 +206,7 @@ export default {
   width: auto;
   height: auto;
   max-width: 90%;
-  max-height: 90%; 
+  max-height: 90%;
 }
 </style>
 

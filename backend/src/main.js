@@ -72,22 +72,22 @@ Vue.use(VueHighlightJS)
 Vue.prototype.Url = Url
 Vue.prototype.$axios = Axios
 Vue.prototype.constructSQLExpression = function(tableName, tableFieldList, tableValues) {
-  let sqlExpression = 'INSERT INTO `' + tableName + '` (';
-        for (let i = 0; i < tableFieldList.length; i++) {
-            sqlExpression += '`' + tableFieldList[i] + '`';
-            if (i !== tableFieldList.length - 1) {
-                sqlExpression += ', ';
-            }
-        }
-        sqlExpression += ') VALUES (';
-        for (let i = 0; i < tableValues.length; i++) {
-            sqlExpression += '\'' + tableValues[i] + '\'';
-            if (i !== tableValues.length - 1) {
-                sqlExpression += ', ';
-            }
-        }
-        sqlExpression += ');';
-        return sqlExpression;
+  let sqlExpression = 'INSERT INTO `' + tableName + '` ('
+  for (let i = 0; i < tableFieldList.length; i++) {
+    sqlExpression += '`' + tableFieldList[i] + '`'
+    if (i !== tableFieldList.length - 1) {
+      sqlExpression += ', '
+    }
+  }
+  sqlExpression += ') VALUES ('
+  for (let i = 0; i < tableValues.length; i++) {
+    sqlExpression += '\'' + tableValues[i] + '\''
+    if (i !== tableValues.length - 1) {
+      sqlExpression += ', '
+    }
+  }
+  sqlExpression += ');'
+  return sqlExpression
 }
 router.beforeEach((to, from, next) => {
   if (!localStorage.JWT_TOKEN && to.path !== '/login') {

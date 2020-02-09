@@ -306,17 +306,17 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
-      if(this.inSearch){
+      if (this.inSearch) {
         this.onSearch();
-      }else{
+      } else {
         this.getSolutionList();
       }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize;
-      if(this.inSearch){
+      if (this.inSearch) {
         this.onSearch();
-      }else{
+      } else {
         this.getSolutionList();
       }
     },
