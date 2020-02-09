@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2019/10/5 15:59
  */
 @Slf4j
-public class JudgeRunnable implements Runnable{
+public class JudgeRunnable implements Runnable {
 
     private Integer solutionId;
 
-    public JudgeRunnable(Integer solutionId){
+    public JudgeRunnable(Integer solutionId) {
         this.solutionId = solutionId;
     }
 
@@ -28,7 +28,7 @@ public class JudgeRunnable implements Runnable{
         }
     }
 
-    public Integer getSolutionId(){
+    public Integer getSolutionId() {
         return this.solutionId;
     }
 }

@@ -109,5 +109,4 @@ public class AuthController {
         boolean success = userService.save(user);
         return ResponseUtil.buildResponse(success, "注册成功", "注册失败");
     }
-
 }

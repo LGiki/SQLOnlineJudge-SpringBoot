@@ -38,12 +38,12 @@ public class JwtTokenUtil implements Serializable {
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + EXPIRATION * 1000);
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userToken.getUsername())
-                .setIssuedAt(createdDate)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
+            .setClaims(claims)
+            .setSubject(userToken.getUsername())
+            .setIssuedAt(createdDate)
+            .setExpiration(expirationDate)
+            .signWith(SignatureAlgorithm.HS512, SECRET)
+            .compact();
     }
 
     /**
@@ -73,9 +73,9 @@ public class JwtTokenUtil implements Serializable {
 
     public static Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(token)
-                .getBody();
+            .setSigningKey(SECRET)
+            .parseClaimsJws(token)
+            .getBody();
     }
 
     public static String getUsernameFromToken(String token) {
@@ -104,7 +104,7 @@ public class JwtTokenUtil implements Serializable {
     public static Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
         final Date created = getIssuedAtDateFromToken(token);
         return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
-                && (!isTokenExpired(token) || ignoreTokenExpiration(token));
+            && (!isTokenExpired(token) || ignoreTokenExpiration(token));
     }
 
     public static String refreshToken(String token) {
@@ -114,9 +114,9 @@ public class JwtTokenUtil implements Serializable {
         claims.setIssuedAt(createdDate);
         claims.setExpiration(expirationDate);
         return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
+            .setClaims(claims)
+            .signWith(SignatureAlgorithm.HS512, SECRET)
+            .compact();
     }
 
     public static String getToken(HttpServletRequest request) {

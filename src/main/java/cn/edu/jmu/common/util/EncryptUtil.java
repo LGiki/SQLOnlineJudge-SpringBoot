@@ -24,7 +24,7 @@ public class EncryptUtil {
         // salt = username + salt
         // 迭代次数 2
         return new SimpleHash("MD5", password,
-                ByteSource.Util.bytes(username + salt), 2).toHex();
+            ByteSource.Util.bytes(username + salt), 2).toHex();
     }
 
     public static String generatorSalt() {

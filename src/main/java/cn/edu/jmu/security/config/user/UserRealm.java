@@ -6,7 +6,11 @@ import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -24,7 +28,6 @@ public class UserRealm extends AuthorizingRealm {
 
     @Resource
     private UserService userService;
-
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -57,6 +60,6 @@ public class UserRealm extends AuthorizingRealm {
         }
         // 4. 根据用户的情况，来构建AuthenticationInfo对象并返回，通常使用的实现类为SimpleAuthenticationInfo
         return new SimpleAuthenticationInfo(user, user.getPassword()
-                , ByteSource.Util.bytes(user.getUsername() + user.getSalt()), getName());
+            , ByteSource.Util.bytes(user.getUsername() + user.getSalt()), getName());
     }
 }

@@ -9,6 +9,7 @@ import cn.edu.jmu.system.entity.dto.ProblemDto;
 import cn.edu.jmu.system.mapper.ProblemMapper;
 import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.ProblemService;
+import cn.edu.jmu.system.service.inverter.ProblemInverter;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -33,7 +34,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Resource
     private DatabaseService databaseService;
 
-
     /**
      * 得到所有题目
      *
@@ -45,7 +45,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     public IPage<ProblemDto> getAll(ProblemDto problemDto, Page page) {
         Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problemDto));
-        return iPage.convert(cn.edu.jmu.system.service.mapper.ProblemMapper::toDto);
+        return iPage.convert(ProblemInverter::toDto);
     }
 
     /**
@@ -59,9 +59,9 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     public boolean update(Problem problem) {
         Problem select = baseMapper.selectById(problem.getId());
         BeanUtil.copyProperties(problem, select, true,
-                CopyOptions.create().setIgnoreNullValue(true)
-                        .setIgnoreError(true)
-                        .setIgnoreProperties("id", "solve", "submit"));
+            CopyOptions.create().setIgnoreNullValue(true)
+                .setIgnoreError(true)
+                .setIgnoreProperties("id", "solve", "submit"));
         return baseMapper.updateById(select) >= 1;
     }
 
@@ -71,7 +71,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
         Database database = databaseService.getById(problem.getDatabaseId());
         ProblemDetailToUserDto problemDetailToUserDto = new ProblemDetailToUserDto();
         problemDetailToUserDto.setCreateTable(database.getCreateTable());
-        cn.edu.jmu.system.service.mapper.ProblemMapper.toUserDetailDto(problem, problemDetailToUserDto);
+        ProblemInverter.toUserDetailDto(problem, problemDetailToUserDto);
         return problemDetailToUserDto;
     }
 
@@ -96,7 +96,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Override
     public List<Problem> getByDatabaseId(Integer databaseId) {
         return baseMapper.selectList(Wrappers.<Problem>lambdaQuery().eq(Problem::getDatabaseId, databaseId));
-
     }
 
     @Override
@@ -104,14 +103,12 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
         boolean success = true;
         for (Problem problem : problemDtoList) {
             String trueResult = PythonJudgeUtil.getTrueResult(problem.getAnswer(), problem.getDatabaseId())
-                    .getData()
-                    .getTrueResult();
+                .getData()
+                .getTrueResult();
             String trueResultMd5 = Md5Util.getStringMd5(trueResult);
             problem.setTrueResult(trueResultMd5);
             success = baseMapper.updateById(problem) == 1;
         }
         return success;
     }
-
-
 }

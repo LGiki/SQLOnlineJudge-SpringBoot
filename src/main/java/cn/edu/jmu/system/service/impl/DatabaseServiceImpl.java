@@ -1,12 +1,12 @@
 package cn.edu.jmu.system.service.impl;
 
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
-import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.mapper.DatabaseMapper;
 import cn.edu.jmu.system.service.DatabaseService;
+import cn.edu.jmu.system.service.inverter.DatabaseInverter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,7 +32,7 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
     public IPage<DatabaseDto> getAll(DatabaseDto databaseDto, Page page) {
         Page<Database> databasePage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Database> iPage = baseMapper.selectPage(databasePage, predicate(databaseDto));
-        return iPage.convert(cn.edu.jmu.system.service.mapper.DatabaseMapper::toDto);
+        return iPage.convert(DatabaseInverter::toDto);
     }
 
     /**
@@ -52,7 +52,6 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
                 queryWrapper.like(Database::getName, "%" + databaseDto.getName() + "%");
             }
             return queryWrapper;
-
         }
     }
 

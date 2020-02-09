@@ -17,7 +17,7 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.UserProblemService;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
-import cn.edu.jmu.system.service.impl.UserProblemServiceImpl;
+import cn.edu.jmu.system.service.inverter.SolutionInverter;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +31,14 @@ import java.util.concurrent.FutureTask;
 @Service
 public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> implements JudgeService {
 
-
     @Resource
     private UserService userService;
-
 
     @Resource
     private UserProblemService userProblemService;
 
     @Resource
     private ProblemService problemService;
-
 
     /**
      * 判题
@@ -52,14 +49,14 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
     @Override
     public boolean judge(SolutionDto solutionDto) {
         //判断solutionId是否合法
-        if(baseMapper.selectById(solutionDto.getId()) == null){
+        if (baseMapper.selectById(solutionDto.getId()) == null) {
             return false;
         }
         //调用线程池判题
         log.debug("solutionDtoId: " + solutionDto.getId().toString());
         JudgeResultJson result = executeTask(solutionDto.getId());
         //判题脚本结束
-        Solution solution = cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto);
+        Solution solution = SolutionInverter.toEntity(solutionDto);
         if (result != null) {
             String code = result.getCode();
             String resultCode = result.getData().getResult();
@@ -153,7 +150,6 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
         }
         return judgeResultJson;
     }
-
 
     private void increaseSubmitCount(User user, Problem problem) {
         user.setSubmit(user.getSubmit() + 1);

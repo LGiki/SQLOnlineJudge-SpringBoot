@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * 32位MD5加密工具
+ *
  * @author xeathen
  * @date 2019/10/8 16:17
  */
@@ -58,5 +59,4 @@ public class Md5Util {
         int d2 = n % 16;
         return HEX_ARRAY[d1] + HEX_ARRAY[d2];
     }
-
 }

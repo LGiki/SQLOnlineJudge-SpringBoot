@@ -38,5 +38,4 @@ public class JudgeResultDto implements Serializable {
      * 错误信息
      */
     private String errorMsg;
-
 }

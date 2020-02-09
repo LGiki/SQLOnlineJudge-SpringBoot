@@ -100,7 +100,6 @@ public class BasicResponse<T> {
         }
     }
 
-
     public interface BodyBuilder {
 
         /**
@@ -119,5 +118,4 @@ public class BasicResponse<T> {
          */
         <T> BasicResponse<T> build();
     }
-
 }

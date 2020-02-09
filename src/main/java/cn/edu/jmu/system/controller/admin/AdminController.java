@@ -1,13 +1,12 @@
 package cn.edu.jmu.system.controller.admin;
 
-
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.dto.AdminDto;
 import cn.edu.jmu.system.service.AdminService;
-import cn.edu.jmu.system.service.mapper.AdminMapper;
+import cn.edu.jmu.system.service.inverter.AdminInverter;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -16,7 +15,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -52,7 +58,7 @@ public class AdminController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> selectAdminById(@PathVariable("id") Integer id) {
         Admin admin = adminService.getById(id);
-        AdminDto adminDto = AdminMapper.toDto(admin);
+        AdminDto adminDto = AdminInverter.toDto(admin);
         return ResponseUtil.buildResponse("查询成功", adminDto);
     }
 
@@ -95,7 +101,7 @@ public class AdminController {
         if (ObjectUtils.isEmpty(adminDto.getPassword())) {
             return ResponseUtil.fail("密码不能为空");
         }
-        Admin admin = AdminMapper.toEntity(adminDto);
+        Admin admin = AdminInverter.toEntity(adminDto);
         String salt = EncryptUtil.generatorSalt();
         admin.setSalt(salt);
         admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), salt));

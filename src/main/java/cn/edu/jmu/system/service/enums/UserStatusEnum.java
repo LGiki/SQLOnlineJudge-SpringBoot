@@ -24,7 +24,6 @@ public enum UserStatusEnum {
 
     private final String displayName;
 
-
     UserStatusEnum(Boolean value, String displayName) {
         this.value = value;
         this.displayName = displayName;

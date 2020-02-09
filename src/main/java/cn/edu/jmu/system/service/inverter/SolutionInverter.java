@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.service.mapper;
+package cn.edu.jmu.system.service.inverter;
 
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.dto.SolutionCodeDto;
@@ -10,9 +10,9 @@ import cn.hutool.core.bean.copier.CopyOptions;
  * @author sgh
  * @date 2019/8/26 下午9:48
  */
-public class SolutionMapper {
+public class SolutionInverter {
 
-    private SolutionMapper() {
+    private SolutionInverter() {
     }
 
     public static SolutionDto toDto(Solution solution) {

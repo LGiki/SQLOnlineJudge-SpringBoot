@@ -5,7 +5,7 @@ import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.dto.SolutionCodeDto;
 import cn.edu.jmu.system.service.SolutionService;
-import cn.edu.jmu.system.service.mapper.SolutionMapper;
+import cn.edu.jmu.system.service.inverter.SolutionInverter;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +36,7 @@ public class SolutionController {
     public ResponseEntity<BasicResponse> getCode(@PathVariable(value = "id") Integer id) {
         Solution solution = solutionService.getById(id);
         if (!ObjectUtils.isEmpty(solution)) {
-            SolutionCodeDto solutionCodeDto = SolutionMapper.toSolutionCodeDto(solution);
+            SolutionCodeDto solutionCodeDto = SolutionInverter.toSolutionCodeDto(solution);
             return ResponseUtil.buildResponse("查询成功", solutionCodeDto);
         } else {
             return ResponseUtil.fail("无此解答");

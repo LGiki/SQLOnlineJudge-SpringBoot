@@ -15,7 +15,5 @@ public class SqlOnlineJudgeApplication {
     public static void main(String[] args) {
         SpringApplication.run(SqlOnlineJudgeApplication.class, args);
     }
-
-
 }
 

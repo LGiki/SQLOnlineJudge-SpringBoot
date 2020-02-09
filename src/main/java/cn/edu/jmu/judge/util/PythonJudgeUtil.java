@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
  * @date 2019/9/8 10:47
  */
 @Slf4j
-public  class PythonJudgeUtil {
+public class PythonJudgeUtil {
 
     /**
      * 调用Python脚本创建数据库
@@ -55,7 +55,6 @@ public  class PythonJudgeUtil {
         String[] args = new String[]{"python3", "./judger/judger.py", String.valueOf(solutionId)};
         log.debug("开始判题");
         return pythonAction(args);
-
     }
 
     /**

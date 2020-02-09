@@ -3,8 +3,6 @@ package cn.edu.jmu.system.service;
 import cn.edu.jmu.system.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
-
 /**
  * <p>
  * 服务类

@@ -6,6 +6,7 @@ import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.mapper.UserMapper;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
+import cn.edu.jmu.system.service.inverter.UserInverter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -32,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column) {
         Page<User> userPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<User> iPage = baseMapper.selectPage(userPage, predicate(userDto, column));
-        return iPage.convert(cn.edu.jmu.system.service.mapper.UserMapper::toDto);
+        return iPage.convert(UserInverter::toDto);
     }
 
     /**
@@ -48,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userDto.getPassword() != null) {
             userDto.setPassword(EncryptUtil.encryption(userDto.getUsername(), userDto.getPassword(), user.getSalt()));
         }
-        cn.edu.jmu.system.service.mapper.UserMapper.toEntity(userDto, user);
+        UserInverter.toEntity(userDto, user);
         return baseMapper.updateById(user) >= 1;
     }
 

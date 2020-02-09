@@ -41,5 +41,4 @@ public class UserProblem implements Serializable {
      */
     @TableField(value = "state")
     private Boolean state;
-
 }

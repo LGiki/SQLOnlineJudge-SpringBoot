@@ -21,6 +21,7 @@ public interface JudgeService extends IService<Solution> {
 
     /**
      * 获取正确答案
+     *
      * @param answer
      * @param databaseId
      * @return String
@@ -29,10 +30,10 @@ public interface JudgeService extends IService<Solution> {
 
     /**
      * 获取正确答案的md5值
+     *
      * @param answer
      * @param databaseId
      * @return String
      */
     JudgeResultJson getTrueResultMd5(String answer, Integer databaseId);
-
 }

@@ -13,7 +13,6 @@ import java.util.concurrent.Callable;
 @Slf4j
 public class JudgeCallable implements Callable<JudgeResultJson> {
 
-
     private Integer solutionId;
 
     public JudgeCallable(Integer solutionId) {
@@ -21,7 +20,7 @@ public class JudgeCallable implements Callable<JudgeResultJson> {
     }
 
     @Override
-    public JudgeResultJson call(){
+    public JudgeResultJson call() {
         try {
             JudgeResultJson json = PythonJudgeUtil.sqlJudge(solutionId);
             log.debug("判题结束");
@@ -33,9 +32,7 @@ public class JudgeCallable implements Callable<JudgeResultJson> {
         return null;
     }
 
-    public Integer getSolutionId(){
+    public Integer getSolutionId() {
         return this.solutionId;
     }
-
-
 }

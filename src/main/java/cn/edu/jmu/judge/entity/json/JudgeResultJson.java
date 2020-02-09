@@ -32,6 +32,4 @@ public class JudgeResultJson implements Serializable {
      */
     @SerializedName("message")
     private String message;
-
-
 }

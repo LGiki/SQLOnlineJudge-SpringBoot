@@ -10,7 +10,11 @@ import cn.edu.jmu.system.service.RoleService;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -73,6 +77,6 @@ public class AdminRealm extends AuthorizingRealm {
         }
         // 4. 根据用户的情况，来构建AuthenticationInfo对象并返回，通常使用的实现类为SimpleAuthenticationInfo
         return new SimpleAuthenticationInfo(admin, admin.getPassword()
-                , ByteSource.Util.bytes(admin.getUsername() + admin.getSalt()), getName());
+            , ByteSource.Util.bytes(admin.getUsername() + admin.getSalt()), getName());
     }
 }

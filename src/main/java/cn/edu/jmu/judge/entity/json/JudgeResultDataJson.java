@@ -2,7 +2,6 @@ package cn.edu.jmu.judge.entity.json;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -32,13 +31,9 @@ public class JudgeResultDataJson implements Serializable {
     @SerializedName("runError")
     private String runError;
 
-
     /**
      * 正确结果
      */
     @SerializedName("trueResult")
     private String trueResult;
-
-
-
 }

@@ -7,7 +7,7 @@ import cn.edu.jmu.common.util.ValidateUtil;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.service.UserService;
-import cn.edu.jmu.system.service.mapper.UserMapper;
+import cn.edu.jmu.system.service.inverter.UserInverter;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -17,10 +17,16 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-
 
 /**
  * @author sgh
@@ -50,7 +56,7 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
         User user = userService.getById(id);
-        UserDto userDto = UserMapper.toDto(user);
+        UserDto userDto = UserInverter.toDto(user);
         return ResponseUtil.buildResponse("查询成功", userDto);
     }
 
@@ -84,7 +90,6 @@ public class UserController {
         return ResponseUtil.buildResponse(success, "更改成功", "更改失败");
     }
 
-
     /**
      * 添加用户
      */
@@ -108,7 +113,7 @@ public class UserController {
         if (ObjectUtil.isNotNull(byStudentNo)) {
             return ResponseUtil.fail("该学号已存在");
         }
-        User user = UserMapper.toEntity(userDto);
+        User user = UserInverter.toEntity(userDto);
         String salt = EncryptUtil.generatorSalt();
         user.setSalt(salt);
         user.setPassword(EncryptUtil.encryption(user.getUsername(), user.getPassword(), salt));

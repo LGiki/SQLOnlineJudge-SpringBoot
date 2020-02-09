@@ -108,7 +108,6 @@ public class ValidateUtil {
         return match(regex, str);
     }
 
-
     /**
      * @param regex 正则表达式字符串
      * @param str   要匹配的字符串

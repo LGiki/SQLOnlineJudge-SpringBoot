@@ -11,13 +11,14 @@ public class ThreadPoolUtils {
 
     private static volatile ExecutorService executor;
 
-    private ThreadPoolUtils(){
+    private ThreadPoolUtils() {
 
     }
-    public static ExecutorService getInstance(){
-        if (executor == null){
-            synchronized (ThreadPoolUtils.class){
-                if (executor == null){
+
+    public static ExecutorService getInstance() {
+        if (executor == null) {
+            synchronized (ThreadPoolUtils.class) {
+                if (executor == null) {
                     executor = Executors.newFixedThreadPool(10);
                 }
             }

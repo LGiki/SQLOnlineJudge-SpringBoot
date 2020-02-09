@@ -8,7 +8,7 @@ import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
 import cn.edu.jmu.system.service.ProblemService;
-import cn.edu.jmu.system.service.mapper.ProblemMapper;
+import cn.edu.jmu.system.service.inverter.ProblemInverter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,16 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -53,7 +62,7 @@ public class ProblemController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getProblemById(@PathVariable("id") Integer id) {
         Problem problem = problemService.getById(id);
-        ProblemDetailDto problemDetailDto = ProblemMapper.toDetail(problem);
+        ProblemDetailDto problemDetailDto = ProblemInverter.toDetail(problem);
         return ResponseUtil.buildResponse("查询成功", problemDetailDto);
     }
 
@@ -72,7 +81,7 @@ public class ProblemController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated ProblemDetailDto problemDetailDto) {
-        Problem problem = ProblemMapper.toEntity(problemDetailDto);
+        Problem problem = ProblemInverter.toEntity(problemDetailDto);
         if (problemService.saveOrUpdate(problem)) {
             log.debug(problem.toString());
             JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
@@ -87,7 +96,6 @@ public class ProblemController {
         } else {
             problemService.removeById(problem.getId());
             return ResponseUtil.fail("新增题目失败");
-
         }
     }
 
@@ -100,7 +108,7 @@ public class ProblemController {
             return ResponseUtil.fail("题目ID不存在");
         }
         if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
-            Problem problem = ProblemMapper.toEntity(problemDetailDto);
+            Problem problem = ProblemInverter.toEntity(problemDetailDto);
             // 更新数据库信息
             JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
             if ("0".equals(judgeResultJson.getCode())) {

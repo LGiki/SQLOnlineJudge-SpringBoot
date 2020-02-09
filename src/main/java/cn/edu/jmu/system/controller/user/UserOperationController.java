@@ -15,8 +15,8 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserProblemService;
 import cn.edu.jmu.system.service.UserService;
-import cn.edu.jmu.system.service.mapper.SolutionMapper;
-import cn.edu.jmu.system.service.mapper.UserMapper;
+import cn.edu.jmu.system.service.inverter.SolutionInverter;
+import cn.edu.jmu.system.service.inverter.UserInverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -24,7 +24,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -62,7 +68,7 @@ public class UserOperationController {
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<BasicResponse> get(@PathVariable(value = "id") Integer id) {
         User user = userService.getById(id);
-        UserDto userDto = UserMapper.toDto(user);
+        UserDto userDto = UserInverter.toDto(user);
         return ResponseUtil.buildResponse("查询成功", userDto);
     }
 
@@ -94,7 +100,7 @@ public class UserOperationController {
         User user = (User) subject.getPrincipal();
         Solution solution = solutionService.getById(id);
         if (!ObjectUtils.isEmpty(solution) && solution.getUid().equals(user.getId())) {
-            SolutionCodeDto solutionCodeDto = SolutionMapper.toSolutionCodeDto(solution);
+            SolutionCodeDto solutionCodeDto = SolutionInverter.toSolutionCodeDto(solution);
             return ResponseUtil.buildResponse(solutionCodeDto);
         } else {
             return ResponseUtil.fail("无权限");

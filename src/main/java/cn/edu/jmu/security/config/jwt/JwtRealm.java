@@ -37,7 +37,6 @@ public class JwtRealm extends AuthorizingRealm {
         this.setCredentialsMatcher(new JwtCredentialsMatcher());
     }
 
-
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.debug("JwtRealm-------------------->doGetAuthorizationInfo");
@@ -46,7 +45,7 @@ public class JwtRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
-            throws AuthenticationException {
+        throws AuthenticationException {
         log.debug("JwtRealm-------------------->doGetAuthenticationInfo");
         UserToken userToken = (UserToken) authenticationToken;
         String token = userToken.getToken();

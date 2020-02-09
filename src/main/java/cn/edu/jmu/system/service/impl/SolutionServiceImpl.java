@@ -10,6 +10,7 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
+import cn.edu.jmu.system.service.inverter.SolutionInverter;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -48,26 +49,26 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         IPage<Solution> iPage;
         if (ObjectUtil.isNull(solutionDto)) {
             iPage = baseMapper.selectPage(solutionPage
-                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
         } else {
             if (solutionDto.getId() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                        , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
-                                .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
+                    , new QueryWrapper<>(SolutionInverter
+                        .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getUid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                        , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
-                                .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
+                    , new QueryWrapper<>(SolutionInverter
+                        .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getPid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                        , new QueryWrapper<>(cn.edu.jmu.system.service.mapper.SolutionMapper
-                                .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
+                    , new QueryWrapper<>(SolutionInverter
+                        .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
             } else {
                 iPage = baseMapper.selectPage(solutionPage
-                        , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
             }
         }
-        IPage<SolutionDto> convert = iPage.convert(cn.edu.jmu.system.service.mapper.SolutionMapper::toDto);
+        IPage<SolutionDto> convert = iPage.convert(SolutionInverter::toDto);
         convert.getRecords().forEach(this::addMessage);
         return convert;
     }
@@ -77,9 +78,9 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         //设置状态值
         solutionDto.setResult(SolutionResultEnum.JUDGING);
         //向solution表插入记录
-        Solution solution = cn.edu.jmu.system.service.mapper.SolutionMapper.toEntity(solutionDto);
+        Solution solution = SolutionInverter.toEntity(solutionDto);
         int num = baseMapper.insert(solution);
-        judgeService.judge(cn.edu.jmu.system.service.mapper.SolutionMapper.toDto(solution));
+        judgeService.judge(SolutionInverter.toDto(solution));
         return num >= 1;
     }
 

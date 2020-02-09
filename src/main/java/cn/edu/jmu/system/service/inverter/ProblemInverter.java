@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.service.mapper;
+package cn.edu.jmu.system.service.inverter;
 
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
@@ -11,7 +11,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
  * @author sgh
  * @date 2019/8/26 下午8:56
  */
-public class ProblemMapper {
+public class ProblemInverter {
 
     public static ProblemDto toDto(Problem problem) {
         ProblemDto problemDto = new ProblemDto();
@@ -21,7 +21,7 @@ public class ProblemMapper {
 
     public static void toUserDetailDto(Problem problem, ProblemDetailToUserDto problemDetailToUserDto) {
         BeanUtil.copyProperties(problem, problemDetailToUserDto, true, CopyOptions.create()
-                .setIgnoreNullValue(true));
+            .setIgnoreNullValue(true));
     }
 
     public static ProblemDetailDto toDetail(Problem problem) {
@@ -33,8 +33,8 @@ public class ProblemMapper {
     public static Problem toEntity(ProblemDetailDto problemDetailDto) {
         Problem problem = new Problem();
         BeanUtil.copyProperties(problemDetailDto, problem, true, CopyOptions.create()
-                .setIgnoreNullValue(true)
-                .setIgnoreProperties("solve", "submit"));
+            .setIgnoreNullValue(true)
+            .setIgnoreProperties("solve", "submit"));
         return problem;
     }
 }

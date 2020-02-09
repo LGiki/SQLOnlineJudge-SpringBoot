@@ -8,14 +8,22 @@ import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.ProblemService;
-import cn.edu.jmu.system.service.mapper.DatabaseMapper;
+import cn.edu.jmu.system.service.inverter.DatabaseInverter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -51,7 +59,7 @@ public class DatabaseController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getDatabaseById(@PathVariable("id") Integer id) {
         Database database = databaseService.getById(id);
-        DatabaseDto databaseDto = DatabaseMapper.toDto(database);
+        DatabaseDto databaseDto = DatabaseInverter.toDto(database);
         return ResponseUtil.buildResponse("查询成功", databaseDto);
     }
 
@@ -70,7 +78,7 @@ public class DatabaseController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
-        Database database = DatabaseMapper.toEntity(databaseDto);
+        Database database = DatabaseInverter.toEntity(databaseDto);
         if (databaseService.saveOrUpdate(database)) {
             databaseDto.setId(database.getId());
             JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
@@ -93,19 +101,19 @@ public class DatabaseController {
     public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id, @RequestBody @Validated DatabaseDto databaseDto) {
         if (databaseDto.getId() != null && id.equals(databaseDto.getId())) {
             // 更新数据库信息
-            Database database = DatabaseMapper.toEntity(databaseDto);
+            Database database = DatabaseInverter.toEntity(databaseDto);
             JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
             if ("1".equals(judgeResultJson.getCode())) {
                 return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
             } else {
                 List<Problem> problemList = problemService.getByDatabaseId(database.getId());
-                if (problemService.updateTrueResult(problemList)){
-                    if (databaseService.saveOrUpdate(database)){
+                if (problemService.updateTrueResult(problemList)) {
+                    if (databaseService.saveOrUpdate(database)) {
                         return ResponseUtil.ok("更新数据库成功");
-                    }else {
+                    } else {
                         return ResponseUtil.fail("更新数据库失败");
                     }
-                }else {
+                } else {
                     return ResponseUtil.fail("更新题目正确答案失败");
                 }
             }

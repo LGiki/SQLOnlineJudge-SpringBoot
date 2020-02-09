@@ -24,5 +24,4 @@ public class JwtCredentialsMatcher implements CredentialsMatcher {
         }
         return false;
     }
-
 }

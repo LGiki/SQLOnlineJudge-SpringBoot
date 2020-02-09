@@ -29,7 +29,7 @@ public class JwtFilter extends AuthenticatingFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
-            throws UnauthorizedException {
+        throws UnauthorizedException {
         boolean allowed = false;
         try {
             allowed = executeLogin(request, response);
