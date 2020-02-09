@@ -28,6 +28,10 @@ const Url = {
   // 更改用户状态接口
   userStatusUrl: BaseUrl + '/users/status/',
   // 更改管理员状态接口
-  adminStatusUrl: BaseUrl + '/admins/status/'
+  adminStatusUrl: BaseUrl + '/admins/status/',
+  // 上传图片接口
+  uploadImageUrl: BaseUrl + '/util/upload',
+  // 图片显示接口
+  showImageUrl: ApiHost + '/api/public/image/'
 }
 export default Url

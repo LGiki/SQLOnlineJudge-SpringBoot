@@ -4,6 +4,7 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.GenerateUtil;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.common.util.ValidateUtil;
+import cn.edu.jmu.system.config.UploadImageConfig;
 import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.UploadImage;
 import cn.edu.jmu.system.service.UploadImageService;
@@ -27,7 +28,6 @@ import java.io.IOException;
 @RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
 @RequestMapping("/api/admin/util")
 public class UtilController {
-    private static final String DEFAULT_UPLOAD_DIR = "uploaded_images/";
 
     @Resource
     private UploadImageService uploadImageService;
@@ -41,7 +41,7 @@ public class UtilController {
         if (!ValidateUtil.isImage(fileName)) {
             return ResponseUtil.fail("上传失败，请选择正确的图片文件！");
         }
-        File uploadDir = new File(DEFAULT_UPLOAD_DIR);
+        File uploadDir = new File(UploadImageConfig.DEFAULT_UPLOAD_DIR);
         if (!uploadDir.exists() && !uploadDir.mkdir()) {
             return ResponseUtil.fail("上传失败，系统内部错误，请联系网站管理员！");
         }

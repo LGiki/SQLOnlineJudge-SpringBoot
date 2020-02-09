@@ -16,7 +16,8 @@ import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
-
+import Axios from 'axios'
+import Url from '../../urlConfig'
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
@@ -166,23 +167,19 @@ export default {
         },
         images_upload_handler(blobInfo, success, failure, progress) {
           progress(0);
-          
-          // progress(0);
-          // const token = _this.$store.getters.token;
-          // getToken(token).then(response => {
-          //   const url = response.data.qiniu_url;
-          //   const formData = new FormData();
-          //   formData.append('token', response.data.qiniu_token);
-          //   formData.append('key', response.data.qiniu_key);
-          //   formData.append('file', blobInfo.blob(), url);
-          //   upload(formData).then(() => {
-          //     success(url);
-          //     progress(100);
-          //   })
-          // }).catch(err => {
-          //   failure('出现未知问题，刷新页面，或者联系程序员')
-          //   console.log(err);
-          // });
+          let formData = new FormData();
+          formData.append('file', blobInfo.blob(), blobInfo.filename());
+          Axios({
+            method: 'POST',
+            url: Url.uploadImageUrl,
+            data: formData
+          }).then((res) => {
+            success(Url.showImageUrl + res.data.data.id)
+            progress(100)
+          })
+          .catch(() => {
+            failure('图片上传失败！')
+          })
         },
       })
     },
