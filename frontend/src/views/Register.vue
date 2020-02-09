@@ -17,7 +17,7 @@
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>perm_identity</md-icon>
                 <label>学号</label>
-                <md-input v-model="studentNo"></md-input>
+                <md-input type="number" v-model="studentNo"></md-input>
               </md-field>
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>email</md-icon>
