@@ -281,11 +281,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
-      this.getProblemList();
+      if(this.inSearch) {
+        this.onSearch();
+      }else{
+        this.getProblemList();
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize;
-      this.getProblemList();
+      if(this.inSearch) {
+        this.onSearch();
+      }else{
+        this.getProblemList();
+      }
     },
     onSearch() {
       const keyword = this.searchKeyword.trim();

@@ -82,13 +82,21 @@ public class AuthController {
      * 用户注册
      */
     @PostMapping(value = "/user/register")
-    public ResponseEntity<BasicResponse> userRegister(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
+    public ResponseEntity<BasicResponse> userRegister(@RequestParam String username, @RequestParam String password, @RequestParam String email, @RequestParam String studentNo) {
         if (!ValidateUtil.isEmail(email)) {
-            return ResponseUtil.fail("注册失败");
+            return ResponseUtil.fail("注册失败，请检查邮箱格式是否正确！");
         }
         User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
         if (ObjectUtil.isNotNull(byId)) {
-            return ResponseUtil.fail("注册失败,该用户名已存在");
+            return ResponseUtil.fail("注册失败，该用户名已存在！");
+        }
+        User byEmail = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, email));
+        if (ObjectUtil.isNotNull(byEmail)) {
+            return ResponseUtil.fail("注册失败，该邮箱已存在！");
+        }
+        User byStudentNo = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getStudentNo, studentNo));
+        if (ObjectUtil.isNotNull(byStudentNo)) {
+            return ResponseUtil.fail("注册失败，该学号已存在！");
         }
         User user = new User();
         user.setUsername(username);
@@ -97,6 +105,7 @@ public class AuthController {
         password = EncryptUtil.encryption(username, password, salt);
         user.setPassword(password);
         user.setEmail(email);
+        user.setStudentNo(studentNo);
         boolean success = userService.save(user);
         return ResponseUtil.buildResponse(success, "注册成功", "注册失败");
     }

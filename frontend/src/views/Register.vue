@@ -15,6 +15,11 @@
                 <md-input v-model="username"></md-input>
               </md-field>
               <md-field class="md-form-group" slot="inputs">
+                <md-icon>perm_identity</md-icon>
+                <label>学号</label>
+                <md-input v-model="studentNo"></md-input>
+              </md-field>
+              <md-field class="md-form-group" slot="inputs">
                 <md-icon>email</md-icon>
                 <label>邮箱</label>
                 <md-input v-model="email"></md-input>
@@ -58,6 +63,7 @@ export default {
   bodyClass: "login-page",
   data() {
     return {
+      studentNo: "",
       username: "",
       password: "",
       repassword: "",
@@ -87,7 +93,8 @@ export default {
         this.isEmpty(this.username) ||
         this.isEmpty(this.password) ||
         this.isEmpty(this.repassword) ||
-        this.isEmpty(this.email)
+        this.isEmpty(this.email) ||
+        this.isEmpty(this.studentNo)
       ) {
         alert("请确认表单输入完整！");
         return;
@@ -101,9 +108,10 @@ export default {
         return;
       }
       let postData = qs.stringify({
-        email: this.email,
-        username: this.username,
-        password: this.password
+        email: this.email.trim(),
+        username: this.username.trim(),
+        password: this.password,
+        studentNo: this.studentNo.trim()
       });
       this.$axios
         .post(this.Url.register, postData)

@@ -72,7 +72,7 @@ export default {
         return;
       }
       let postData = qs.stringify({
-        username: this.username,
+        username: this.username.trim(),
         password: this.password
       });
       this.$axios

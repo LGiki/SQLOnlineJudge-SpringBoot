@@ -3,6 +3,7 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.EncryptUtil;
 import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.common.util.ValidateUtil;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.service.UserService;
@@ -89,6 +90,9 @@ public class UserController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insert(@RequestBody @Validated UserDto userDto) {
+        if (!ValidateUtil.isEmail(userDto.getEmail())) {
+            return ResponseUtil.fail("请检查邮箱地址是否正确！");
+        }
         User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, userDto.getUsername()));
         if (ObjectUtil.isNotNull(byId)) {
             return ResponseUtil.fail("该用户名已存在");
@@ -98,7 +102,11 @@ public class UserController {
         }
         User byEmail = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
         if (ObjectUtil.isNotNull(byEmail)) {
-            return ResponseUtil.fail("该邮箱已被注册");
+            return ResponseUtil.fail("该邮箱已存在");
+        }
+        User byStudentNo = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getStudentNo, userDto.getStudentNo()));
+        if (ObjectUtil.isNotNull(byStudentNo)) {
+            return ResponseUtil.fail("该学号已存在");
         }
         User user = UserMapper.toEntity(userDto);
         String salt = EncryptUtil.generatorSalt();
