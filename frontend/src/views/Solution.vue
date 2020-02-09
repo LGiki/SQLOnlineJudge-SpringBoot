@@ -306,11 +306,19 @@ export default {
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
-      this.getSolutionList();
+      if(this.inSearch){
+        this.onSearch();
+      }else{
+        this.getSolutionList();
+      }
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize;
-      this.getSolutionList();
+      if(this.inSearch){
+        this.onSearch();
+      }else{
+        this.getSolutionList();
+      }
     },
     getSolutionList() {
       this.isLoading = true;

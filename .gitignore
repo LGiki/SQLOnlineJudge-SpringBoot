@@ -5,6 +5,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 uploaded_images/
+judger/judgeDB
 
 ### STS ###
 .apt_generated
