@@ -340,6 +340,7 @@ export default {
           var json_object = JSON.stringify(XL_row_object)
           var jsonResult = JSON.parse(json_object)
           for (const row of jsonResult) {
+            Object.keys(row).map(key => row[key.trim()] = typeof row[key] == 'string' ? row[key].trim() : row[key])
             if (isFileFormatCorrect && row.hasOwnProperty('学号')) {
               const newStudent = {}
               if (row.hasOwnProperty('姓名')) {
