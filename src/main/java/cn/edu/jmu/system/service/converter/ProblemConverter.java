@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.service.inverter;
+package cn.edu.jmu.system.service.converter;
 
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
@@ -11,7 +11,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
  * @author sgh
  * @date 2019/8/26 下午8:56
  */
-public class ProblemInverter {
+public class ProblemConverter {
 
     public static ProblemDto toDto(Problem problem) {
         ProblemDto problemDto = new ProblemDto();

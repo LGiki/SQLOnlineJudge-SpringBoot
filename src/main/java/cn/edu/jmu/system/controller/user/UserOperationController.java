@@ -15,8 +15,8 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserProblemService;
 import cn.edu.jmu.system.service.UserService;
-import cn.edu.jmu.system.service.inverter.SolutionInverter;
-import cn.edu.jmu.system.service.inverter.UserInverter;
+import cn.edu.jmu.system.service.converter.SolutionConverter;
+import cn.edu.jmu.system.service.converter.UserConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -68,7 +68,7 @@ public class UserOperationController {
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<BasicResponse> get(@PathVariable(value = "id") Integer id) {
         User user = userService.getById(id);
-        UserDto userDto = UserInverter.toDto(user);
+        UserDto userDto = UserConverter.toDto(user);
         return ResponseUtil.buildResponse("查询成功", userDto);
     }
 
@@ -100,7 +100,7 @@ public class UserOperationController {
         User user = (User) subject.getPrincipal();
         Solution solution = solutionService.getById(id);
         if (!ObjectUtils.isEmpty(solution) && solution.getUid().equals(user.getId())) {
-            SolutionCodeDto solutionCodeDto = SolutionInverter.toSolutionCodeDto(solution);
+            SolutionCodeDto solutionCodeDto = SolutionConverter.toSolutionCodeDto(solution);
             return ResponseUtil.buildResponse(solutionCodeDto);
         } else {
             return ResponseUtil.fail("无权限");

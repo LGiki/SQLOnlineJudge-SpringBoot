@@ -7,7 +7,7 @@ import cn.edu.jmu.common.util.ValidateUtil;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
 import cn.edu.jmu.system.service.UserService;
-import cn.edu.jmu.system.service.inverter.UserInverter;
+import cn.edu.jmu.system.service.converter.UserConverter;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -56,7 +56,7 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
         User user = userService.getById(id);
-        UserDto userDto = UserInverter.toDto(user);
+        UserDto userDto = UserConverter.toDto(user);
         return ResponseUtil.buildResponse("查询成功", userDto);
     }
 
@@ -113,7 +113,7 @@ public class UserController {
         if (ObjectUtil.isNotNull(byStudentNo)) {
             return ResponseUtil.fail("该学号已存在");
         }
-        User user = UserInverter.toEntity(userDto);
+        User user = UserConverter.toEntity(userDto);
         String salt = EncryptUtil.generatorSalt();
         user.setSalt(salt);
         user.setPassword(EncryptUtil.encryption(user.getUsername(), user.getPassword(), salt));

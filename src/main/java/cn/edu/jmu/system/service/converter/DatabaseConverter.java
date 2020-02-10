@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.service.inverter;
+package cn.edu.jmu.system.service.converter;
 
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
@@ -9,7 +9,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
  * @author sgh
  * @date 2019/8/26 下午8:36
  */
-public class DatabaseInverter {
+public class DatabaseConverter {
 
     public static DatabaseDto toDto(Database database) {
         DatabaseDto databaseDto = new DatabaseDto();

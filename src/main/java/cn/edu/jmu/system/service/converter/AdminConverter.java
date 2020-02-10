@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.service.inverter;
+package cn.edu.jmu.system.service.converter;
 
 import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.dto.AdminDto;
@@ -9,7 +9,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
  * @author sgh
  * @date 2019/8/26 下午6:16
  */
-public class AdminInverter {
+public class AdminConverter {
 
     public static AdminDto toDto(Admin admin) {
         AdminDto adminDto = new AdminDto();

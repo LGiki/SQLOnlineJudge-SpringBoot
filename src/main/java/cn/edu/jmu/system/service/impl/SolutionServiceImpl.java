@@ -9,8 +9,8 @@ import cn.edu.jmu.system.mapper.SolutionMapper;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.converter.SolutionConverter;
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
-import cn.edu.jmu.system.service.inverter.SolutionInverter;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -53,22 +53,22 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         } else {
             if (solutionDto.getId() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionInverter
+                    , new QueryWrapper<>(SolutionConverter
                         .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getUid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionInverter
+                    , new QueryWrapper<>(SolutionConverter
                         .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getPid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionInverter
+                    , new QueryWrapper<>(SolutionConverter
                         .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
             } else {
                 iPage = baseMapper.selectPage(solutionPage
                     , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
             }
         }
-        IPage<SolutionDto> convert = iPage.convert(SolutionInverter::toDto);
+        IPage<SolutionDto> convert = iPage.convert(SolutionConverter::toDto);
         convert.getRecords().forEach(this::addMessage);
         return convert;
     }
@@ -78,9 +78,9 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         //设置状态值
         solutionDto.setResult(SolutionResultEnum.JUDGING);
         //向solution表插入记录
-        Solution solution = SolutionInverter.toEntity(solutionDto);
+        Solution solution = SolutionConverter.toEntity(solutionDto);
         int num = baseMapper.insert(solution);
-        judgeService.judge(SolutionInverter.toDto(solution));
+        judgeService.judge(SolutionConverter.toDto(solution));
         return num >= 1;
     }
 

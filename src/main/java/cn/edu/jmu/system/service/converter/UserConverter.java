@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.service.inverter;
+package cn.edu.jmu.system.service.converter;
 
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.UserDto;
@@ -9,7 +9,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
  * @author sgh
  * @date 2019/8/26 下午3:54
  */
-public class UserInverter {
+public class UserConverter {
 
     public static UserDto toDto(User user) {
         UserDto userDto = new UserDto();

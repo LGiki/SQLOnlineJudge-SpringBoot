@@ -9,7 +9,7 @@ import cn.edu.jmu.system.entity.dto.ProblemDto;
 import cn.edu.jmu.system.mapper.ProblemMapper;
 import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.ProblemService;
-import cn.edu.jmu.system.service.inverter.ProblemInverter;
+import cn.edu.jmu.system.service.converter.ProblemConverter;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -45,7 +45,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     public IPage<ProblemDto> getAll(ProblemDto problemDto, Page page) {
         Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problemDto));
-        return iPage.convert(ProblemInverter::toDto);
+        return iPage.convert(ProblemConverter::toDto);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
         Database database = databaseService.getById(problem.getDatabaseId());
         ProblemDetailToUserDto problemDetailToUserDto = new ProblemDetailToUserDto();
         problemDetailToUserDto.setCreateTable(database.getCreateTable());
-        ProblemInverter.toUserDetailDto(problem, problemDetailToUserDto);
+        ProblemConverter.toUserDetailDto(problem, problemDetailToUserDto);
         return problemDetailToUserDto;
     }
 

@@ -16,8 +16,8 @@ import cn.edu.jmu.system.mapper.SolutionMapper;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.UserProblemService;
 import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.converter.SolutionConverter;
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
-import cn.edu.jmu.system.service.inverter.SolutionInverter;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +56,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
         log.debug("solutionDtoId: " + solutionDto.getId().toString());
         JudgeResultJson result = executeTask(solutionDto.getId());
         //判题脚本结束
-        Solution solution = SolutionInverter.toEntity(solutionDto);
+        Solution solution = SolutionConverter.toEntity(solutionDto);
         if (result != null) {
             String code = result.getCode();
             String resultCode = result.getData().getResult();

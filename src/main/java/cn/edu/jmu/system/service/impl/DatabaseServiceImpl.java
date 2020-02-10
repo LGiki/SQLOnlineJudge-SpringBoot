@@ -6,7 +6,7 @@ import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.mapper.DatabaseMapper;
 import cn.edu.jmu.system.service.DatabaseService;
-import cn.edu.jmu.system.service.inverter.DatabaseInverter;
+import cn.edu.jmu.system.service.converter.DatabaseConverter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,7 +32,7 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
     public IPage<DatabaseDto> getAll(DatabaseDto databaseDto, Page page) {
         Page<Database> databasePage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Database> iPage = baseMapper.selectPage(databasePage, predicate(databaseDto));
-        return iPage.convert(DatabaseInverter::toDto);
+        return iPage.convert(DatabaseConverter::toDto);
     }
 
     /**

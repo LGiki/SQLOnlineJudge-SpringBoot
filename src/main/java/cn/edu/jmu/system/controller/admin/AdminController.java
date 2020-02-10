@@ -6,7 +6,7 @@ import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Admin;
 import cn.edu.jmu.system.entity.dto.AdminDto;
 import cn.edu.jmu.system.service.AdminService;
-import cn.edu.jmu.system.service.inverter.AdminInverter;
+import cn.edu.jmu.system.service.converter.AdminConverter;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -58,7 +58,7 @@ public class AdminController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> selectAdminById(@PathVariable("id") Integer id) {
         Admin admin = adminService.getById(id);
-        AdminDto adminDto = AdminInverter.toDto(admin);
+        AdminDto adminDto = AdminConverter.toDto(admin);
         return ResponseUtil.buildResponse("查询成功", adminDto);
     }
 
@@ -101,7 +101,7 @@ public class AdminController {
         if (ObjectUtils.isEmpty(adminDto.getPassword())) {
             return ResponseUtil.fail("密码不能为空");
         }
-        Admin admin = AdminInverter.toEntity(adminDto);
+        Admin admin = AdminConverter.toEntity(adminDto);
         String salt = EncryptUtil.generatorSalt();
         admin.setSalt(salt);
         admin.setPassword(EncryptUtil.encryption(admin.getUsername(), admin.getPassword(), salt));

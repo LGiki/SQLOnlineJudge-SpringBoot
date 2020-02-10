@@ -5,8 +5,8 @@ import cn.edu.jmu.system.entity.dto.AdminDto;
 import cn.edu.jmu.system.mapper.AdminMapper;
 import cn.edu.jmu.system.mapper.RoleMapper;
 import cn.edu.jmu.system.service.AdminService;
+import cn.edu.jmu.system.service.converter.AdminConverter;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
-import cn.edu.jmu.system.service.inverter.AdminInverter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -41,7 +41,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public IPage<AdminDto> getAll(AdminDto adminDto, Page page) {
         Page<Admin> adminPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Admin> iPage = baseMapper.selectPage(adminPage, predicate(adminDto));
-        return iPage.convert(AdminInverter::toDto);
+        return iPage.convert(AdminConverter::toDto);
     }
 
     @Override

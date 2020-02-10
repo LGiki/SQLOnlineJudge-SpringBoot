@@ -8,7 +8,7 @@ import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.ProblemService;
-import cn.edu.jmu.system.service.inverter.DatabaseInverter;
+import cn.edu.jmu.system.service.converter.DatabaseConverter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
@@ -59,7 +59,7 @@ public class DatabaseController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> getDatabaseById(@PathVariable("id") Integer id) {
         Database database = databaseService.getById(id);
-        DatabaseDto databaseDto = DatabaseInverter.toDto(database);
+        DatabaseDto databaseDto = DatabaseConverter.toDto(database);
         return ResponseUtil.buildResponse("查询成功", databaseDto);
     }
 
@@ -78,7 +78,7 @@ public class DatabaseController {
      */
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insertDatabase(@RequestBody @Validated DatabaseDto databaseDto) {
-        Database database = DatabaseInverter.toEntity(databaseDto);
+        Database database = DatabaseConverter.toEntity(databaseDto);
         if (databaseService.saveOrUpdate(database)) {
             databaseDto.setId(database.getId());
             JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
@@ -101,7 +101,7 @@ public class DatabaseController {
     public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id, @RequestBody @Validated DatabaseDto databaseDto) {
         if (databaseDto.getId() != null && id.equals(databaseDto.getId())) {
             // 更新数据库信息
-            Database database = DatabaseInverter.toEntity(databaseDto);
+            Database database = DatabaseConverter.toEntity(databaseDto);
             JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
             if ("1".equals(judgeResultJson.getCode())) {
                 return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
