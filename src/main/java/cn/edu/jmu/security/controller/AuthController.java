@@ -48,6 +48,11 @@ public class AuthController {
      */
     @PostMapping(value = "/user/login")
     public ResponseEntity<BasicResponse> userLogin(@RequestParam String username, @RequestParam String password) {
+        // 支持通过学号登录
+        User userByStudentNo = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getStudentNo, username));
+        if (userByStudentNo != null) {
+            username = userByStudentNo.getUsername();
+        }
         // 得到当前 subject
         Subject subject = SecurityUtils.getSubject();
         UserToken userToken = new UserToken(username, password, LoginTypeEnum.USER.getType());
