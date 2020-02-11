@@ -69,8 +69,6 @@ import 'vue-highlight.js/lib/allLanguages'
 import 'highlight.js/styles/atom-one-light.css'
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
-import 'vue-highlight.js/lib/allLanguages'
-import 'highlight.js/styles/atom-one-light.css'
 
 export default {
   components: {

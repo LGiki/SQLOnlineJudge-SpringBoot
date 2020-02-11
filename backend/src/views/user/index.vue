@@ -351,7 +351,6 @@ export default {
                 newStudent.studentNo = row['学号']
               }
               // console.log(sheetName);
-              // console.log(newStudent);
               that.newStudentNoList.push(newStudent)
             } else {
               isFileFormatCorrect = false
