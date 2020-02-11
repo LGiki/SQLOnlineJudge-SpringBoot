@@ -11,7 +11,7 @@
               <p slot="description" class="description">&nbsp;</p>
               <md-field class="md-form-group" slot="inputs">
                 <md-icon>face</md-icon>
-                <label>用户名</label>
+                <label>用户名/学号</label>
                 <md-input v-model="username"></md-input>
               </md-field>
               <md-field class="md-form-group" slot="inputs">

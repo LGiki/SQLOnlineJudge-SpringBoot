@@ -79,7 +79,7 @@ public class PublicController {
         Page<User> userPage = new Page<>(pageNum, pageSize);
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.NORMAL);
-        IPage<UserDto> iPage = userService.getAll(userDto, userPage, User::getSolved);
+        IPage<UserDto> iPage = userService.getAll(userDto, userPage, User::getSolved, true);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 

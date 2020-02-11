@@ -30,9 +30,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return IPage<User>
      */
     @Override
-    public IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column) {
+    public IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column, Boolean orderByDesc) {
         Page<User> userPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<User> iPage = baseMapper.selectPage(userPage, predicate(userDto, column));
+        IPage<User> iPage = baseMapper.selectPage(userPage, predicate(userDto, column, orderByDesc));
         return iPage.convert(UserConverter::toDto);
     }
 
@@ -76,9 +76,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param userDto userDto
      * @return LambdaQueryWrapper<User>
      */
-    private LambdaQueryWrapper<User> predicate(UserDto userDto, SFunction<User, ?> column) {
+    private LambdaQueryWrapper<User> predicate(UserDto userDto, SFunction<User, ?> column, Boolean orderByDesc) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.orderByDesc(column);
+        if (orderByDesc) {
+            queryWrapper.orderByDesc(column);
+        } else {
+            queryWrapper.orderByAsc(column);
+        }
         if (userDto == null) {
             return queryWrapper;
         } else {

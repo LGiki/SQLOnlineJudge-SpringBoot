@@ -20,7 +20,7 @@ public interface UserService extends IService<User> {
      * @param page    page
      * @return IPage<User>
      */
-    IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column);
+    IPage<UserDto> getAll(UserDto userDto, Page page, SFunction<User, ?> column, Boolean orderByDesc);
 
     /**
      * 更新用户
