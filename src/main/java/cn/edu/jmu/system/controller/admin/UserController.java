@@ -44,13 +44,15 @@ public class UserController {
      * 查询所有用户
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(UserDto userDto, @RequestParam(defaultValue = "1") Integer orderByDesc, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> getAll(UserDto userDto, @RequestParam(defaultValue = "") String orderByStudentNo, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<User> page = new Page<>(pageNum, pageSize);
         IPage<UserDto> iPage;
-        if (orderByDesc == 1) {
+        if ("asc".equals(orderByStudentNo)) {
+            iPage = userService.getAll(userDto, page, User::getStudentNo, false);
+        } else if ("desc".equals(orderByStudentNo)) {
             iPage = userService.getAll(userDto, page, User::getId, true);
         } else {
-            iPage = userService.getAll(userDto, page, User::getId, false);
+            iPage = userService.getAll(userDto, page, User::getId, true);
         }
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
