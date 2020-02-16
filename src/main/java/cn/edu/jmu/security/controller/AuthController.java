@@ -87,7 +87,7 @@ public class AuthController {
      * 用户注册
      */
     @PostMapping(value = "/user/register")
-    public ResponseEntity<BasicResponse> userRegister(@RequestParam String username, @RequestParam String password, @RequestParam String email, @RequestParam String studentNo) {
+    public ResponseEntity<BasicResponse> userRegister(@RequestParam String username, @RequestParam String password, @RequestParam String email, @RequestParam Long studentNo) {
         if (!ValidateUtil.isEmail(email)) {
             return ResponseUtil.fail("注册失败，请检查邮箱格式是否正确！");
         }
