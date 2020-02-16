@@ -50,7 +50,7 @@ public class UserController {
         if ("asc".equals(orderByStudentNo)) {
             iPage = userService.getAll(userDto, page, User::getStudentNo, false);
         } else if ("desc".equals(orderByStudentNo)) {
-            iPage = userService.getAll(userDto, page, User::getId, true);
+            iPage = userService.getAll(userDto, page, User::getStudentNo, true);
         } else {
             iPage = userService.getAll(userDto, page, User::getId, true);
         }
