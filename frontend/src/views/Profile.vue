@@ -27,6 +27,9 @@
             <h4><b>用户ID</b>：{{ userDetail.id }}</h4>
           </div>
           <div class="md-layout">
+            <h4><b>学号</b>：{{ userDetail.studentNo }}</h4>
+          </div>
+          <div class="md-layout">
             <h4><b>用户邮箱</b>：{{ userDetail.email }}</h4>
           </div>
           <div class="md-layout">
