@@ -98,7 +98,6 @@ def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     shutil.copyfile(sqlite_db_file_path, temp_sqlite_db_file_path)
     if not is_select_problem(answer):
         operation_code, select_code = split_answer(answer)
-        exec_script(temp_sqlite_db_file_path, operation_code)
         exec_result, run_exception = exec_script(temp_sqlite_db_file_path, operation_code)
         if exec_result:
             true_result, run_exception = exec_code(temp_sqlite_db_file_path, select_code)
