@@ -488,7 +488,7 @@ export default {
           }
           this.currentAddProgress += 1
           if (this.currentAddProgress == this.newStudentNoListCount) {
-            if (this.newStudentNoList.length == 0) {
+            if (this.newStudentNoList.length === 0) {
               this.$message({
                 message: '批量添加用户操作完成，全部用户均添加成功！',
                 type: 'success'

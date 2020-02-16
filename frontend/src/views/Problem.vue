@@ -123,7 +123,7 @@ export default {
       searchKeyword: "",
       inSearch: false,
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       totalItems: 0,
       isLoading: false,
       tableConfig: {
