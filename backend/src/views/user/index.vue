@@ -83,6 +83,7 @@
         </el-tabs>
         <br>
         <span slot="footer" class="dialog-footer">
+          <strong>默认密码为用户学号</strong>
           <el-button @click="newUserBatchDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="onNewUserBatch">确定</el-button>
         </span>
