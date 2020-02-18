@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <!-- <div class="operation-button">
+    <div class="operation-button">
       <el-input
         v-model="searchKeyword"
         prefix-icon="el-icon-search"
@@ -23,7 +23,10 @@
       <el-button v-if="inSearch" type="primary" @click="onCancelSearch">
         <i class="el-icon-close" />&nbsp;取消搜索
       </el-button>
-    </div> -->
+      <el-button type="danger" @click="onNewUserGroup">
+        <i class="el-icon-plus" />&nbsp;添加用户组
+      </el-button>
+    </div>
     <template>
       <v-table
         is-horizontal-resize
@@ -63,16 +66,12 @@ export default {
     return {
       searchTypeList: [
         {
-          label: '提交ID',
+          label: '用户组ID',
           value: 'id'
         },
         {
-          label: '用户ID',
-          value: 'uid'
-        },
-        {
-          label: '题目ID',
-          value: 'pid'
+          label: '用户组名称',
+          value: 'name'
         }
       ],
       sourceCode: '',
@@ -90,93 +89,42 @@ export default {
         columns: [
           {
             field: 'id',
-            title: '提交ID',
+            title: '用户组ID',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
           },
           {
-            field: 'uid',
-            title: '用户ID',
+            field: 'name',
+            title: '用户组名称',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.uid}" title="${rowData.uid}">${rowData.uid}</a>`
+              return `<a href="#/user-group/edit/${rowData.id}" title="${rowData.name}">${rowData.name}</a>`
             }
           },
           {
-            field: 'username',
-            title: '用户名',
+            field: 'description',
+            title: '用户组简介',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.uid}" title="${rowData.username}">${rowData.username}</a>`
+              return `<a href="#/user-group/edit/${rowData.id}" title="${rowData.name}">${rowData.name}</a>`
             }
           },
           {
-            field: 'pid',
-            title: '题目ID',
+            field: 'action',
+            title: '操作',
             width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.pid}">${rowData.pid}</a>`
-            }
-          },
-          {
-            field: 'title',
-            title: '题目标题',
-            width: 280,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.title}">${rowData.title}</a>`
-            }
-          },
-          {
-            field: 'sourceCode',
-            title: '代码',
-            width: 100,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a>查看代码</a>`
-            }
-          },
-          {
-            field: 'result',
-            title: '运行结果',
-            width: 80,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              let fontColor = 'black'
-              switch (rowData.result) {
-                case 'Accepted':
-                  fontColor = 'blue'
-                  break
-                case 'Wrong Answer':
-                  fontColor = 'red'
-                  break
-                case 'Compile Error':
-                  fontColor = 'green'
-                  break
-                case 'Unknown':
-                case 'Judging':
-                  fontColor = 'grey'
-                  break
-              }
-              return `<font color="${fontColor}">${rowData.result}</font>`
-            }
+            componentName: 'user-operation'
           }
         ]
       }
@@ -184,7 +132,7 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchSolutionList()
+    
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
@@ -229,6 +177,9 @@ export default {
           })
       }
     },
+    onNewUserGroup() {
+      this.$router.push({ path: '/user-group/add/' })
+    },
     onCancelSearch() {
       this.inSearch = false
       this.fetchSolutionList()
@@ -248,60 +199,6 @@ export default {
       } else {
         this.fetchSolutionList()
       }
-    },
-    fetchSolutionList() {
-      this.isLoading = true
-      const apiUrl = this.Url.solutionBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户提交列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取用户提交列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    fetchSolutionCode(solutionId) {
-      const apiUrl = this.Url.solutionCode
-      this.$axios
-        .get(apiUrl + solutionId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取解答代码失败！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.sourceCode = resData.data.sourceCode
-              this.runError = resData.data.runError
-              this.dialogVisible = true
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取解答代码失败！')
-          console.log(err)
-        })
     }
   }
 }
