@@ -32,6 +32,8 @@ const Url = {
   // 上传图片接口
   uploadImageUrl: BaseUrl + '/util/upload',
   // 图片显示接口
-  showImageUrl: ApiHost + '/api/public/image/'
+  showImageUrl: ApiHost + '/api/public/image/',
+  // 用户组基础接口
+  userGroupBaseUrl: BaseUrl + '/user-group'
 }
 export default Url

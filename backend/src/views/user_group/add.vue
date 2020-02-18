@@ -28,14 +28,17 @@ export default {
           }
         ]
       },
-      userGroupDetail: {}
+      userGroupDetail: {
+        name: '',
+        description: ''
+      }
     }
   },
   methods: {
     onSubmit() {
-      this.$refs.userDetail.validate(valid => {
+      this.$refs.userGroupDetail.validate(valid => {
         if (valid) {
-          
+          this.addUserGroup()
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
@@ -43,6 +46,33 @@ export default {
     },
     onCancel() {
       this.$router.back(-1)
+    },
+    addUserGroup() {
+      const apiUrl = this.Url.userGroupBaseUrl
+      let postData = this.userGroupDetail
+      postData.name.trim()
+      postData.description.trim()
+      this.$axios
+      .post(apiUrl, postData)
+      .then(res => {
+        if (res.status !== 200) {
+          this.$message.error('添加用户组失败，内部错误！')
+        } else {
+          const resData = res.data
+          if (resData.code === 0) {
+            this.$message({
+              message: resData.message,
+              type: 'success'
+            })
+            this.$router.back(-1)
+          } else {
+            this.$message.error(resData.message)
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
 }

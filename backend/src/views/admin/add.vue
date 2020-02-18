@@ -76,7 +76,7 @@ export default {
     },
     addUser() {
       const apiUrl = this.Url.adminBaseUrl
-      const postData = this.userDetail
+      let postData = this.userDetail
       postData.username.trim()
       postData.password.trim()
       this.$axios

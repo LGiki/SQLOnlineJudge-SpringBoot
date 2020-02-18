@@ -466,7 +466,7 @@ export default {
     },
     addUserInBulk(student) {
       const apiUrl = this.Url.userBaseUrl
-      const postData = {
+      let postData = {
         username: student.username,
         studentNo: student.studentNo,
         email: student.studentNo + '@jmu.edu.cn',

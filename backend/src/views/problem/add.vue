@@ -197,7 +197,7 @@ export default {
     },
     addProblem() {
       const apiUrl = this.Url.problemBaseUrl
-      const postData = this.problemDetail
+      let postData = this.problemDetail
       postData.title.trim()
       postData.description.trim()
       postData.sampleOutput.trim()
