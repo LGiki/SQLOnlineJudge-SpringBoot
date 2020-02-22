@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @date 2019-08-19
  */
 @Data
-@TableName("sys_admin")
+@TableName("sys_administrators")
 public class Admin implements Serializable {
 
     private static final long serialVersionUID = 836329461151087062L;

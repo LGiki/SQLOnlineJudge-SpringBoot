@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @date 2019/6/20 18:35
  */
 @Data
-@TableName(value = "sys_user")
+@TableName(value = "sys_users")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 8281624782801714916L;

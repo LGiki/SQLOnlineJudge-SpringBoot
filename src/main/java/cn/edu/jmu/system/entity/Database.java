@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 
 @Data
-@TableName(value = "data_base")
+@TableName(value = "databases")
 public class Database implements Serializable {
 
     private static final long serialVersionUID = -8714097362269205387L;

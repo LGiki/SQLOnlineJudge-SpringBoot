@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @date 2019/10/5 10:25
  */
 @Data
-@TableName(value = "user_problem")
+@TableName(value = "user_problems")
 public class UserProblem implements Serializable {
 
     private static final long serialVersionUID = -3270267373811937646L;

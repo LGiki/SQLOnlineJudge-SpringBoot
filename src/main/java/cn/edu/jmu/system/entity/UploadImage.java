@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
-@TableName(value = "upload_image")
+@TableName(value = "upload_images")
 public class UploadImage implements Serializable {
 
     private static final long serialVersionUID = 797032287646592913L;

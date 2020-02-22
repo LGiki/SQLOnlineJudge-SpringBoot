@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @since 2019-08-21
  */
 @Data
-@TableName(value = "sys_permission")
+@TableName(value = "sys_permissions")
 public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1281933827608139147L;

@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 
 @Data
-@TableName(value = "problem")
+@TableName(value = "problems")
 public class Problem implements Serializable {
 
     private static final long serialVersionUID = -1984904930642872739L;

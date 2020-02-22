@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  */
 
 @Data
-@TableName(value = "solution")
+@TableName(value = "solutions")
 public class Solution implements Serializable {
 
     private static final long serialVersionUID = -1536199246828489364L;
