@@ -2,7 +2,10 @@ package cn.edu.jmu.system.service.impl;
 
 import cn.edu.jmu.system.api.CreateUserGroupRequest;
 import cn.edu.jmu.system.api.CreateUserGroupResponse;
+import cn.edu.jmu.system.api.DeleteUserGroupResponse;
 import cn.edu.jmu.system.api.SearchUserGroupResponse;
+import cn.edu.jmu.system.api.UpdateUserGroupRequest;
+import cn.edu.jmu.system.api.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.edu.jmu.system.mapper.UserGroupMapper;
 import cn.edu.jmu.system.service.UserGroupService;
@@ -37,6 +40,24 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
         userGroupMapper.insert(userGroup);
         CreateUserGroupResponse response = new CreateUserGroupResponse();
         response.setId(userGroup.getId());
+        return response;
+    }
+
+    @Override
+    public UpdateUserGroupResponse update(Integer id, UpdateUserGroupRequest request) {
+        UserGroup userGroup = UserGroupConverter.userGroup(request);
+        userGroup.setId(id);
+        userGroupMapper.updateById(userGroup);
+        UpdateUserGroupResponse response = new UpdateUserGroupResponse();
+        response.setId(id);
+        return response;
+    }
+
+    @Override
+    public DeleteUserGroupResponse delete(Integer id) {
+        userGroupMapper.deleteById(id);
+        DeleteUserGroupResponse response = new DeleteUserGroupResponse();
+        response.setId(id);
         return response;
     }
 }

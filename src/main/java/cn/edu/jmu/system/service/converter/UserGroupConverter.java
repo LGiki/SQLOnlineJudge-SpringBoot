@@ -2,6 +2,7 @@ package cn.edu.jmu.system.service.converter;
 
 import cn.edu.jmu.system.api.CreateUserGroupRequest;
 import cn.edu.jmu.system.api.SearchUserGroupResponse;
+import cn.edu.jmu.system.api.UpdateUserGroupRequest;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -24,5 +25,13 @@ public class UserGroupConverter {
         BeanUtil.copyProperties(userGroup, ug, true, CopyOptions.create()
             .setIgnoreNullValue(true));
         return ug;
+    }
+
+    public static UserGroup userGroup(UpdateUserGroupRequest request) {
+        UserGroup userGroup = new UserGroup();
+        BeanUtil.copyProperties(request, userGroup, true, CopyOptions.create()
+            .setIgnoreNullValue(true)
+            .setIgnoreProperties("id"));
+        return userGroup;
     }
 }

@@ -3,14 +3,11 @@ package cn.edu.jmu.system.api;
 import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 /**
- * @author xeathen
+ * @author ethan
  */
 @Data
-public class CreateUserGroupRequest {
-    @NotBlank
+public class UpdateUserGroupRequest {
     @Property(name = "name")
     private String name;
 

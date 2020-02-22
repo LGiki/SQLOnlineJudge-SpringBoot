@@ -4,10 +4,10 @@ import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 
 /**
- * @author xeathen
+ * @author ethan
  */
 @Data
-public class CreateUserGroupResponse {
+public class UpdateUserGroupResponse {
     @Property(name = "id")
     private Integer id;
 }
