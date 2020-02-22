@@ -7,9 +7,14 @@ import cn.edu.jmu.system.api.SearchUserGroupResponse;
 import cn.edu.jmu.system.api.UpdateUserGroupRequest;
 import cn.edu.jmu.system.api.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
+import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.edu.jmu.system.mapper.UserGroupMapper;
 import cn.edu.jmu.system.service.UserGroupService;
 import cn.edu.jmu.system.service.converter.UserGroupConverter;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +37,28 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
         response.setUserGroups(userGroups.stream().map(UserGroupConverter::userGroup).collect(Collectors.toList()));
         response.setTotal(userGroupMapper.count());
         return response;
+    }
+
+    @Override
+    public IPage<UserGroupDto> getAll(UserGroupDto userGroupDto, Page page) {
+        Page<UserGroup> userGroupPage = new Page<>(page.getCurrent(), page.getSize());
+        IPage<UserGroup> iPage = baseMapper.selectPage(userGroupPage, predicate(userGroupDto));
+        return iPage.convert(UserGroupConverter::userGroupDto);
+    }
+
+    private Wrapper<UserGroup> predicate(UserGroupDto userGroupDto) {
+        if (userGroupDto == null) {
+            return null;
+        } else {
+            LambdaQueryWrapper<UserGroup> queryWrapper = new LambdaQueryWrapper<>();
+            if (userGroupDto.getId() != null) {
+                queryWrapper.eq(UserGroup::getId, userGroupDto.getId());
+                return queryWrapper;
+            } else if (userGroupDto.getName() != null) {
+                queryWrapper.like(UserGroup::getName, "%" + userGroupDto.getName() + "%");
+            }
+            return queryWrapper;
+        }
     }
 
     @Override

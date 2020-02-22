@@ -4,6 +4,7 @@ import cn.edu.jmu.system.api.CreateUserGroupRequest;
 import cn.edu.jmu.system.api.SearchUserGroupResponse;
 import cn.edu.jmu.system.api.UpdateUserGroupRequest;
 import cn.edu.jmu.system.entity.UserGroup;
+import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 
@@ -33,5 +34,12 @@ public class UserGroupConverter {
             .setIgnoreNullValue(true)
             .setIgnoreProperties("id"));
         return userGroup;
+    }
+
+    public static UserGroupDto userGroupDto(UserGroup userGroup) {
+        UserGroupDto userGroupDto = new UserGroupDto();
+        BeanUtil.copyProperties(userGroup, userGroupDto, true, CopyOptions.create()
+            .setIgnoreNullValue(true));
+        return userGroupDto;
     }
 }

@@ -5,10 +5,13 @@ import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.api.CreateUserGroupRequest;
 import cn.edu.jmu.system.api.CreateUserGroupResponse;
 import cn.edu.jmu.system.api.DeleteUserGroupResponse;
-import cn.edu.jmu.system.api.SearchUserGroupResponse;
 import cn.edu.jmu.system.api.UpdateUserGroupRequest;
 import cn.edu.jmu.system.api.UpdateUserGroupResponse;
+import cn.edu.jmu.system.entity.UserGroup;
+import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.edu.jmu.system.service.UserGroupService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
@@ -36,27 +39,34 @@ public class UserGroupController {
     @Resource
     UserGroupService userGroupService;
 
+//    @GetMapping(value = "/user-group")
+//    public ResponseEntity<BasicResponse> search(@RequestParam Integer skip, @RequestParam Integer limit) {
+//        SearchUserGroupResponse response = userGroupService.search(skip, limit);
+//        return ResponseUtil.buildResponse(response);
+//    }
+
     @GetMapping(value = "/user-group")
-    public ResponseEntity<BasicResponse> search(@RequestParam Integer skip, @RequestParam Integer limit) {
-        SearchUserGroupResponse response = userGroupService.search(skip, limit);
-        return ResponseUtil.buildResponse(response);
+    public ResponseEntity<BasicResponse> search(UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<UserGroup> page = new Page<>(pageNum, pageSize);
+        IPage<UserGroupDto> iPage = userGroupService.getAll(userGroupDto, page);
+        return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
     @PostMapping(value = "/user-group")
     public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateUserGroupRequest request) {
         CreateUserGroupResponse response = userGroupService.create(request);
-        return ResponseUtil.buildResponse(response);
+        return ResponseUtil.buildResponse("新增成功", response);
     }
 
     @PutMapping(value = "/user-group/{id}")
     public ResponseEntity<BasicResponse> update(@PathVariable Integer id, @RequestBody UpdateUserGroupRequest request) {
         UpdateUserGroupResponse response = userGroupService.update(id, request);
-        return ResponseUtil.buildResponse(response);
+        return ResponseUtil.buildResponse("更新成功", response);
     }
 
     @DeleteMapping(value = "/user-group/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable Integer id) {
         DeleteUserGroupResponse response = userGroupService.delete(id);
-        return ResponseUtil.buildResponse(response);
+        return ResponseUtil.buildResponse("删除成功", response);
     }
 }

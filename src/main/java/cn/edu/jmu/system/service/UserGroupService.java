@@ -7,6 +7,9 @@ import cn.edu.jmu.system.api.SearchUserGroupResponse;
 import cn.edu.jmu.system.api.UpdateUserGroupRequest;
 import cn.edu.jmu.system.api.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
+import cn.edu.jmu.system.entity.dto.UserGroupDto;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -21,6 +24,15 @@ public interface UserGroupService extends IService<UserGroup> {
      * @return
      */
     SearchUserGroupResponse search(Integer skip, Integer limit);
+
+    /**
+     * 获取所有用户组
+     *
+     * @param userGroupDto userGroupDto
+     * @param page         page
+     * @return
+     */
+    IPage<UserGroupDto> getAll(UserGroupDto userGroupDto, Page page);
 
     /**
      * 创建用户组
