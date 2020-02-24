@@ -280,9 +280,9 @@ CREATE TABLE `sys_role_permission`
   ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_role_permissions
+-- Records of sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permissions`
+INSERT INTO `sys_role_permission`
 VALUES (1, 1, 1);
 
 -- ----------------------------
