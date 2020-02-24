@@ -18,10 +18,10 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for databases
+-- Table structure for data_base
 -- ----------------------------
-DROP TABLE IF EXISTS `databases`;
-CREATE TABLE `databases`
+DROP TABLE IF EXISTS `data_base`;
+CREATE TABLE `data_base`
 (
     `id`           int(11)                                                      NOT NULL AUTO_INCREMENT COMMENT '数据库ID',
     `name`         varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '数据库名称',
@@ -35,9 +35,9 @@ CREATE TABLE `databases`
   ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of databases
+-- Records of data_base
 -- ----------------------------
-INSERT INTO `databases`
+INSERT INTO `data_base`
 VALUES (1, '公司系统',
         'CREATE TABLE `dept_manager` (\n`dept_no` char(4) NOT NULL,\n`emp_no` int(11) NOT NULL,\n`from_date` date NOT NULL,\n`to_date` date NOT NULL,\nPRIMARY KEY (`emp_no`,`dept_no`));\nCREATE TABLE `employees` (\n`emp_no` int(11) NOT NULL,\n`birth_date` date NOT NULL,\n`first_name` varchar(14) NOT NULL,\n`last_name` varchar(16) NOT NULL,\n`gender` char(1) NOT NULL,\n`hire_date` date NOT NULL,\nPRIMARY KEY (`emp_no`));',
         'INSERT INTO dept_manager VALUES(\'d001\',10002,\'1996-08-03\',\'9999-01-01\'); INSERT INTO dept_manager VALUES(\'d002\',10006,\'1990-08-05\',\'9999-01-01\'); INSERT INTO dept_manager VALUES(\'d003\',10005,\'1989-09-12\',\'9999-01-01\'); INSERT INTO dept_manager VALUES(\'d004\',10004,\'1986-12-01\',\'9999-01-01\'); INSERT INTO dept_manager VALUES(\'d005\',10010,\'1996-11-24\',\'2000-06-26\'); INSERT INTO dept_manager VALUES(\'d006\',10010,\'2000-06-26\',\'9999-01-01\'); INSERT INTO employees VALUES(10001,\'1953-09-02\',\'Georgi\',\'Facello\',\'M\',\'1986-06-26\'); INSERT INTO employees VALUES(10002,\'1964-06-02\',\'Bezalel\',\'Simmel\',\'F\',\'1985-11-21\'); INSERT INTO employees VALUES(10003,\'1959-12-03\',\'Parto\',\'Bamford\',\'M\',\'1986-08-28\'); INSERT INTO employees VALUES(10004,\'1954-05-01\',\'Chirstian\',\'Koblick\',\'M\',\'1986-12-01\'); INSERT INTO employees VALUES(10005,\'1955-01-21\',\'Kyoichi\',\'Maliniak\',\'M\',\'1989-09-12\'); INSERT INTO employees VALUES(10006,\'1953-04-20\',\'Anneke\',\'Preusig\',\'F\',\'1989-06-02\'); INSERT INTO employees VALUES(10007,\'1957-05-23\',\'Tzvetan\',\'Zielinski\',\'F\',\'1989-02-10\'); INSERT INTO employees VALUES(10008,\'1958-02-19\',\'Saniya\',\'Kalloufi\',\'M\',\'1994-09-15\'); INSERT INTO employees VALUES(10009,\'1952-04-19\',\'Sumant\',\'Peac\',\'F\',\'1985-02-18\'); INSERT INTO employees VALUES(10010,\'1963-06-01\',\'Duangkaew\',\'Piveteau\',\'F\',\'1989-08-24\'); INSERT INTO employees VALUES(10011,\'1953-11-07\',\'Mary\',\'Sluis\',\'F\',\'1990-01-22\');');
@@ -113,7 +113,7 @@ CREATE TABLE `problems`
     `database_id`   int(11)                                                 NOT NULL DEFAULT 0 COMMENT '数据库ID',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `FK_problem_database` (`database_id`) USING BTREE,
-    CONSTRAINT `problems_ibfk_1` FOREIGN KEY (`database_id`) REFERENCES `databases` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+    CONSTRAINT `problems_ibfk_1` FOREIGN KEY (`database_id`) REFERENCES `data_base` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 3
   CHARACTER SET = utf8
@@ -175,10 +175,10 @@ INSERT INTO `solutions`
 VALUES (5, 1, 1, 'ffff', '2019-10-09 10:04:40', 'near \"ffff\": syntax error', '2');
 
 -- ----------------------------
--- Table structure for sys_admin_roles
+-- Table structure for sys_admin_role
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_admin_roles`;
-CREATE TABLE `sys_admin_roles`
+DROP TABLE IF EXISTS `sys_admin_role`;
+CREATE TABLE `sys_admin_role`
 (
     `id`   int(11) NOT NULL AUTO_INCREMENT COMMENT '管理员角色ID',
     `a_id` int(11) NOT NULL DEFAULT 0 COMMENT '管理员ID',
@@ -186,8 +186,8 @@ CREATE TABLE `sys_admin_roles`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `a_id` (`a_id`) USING BTREE,
     INDEX `r_id` (`r_id`) USING BTREE,
-    CONSTRAINT `sys_admin_roles_ibfk_1` FOREIGN KEY (`a_id`) REFERENCES `sys_administrators` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    CONSTRAINT `sys_admin_roles_ibfk_2` FOREIGN KEY (`r_id`) REFERENCES `sys_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+    CONSTRAINT `sys_admin_role_ibfk_1` FOREIGN KEY (`a_id`) REFERENCES `sys_administrators` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    CONSTRAINT `sys_admin_role_ibfk_2` FOREIGN KEY (`r_id`) REFERENCES `sys_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 6
   CHARACTER SET = utf8mb4
@@ -195,15 +195,15 @@ CREATE TABLE `sys_admin_roles`
   ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_admin_roles
+-- Records of sys_admin_role
 -- ----------------------------
-INSERT INTO `sys_admin_roles`
+INSERT INTO `sys_admin_role`
 VALUES (1, 1, 1);
-INSERT INTO `sys_admin_roles`
+INSERT INTO `sys_admin_role`
 VALUES (2, 2, 2);
-INSERT INTO `sys_admin_roles`
+INSERT INTO `sys_admin_role`
 VALUES (3, 4, 2);
-INSERT INTO `sys_admin_roles`
+INSERT INTO `sys_admin_role`
 VALUES (4, 5, 2);
 
 -- ----------------------------
@@ -260,10 +260,10 @@ INSERT INTO `sys_permissions`
 VALUES (1, '总权限', '*:*');
 
 -- ----------------------------
--- Table structure for sys_role_permissions
+-- Table structure for sys_role_permission
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_permissions`;
-CREATE TABLE `sys_role_permissions`
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission`
 (
     `id`   int(11) NOT NULL AUTO_INCREMENT COMMENT '角色权限ID',
     `r_id` int(11) NOT NULL DEFAULT 0 COMMENT '角色ID',
@@ -271,8 +271,8 @@ CREATE TABLE `sys_role_permissions`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `r_id` (`r_id`) USING BTREE,
     INDEX `p_id` (`p_id`) USING BTREE,
-    CONSTRAINT `sys_role_permissions_ibfk_1` FOREIGN KEY (`r_id`) REFERENCES `sys_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    CONSTRAINT `sys_role_permissions_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `sys_permissions` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+    CONSTRAINT `sys_role_permission_ibfk_1` FOREIGN KEY (`r_id`) REFERENCES `sys_roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    CONSTRAINT `sys_role_permission_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `sys_permissions` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
   CHARACTER SET = utf8mb4
