@@ -34,6 +34,6 @@ const Url = {
   // 图片显示接口
   showImageUrl: ApiHost + '/api/public/image/',
   // 用户组基础接口
-  userGroupBaseUrl: BaseUrl + '/user-group'
+  userGroupBaseUrl: BaseUrl + '/user-group/'
 }
 export default Url

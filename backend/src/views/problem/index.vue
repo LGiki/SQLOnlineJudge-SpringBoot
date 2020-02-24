@@ -202,6 +202,7 @@ export default {
       if (params.type === 'delete') {
         if (confirm('您确定要删除该题目吗？')) {
           this.deleteProblem(problemId, () => {
+            this.$message.success('删除题目成功！')
             this.fetchProblemList()
           })
         }

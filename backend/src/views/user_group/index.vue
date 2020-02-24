@@ -37,6 +37,7 @@
         row-hover-color="#eee"
         row-click-color="#edf7ff"
         :row-click="rowClick"
+        @on-custom-comp="customCompFunc"
       />
     </template>
     <template>
@@ -90,7 +91,7 @@ export default {
           {
             field: 'id',
             title: '用户组ID',
-            width: 80,
+            width: 30,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -98,7 +99,7 @@ export default {
           {
             field: 'name',
             title: '用户组名称',
-            width: 80,
+            width: 60,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -109,22 +110,22 @@ export default {
           {
             field: 'description',
             title: '用户组简介',
-            width: 80,
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user-group/edit/${rowData.id}" title="${rowData.name}">${rowData.name}</a>`
+              return `<a href="#/user-group/edit/${rowData.id}" title="${rowData.description}">${rowData.description}</a>`
             }
           },
           {
             field: 'action',
             title: '操作',
-            width: 80,
+            width: 40,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'user-operation'
+            componentName: 'table-operation'
           }
         ]
       }
@@ -132,13 +133,10 @@ export default {
   },
   created() {},
   mounted: function() {
-    
+    this.fetchUserGroupList()
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
-      if (column.field == 'sourceCode') {
-        this.fetchSolutionCode(rowData.id)
-      }
     },
     onSearch() {
       const keyword = this.searchKeyword.trim()
@@ -146,13 +144,12 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.solutionBaseUrl
+        const apiUrl = this.Url.userGroupBaseUrl
         this.$axios
           .get(apiUrl, {
             params: {
               [this.searchType]: keyword,
               pageNum: this.pageNum,
-              pageSize: this.pageSize
             }
           })
           .then(res => {
@@ -177,19 +174,79 @@ export default {
           })
       }
     },
+    fetchUserGroupList() {
+      this.isLoading = true
+      const apiUrl = this.Url.userGroupBaseUrl
+      this.$axios
+      .get(apiUrl, {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      })
+      .then(res => {
+        if (res.status !== 200) {
+          this.$message.error('获取用户组列表失败，内部错误！')
+        } else {
+          const resData = res.data
+          if (resData.code === 0) {
+            this.tableConfig.tableData = resData.data.records
+            this.totalItems = resData.data.total
+          } else {
+            this.$message.error(resData.message)
+          }
+        }
+        this.isLoading = false
+      })
+      .catch(err => {
+        this.$message.error('获取用户组列表失败！')
+        this.isLoading = false
+        console.log(err)
+      })
+    },
+    deleteUserGroup(userGroupId, successCallback) {
+      const apiUrl = this.Url.userGroupBaseUrl
+      this.$axios
+        .delete(apiUrl + userGroupId)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('删除用户组失败，内部错误！')
+          } else {
+            successCallback()
+          }
+        })
+        .catch(err => {
+          this.$message.error('删除用户组失败！')
+          console.log(err)
+        })
+    },
+    customCompFunc(params) {
+      const index = params.index
+      const userGroupId = this.tableConfig.tableData[index].id
+      if (params.type === 'delete') {
+        if (confirm('您确定要删除该用户组吗？')) {
+          this.deleteUserGroup(userGroupId, () => {
+            this.$message.success('删除用户组成功！')
+            this.fetchUserGroupList()
+          })
+        }
+      } else if (params.type === 'edit') {
+        this.$router.push({ path: '/user-group/edit/' + userGroupId })
+      }
+    },
     onNewUserGroup() {
       this.$router.push({ path: '/user-group/add/' })
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchSolutionList()
+      this.fetchUserGroupList()
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchSolutionList()
+        this.fetchUserGroupList()
       }
     },
     pageSizeChange(newPageSize) {
@@ -197,7 +254,7 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchSolutionList()
+        this.fetchUserGroupList()
       }
     }
   }
