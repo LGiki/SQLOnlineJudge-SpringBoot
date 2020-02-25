@@ -48,7 +48,7 @@ def get_config_value(config_parser, category, name):
 def get_problem_detail_by_problem_id(cursor, problem_id):
     sql = '''
     select `database_id`, `answer`
-    from `problem`
+    from `problems`
     where `id` = %s
     '''
     cursor.execute(sql, [problem_id])
@@ -74,7 +74,7 @@ def exec_code(sqlite_db_file_path, source_code):
 def get_true_result_by_problem_id(cursor, problem_id):
     sql = '''
     select `true_result`
-    from `problem`
+    from `problems`
     where `id` = %s
     '''
     cursor.execute(sql, [problem_id])
@@ -86,7 +86,7 @@ def get_true_result_by_problem_id(cursor, problem_id):
 def get_solution_detail_by_solution_id(cursor, solution_id):
     sql = '''
         select `pid`, `source_code`
-        from `solution`
+        from `solutions`
         where id = %s 
         '''
     cursor.execute(sql, [solution_id])
