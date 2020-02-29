@@ -18,6 +18,8 @@ import cn.edu.jmu.system.service.UserService;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,7 +91,7 @@ public class PublicController {
     @GetMapping(value = "/solutions")
     public ResponseEntity<BasicResponse> selectAll(SolutionDto solutionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Solution> page = new Page<>(pageNum, pageSize);
-        IPage<SolutionDto> iPage = solutionService.get(solutionDto, page);
+        IPage<SolutionDto> iPage = solutionService.getAll(solutionDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
@@ -100,6 +102,27 @@ public class PublicController {
     public ResponseEntity<BasicResponse> count() {
         int count = solutionService.count();
         return ResponseUtil.buildResponse(count);
+    }
+
+    @GetMapping(value = "/latest_solution")
+    public ResponseEntity<BasicResponse> getLatestSolutionByUserIdAndProblemId(@RequestParam Integer uid, @RequestParam Integer pid) {
+        String responseMessage = "查询成功";
+        Solution solution = null;
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        if(user != null) {
+            if(uid.equals(user.getId())) {
+                solution = solutionService.getLatestSolutionByUserIdAndProblemId(uid, pid);
+                if (solution == null) {
+                    responseMessage = "查询失败，找不到记录";
+                }
+            }else{
+                responseMessage = "只能查询自己的记录";
+            }
+        }else{
+            responseMessage = "未登录，无法查询记录";
+        }
+        return ResponseUtil.buildResponse(responseMessage, solution);
     }
 
     /**

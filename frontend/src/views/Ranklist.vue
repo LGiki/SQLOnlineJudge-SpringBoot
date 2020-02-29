@@ -26,6 +26,7 @@
                 @page-size-change="pageSizeChange"
                 :showPagingCount="3"
                 :total="totalItems"
+                :pageSize="pageSize"
                 :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
               ></v-pagination>
             </div>
@@ -56,7 +57,7 @@ export default {
   data() {
     return {
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       totalItems: 0,
       isLoading: true,
       tableConfig: {

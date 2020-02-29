@@ -65,6 +65,7 @@
                   @page-change="pageChange"
                   @page-size-change="pageSizeChange"
                   :showPagingCount="3"
+                  :pageSize="pageSize"
                   :total="totalItems"
                   :layout="[
                     'total',
@@ -158,7 +159,7 @@ export default {
       inSearch: false,
       codeModal: false,
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       totalItems: 0,
       isLoading: false,
       code: "",

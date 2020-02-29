@@ -41,10 +41,26 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
     private JudgeService judgeService;
 
     /**
+     * 根据用户ID和题目ID获取到用户对某个题目最后一次提交的提交详情
+     * @param uid 用户ID
+     * @param pid 题目ID
+     * @return Solution
+     */
+    @Override
+    public Solution getLatestSolutionByUserIdAndProblemId(Integer uid, Integer pid) {
+        if(uid == null || pid == null) {
+            return null;
+        }
+        SolutionDto solutionDto = new SolutionDto();
+        Solution solution = baseMapper.selectOne(new QueryWrapper<>(SolutionConverter.toEntity(solutionDto)).lambda().eq(Solution::getUid, uid).eq(Solution::getPid, pid).orderByDesc(Solution::getSubmitTime).last("limit 1"));
+        return solution;
+    }
+
+    /**
      * 得到所有解答
      */
     @Override
-    public IPage<SolutionDto> get(SolutionDto solutionDto, Page page) {
+    public IPage<SolutionDto> getAll(SolutionDto solutionDto, Page page) {
         Page<Solution> solutionPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Solution> iPage;
         if (ObjectUtil.isNull(solutionDto)) {

@@ -13,13 +13,21 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface SolutionService extends IService<Solution> {
 
     /**
+     * 根据用户ID和题目ID获取到用户对某个题目最后一次提交的提交详情
+     * @param uid 用户ID
+     * @param pid 题目ID
+     * @return Solution
+     */
+    public Solution getLatestSolutionByUserIdAndProblemId(Integer uid, Integer pid);
+
+    /**
      * 得到所有解答
      *
      * @param solutionDto solutionDto
      * @param page        page
      * @return IPage<solution>
      */
-    IPage<SolutionDto> get(SolutionDto solutionDto, Page page);
+    IPage<SolutionDto> getAll(SolutionDto solutionDto, Page page);
 
     /**
      * 增加solution

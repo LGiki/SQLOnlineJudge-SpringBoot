@@ -1,84 +1,86 @@
 <template>
   <div class="wrapper">
-    <div class="section page-header header-filter" :style="headerStyle"></div>
+    <!-- <div class="section page-header header-filter" :style="headerStyle"></div> -->
+    <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
-      <div class="section">
-        <div class="container">
-          <div class="md-layout">
-            <div class="text-center" style="width:100%">
-              <h2 class="title">{{ problemDetail.title }}</h2>
-            </div>
+      <div class="section no-padding">
+        <div class="md-layout problem-detail-main">
+          <div class="md-layout-item" id="problem-detail-area">
+              <div class="md-layout">
+                <div class="text-center" style="width:100%">
+                  <h4><strong>{{ problemDetail.title }}</strong></h4>
+                </div>
+              </div>
+              <md-content class="md-scrollbar">
+                <h4><strong>题目描述</strong></h4>
+                <div v-html="problemDetail.description" />
+                <h4><strong>建表语句</strong></h4>
+                <highlight-code lang="sql">{{
+                  problemDetail.createTable
+                }}</highlight-code>
+                <template v-if="problemDetail.sampleOutput">
+                  <h4><strong>表的样例</strong></h4>
+                  <div v-html="problemDetail.sampleOutput" />
+                </template>
+                <template v-if="problemDetail.hint">
+                  <h4><strong>提示</strong></h4>
+                  <div v-html="problemDetail.hint" />
+                </template>
+              </md-content>
+            
           </div>
-          <h3>题目描述</h3>
-          <div v-html="problemDetail.description" />
-          <h3>建表语句</h3>
-          <highlight-code lang="sql">{{
-            problemDetail.createTable
-          }}</highlight-code>
-          <template v-if="problemDetail.sampleOutput">
-            <h3>表的样例</h3>
-            <div v-html="problemDetail.sampleOutput" />
-          </template>
-          <template v-if="problemDetail.hint">
-            <h3>提示</h3>
-            <div v-html="problemDetail.hint" />
-          </template>
-          <template v-if="isLogin">
-            <h3>提交代码</h3>
-            <codemirror
-              v-model="code"
-              :options="cmOptions"
-              @ready="onCmReady"
-            ></codemirror>
-            <div style="width:100%;padding-top:20px">
-              <div class="md-layout text-center justify-content-center">
-                <md-button class="md-info md-lg" @click="runCode"
-                  >调试运行</md-button
-                >&nbsp;&nbsp;&nbsp;
-                <md-button class="md-success md-lg" @click="submitSolution"
-                  >提交</md-button
-                >
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <div style="width:100%;padding-top:20px">
-              <div class="text-center justify-content-center">
-                <p>您还未登录，请登录后再提交代码。</p>
-                <br />
-                <md-button class="md-success md-lg" href="#/login"
-                  >登录</md-button
-                >
-              </div>
-            </div>
-          </template>
-          <modal v-if="runResultModal" @close="runResultModalHide">
-            <template slot="header">
-              <h4 class="modal-title">调试运行结果</h4>
-              <md-button
-                class="md-simple md-just-icon md-round modal-default-button"
-                @click="runResultModalHide"
-              >
-                <md-icon>clear</md-icon>
-              </md-button>
-            </template>
-            <template slot="body">
-              <p>
-                <highlight-code>{{ runResult }}</highlight-code>
-              </p>
-            </template>
-            <template slot="footer">
-              <md-button class="md-danger md-simple" @click="runResultModalHide"
-                >关闭</md-button
-              >
-            </template>
-          </modal>
-        </div>
-      </div>
-      <div class="section section-with-padding">
-        <div class="container">
-          <div class="features text-center">
-            <div class="md-layout"></div>
+          <div class="md-layout-item" id="submit-area">
+            <template v-if="isLogin">
+                <h4><strong>提交代码</strong></h4>
+                <codemirror
+                  id="codemirror"
+                  v-model="code"
+                  :options="cmOptions"
+                  @ready="onCmReady"
+                ></codemirror>
+                <div style="width:100%;padding-top:20px">
+                  <div class="md-layout text-center justify-content-center">
+                    <md-button class="md-info md-lg" @click="runCode"
+                      >调试运行</md-button
+                    >&nbsp;&nbsp;&nbsp;
+                    <md-button class="md-success md-lg" @click="submitSolution"
+                      >提交</md-button
+                    >
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div style="width:100%;padding-top:20px">
+                  <div class="text-center justify-content-center">
+                    <p>您还未登录，请登录后再提交代码。</p>
+                    <br />
+                    <md-button class="md-success md-lg" href="#/login"
+                      >登录</md-button
+                    >
+                  </div>
+                </div>
+              </template>
+              <modal v-if="runResultModal" @close="runResultModalHide">
+                <template slot="header">
+                  <h4 class="modal-title">调试运行结果</h4>
+                  <md-button
+                    class="md-simple md-just-icon md-round modal-default-button"
+                    @click="runResultModalHide"
+                  >
+                    <md-icon>clear</md-icon>
+                  </md-button>
+                </template>
+                <template slot="body">
+                  <p>
+                    <highlight-code>{{ runResult }}</highlight-code>
+                  </p>
+                </template>
+                <template slot="footer">
+                  <md-button class="md-danger md-simple" @click="runResultModalHide"
+                    >关闭</md-button
+                  >
+                </template>
+              </modal>
           </div>
         </div>
       </div>
@@ -110,7 +112,7 @@ export default {
   props: {
     header: {
       type: String,
-      default: require("@/assets/img/city-profile.jpg")
+      default: require("@/assets/img/bg7.jpg")
     }
   },
   data() {
@@ -129,7 +131,8 @@ export default {
         hintOptions: {
           completeSingle: false
         },
-        line: true
+        line: true,
+        matchBrackets: true
       },
       problemDetail: {},
       createTableCode: "",
@@ -142,6 +145,36 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    getLatestSolution() {
+      if (localStorage.JWT_TOKEN && localStorage.USER_ID) {
+        let userId = localStorage.USER_ID;
+        const apiUrl = this.Url.latestSolution;
+        this.$axios
+          .get(apiUrl, {
+            params: {
+              uid: userId,
+              pid: this.$route.params.id
+            }
+          })
+          .then(res => {
+            if (res.status !== 200) {
+              console.log(res);
+            } else {
+              if (res.data.code === 0) {
+                let latestCode = res.data.data.sourceCode;
+                if (!this.isEmpty(latestCode)) {
+                  this.code = latestCode;
+                }
+              } else {
+                console.log(res.data.message);
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     runCode() {
@@ -254,14 +287,15 @@ export default {
   mounted: function() {
     let problemId = this.$route.params.id;
     this.getProblemDetail(problemId);
+    this.getLatestSolution();
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.section {
-  padding: 0;
-}
+// .section {
+//   padding: 0 !important;
+// }
 
 .section-with-padding {
   padding-bottom: 40px;
@@ -274,5 +308,24 @@ export default {
 
 .justify-content-center {
   justify-content: center !important;
+}
+
+.md-content {
+  max-height: 550px;
+  overflow: auto;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.problem-detail-main {
+  padding: 5px 0;
+  margin: 0px 5px;
+}
+</style>
+<style lang="scss">
+.CodeMirror {
+  height: 500px !important;
 }
 </style>

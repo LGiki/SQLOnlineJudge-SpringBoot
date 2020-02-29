@@ -22,6 +22,8 @@ const Url = {
   // 获取用户通过和尝试过的题目列表
   userDoProblemList: BaseUrl + "/problems",
   // 运行调试SQL代码接口
-  runCode: BaseUrl + "/judgement/"
+  runCode: BaseUrl + "/judgement/",
+  // 获取用户对某一题目最后一次提交详情结构
+  latestSolution: ApiHost + "/api/public/latest_solution"
 };
 export default Url;
