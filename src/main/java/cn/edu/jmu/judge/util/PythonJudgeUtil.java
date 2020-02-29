@@ -1,5 +1,6 @@
 package cn.edu.jmu.judge.util;
 
+import cn.edu.jmu.common.util.OSUtil;
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,11 @@ public class PythonJudgeUtil {
      * @return judgeResultJson
      */
     public static JudgeResultJson createDatabase(Integer databaseId, String createTable, String testData) {
-//        String[] args = new String[]{"python", "./judger/createSqlite3Database.py", String.valueOf(databaseId), createTable, testData};
-        String[] args = new String[]{"python3", "./judger/createSqlite3Database.py", String.valueOf(databaseId), createTable, testData};
+        String pythonCommand = "python3";
+        if (OSUtil.isWindows()) {
+            pythonCommand = "python";
+        }
+        String[] args = new String[]{pythonCommand, "./judger/createSqlite3Database.py", String.valueOf(databaseId), createTable, testData};
         log.debug("开始创建数据库");
         return pythonAction(args);
     }
@@ -38,8 +42,11 @@ public class PythonJudgeUtil {
      * @return
      */
     public static JudgeResultJson getTrueResult(String answer, Integer databaseId) {
-//        String[] args = new String[]{"python", "./judger/getTrueResultByProblemAnswer.py", answer, String.valueOf(databaseId)};
-        String[] args = new String[]{"python3", "./judger/getTrueResultByProblemAnswer.py", answer, String.valueOf(databaseId)};
+        String pythonCommand = "python3";
+        if (OSUtil.isWindows()) {
+            pythonCommand = "python";
+        }
+        String[] args = new String[]{pythonCommand, "./judger/getTrueResultByProblemAnswer.py", answer, String.valueOf(databaseId)};
         log.debug("开始获取正确答案");
         return pythonAction(args);
     }
@@ -51,8 +58,11 @@ public class PythonJudgeUtil {
      * @return judgeResultJson
      */
     public static JudgeResultJson sqlJudge(Integer solutionId) {
-//        String[] args = new String[]{"python", "./judger/judger.py", String.valueOf(solutionId)};
-        String[] args = new String[]{"python3", "./judger/judger.py", String.valueOf(solutionId)};
+        String pythonCommand = "python3";
+        if (OSUtil.isWindows()) {
+            pythonCommand = "python";
+        }
+        String[] args = new String[]{pythonCommand, "./judger/judger.py", String.valueOf(solutionId)};
         log.debug("开始判题");
         return pythonAction(args);
     }
