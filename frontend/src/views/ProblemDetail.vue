@@ -31,7 +31,9 @@
           </div>
           <div class="md-layout-item" id="submit-area">
             <template v-if="isLogin">
-                <h4><strong>提交代码</strong></h4>
+                <div class="text-center" style="width:100%">
+                  <h4><strong>提交代码</strong></h4>
+                </div>
                 <codemirror
                   id="codemirror"
                   v-model="code"
