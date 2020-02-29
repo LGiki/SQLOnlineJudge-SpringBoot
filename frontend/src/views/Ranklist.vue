@@ -70,11 +70,7 @@ export default {
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowIndex + 1 <= 3
-                ? '<font color="red"><b>' + (rowIndex + 1) + "</b></font>"
-                : rowIndex + 1;
-            }
+            formatter: this.rankFormatter
           },
           {
             field: "username",
@@ -118,6 +114,13 @@ export default {
     };
   },
   methods: {
+    rankFormatter(rowData, rowIndex, pagingIndex, field) {
+      let currentRank = (this.pageNum - 1) * this.pageSize + rowIndex + 1;
+      console.log(this.pageSize);
+      return currentRank <= 3
+        ? '<font color="red"><strong>' + currentRank + "</strong></font>"
+        : currentRank;
+    },
     rowClick(rowIndex, rowData, column) {
       //TODO: jump to user profile page
     },
