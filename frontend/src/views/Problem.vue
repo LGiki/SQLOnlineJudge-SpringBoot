@@ -66,6 +66,7 @@
                     @page-change="pageChange"
                     @page-size-change="pageSizeChange"
                     :showPagingCount="3"
+                    :pageSize="pageSize"
                     :total="totalItems"
                     :layout="[
                       'total',
