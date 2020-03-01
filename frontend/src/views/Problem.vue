@@ -46,9 +46,8 @@
               >
             </md-field>
           </div>
-          <div class="features text-center">
+          <div class="features">
             <div class="md-layout">
-              <template>
                 <v-table
                   :is-loading="isLoading"
                   is-horizontal-resize
@@ -59,9 +58,7 @@
                   row-click-color="#edf7ff"
                   :row-click="rowClick"
                 ></v-table>
-              </template>
-              <template>
-                <div class="bd">
+                <div class="bd text-center">
                   <v-pagination
                     @page-change="pageChange"
                     @page-size-change="pageSizeChange"
@@ -78,7 +75,6 @@
                     ]"
                   ></v-pagination>
                 </div>
-              </template>
             </div>
           </div>
         </div>
@@ -164,7 +160,7 @@ export default {
             title: "标题",
             width: 400,
             titleAlign: "center",
-            columnAlign: "center",
+            // columnAlign: "center",
             isResize: true
           },
           {

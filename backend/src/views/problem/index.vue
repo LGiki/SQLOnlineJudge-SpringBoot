@@ -100,7 +100,7 @@ export default {
             title: '题目标题',
             width: 280,
             titleAlign: 'center',
-            columnAlign: 'center',
+            // columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return `<a href="#/problem/edit/${rowData.id}" title="${rowData.title}">${rowData.title}</a>`
