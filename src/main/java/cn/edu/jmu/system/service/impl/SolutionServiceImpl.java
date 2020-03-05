@@ -90,14 +90,14 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
     }
 
     @Override
-    public boolean add(SolutionDto solutionDto) {
+    public Integer add(SolutionDto solutionDto) {
         //设置状态值
         solutionDto.setResult(SolutionResultEnum.JUDGING);
         //向solution表插入记录
         Solution solution = SolutionConverter.toEntity(solutionDto);
-        int num = baseMapper.insert(solution);
+        baseMapper.insert(solution);
         judgeService.judge(SolutionConverter.toDto(solution));
-        return num >= 1;
+        return solution.getId();
     }
 
     /**

@@ -100,8 +100,8 @@ public class UserOperationController {
         User user = (User) subject.getPrincipal();
         Solution solution = solutionService.getById(id);
         if (!ObjectUtils.isEmpty(solution) && solution.getUid().equals(user.getId())) {
-            SolutionCodeDto solutionCodeDto = SolutionConverter.toSolutionCodeDto(solution);
-            return ResponseUtil.buildResponse(solutionCodeDto);
+//            SolutionCodeDto solutionCodeDto = SolutionConverter.toSolutionCodeDto(solution);
+            return ResponseUtil.buildResponse(solution);
         } else {
             return ResponseUtil.fail("无权限");
         }
@@ -115,8 +115,10 @@ public class UserOperationController {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
         solutionDto.setUid(user.getId());
-        boolean success = solutionService.add(solutionDto);
-        return ResponseUtil.buildResponse(success, "提交成功", "提交失败");
+        Integer solutionId = solutionService.add(solutionDto);
+        Map<String, Integer> data = new HashMap<>();
+        data.put("solutionId", solutionId);
+        return ResponseUtil.buildResponse(data);
     }
 
     /**

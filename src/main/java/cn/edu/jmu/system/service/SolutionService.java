@@ -35,5 +35,5 @@ public interface SolutionService extends IService<Solution> {
      * @param solutionDto solutionDto
      * @return boolean
      */
-    boolean add(SolutionDto solutionDto);
+    Integer add(SolutionDto solutionDto);
 }

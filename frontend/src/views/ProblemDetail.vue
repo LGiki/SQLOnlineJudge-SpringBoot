@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="section page-header header-filter" :style="headerStyle"></div> -->
     <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="section no-padding">
@@ -73,12 +72,50 @@
                   </md-button>
                 </template>
                 <template slot="body">
-                  <p>
+                  <div class="text-left">
+                    <p><strong>代码：</strong></p>
+                    <highlight-code lang="sql">{{ code }}</highlight-code>
+                    <p><strong>运行结果：</strong></p>
                     <highlight-code>{{ runResult }}</highlight-code>
-                  </p>
+                  </div>
                 </template>
                 <template slot="footer">
-                  <md-button class="md-danger md-simple" @click="runResultModalHide"
+                  <md-button class="md-success" @click="submitSolution"
+                    >提交代码</md-button
+                  >&nbsp;&nbsp;&nbsp;
+                  <md-button class="md-danger" @click="runResultModalHide"
+                    >关闭</md-button
+                  >
+                </template>
+              </modal>
+              <modal v-if="judgeResultModal" @close="judgeResultModalHide">
+                <template slot="header">
+                  <h4 class="modal-title">判题结果</h4>
+                  <md-button
+                    class="md-simple md-just-icon md-round modal-default-button"
+                    @click="judgeResultModalHide"
+                  >
+                    <md-icon>clear</md-icon>
+                  </md-button>
+                </template>
+                <template slot="body">
+                  <div class="text-left">
+                    <p><strong>代码：</strong></p>
+                    <highlight-code lang="sql">
+                      {{ code }}
+                    </highlight-code>
+                    <p><strong>判题状态：</strong></p>
+                    <p v-if="judgeResult == 'Judging'"><i class="material-icons rotate img-middle">sync</i><strong>正在判题…</strong></p>
+                    <p v-else-if="judgeResult == 'Unknown'"><i class="material-icons img-middle">error_outline</i><strong>判题失败，判题状态未知</strong></p>
+                    <p v-else-if="judgeResult == 'Accepted'"><i class="material-icons img-middle">check</i><font color="blue"><strong>Accepted</strong></font></p>
+                    <p v-else-if="judgeResult == 'Compile Error'"><i class="material-icons img-middle">warning</i><font color="green"><strong>Compile Error</strong></font></p>
+                    <p v-else-if="judgeResult == 'Wrong Answer'"><i class="material-icons img-middle">close</i><font color="red"><strong>Wrong Answer</strong></font></p>
+                    <p v-else-if="judgeResult == 'System Error'"><i class="material-icons img-middle">error_outline</i><strong>判题失败，系统内部错误</strong></p>
+                    <p v-else-if="judgeResult == 'Failed'"><i class="material-icons img-middle">error_outline</i><strong>判题失败</strong></p>
+                  </div>
+                </template>
+                <template slot="footer">
+                  <md-button class="md-danger" @click="judgeResultModalHide"
                     >关闭</md-button
                   >
                 </template>
@@ -120,7 +157,9 @@ export default {
   data() {
     return {
       runResult: "",
+      judgeResult: "",
       runResultModal: false,
+      judgeResultModal: false,
       code: "",
       cmOptions: {
         tabSize: 4,
@@ -136,6 +175,7 @@ export default {
         line: true,
         matchBrackets: true
       },
+      intervalId: '',
       problemDetail: {},
       createTableCode: "",
       isLogin: localStorage.JWT_TOKEN != null
@@ -179,6 +219,36 @@ export default {
           });
       }
     },
+    cancelInterval() {
+      if (!this.isEmpty(this.intervalId)) {
+        clearInterval(intervalId);
+      }
+    },
+    fetchSolutionCode(solutionId) {
+    let apiUrl = this.Url.solutionCode;
+    this.$axios
+      .get(apiUrl + solutionId)
+      .then(res => {
+        this.cancelInterval();
+        if (res.status !== 200) {
+          this.judgeResult = "Failed";
+          console.log(res);
+        } else {
+          let resData = res.data;
+          if (resData.code === 0) {
+            this.judgeResult = resData.data.result;
+          } else {
+            this.judgeResult = "Failed";
+            console.log(resData.message);
+          }
+        }
+      })
+      .catch(err => {
+        this.cancelInterval();
+        this.judgeResult = "Failed";
+        console.log(err);
+      });
+    },
     runCode() {
       if (this.isEmpty(this.code)) {
         alert("请检查SQL代码是否已输入！");
@@ -217,6 +287,9 @@ export default {
     runResultModalHide() {
       this.runResultModal = false;
     },
+    judgeResultModalHide() {
+      this.judgeResultModal = false;
+    },
     runResultShow() {
       this.runResultModal = true;
     },
@@ -250,6 +323,7 @@ export default {
         alert("请检查SQL代码是否已输入！");
         return;
       }
+      this.judgeResult = 'Judging';
       const apiUrl = this.Url.solutionSubmit;
       const problemId = this.$route.params.id;
       let postData = {
@@ -264,8 +338,9 @@ export default {
           } else {
             let resData = res.data;
             if (resData.code === 0) {
-              alert("解答提交成功！");
-              this.$router.push({ path: "/solution/" });
+              let solutionId = resData.data.solutionId;
+              setInterval(this.fetchSolutionCode(solutionId), 5000);
+              this.judgeResultModal = true;
             } else {
               alert(resData.message);
             }
@@ -295,9 +370,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .section {
-//   padding: 0 !important;
-// }
+.img-middle {
+  vertical-align: middle;
+}
+
+.rotate {
+ -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 1s;
+    -moz-transition-property: -moz-transform;
+    -moz-transition-duration: 1s;
+    -webkit-animation: rotate 3s linear infinite;
+    -moz-animation: rotate 3s linear infinite;
+    -o-animation: rotate 3s linear infinite;
+    animation: rotate 3s linear infinite;
+}
+
+@-webkit-keyframes rotate{from{-webkit-transform: rotate(0deg)}
+    to{-webkit-transform: rotate(-360deg)}
+}
+
+@-moz-keyframes rotate{from{-moz-transform: rotate(0deg)}
+    to{-moz-transform: rotate(-359deg)}
+}
+
+@-o-keyframes rotate{from{-o-transform: rotate(0deg)}
+    to{-o-transform: rotate(-359deg)}
+}
+
+@keyframes rotate{from{transform: rotate(0deg)}
+    to{transform: rotate(-359deg)}
+}
 
 .section-with-padding {
   padding-bottom: 40px;
