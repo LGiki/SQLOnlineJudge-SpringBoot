@@ -44,7 +44,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Override
     public IPage<ProblemDto> getAll(ProblemDto problemDto, Page page) {
         Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problemDto));
+        IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problemDto).orderByAsc(Problem::getTitle));
         return iPage.convert(ProblemConverter::toDto);
     }
 
