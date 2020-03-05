@@ -112,6 +112,12 @@
                     <p v-else-if="judgeResult == 'Wrong Answer'"><i class="material-icons img-middle">close</i><font color="red"><strong>Wrong Answer</strong></font></p>
                     <p v-else-if="judgeResult == 'System Error'"><i class="material-icons img-middle">error_outline</i><strong>判题失败，系统内部错误</strong></p>
                     <p v-else-if="judgeResult == 'Failed'"><i class="material-icons img-middle">error_outline</i><strong>判题失败</strong></p>
+                    <div v-if="judgeResult == 'Compile Error'">
+                      <p><strong>错误详情：</strong></p>
+                      <highlight-code lang="sql">
+                        {{ runError }}
+                    </highlight-code>
+                    </div>
                   </div>
                 </template>
                 <template slot="footer">
@@ -156,6 +162,7 @@ export default {
   },
   data() {
     return {
+      runError: "",
       runResult: "",
       judgeResult: "",
       runResultModal: false,
@@ -225,29 +232,30 @@ export default {
       }
     },
     fetchSolutionCode(solutionId) {
-    let apiUrl = this.Url.solutionCode;
-    this.$axios
-      .get(apiUrl + solutionId)
-      .then(res => {
-        this.cancelInterval();
-        if (res.status !== 200) {
-          this.judgeResult = "Failed";
-          console.log(res);
-        } else {
-          let resData = res.data;
-          if (resData.code === 0) {
-            this.judgeResult = resData.data.result;
-          } else {
+      let apiUrl = this.Url.solutionCode;
+      this.$axios
+        .get(apiUrl + solutionId)
+        .then(res => {
+          this.cancelInterval();
+          if (res.status !== 200) {
             this.judgeResult = "Failed";
-            console.log(resData.message);
+            console.log(res);
+          } else {
+            let resData = res.data;
+            if (resData.code === 0) {
+              this.judgeResult = resData.data.result;
+              this.runError = resData.data.runError;
+            } else {
+              this.judgeResult = "Failed";
+              console.log(resData.message);
+            }
           }
-        }
-      })
-      .catch(err => {
-        this.cancelInterval();
-        this.judgeResult = "Failed";
-        console.log(err);
-      });
+        })
+        .catch(err => {
+          this.cancelInterval();
+          this.judgeResult = "Failed";
+          console.log(err);
+        });
     },
     runCode() {
       if (this.isEmpty(this.code)) {
@@ -324,6 +332,7 @@ export default {
         return;
       }
       this.judgeResult = 'Judging';
+      this.runError = '';
       const apiUrl = this.Url.solutionSubmit;
       const problemId = this.$route.params.id;
       let postData = {
