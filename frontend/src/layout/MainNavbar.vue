@@ -167,8 +167,9 @@ export default {
           }
         })
         .catch(err => {
-          alert("获取用户详细信息失败，未知错误！");
+          // alert("获取用户详细信息失败，未知错误！");
           console.log(err);
+          this.logout();
         });
     },
     bodyClick() {
