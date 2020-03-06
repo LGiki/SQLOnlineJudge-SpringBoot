@@ -6,7 +6,8 @@ import sqlite3
 import json
 import configparser
 from sys import argv
-
+import uuid
+import shutil
 # 配置文件路径
 CONFIG_FILE_PATH = './judger/config.ini'
 # 返回状态码
@@ -55,18 +56,24 @@ def init_work_directory(SQLITE_DIR):
 # 创建数据库
 def create_database(SQLITE_DIR, database_id, create_table, test_data):
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
-    if os.path.exists(sqlite_db_file_path):
-        os.remove(sqlite_db_file_path)
-    sqlite_conn = sqlite3.connect(sqlite_db_file_path)
+    sqlite_db_file_path_temp = os.path.join(SQLITE_DIR, '{}_{}.db'.format(database_id, uuid.uuid4()))
+    if os.path.exists(sqlite_db_file_path_temp):
+        os.remove(sqlite_db_file_path_temp)
+    sqlite_conn = sqlite3.connect(sqlite_db_file_path_temp)
     sqlite_cursor = sqlite_conn.cursor()
     try:
         sqlite_cursor.executescript(create_table)
         sqlite_cursor.executescript(test_data)
         sqlite_conn.commit()
+        # 新数据库创建成功了才将旧数据库删除
+        if os.path.exists(sqlite_db_file_path):
+            os.remove(sqlite_db_file_path)
+        shutil.copyfile(sqlite_db_file_path_temp, sqlite_db_file_path)
+        os.remove(sqlite_db_file_path_temp)
     except BaseException as e:
         sqlite_cursor.close()
         sqlite_conn.close()
-        os.remove(sqlite_db_file_path)
+        os.remove(sqlite_db_file_path_temp)
         return False, str(e)
     sqlite_cursor.close()
     sqlite_conn.close()
