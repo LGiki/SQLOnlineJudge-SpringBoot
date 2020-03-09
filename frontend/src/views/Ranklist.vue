@@ -81,6 +81,14 @@ export default {
             isResize: true
           },
           {
+            field: "studentNo",
+            title: "学号",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
             field: "solved",
             title: "通过数",
             width: 100,

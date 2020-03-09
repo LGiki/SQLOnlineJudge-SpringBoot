@@ -55,6 +55,7 @@
           :show-paging-count="3"
           :total="totalItems"
           :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
+          :pageSize="pageSize"
           @page-change="pageChange"
           @page-size-change="pageSizeChange"
         />
@@ -99,7 +100,7 @@ export default {
       inSearch: false,
       searchKeyword: '',
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       totalItems: 0,
       isLoading: false,
       tableConfig: {
@@ -108,7 +109,7 @@ export default {
           {
             field: 'id',
             title: '提交ID',
-            width: 80,
+            width: 30,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -116,7 +117,7 @@ export default {
           {
             field: 'uid',
             title: '用户ID',
-            width: 80,
+            width: 30,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -127,7 +128,7 @@ export default {
           {
             field: 'username',
             title: '用户名',
-            width: 80,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -136,9 +137,20 @@ export default {
             }
           },
           {
+            field: 'studentNo',
+            title: '学号',
+            width: 100,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return `<a href="#/user/edit/${rowData.uid}" title="${rowData.studentNo}">${rowData.studentNo}</a>`
+            }
+          },
+          {
             field: 'pid',
             title: '题目ID',
-            width: 80,
+            width: 30,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -149,18 +161,26 @@ export default {
           {
             field: 'title',
             title: '题目标题',
-            width: 280,
+            width: 300,
             titleAlign: 'center',
-            columnAlign: 'center',
+            // columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.title}">${rowData.title}</a>`
             }
           },
           {
+            field: 'submitTime',
+            title: '提交时间',
+            width: 180,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
             field: 'sourceCode',
             title: '代码',
-            width: 100,
+            width: 80,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,

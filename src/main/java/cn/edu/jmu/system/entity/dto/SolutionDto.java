@@ -39,6 +39,11 @@ public class SolutionDto implements Serializable {
     private String username;
 
     /**
+     * 学号
+     */
+    private Long studentNo;
+
+    /**
      * 题目ID
      */
     @NotNull

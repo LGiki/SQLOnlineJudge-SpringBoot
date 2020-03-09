@@ -42,13 +42,14 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
 
     /**
      * 根据用户ID和题目ID获取到用户对某个题目最后一次提交的提交详情
+     *
      * @param uid 用户ID
      * @param pid 题目ID
      * @return Solution
      */
     @Override
     public Solution getLatestSolutionByUserIdAndProblemId(Integer uid, Integer pid) {
-        if(uid == null || pid == null) {
+        if (uid == null || pid == null) {
             return null;
         }
         SolutionDto solutionDto = new SolutionDto();
@@ -65,23 +66,23 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         IPage<Solution> iPage;
         if (ObjectUtil.isNull(solutionDto)) {
             iPage = baseMapper.selectPage(solutionPage
-                , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
         } else {
             if (solutionDto.getId() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionConverter
-                        .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getUid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionConverter
-                        .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getPid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionConverter
-                        .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
             } else {
                 iPage = baseMapper.selectPage(solutionPage
-                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                        , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
             }
         }
         IPage<SolutionDto> convert = iPage.convert(SolutionConverter::toDto);
@@ -106,7 +107,10 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
     private void addMessage(SolutionDto solutionDto) {
         solutionDto.setSourceCode(null);
         User user = userService.getById(solutionDto.getUid());
-        solutionDto.setUsername(user.getUsername());
+        if (user != null) {
+            solutionDto.setUsername(user.getUsername());
+            solutionDto.setStudentNo(user.getStudentNo());
+        }
         Problem problem = problemService.getById(solutionDto.getPid());
         solutionDto.setTitle(problem.getTitle());
     }

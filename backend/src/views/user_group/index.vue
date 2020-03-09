@@ -45,6 +45,7 @@
         <v-pagination
           :show-paging-count="3"
           :total="totalItems"
+          :pageSize="pageSize"
           :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
           @page-change="pageChange"
           @page-size-change="pageSizeChange"
@@ -82,7 +83,7 @@ export default {
       inSearch: false,
       searchKeyword: '',
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 20,
       totalItems: 0,
       isLoading: false,
       tableConfig: {

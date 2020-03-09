@@ -191,6 +191,14 @@ export default {
             isResize: true
           },
           {
+            field: "studentNo",
+            title: "学号",
+            width: 100,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
             field: "pid",
             title: "题目ID",
             width: 50,
@@ -209,7 +217,7 @@ export default {
           {
             field: "submitTime",
             title: "提交时间",
-            width: 100,
+            width: 180,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
