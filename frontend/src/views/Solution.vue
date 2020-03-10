@@ -410,6 +410,7 @@ export default {
   },
   mounted: function() {
     this.getSolutionList();
+    setInterval(this.getSolutionList, 5000);
   }
 };
 </script>
