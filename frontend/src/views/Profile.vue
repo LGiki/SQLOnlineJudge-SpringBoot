@@ -23,6 +23,45 @@
               </div>
             </div>
           </div>
+          <div class="md-layout text-center">
+            <md-button
+              @click="modifyProfileModal = true"
+              slot="footer"
+              class="md-success md-lg"
+            >修改密码</md-button>
+          </div>
+          <modal v-if="modifyProfileModal" @close="modifyProfileModalHide">
+                <template slot="header">
+                  <h4 class="modal-title">修改密码</h4>
+                  <md-button
+                    class="md-simple md-just-icon md-round modal-default-button"
+                    @click="modifyProfileModalHide"
+                  >
+                    <md-icon>clear</md-icon>
+                  </md-button>
+                </template>
+                <template slot="body">
+                  <md-field>
+                    <md-icon>lock_outline</md-icon>
+                    <label>请输入新密码</label>
+                    <md-input autofocus v-model="newPassword" type="password"></md-input>
+                  </md-field>
+                  <md-field>
+                    <md-icon>lock_outline</md-icon>
+                    <label>请重复输入新密码</label>
+                    <md-input @keyup.enter.native="submitModifyProfile" v-model="newPasswordRepeat" type="password"></md-input>
+                  </md-field>
+                </template>
+                <template slot="footer">
+                  <md-button class="md-danger" @click="modifyProfileModalHide"
+                    >关闭</md-button
+                  >
+                  &nbsp;&nbsp;&nbsp;
+                  <md-button class="md-success" @click="submitModifyProfile"
+                    >确定</md-button
+                  >
+                </template>
+              </modal>
           <div class="md-layout">
             <h4><b>用户ID</b>：{{ userDetail.id }}</h4>
           </div>
@@ -55,13 +94,18 @@
 
 <script>
 import { Tabs } from "@/components";
+import { Modal } from "@/components";
 export default {
   components: {
-    Tabs
+    Tabs,
+    Modal
   },
   bodyClass: "profile-page",
   data() {
     return {
+      modifyProfileModal: false,
+      newPassword: '',
+      newPasswordRepeat: '',
       userDetail: {
         username: null,
         id: 0,
@@ -78,10 +122,55 @@ export default {
     },
     img: {
       type: String,
-      default: require("@/assets/img/faces/christian.jpg")
+      default: require("@/assets/img/faces/user.png")
     }
   },
   methods: {
+    logout() {
+      localStorage.removeItem("JWT_TOKEN");
+      localStorage.removeItem("USER_ID");
+      this.userDetail = null;
+      window.location.href = "#/login";
+    },
+    isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    submitModifyProfile() {
+      if(this.isEmpty(this.newPassword) || this.isEmpty(this.newPasswordRepeat)) {
+        alert('请检查输入是否完整！');
+        return;
+      }
+      if(this.newPassword !== this.newPasswordRepeat) {
+        alert('两次输入的密码不一致，请检查后重新输入！');
+        return;
+      }
+      let userId = this.$route.params.id;
+      this.$axios
+        .put(this.Url.userDetail, {
+          id: userId,
+          password: this.newPassword
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            alert("修改用户密码失败，内部错误！");
+          } else {
+            const resData = res.data;
+            alert(resData.message);
+            this.logout();
+          }
+        })
+        .catch(err => {
+          alert("修改用户密码失败，未知错误！");
+          console.log(err);
+        });
+    },
+    modifyProfileModalHide() {
+      this.modifyProfileModal = false;
+    },
     fetchUserInformation(userId) {
       this.$axios
         .get(this.Url.userDetail + userId)
@@ -118,6 +207,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.text-center {
+  margin: 0 auto;
+}
+
 .section {
   padding: 0;
 }

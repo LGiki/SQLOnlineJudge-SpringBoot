@@ -33,7 +33,7 @@ public class UserDto implements Serializable {
     /**
      * 学号
      */
-    private String studentNo;
+    private Long studentNo;
 
     /**
      * 密码

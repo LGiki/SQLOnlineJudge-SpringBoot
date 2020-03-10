@@ -26,7 +26,7 @@
               <md-button
                 @click="login"
                 slot="footer"
-                class="md-simple md-success md-lg"
+                class="md-success"
                 >登录</md-button
               >
             </login-card>

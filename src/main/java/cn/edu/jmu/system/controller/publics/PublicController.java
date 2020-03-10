@@ -110,16 +110,16 @@ public class PublicController {
         Solution solution = null;
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        if(user != null) {
-            if(uid.equals(user.getId())) {
+        if (user != null) {
+            if (uid.equals(user.getId())) {
                 solution = solutionService.getLatestSolutionByUserIdAndProblemId(uid, pid);
                 if (solution == null) {
                     responseMessage = "查询失败，找不到记录";
                 }
-            }else{
+            } else {
                 responseMessage = "只能查询自己的记录";
             }
-        }else{
+        } else {
             responseMessage = "未登录，无法查询记录";
         }
         return ResponseUtil.buildResponse(responseMessage, solution);

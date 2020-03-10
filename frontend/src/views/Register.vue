@@ -41,7 +41,7 @@
               <md-button
                 @click="register"
                 slot="footer"
-                class="md-simple md-success md-lg"
+                class="md-success"
                 >注册</md-button
               >
             </login-card>

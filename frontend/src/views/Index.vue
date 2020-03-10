@@ -59,7 +59,7 @@
                   <h4 class="info-title">焕然一新的感受</h4>
                   <p>
                     我们有一流的UI设计,
-                    我们着眼细节，追求品质；提供给OIer们最友好高效的训练平台。
+                    我们着眼细节，追求品质；提供给学生最友好高效的训练平台。
                   </p>
                 </div>
               </div>
@@ -95,18 +95,6 @@ export default {
     leaf1: {
       type: String,
       default: require("@/assets/img/leaf1.png")
-    },
-    signup: {
-      type: String,
-      default: require("@/assets/img/city.jpg")
-    },
-    landing: {
-      type: String,
-      default: require("@/assets/img/landing.jpg")
-    },
-    profile: {
-      type: String,
-      default: require("@/assets/img/profile.jpg")
     }
   },
   data() {
@@ -125,17 +113,6 @@ export default {
         this.leafShow = true;
       }
     }
-    // notifyVue (verticalAlign, horizontalAlign) {
-    //   console.log('123')
-    //   this.$notify(
-    //     {
-    //       message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.',
-    //       icon: 'add_alert',
-    //       horizontalAlign: horizontalAlign,
-    //       verticalAlign: verticalAlign,
-    //       type: 'success'
-    //     })
-    // }
   },
   computed: {
     headerStyle() {

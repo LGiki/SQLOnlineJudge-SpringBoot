@@ -76,7 +76,7 @@ public class UserOperationController {
      * 更改用户信息
      */
     @PutMapping(value = "/users/")
-    public ResponseEntity<BasicResponse> update(@RequestBody @Validated UserDto userDto) {
+    public ResponseEntity<BasicResponse> update(@RequestBody UserDto userDto) {
         if (userDto.getId() == null) {
             return ResponseUtil.fail("用户id不能为空");
         }
@@ -84,10 +84,15 @@ public class UserOperationController {
         User user = (User) subject.getPrincipal();
         if (user.getId().equals(userDto.getId())) {
             userDto.setStatus(user.getStatus());
+            userDto.setUsername(user.getUsername());
+            userDto.setStudentNo(user.getStudentNo());
+            userDto.setSolved(user.getSolved());
+            userDto.setSubmit(user.getSubmit());
+            userDto.setEmail(user.getEmail());
             boolean success = userService.update(userDto);
-            return ResponseUtil.buildResponse(success, "更新成功", "更新失败");
+            return ResponseUtil.buildResponse(success, "修改成功", "修改失败");
         } else {
-            return ResponseUtil.fail("无法更新他人信息");
+            return ResponseUtil.fail("无法修改他人信息");
         }
     }
 

@@ -80,12 +80,11 @@
                   </div>
                 </template>
                 <template slot="footer">
-                  <md-button class="md-success" @click="submitSolution"
-                    >提交代码</md-button
-                  >&nbsp;&nbsp;&nbsp;
                   <md-button class="md-danger" @click="runResultModalHide"
-                    >关闭</md-button
-                  >
+                    >关闭</md-button>
+                  &nbsp;&nbsp;&nbsp;
+                  <md-button class="md-success" @click="submitSolution"
+                    >提交代码</md-button>
                 </template>
               </modal>
               <modal v-if="judgeResultModal" @close="judgeResultModalHide">

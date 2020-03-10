@@ -139,23 +139,20 @@ export default {
     };
   },
   computed: {
-    showDownload() {
-      const excludedRoutes = ["login", "landing", "profile"];
-      return excludedRoutes.every(r => r !== this.$route.name);
-    }
+    
   },
   methods: {
     logout() {
       localStorage.removeItem("JWT_TOKEN");
       localStorage.removeItem("USER_ID");
       this.userDetail = null;
+      this.$router.replace({ path: "/login" });
     },
     fetchUserInformation(userId) {
       this.$axios
         .get(this.Url.userDetail + userId)
         .then(res => {
           if (res.status !== 200) {
-            // alert("获取用户详细信息失败，内部错误！");
             this.logout();
           } else {
             const resData = res.data;
@@ -167,7 +164,6 @@ export default {
           }
         })
         .catch(err => {
-          // alert("获取用户详细信息失败，未知错误！");
           console.log(err);
           this.logout();
         });
