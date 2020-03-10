@@ -8,6 +8,7 @@ import configparser
 from sys import argv
 import uuid
 import shutil
+
 # 配置文件路径
 CONFIG_FILE_PATH = './judger/config.ini'
 # 返回状态码
@@ -36,8 +37,8 @@ def get_config_value(config_parser, category, name):
 
 # 读取config文件
 def init_config(config_parser):
-    SQLITE_DIR = get_config_value(config_parser, 'Judge', 'sqlite_dir')
-    SQLITE_TEMP_DIR = get_config_value(config_parser, 'Judge', 'temp_sqlite_dir')
+    SQLITE_DIR = get_config_value(config_parser, 'Judge_SQLite', 'sqlite_dir')
+    SQLITE_TEMP_DIR = get_config_value(config_parser, 'Judge_SQLite', 'temp_sqlite_dir')
     DB_HOST = get_config_value(config_parser, 'Main_Database', 'host')
     DB_USERNAME = get_config_value(config_parser, 'Main_Database', 'username')
     DB_PASSWORD = get_config_value(config_parser, 'Main_Database', 'password')
