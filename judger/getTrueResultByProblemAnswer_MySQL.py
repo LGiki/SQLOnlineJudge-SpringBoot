@@ -8,6 +8,7 @@ import configparser
 import shutil
 from sys import argv
 import uuid
+
 # TODO
 # 配置文件路径
 CONFIG_FILE_PATH = './judger/config.ini'
@@ -37,14 +38,16 @@ def get_config_value(config_parser, category, name):
 
 # 读取config文件
 def init_config(config_parser):
-    SQLITE_DIR = get_config_value(config_parser, 'Judge', 'sqlite_dir')
-    SQLITE_TEMP_DIR = get_config_value(config_parser, 'Judge', 'temp_sqlite_dir')
+    MYSQL_JUDGE_DB_HOST = get_config_value(config_parser, 'Judge_MySQL', 'host')
+    MYSQL_JUDGE_DB_USERNAME = get_config_value(config_parser, 'Judge_MySQL', 'username')
+    MYSQL_JUDGE_DB_PASSWORD = get_config_value(config_parser, 'Judge_MySQL', 'password')
+    MYSQL_JUDGE_DB_CHARSET = get_config_value(config_parser, 'Judge_MySQL', 'charset')
     DB_HOST = get_config_value(config_parser, 'Main_Database', 'host')
     DB_USERNAME = get_config_value(config_parser, 'Main_Database', 'username')
     DB_PASSWORD = get_config_value(config_parser, 'Main_Database', 'password')
     DB_DATABASE = get_config_value(config_parser, 'Main_Database', 'database')
     DB_CHARSET = get_config_value(config_parser, 'Main_Database', 'charset')
-    return SQLITE_DIR, SQLITE_TEMP_DIR, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
+    return MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
 
 
 # 执行sqlite代码
@@ -81,6 +84,7 @@ def is_select_problem(answer):
         return False
     return True
 
+
 # 分割答案，取出update/delete语句与select语句
 def split_answer(answer):
     if answer.endswith(';'):
@@ -112,18 +116,12 @@ def get_true_result(SQLITE_DIR, SQLITE_TEMP_DIR, answer, database_id):
     return true_result, None
 
 
-# 初始化工作目录
-def init_work_directory(SQLITE_TEMP_DIR):
-    if not os.path.exists(SQLITE_TEMP_DIR):
-        os.mkdir(SQLITE_TEMP_DIR)
-        # logger.info('Create Temp SQLite Dir: {}'.format(SQLITE_TEMP_DIR))
-
-
 def main(answer, database_id):
     config_parser = configparser.ConfigParser()
     if len(config_parser.read(CONFIG_FILE_PATH)) == 0:
         return construct_json_response(RESPONSE_CODE['FAIL'], None, 'Can not load config.ini.')
-    SQLITE_DIR, SQLITE_TEMP_DIR, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(config_parser)
+    MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(
+        config_parser)
     init_work_directory(SQLITE_TEMP_DIR)
     sqlite_db_file_path = os.path.join(SQLITE_DIR, '{}.db'.format(database_id))
     if not os.path.exists(sqlite_db_file_path):
