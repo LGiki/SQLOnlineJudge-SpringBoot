@@ -129,8 +129,7 @@ export default {
     logout() {
       localStorage.removeItem("JWT_TOKEN");
       localStorage.removeItem("USER_ID");
-      this.userDetail = null;
-      window.location.href = "#/login";
+      history.go(0);
     },
     isEmpty(obj) {
       if (typeof obj == "undefined" || obj == null || obj == "") {
@@ -164,7 +163,6 @@ export default {
           }
         })
         .catch(err => {
-          alert("修改用户密码失败，未知错误！");
           console.log(err);
         });
     },
@@ -176,7 +174,7 @@ export default {
         .get(this.Url.userDetail + userId)
         .then(res => {
           if (res.status !== 200) {
-            alert("获取用户详细信息失败，内部错误！");
+            // alert("获取用户详细信息失败，内部错误！");
           } else {
             const resData = res.data;
             if (resData.code === 0) {
@@ -187,7 +185,7 @@ export default {
           }
         })
         .catch(err => {
-          alert("获取用户详细信息失败，未知错误！");
+          // alert("获取用户详细信息失败，未知错误！");
           console.log(err);
         });
     }
@@ -201,7 +199,11 @@ export default {
   },
   mounted: function() {
     let userId = this.$route.params.id;
-    this.fetchUserInformation(userId);
+    if (userId) {
+      this.fetchUserInformation(userId);
+    }else{
+      this.$router.push({ path: "/login" });
+    }
   }
 };
 </script>
