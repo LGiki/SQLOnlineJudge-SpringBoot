@@ -48,33 +48,33 @@
           </div>
           <div class="features">
             <div class="md-layout">
-                <v-table
-                  :is-loading="isLoading"
-                  is-horizontal-resize
-                  style="width:100%"
-                  :columns="tableConfig.columns"
-                  :table-data="tableConfig.tableData"
-                  row-hover-color="#eee"
-                  row-click-color="#edf7ff"
-                  :row-click="rowClick"
-                ></v-table>
-                <div class="bd text-center">
-                  <v-pagination
-                    @page-change="pageChange"
-                    @page-size-change="pageSizeChange"
-                    :showPagingCount="3"
-                    :pageSize="pageSize"
-                    :total="totalItems"
-                    :layout="[
-                      'total',
-                      'sizer',
-                      'prev',
-                      'pager',
-                      'next',
-                      'jumper'
-                    ]"
-                  ></v-pagination>
-                </div>
+              <v-table
+                :is-loading="isLoading"
+                is-horizontal-resize
+                style="width:100%"
+                :columns="tableConfig.columns"
+                :table-data="tableConfig.tableData"
+                row-hover-color="#eee"
+                row-click-color="#edf7ff"
+                :row-click="rowClick"
+              ></v-table>
+              <div class="bd text-center">
+                <v-pagination
+                  @page-change="pageChange"
+                  @page-size-change="pageSizeChange"
+                  :showPagingCount="3"
+                  :pageSize="pageSize"
+                  :total="totalItems"
+                  :layout="[
+                    'total',
+                    'sizer',
+                    'prev',
+                    'pager',
+                    'next',
+                    'jumper'
+                  ]"
+                ></v-pagination>
+              </div>
             </div>
           </div>
         </div>

@@ -28,58 +28,85 @@
               @click="modifyProfileModal = true"
               slot="footer"
               class="md-success md-lg"
-            >修改密码</md-button>
+              >修改密码</md-button
+            >
           </div>
           <modal v-if="modifyProfileModal" @close="modifyProfileModalHide">
-                <template slot="header">
-                  <h4 class="modal-title">修改密码</h4>
-                  <md-button
-                    class="md-simple md-just-icon md-round modal-default-button"
-                    @click="modifyProfileModalHide"
-                  >
-                    <md-icon>clear</md-icon>
-                  </md-button>
-                </template>
-                <template slot="body">
-                  <md-field>
-                    <md-icon>lock_outline</md-icon>
-                    <label>请输入新密码</label>
-                    <md-input autofocus v-model="newPassword" type="password"></md-input>
-                  </md-field>
-                  <md-field>
-                    <md-icon>lock_outline</md-icon>
-                    <label>请重复输入新密码</label>
-                    <md-input @keyup.enter.native="submitModifyProfile" v-model="newPasswordRepeat" type="password"></md-input>
-                  </md-field>
-                </template>
-                <template slot="footer">
-                  <md-button class="md-danger" @click="modifyProfileModalHide"
-                    >关闭</md-button
-                  >
-                  &nbsp;&nbsp;&nbsp;
-                  <md-button class="md-success" @click="submitModifyProfile"
-                    >确定</md-button
-                  >
-                </template>
-              </modal>
+            <template slot="header">
+              <h4 class="modal-title">修改密码</h4>
+              <md-button
+                class="md-simple md-just-icon md-round modal-default-button"
+                @click="modifyProfileModalHide"
+              >
+                <md-icon>clear</md-icon>
+              </md-button>
+            </template>
+            <template slot="body">
+              <md-field>
+                <md-icon>lock_outline</md-icon>
+                <label>请输入新密码</label>
+                <md-input
+                  autofocus
+                  v-model="newPassword"
+                  type="password"
+                ></md-input>
+              </md-field>
+              <md-field>
+                <md-icon>lock_outline</md-icon>
+                <label>请重复输入新密码</label>
+                <md-input
+                  @keyup.enter.native="submitModifyProfile"
+                  v-model="newPasswordRepeat"
+                  type="password"
+                ></md-input>
+              </md-field>
+            </template>
+            <template slot="footer">
+              <md-button class="md-danger" @click="modifyProfileModalHide"
+                >关闭</md-button
+              >
+              &nbsp;&nbsp;&nbsp;
+              <md-button class="md-success" @click="submitModifyProfile"
+                >确定</md-button
+              >
+            </template>
+          </modal>
           <div class="md-layout">
-            <h4><b>用户ID</b>：{{ userDetail.id }}</h4>
-          </div>
-          <div class="md-layout">
-            <h4><b>学号</b>：{{ userDetail.studentNo }}</h4>
-          </div>
-          <div class="md-layout">
-            <h4><b>用户邮箱</b>：{{ userDetail.email }}</h4>
-          </div>
-          <div class="md-layout">
-            <h4><b>提交数</b>：{{ userDetail.submit }}</h4>
-          </div>
-          <div class="md-layout">
-            <h4><b>通过数</b>：{{ userDetail.solved }}</h4>
+            <h4>
+              <b><md-icon>face</md-icon>&nbsp;用户ID</b>：{{ userDetail.id }}
+            </h4>
           </div>
           <div class="md-layout">
             <h4>
-              <b>通过率</b>：{{
+              <b><md-icon>dialpad</md-icon>&nbsp;学号</b>：{{
+                userDetail.studentNo
+              }}
+            </h4>
+          </div>
+          <div class="md-layout">
+            <h4>
+              <b><md-icon>email</md-icon>&nbsp;用户邮箱</b>：{{
+                userDetail.email
+              }}
+            </h4>
+          </div>
+          <div class="md-layout">
+            <h4>
+              <b><md-icon>send</md-icon>&nbsp;提交数</b>：{{
+                userDetail.submit
+              }}
+            </h4>
+          </div>
+          <div class="md-layout">
+            <h4>
+              <b><md-icon>check</md-icon>&nbsp;通过数</b>：{{
+                userDetail.solved
+              }}
+            </h4>
+          </div>
+          <div class="md-layout">
+            <h4>
+              <b><md-icon>timeline</md-icon>&nbsp;通过率</b>：{{
                 userDetail.submit == 0
                   ? 0
                   : (userDetail.solved / userDetail.submit).toFixed(2)
@@ -104,8 +131,8 @@ export default {
   data() {
     return {
       modifyProfileModal: false,
-      newPassword: '',
-      newPasswordRepeat: '',
+      newPassword: "",
+      newPasswordRepeat: "",
       userDetail: {
         username: null,
         id: 0,
@@ -118,7 +145,7 @@ export default {
   props: {
     header: {
       type: String,
-      default: require("@/assets/img/city-profile.jpg")
+      default: require("@/assets/img/nature-3.jpg")
     },
     img: {
       type: String,
@@ -139,12 +166,15 @@ export default {
       }
     },
     submitModifyProfile() {
-      if(this.isEmpty(this.newPassword) || this.isEmpty(this.newPasswordRepeat)) {
-        alert('请检查输入是否完整！');
+      if (
+        this.isEmpty(this.newPassword) ||
+        this.isEmpty(this.newPasswordRepeat)
+      ) {
+        alert("请检查输入是否完整！");
         return;
       }
-      if(this.newPassword !== this.newPasswordRepeat) {
-        alert('两次输入的密码不一致，请检查后重新输入！');
+      if (this.newPassword !== this.newPasswordRepeat) {
+        alert("两次输入的密码不一致，请检查后重新输入！");
         return;
       }
       let userId = this.$route.params.id;
@@ -201,7 +231,7 @@ export default {
     let userId = this.$route.params.id;
     if (userId) {
       this.fetchUserInformation(userId);
-    }else{
+    } else {
       this.$router.push({ path: "/login" });
     }
   }

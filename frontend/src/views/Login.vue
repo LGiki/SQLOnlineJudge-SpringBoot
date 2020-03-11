@@ -23,10 +23,7 @@
                   type="password"
                 ></md-input>
               </md-field>
-              <md-button
-                @click="login"
-                slot="footer"
-                class="md-success"
+              <md-button @click="login" slot="footer" class="md-success"
                 >登录</md-button
               >
             </login-card>

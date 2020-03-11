@@ -138,9 +138,7 @@ export default {
       userDetail: null
     };
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
     logout() {
       localStorage.removeItem("JWT_TOKEN");
