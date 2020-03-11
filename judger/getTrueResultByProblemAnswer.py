@@ -81,11 +81,16 @@ def is_select_problem(answer):
         return False
     return True
 
+
 # 分割答案，取出update/delete语句与select语句
 def split_answer(answer):
     if answer.endswith(';'):
         answer = answer[:-1]
-    splitted_answer = answer.split(';')
+    splitted_answer_temp = answer.split(';')
+    splitted_answer = []
+    for code in splitted_answer_temp:
+        if len(code) != 0:
+            splitted_answer.append(code)
     operation_code = ';'.join(splitted_answer[:-1]) + ';'
     select_code = splitted_answer[-1]
     return operation_code, select_code
