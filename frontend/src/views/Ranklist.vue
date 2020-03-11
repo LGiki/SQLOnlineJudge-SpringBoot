@@ -83,7 +83,7 @@ export default {
           {
             field: "studentNo",
             title: "学号",
-            width: 100,
+            width: 120,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true

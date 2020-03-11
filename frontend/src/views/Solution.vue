@@ -185,7 +185,7 @@ export default {
           {
             field: "username",
             title: "用户名",
-            width: 100,
+            width: 80,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -193,7 +193,7 @@ export default {
           {
             field: "studentNo",
             title: "学号",
-            width: 100,
+            width: 120,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -225,7 +225,7 @@ export default {
           {
             field: "result",
             title: "结果",
-            width: 100,
+            width: 120,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
