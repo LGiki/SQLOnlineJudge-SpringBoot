@@ -49,30 +49,30 @@ export default {
     },
     addUserGroup() {
       const apiUrl = this.Url.userGroupBaseUrl
-      let postData = this.userGroupDetail
+      const postData = this.userGroupDetail
       postData.name.trim()
       postData.description.trim()
       this.$axios
-      .post(apiUrl, postData)
-      .then(res => {
-        if (res.status !== 200) {
-          this.$message.error('添加用户组失败，内部错误！')
-        } else {
-          const resData = res.data
-          if (resData.code === 0) {
-            this.$message({
-              message: resData.message,
-              type: 'success'
-            })
-            this.$router.back(-1)
+        .post(apiUrl, postData)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('添加用户组失败，内部错误！')
           } else {
-            this.$message.error(resData.message)
+            const resData = res.data
+            if (resData.code === 0) {
+              this.$message({
+                message: resData.message,
+                type: 'success'
+              })
+              this.$router.back(-1)
+            } else {
+              this.$message.error(resData.message)
+            }
           }
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

@@ -55,7 +55,7 @@
           :show-paging-count="3"
           :total="totalItems"
           :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
-          :pageSize="pageSize"
+          :page-size="pageSize"
           @page-change="pageChange"
           @page-size-change="pageSizeChange"
         />

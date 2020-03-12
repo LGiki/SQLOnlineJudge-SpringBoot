@@ -111,7 +111,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          let postData = qs.stringify({
+          const postData = qs.stringify({
             username: this.loginForm.username,
             password: this.loginForm.password
           })

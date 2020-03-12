@@ -46,7 +46,7 @@
         <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入答案" />
       </el-form-item>
       <el-form-item>
-        <el-button type="warning" @click="runCode" plain>调试运行答案</el-button>
+        <el-button type="warning" plain @click="runCode">调试运行答案</el-button>
       </el-form-item>
       <el-dialog
         title="答案填写说明"
@@ -64,14 +64,14 @@
           `hire_date` date NOT NULL,
           PRIMARY KEY (`emp_no`));
         </highlight-code>
-        <p /><h3>1. 对于select操作的题目</h3></p>
+        <p><h3>1. 对于select操作的题目</h3></p>
         <p>例如查找表employees中emp_no为奇数的记录</p>
         答案只需给出任意一种可行的答案即可，例如
         <highlight-code lang="sql">
           select * from employees where emp_no % 2 = 1;
         </highlight-code>
 
-        <p /><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
+        <p><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
         <p>例如删除表employees中emp_no为奇数的记录</p>
         <p>答案应该这样给出：</p>
         <highlight-code lang="sql">
@@ -90,13 +90,13 @@
         :visible.sync="runCodeDialogVisible"
         width="50%"
       >
-      <p><strong>代码：</strong></p>
-      <highlight-code lang="sql">{{ problemDetail.answer }}</highlight-code>
-      <p><strong>运行结果：</strong></p>
-      <highlight-code>{{ runResult }}</highlight-code>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="runCodeDialogVisible = false">关 闭</el-button>
-      </span>
+        <p><strong>代码：</strong></p>
+        <highlight-code lang="sql">{{ problemDetail.answer }}</highlight-code>
+        <p><strong>运行结果：</strong></p>
+        <highlight-code>{{ runResult }}</highlight-code>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="runCodeDialogVisible = false">关 闭</el-button>
+        </span>
       </el-dialog>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -201,10 +201,10 @@ export default {
   },
   methods: {
     isEmpty(obj) {
-      if (typeof obj == "undefined" || obj == null || obj == "") {
-        return true;
+      if (typeof obj === 'undefined' || obj == null || obj == '') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
     onCmReady(cm) {
@@ -214,43 +214,43 @@ export default {
     },
     runCode() {
       if (this.isEmpty(this.problemDetail.answer)) {
-        this.$message.error("请检查SQL代码是否已输入！");
-        return;
+        this.$message.error('请检查SQL代码是否已输入！')
+        return
       }
       if (this.isEmpty(this.problemDetail.databaseId)) {
-        this.$message.error("请检查是否已选择数据库！");
+        this.$message.error('请检查是否已选择数据库！')
       }
-      this.runResult = '';
-      const apiUrl = this.Url.runCode;
+      this.runResult = ''
+      const apiUrl = this.Url.runCode
       this.$axios
-        .post(apiUrl + this.problemDetail.databaseId, 
-        {
-          sourceCode: this.problemDetail.answer,
-          test:123
-        })
+        .post(apiUrl + this.problemDetail.databaseId,
+          {
+            sourceCode: this.problemDetail.answer,
+            test: 123
+          })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("调试运行失败，内部错误！");
+            this.$message.error('调试运行失败，内部错误！')
           } else {
-            this.runResult = "";
-            let resData = res.data;
+            this.runResult = ''
+            const resData = res.data
             if (resData.code === 0) {
-              let runResult = resData.data;
-              let reg = /\((.*?)\)/g;
-              let res = reg.exec(runResult);
+              const runResult = resData.data
+              const reg = /\((.*?)\)/g
+              let res = reg.exec(runResult)
               while (res) {
-                this.runResult += res[0] + "\r\n";
-                res = reg.exec(runResult);
+                this.runResult += res[0] + '\r\n'
+                res = reg.exec(runResult)
               }
-              this.runCodeDialogVisible = true;
+              this.runCodeDialogVisible = true
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     onSubmit() {
       this.$refs.problemDetail.validate(valid => {
@@ -354,9 +354,9 @@ export default {
     getDatabaseDetail(databaseId, viewType) {
       const apiUrl = this.Url.databaseBaseUrl
       if (viewType === 'createTable') {
-        this.viewDatabaseDetailDialogTitle = '查看建表语句';
-      }else if(viewType === 'testData') {
-        this.viewDatabaseDetailDialogTitle = '查看测试数据';
+        this.viewDatabaseDetailDialogTitle = '查看建表语句'
+      } else if (viewType === 'testData') {
+        this.viewDatabaseDetailDialogTitle = '查看测试数据'
       }
       this.databaseDetailCode = ''
       this.$axios

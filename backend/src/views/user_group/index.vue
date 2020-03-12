@@ -45,7 +45,7 @@
         <v-pagination
           :show-paging-count="3"
           :total="totalItems"
-          :pageSize="pageSize"
+          :page-size="pageSize"
           :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
           @page-change="pageChange"
           @page-size-change="pageSizeChange"
@@ -150,7 +150,7 @@ export default {
           .get(apiUrl, {
             params: {
               [this.searchType]: keyword,
-              pageNum: this.pageNum,
+              pageNum: this.pageNum
             }
           })
           .then(res => {
@@ -179,31 +179,31 @@ export default {
       this.isLoading = true
       const apiUrl = this.Url.userGroupBaseUrl
       this.$axios
-      .get(apiUrl, {
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
-      })
-      .then(res => {
-        if (res.status !== 200) {
-          this.$message.error('获取用户组列表失败，内部错误！')
-        } else {
-          const resData = res.data
-          if (resData.code === 0) {
-            this.tableConfig.tableData = resData.data.records
-            this.totalItems = resData.data.total
-          } else {
-            this.$message.error(resData.message)
+        .get(apiUrl, {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
           }
-        }
-        this.isLoading = false
-      })
-      .catch(err => {
-        this.$message.error('获取用户组列表失败！')
-        this.isLoading = false
-        console.log(err)
-      })
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('获取用户组列表失败，内部错误！')
+          } else {
+            const resData = res.data
+            if (resData.code === 0) {
+              this.tableConfig.tableData = resData.data.records
+              this.totalItems = resData.data.total
+            } else {
+              this.$message.error(resData.message)
+            }
+          }
+          this.isLoading = false
+        })
+        .catch(err => {
+          this.$message.error('获取用户组列表失败！')
+          this.isLoading = false
+          console.log(err)
+        })
     },
     deleteUserGroup(userGroupId, successCallback) {
       const apiUrl = this.Url.userGroupBaseUrl

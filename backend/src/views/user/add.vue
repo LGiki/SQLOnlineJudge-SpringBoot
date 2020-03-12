@@ -94,7 +94,7 @@ export default {
     },
     addUser() {
       const apiUrl = this.Url.userBaseUrl
-      let postData = this.userDetail
+      const postData = this.userDetail
       postData.username.trim()
       postData.password.trim()
       postData.email.trim()

@@ -167,7 +167,7 @@ export default {
     },
     addDatabase() {
       const apiUrl = this.Url.databaseBaseUrl
-      let postData = this.databaseDetail
+      const postData = this.databaseDetail
       postData.name.trim()
       postData.createTable.trim()
       postData.testData.trim()

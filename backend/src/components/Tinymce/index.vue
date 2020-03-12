@@ -115,7 +115,7 @@ export default {
       const _this = this
       window.tinymce.init({
         external_plugins: {
-          'powerpaste': "/powerpaste/plugin.min.js"
+          'powerpaste': '/powerpaste/plugin.min.js'
         },
         selector: `#${this.tinymceId}`,
         language: this.languageTypeList['zh'],

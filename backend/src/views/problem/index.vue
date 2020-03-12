@@ -44,7 +44,7 @@
         <v-pagination
           :show-paging-count="3"
           :total="totalItems"
-          :pageSize="pageSize"
+          :page-size="pageSize"
           :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
           @page-change="pageChange"
           @page-size-change="pageSizeChange"

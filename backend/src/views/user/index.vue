@@ -143,9 +143,9 @@
         :columns="tableConfig.columns"
         :table-data="tableConfig.tableData"
         :multiple-sort="false"
-        @sort-change="sortChange"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
+        @sort-change="sortChange"
         @on-custom-comp="customCompFunc"
       />
     </template>
@@ -154,7 +154,7 @@
         <v-pagination
           :show-paging-count="3"
           :total="totalItems"
-          :pageSize="pageSize"
+          :page-size="pageSize"
           :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
           @page-change="pageChange"
           @page-size-change="pageSizeChange"
@@ -175,7 +175,7 @@ export default {
   },
   data() {
     return {
-      orderByStudentNo: '', //是否按照学号排序，可选值：'' => 按照用户ID降序, 'asc' => 按照学号升序， 'desc' => 按照学号降序 
+      orderByStudentNo: '', // 是否按照学号排序，可选值：'' => 按照用户ID降序, 'asc' => 按照学号升序， 'desc' => 按照学号降序
       newStudentNoListCount: 0, // 要批量添加的新用户的数量
       newStudentNoListStr: '', // 要批量添加的新用户学号字符串，一行一个学号
       newStudentNoList: [], // 要批量添加的新用户学号列表
@@ -265,7 +265,7 @@ export default {
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            orderBy:''
+            orderBy: ''
           },
           {
             field: 'email',
@@ -357,7 +357,7 @@ export default {
           var json_object = JSON.stringify(XL_row_object)
           var jsonResult = JSON.parse(json_object)
           for (const row of jsonResult) {
-            Object.keys(row).map(key => row[key.trim()] = typeof row[key] == 'string' ? row[key].trim() : row[key])
+            Object.keys(row).map(key => row[key.trim()] = typeof row[key] === 'string' ? row[key].trim() : row[key])
             if (isFileFormatCorrect && row.hasOwnProperty('学号')) {
               const newStudent = {}
               if (row.hasOwnProperty('姓名')) {
@@ -467,7 +467,7 @@ export default {
     },
     addUserInBulk(student) {
       const apiUrl = this.Url.userBaseUrl
-      let postData = {
+      const postData = {
         username: student.username,
         studentNo: student.studentNo,
         email: student.studentNo + '@jmu.edu.cn',
