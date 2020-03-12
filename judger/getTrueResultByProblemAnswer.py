@@ -76,7 +76,11 @@ def exec_script(sqlite_db_file_path, source_code):
 def is_select_problem(answer):
     if answer.endswith(';'):
         answer = answer[:-1]
-    splitted_answer = answer.split(';')
+    splitted_answer_temp = answer.split(';')
+    splitted_answer = []
+    for code in splitted_answer_temp:
+        if len(code) != 0:
+            splitted_answer.append(code)
     if len(splitted_answer) > 1:
         return False
     return True
