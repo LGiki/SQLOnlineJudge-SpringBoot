@@ -13,16 +13,17 @@
             :value="databaseItem.id"
           />
         </el-select>
-        <el-button v-if="problemDetail.databaseId" @click="showCreateTable(problemDetail.databaseId)">查看该数据库的建表语句</el-button>
+        <el-button v-if="problemDetail.databaseId" @click="getDatabaseDetail(problemDetail.databaseId, 'createTable')">查看该数据库的<strong>建表语句</strong></el-button>
+        <el-button v-if="problemDetail.databaseId" @click="getDatabaseDetail(problemDetail.databaseId, 'testData')">查看该数据库的<strong>测试数据</strong></el-button>
       </el-form-item>
       <el-dialog
-        title="查看建表语句"
-        :visible.sync="dialogVisible"
+        :title="viewDatabaseDetailDialogTitle"
+        :visible.sync="viewDatabaseDetailDialogVisible"
         width="50%"
       >
-        <highlight-code lang="sql">{{ createTable }}</highlight-code>
+        <highlight-code lang="sql">{{ databaseDetailCode }}</highlight-code>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="viewDatabaseDetailDialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
       <el-form-item label="题目描述" prop="description">
@@ -35,15 +36,18 @@
         <tinymce v-model="problemDetail.hint" :height="250" />
       </el-form-item>
       <el-form-item>
-        <el-button @click="updateAndDeleteProblemHintdialogVisible = true">查看答案填写说明</el-button>
+        <el-button @click="updateAndDeleteProblemHintDialogVisible = true">查看答案填写说明</el-button>
       </el-form-item>
       <el-form-item label="答案" prop="answer">
         <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
         <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入答案" />
       </el-form-item>
+      <el-form-item>
+        <el-button type="warning" @click="runCode" plain>调试运行答案</el-button>
+      </el-form-item>
       <el-dialog
         title="答案填写说明"
-        :visible.sync="updateAndDeleteProblemHintdialogVisible"
+        :visible.sync="updateAndDeleteProblemHintDialogVisible"
         width="50%"
       >
         若有表如下：
@@ -75,8 +79,21 @@
         <p>此判题系统根据最后一行的select语句进行用户解答的正确性判断，请确保最后一行语句的正确性</p>
         <p><b>每条语句之间请严格使用';'进行分割</b></p>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="updateAndDeleteProblemHintdialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="updateAndDeleteProblemHintDialogVisible = false">确 定</el-button>
         </span>
+      </el-dialog>
+      <el-dialog
+        title="调试运行结果"
+        :visible.sync="runCodeDialogVisible"
+        width="50%"
+      >
+      <p><strong>代码：</strong></p>
+      <highlight-code lang="sql">{{ problemDetail.answer }}</highlight-code>
+      <p><strong>运行结果：</strong></p>
+      <highlight-code>{{ runResult }}</highlight-code>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="runCodeDialogVisible = false">关 闭</el-button>
+      </span>
       </el-dialog>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -107,8 +124,12 @@ export default {
   },
   data() {
     return {
-      updateAndDeleteProblemHintdialogVisible: false,
-      dialogVisible: false,
+      updateAndDeleteProblemHintDialogVisible: false,
+      runCodeDialogVisible: false,
+      viewDatabaseDetailDialogVisible: false,
+      viewDatabaseDetailDialogTitle: '',
+      databaseDetailCode: '',
+      runResult: '',
       createTable: '',
       cmOptions: {
         tabSize: 4,
@@ -178,10 +199,57 @@ export default {
     this.getDatabaseList()
   },
   methods: {
+    isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     onCmReady(cm) {
       cm.on('keypress', () => {
         cm.showHint()
       })
+    },
+    runCode() {
+      if (this.isEmpty(this.problemDetail.answer)) {
+        this.$message.error("请检查SQL代码是否已输入！");
+        return;
+      }
+      if (this.isEmpty(this.problemDetail.databaseId)) {
+        this.$message.error("请检查是否已选择数据库！");
+      }
+      this.runResult = '';
+      const apiUrl = this.Url.runCode;
+      this.$axios
+        .post(apiUrl + this.problemDetail.databaseId, 
+        {
+          sourceCode: this.problemDetail.answer,
+          test:123
+        })
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error("调试运行失败，内部错误！");
+          } else {
+            this.runResult = "";
+            let resData = res.data;
+            if (resData.code === 0) {
+              let runResult = resData.data;
+              let reg = /\((.*?)\)/g;
+              let res = reg.exec(runResult);
+              while (res) {
+                this.runResult += res[0] + "\r\n";
+                res = reg.exec(runResult);
+              }
+              this.runCodeDialogVisible = true;
+            } else {
+              this.$message.error(resData.message);
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     onSubmit() {
       this.$refs.problemDetail.validate(valid => {
@@ -244,8 +312,14 @@ export default {
           console.log(err)
         })
     },
-    showCreateTable(databaseId) {
+    getDatabaseDetail(databaseId, viewType) {
       const apiUrl = this.Url.databaseBaseUrl
+      if (viewType === 'createTable') {
+        this.viewDatabaseDetailDialogTitle = '查看建表语句';
+      }else if(viewType === 'testData') {
+        this.viewDatabaseDetailDialogTitle = '查看测试数据';
+      }
+      this.databaseDetailCode = ''
       this.$axios
         .get(apiUrl + databaseId)
         .then(res => {
@@ -254,8 +328,8 @@ export default {
           } else {
             const resData = res.data
             if (resData.code === 0) {
-              this.createTable = resData.data.createTable
-              this.dialogVisible = true
+              this.databaseDetailCode = resData.data[viewType]
+              this.viewDatabaseDetailDialogVisible = true
             } else {
               this.$message.error(resData.message)
             }

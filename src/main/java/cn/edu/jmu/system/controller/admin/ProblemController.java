@@ -4,9 +4,11 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.judge.service.JudgeService;
+import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
+import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.converter.ProblemConverter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
+
 
 import javax.annotation.Resource;
 
@@ -130,5 +134,26 @@ public class ProblemController {
     public ResponseEntity<BasicResponse> count() {
         int count = problemService.count();
         return ResponseUtil.buildResponse(count);
+    }
+
+    /**
+     * 调试运行代码
+     *
+     * @param sourceCode 源代码
+     * @param databaseId 数据库ID
+     * @return 调试运行结果
+     */
+    @PostMapping(value = "/judgement/{id}")
+    public ResponseEntity<BasicResponse> judge(@PathVariable(value = "id") Integer databaseId, @RequestBody SolutionDto solutionDto) {
+        JudgeResultJson result = PythonJudgeUtil.getTrueResult(solutionDto.getSourceCode(), databaseId);
+        log.debug(result.toString());
+        if (JudgeResponseCodeEnum.OK.getValue().equals(result.getCode())) {
+            return ResponseUtil.buildResponse("执行成功", result.getData().getTrueResult());
+        } else if (JudgeResponseCodeEnum.FAIL.getValue().equals(result.getCode())) {
+            return ResponseUtil.fail("执行失败," + result.getMessage());
+        } else if (JudgeResponseCodeEnum.NO_DB_FILE.getValue().equals(result.getCode())) {
+            return ResponseUtil.fail("系统错误," + result.getMessage());
+        }
+        return ResponseUtil.fail("未知错误");
     }
 }
