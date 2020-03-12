@@ -12,7 +12,6 @@
  * docs:
  * https://panjiachen.github.io/vue-element-admin-site/feature/component/rich-editor.html#tinymce
  */
-import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
@@ -23,7 +22,6 @@ const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymc
 
 export default {
   name: 'Tinymce',
-  components: { editorImage },
   props: {
     id: {
       type: String,
@@ -116,6 +114,9 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
+        external_plugins: {
+          'powerpaste': "/powerpaste/plugin.min.js"
+        },
         selector: `#${this.tinymceId}`,
         language: this.languageTypeList['zh'],
         height: this.height,
@@ -125,7 +126,10 @@ export default {
         menubar: this.menubar,
         plugins: plugins,
         end_container_on_empty_block: true,
-        powerpaste_word_import: 'clean',
+        powerpaste_word_import: 'propmt',
+        powerpaste_html_import: 'propmt',
+        powerpaste_allow_local_images: true,
+        // powerpaste_word_import: 'clean',
         code_dialog_height: 450,
         code_dialog_width: 1000,
         advlist_bullet_styles: 'square',
@@ -133,6 +137,7 @@ export default {
         imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         default_link_target: '_blank',
         link_title: false,
+        paste_data_images: true,
         fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
         init_instance_callback: editor => {
@@ -150,19 +155,18 @@ export default {
             _this.fullscreen = e.state
           })
         },
-        // 整合七牛上传
         images_dataimg_filter(img) {
-          setTimeout(() => {
-            const $image = $(img)
-            $image.removeAttr('width')
-            $image.removeAttr('height')
-            if ($image[0].height && $image[0].width) {
-              $image.attr('data-wscntype', 'image')
-              $image.attr('data-wscnh', $image[0].height)
-              $image.attr('data-wscnw', $image[0].width)
-              $image.addClass('wscnph')
-            }
-          }, 0)
+          // setTimeout(() => {
+          //   const $image = $(img)
+          //   $image.removeAttr('width')
+          //   $image.removeAttr('height')
+          //   if ($image[0].height && $image[0].width) {
+          //     $image.attr('data-wscntype', 'image')
+          //     $image.attr('data-wscnh', $image[0].height)
+          //     $image.attr('data-wscnw', $image[0].width)
+          //     $image.addClass('wscnph')
+          //   }
+          // }, 0)
           return img
         },
         images_upload_handler(blobInfo, success, failure, progress) {
