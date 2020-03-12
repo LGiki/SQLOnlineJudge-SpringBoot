@@ -41,6 +41,7 @@ def get_config_value(config_parser, category, name):
 # 读取config文件
 def init_config(config_parser):
     MYSQL_JUDGE_DB_HOST = get_config_value(config_parser, 'Judge_MySQL', 'host')
+    MYSQL_JUDGE_DB_PORT = get_config_value(config_parser, 'Judge_MySQL', 'port')
     MYSQL_JUDGE_DB_USERNAME = get_config_value(config_parser, 'Judge_MySQL', 'username')
     MYSQL_JUDGE_DB_PASSWORD = get_config_value(config_parser, 'Judge_MySQL', 'password')
     MYSQL_JUDGE_DB_CHARSET = get_config_value(config_parser, 'Judge_MySQL', 'charset')
@@ -49,13 +50,15 @@ def init_config(config_parser):
     DB_PASSWORD = get_config_value(config_parser, 'Main_Database', 'password')
     DB_DATABASE = get_config_value(config_parser, 'Main_Database', 'database')
     DB_CHARSET = get_config_value(config_parser, 'Main_Database', 'charset')
-    return MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
+    return MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
 
 
 # 创建MySQL数据库
-def create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name):
+def create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                          judge_db_name):
     judge_db_conn = pymysql.connect(
         host=MYSQL_JUDGE_DB_HOST,
+        port=MYSQL_JUDGE_DB_PORT,
         user=MYSQL_JUDGE_DB_USERNAME,
         password=MYSQL_JUDGE_DB_PASSWORD
     )
@@ -66,9 +69,11 @@ def create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JU
 
 
 # 删除MySQL数据库
-def drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name):
+def drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                        judge_db_name):
     judge_db_conn = pymysql.connect(
         host=MYSQL_JUDGE_DB_HOST,
+        port=MYSQL_JUDGE_DB_PORT,
         user=MYSQL_JUDGE_DB_USERNAME,
         password=MYSQL_JUDGE_DB_PASSWORD
     )
@@ -79,12 +84,15 @@ def drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDG
 
 
 # 创建数据库
-def create_database(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET,
+def create_database(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                    MYSQL_JUDGE_DB_CHARSET,
                     create_table, test_data):
     judge_db_name = generate_random_db_name()
-    create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name)
+    create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                          judge_db_name)
     judge_db_conn = pymysql.connect(
         host=MYSQL_JUDGE_DB_HOST,
+        port=MYSQL_JUDGE_DB_PORT,
         user=MYSQL_JUDGE_DB_USERNAME,
         password=MYSQL_JUDGE_DB_PASSWORD,
         database=judge_db_name,
@@ -98,11 +106,13 @@ def create_database(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB
     except BaseException as e:
         judge_db_cursor.close()
         judge_db_conn.close()
-        drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name)
+        drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                            judge_db_name)
         return False, str(e)
     judge_db_cursor.close()
     judge_db_conn.close()
-    drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name)
+    drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                        judge_db_name)
     return True, None
 
 
@@ -110,9 +120,9 @@ def main(database_id, create_table, test_data):
     config_parser = configparser.ConfigParser()
     if len(config_parser.read(CONFIG_FILE_PATH)) == 0:
         return construct_json_response(RESPONSE_CODE['FAIL'], None, 'Can not load config.ini.')
-    MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(
+    MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(
         config_parser)
-    create_result, create_exception = create_database(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME,
+    create_result, create_exception = create_database(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME,
                                                       MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, create_table,
                                                       test_data)
     if create_result:
@@ -122,4 +132,7 @@ def main(database_id, create_table, test_data):
 
 
 if __name__ == '__main__':
+    # argv[1] -> database_id
+    # argv[2] -> create table code
+    # argv[3] -> test data code
     print(main(argv[1], argv[2], argv[3]))

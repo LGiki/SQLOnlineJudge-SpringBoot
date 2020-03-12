@@ -40,6 +40,7 @@ def get_config_value(config_parser, category, name):
 # 读取config文件
 def init_config(config_parser):
     MYSQL_JUDGE_DB_HOST = get_config_value(config_parser, 'Judge_MySQL', 'host')
+    MYSQL_JUDGE_DB_PORT = get_config_value(config_parser, 'Judge_MySQL', 'port')
     MYSQL_JUDGE_DB_USERNAME = get_config_value(config_parser, 'Judge_MySQL', 'username')
     MYSQL_JUDGE_DB_PASSWORD = get_config_value(config_parser, 'Judge_MySQL', 'password')
     MYSQL_JUDGE_DB_CHARSET = get_config_value(config_parser, 'Judge_MySQL', 'charset')
@@ -48,29 +49,25 @@ def init_config(config_parser):
     DB_PASSWORD = get_config_value(config_parser, 'Main_Database', 'password')
     DB_DATABASE = get_config_value(config_parser, 'Main_Database', 'database')
     DB_CHARSET = get_config_value(config_parser, 'Main_Database', 'charset')
-    return MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
+    return MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
 
 
 # 执行sqlite代码
-def exec_code(sqlite_db_file_path, source_code):
+def exec_code(cursor, source_code):
     exec_result = None
     try:
-        sqlite_conn = sqlite3.connect(sqlite_db_file_path)
-        sqlite_cursor = sqlite_conn.cursor()
-        sqlite_cursor.execute(source_code)
-        exec_result = sqlite_cursor.fetchall()
+        cursor.execute(source_code)
+        exec_result = cursor.fetchall()
     except BaseException as e:
         return None, str(e)
     return str(exec_result), None
 
 
 # 执行sqlite脚本
-def exec_script(sqlite_db_file_path, source_code):
+def exec_script(conn, cursor, source_code):
     try:
-        sqlite_conn = sqlite3.connect(sqlite_db_file_path)
-        sqlite_cursor = sqlite_conn.cursor()
-        sqlite_cursor.executescript(source_code)
-        sqlite_conn.commit()
+        cursor.executescript(source_code)
+        conn.commit()
     except BaseException as e:
         return False, str(e)
     return True, None
@@ -92,9 +89,11 @@ def generate_random_db_name():
 
 
 # 创建MySQL数据库
-def create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name):
+def create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                          judge_db_name):
     judge_db_conn = pymysql.connect(
         host=MYSQL_JUDGE_DB_HOST,
+        port=MYSQL_JUDGE_DB_PORT,
         user=MYSQL_JUDGE_DB_USERNAME,
         password=MYSQL_JUDGE_DB_PASSWORD
     )
@@ -105,9 +104,11 @@ def create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JU
 
 
 # 删除MySQL数据库
-def drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name):
+def drop_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                        judge_db_name):
     judge_db_conn = pymysql.connect(
         host=MYSQL_JUDGE_DB_HOST,
+        port=MYSQL_JUDGE_DB_PORT,
         user=MYSQL_JUDGE_DB_USERNAME,
         password=MYSQL_JUDGE_DB_PASSWORD
     )
@@ -138,28 +139,47 @@ def get_database_detail(cursor, database_id):
 def split_answer(answer):
     if answer.endswith(';'):
         answer = answer[:-1]
-    splitted_answer = answer.split(';')
+    splitted_answer_temp = answer.split(';')
+    splitted_answer = []
+    for code in splitted_answer_temp:
+        if len(code) != 0:
+            splitted_answer.append(code)
     operation_code = ';'.join(splitted_answer[:-1]) + ';'
     select_code = splitted_answer[-1]
     return operation_code, select_code
 
 
 # 通过问题ID获取正确答案
-def get_true_result(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+def get_true_result(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
                     MYSQL_JUDGE_DB_CHARSET, answer, create_table, test_data):
     answer = answer.strip()
     judge_db_name = generate_random_db_name()
-    create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, judge_db_name)
+    create_database_mysql(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+                          judge_db_name)
+    judge_db_conn = pymysql.connect(
+        host=MYSQL_JUDGE_DB_HOST,
+        port=MYSQL_JUDGE_DB_PORT,
+        user=MYSQL_JUDGE_DB_USERNAME,
+        password=MYSQL_JUDGE_DB_PASSWORD,
+        database=judge_db_name,
+        charset=MYSQL_JUDGE_DB_CHARSET
+    )
+    judge_db_cursor = judge_db_conn.cursor()
+    exec_result, run_exception = exec_script(judge_db_conn, judge_db_cursor, create_table)
+    if not exec_result:
+        return None, 'Can not exec create table code'
+    exec_result, run_exception = exec_script(judge_db_conn, judge_db_cursor, test_data)
+    if not exec_result:
+        return None, 'Can not exec test data code'
     if not is_select_problem(answer):
         operation_code, select_code = split_answer(answer)
-        exec_result, run_exception = exec_script(temp_sqlite_db_file_path, operation_code)
+        exec_result, run_exception = exec_script(judge_db_conn, judge_db_cursor, operation_code)
         if exec_result:
-            true_result, run_exception = exec_code(temp_sqlite_db_file_path, select_code)
+            true_result, run_exception = exec_code(judge_db_cursor, select_code)
         else:
             true_result = None
     else:
-        true_result, run_exception = exec_code(temp_sqlite_db_file_path, answer)
-    os.remove(temp_sqlite_db_file_path)
+        true_result, run_exception = exec_code(judge_db_cursor, answer)
     if true_result is None:
         return None, run_exception
     return true_result, None
@@ -169,7 +189,7 @@ def main(answer, database_id):
     config_parser = configparser.ConfigParser()
     if len(config_parser.read(CONFIG_FILE_PATH)) == 0:
         return construct_json_response(RESPONSE_CODE['FAIL'], None, 'Can not load config.ini.')
-    MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(
+    MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET = init_config(
         config_parser)
     main_db_conn = pymysql.connect(
         host=DB_HOST,
@@ -187,15 +207,16 @@ def main(answer, database_id):
 
     main_db_cursor.close()
     main_db_conn.close()
-    true_result, run_exception = get_true_result(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD,
+    true_result, run_exception = get_true_result(MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME,
+                                                 MYSQL_JUDGE_DB_PASSWORD,
                                                  MYSQL_JUDGE_DB_CHARSET, answer, create_table, test_data)
 
-    # if true_result is None:
-    #     return construct_json_response(RESPONSE_CODE['FAIL'], None, run_exception)
-    # else:
-    #     return construct_json_response(RESPONSE_CODE['OK'], {
-    #         'trueResult': true_result
-    #     }, None)
+    if true_result is None:
+        return construct_json_response(RESPONSE_CODE['FAIL'], None, run_exception)
+    else:
+        return construct_json_response(RESPONSE_CODE['OK'], {
+            'trueResult': true_result
+        }, None)
 
 
 if __name__ == '__main__':
