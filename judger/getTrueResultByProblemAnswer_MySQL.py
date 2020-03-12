@@ -1,11 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import os
-import sqlite3
 import json
 import configparser
-import shutil
 from sys import argv
 import uuid
 import pymysql
@@ -52,7 +49,7 @@ def init_config(config_parser):
     return MYSQL_JUDGE_DB_HOST, MYSQL_JUDGE_DB_PORT, MYSQL_JUDGE_DB_USERNAME, MYSQL_JUDGE_DB_PASSWORD, MYSQL_JUDGE_DB_CHARSET, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
 
 
-# 执行sqlite代码
+# 执行MySQL代码
 def exec_code(cursor, source_code):
     exec_result = None
     try:
@@ -63,7 +60,7 @@ def exec_code(cursor, source_code):
     return str(exec_result), None
 
 
-# 执行sqlite脚本
+# 执行MySQL脚本
 def exec_script(conn, cursor, source_code):
     try:
         cursor.executescript(source_code)
