@@ -3,55 +3,15 @@
 
 import os
 import sqlite3
-import json
 import configparser
 from sys import argv
 import uuid
 import shutil
-
-# 配置文件路径
-CONFIG_FILE_PATH = './judger/config.ini'
-# 返回状态码
-RESPONSE_CODE = {
-    'OK': 0,
-    'FAIL': 1,
-    'NO_DB_FILE': 2
-}
-
-
-# 生成json返回值
-def construct_json_response(code, data, message):
-    return json.dumps(
-        {
-            'code': code,
-            'data': data,
-            'message': message
-        }
-    )
-
-
-# 获取config项的value
-def get_config_value(config_parser, category, name):
-    return config_parser.get(category, name)
-
-
-# 读取config文件
-def init_config(config_parser):
-    SQLITE_DIR = get_config_value(config_parser, 'Judge_SQLite', 'sqlite_dir')
-    SQLITE_TEMP_DIR = get_config_value(config_parser, 'Judge_SQLite', 'temp_sqlite_dir')
-    DB_HOST = get_config_value(config_parser, 'Main_Database', 'host')
-    DB_USERNAME = get_config_value(config_parser, 'Main_Database', 'username')
-    DB_PASSWORD = get_config_value(config_parser, 'Main_Database', 'password')
-    DB_DATABASE = get_config_value(config_parser, 'Main_Database', 'database')
-    DB_CHARSET = get_config_value(config_parser, 'Main_Database', 'charset')
-    return SQLITE_DIR, SQLITE_TEMP_DIR, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_CHARSET
-
-
-# 初始化工作目录
-def init_work_directory(SQLITE_DIR):
-    if not os.path.exists(SQLITE_DIR):
-        os.mkdir(SQLITE_DIR)
-        # logger.info('Create SQLite Dir: {}'.format(SQLITE_DIR))
+from library_common import construct_json_response
+from library_SQLite import init_config
+from library_SQLite import init_work_directory
+from config import CONFIG_FILE_PATH
+from config import RESPONSE_CODE
 
 
 # 创建数据库
