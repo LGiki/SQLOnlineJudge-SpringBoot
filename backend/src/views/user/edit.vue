@@ -89,7 +89,7 @@ export default {
             id: this.userDetail.id,
             username: this.userDetail.username.trim(),
             email: this.userDetail.email.trim(),
-            studentNo: this.userDetail.studentNo.trim()
+            studentNo: (this.userDetail.studentNo + "").trim()
           }
           if (this.password) {
             user.password = this.password.trim()
