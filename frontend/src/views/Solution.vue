@@ -361,6 +361,7 @@ export default {
     },
     onSearch() {
       const keyword = this.searchKeyword.trim();
+      this.pageNum = 1;
       if (keyword.length === 0) {
         alert("请输入关键字！");
       } else {

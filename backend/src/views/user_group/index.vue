@@ -141,6 +141,7 @@ export default {
     },
     onSearch() {
       const keyword = this.searchKeyword.trim()
+      this.pageNum = 1
       if (keyword.length === 0) {
         this.$message.error('请输入关键字！')
       } else {
