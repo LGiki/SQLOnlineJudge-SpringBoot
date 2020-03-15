@@ -35,7 +35,7 @@ public class ProblemCollectionController {
     ProblemCollectionService problemCollectionService;
 
     @GetMapping("/problem-collection")
-    public ResponseEntity<BasicResponse> search(@Validated ProblemCollectionDto problemCollectionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> search(ProblemCollectionDto problemCollectionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<ProblemCollection> page = new Page<>(pageNum, pageSize);
         IPage<ProblemCollectionDto> iPage = problemCollectionService.search(problemCollectionDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);

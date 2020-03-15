@@ -35,7 +35,7 @@ public class ProblemCategoryController {
     ProblemCategoryService problemCategoryService;
 
     @GetMapping("/problem-category")
-    public ResponseEntity<BasicResponse> search(@Validated ProblemCategoryDto problemCategoryDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> search(ProblemCategoryDto problemCategoryDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<ProblemCategory> page = new Page<>(pageNum, pageSize);
         IPage<ProblemCategoryDto> iPage = problemCategoryService.search(problemCategoryDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
