@@ -1,13 +1,13 @@
-package cn.edu.jmu.system.api;
+package cn.edu.jmu.system.api.problemcollection;
 
 import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 
 /**
- * @author ethan
+ * @author xeathen
  */
 @Data
-public class UpdateUserGroupResponse {
+public class DeleteProblemCollectionResponse {
     @Property(name = "id")
     private Integer id;
 }

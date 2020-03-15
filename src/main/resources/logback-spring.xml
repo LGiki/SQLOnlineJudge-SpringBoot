@@ -24,7 +24,8 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         -->
         <encoder>
             <!--日志文件输出格式-->
-            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %msg%n
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36})
+                - %msg%n
             </pattern>
             <!-- 设置字符集 -->
             <charset>UTF-8</charset>

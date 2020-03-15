@@ -28,7 +28,6 @@ public class SqlOnlineJudgeApplicationTests {
     @Resource
     private DatabaseMapper databaseMapper;
 
-
     @Resource
     private JudgeServiceImpl judgeService;
 
@@ -46,15 +45,11 @@ public class SqlOnlineJudgeApplicationTests {
         iPage.getRecords().forEach(System.out::println);
     }
 
-
-
     @Test
     @Transactional
     public void test() {
 //        boolean b = userProblemService.isExist(7, 1);
 //        System.out.println(b ? "存在" : "不存在");
         JudgeCallable thread = new JudgeCallable(4);
-
     }
-
 }

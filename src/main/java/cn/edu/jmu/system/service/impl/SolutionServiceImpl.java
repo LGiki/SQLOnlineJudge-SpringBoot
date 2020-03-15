@@ -66,23 +66,23 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         IPage<Solution> iPage;
         if (ObjectUtil.isNull(solutionDto)) {
             iPage = baseMapper.selectPage(solutionPage
-                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
         } else {
             if (solutionDto.getId() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                        , new QueryWrapper<>(SolutionConverter
-                                .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
+                    , new QueryWrapper<>(SolutionConverter
+                        .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getUid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                        , new QueryWrapper<>(SolutionConverter
-                                .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
+                    , new QueryWrapper<>(SolutionConverter
+                        .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getPid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                        , new QueryWrapper<>(SolutionConverter
-                                .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
+                    , new QueryWrapper<>(SolutionConverter
+                        .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
             } else {
                 iPage = baseMapper.selectPage(solutionPage
-                        , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
             }
         }
         IPage<SolutionDto> convert = iPage.convert(SolutionConverter::toDto);

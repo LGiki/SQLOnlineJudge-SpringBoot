@@ -6,11 +6,11 @@
     <select id="selectRoleIdByAdminIdFromSysAdminRole" resultType="java.lang.Integer">
         select r_id
         from sys_admin_role
-        where a_id=#{adminId}
+        where a_id = #{adminId}
     </select>
 
     <insert id="insertAdminIdAndRoleId">
         insert into sys_admin_role(a_id, r_id)
-        value (#{adminId}, #{roleId})
+            value (#{adminId}, #{roleId})
     </insert>
 </mapper>

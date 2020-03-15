@@ -1,4 +1,4 @@
-package cn.edu.jmu.system.api;
+package cn.edu.jmu.system.api.problemcollection;
 
 import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
  * @author xeathen
  */
 @Data
-public class CreateUserGroupResponse {
+public class CreateProblemCollectionResponse {
     @Property(name = "id")
     private Integer id;
 }

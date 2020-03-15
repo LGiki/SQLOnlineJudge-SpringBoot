@@ -1,8 +1,8 @@
 package cn.edu.jmu.system.service.converter;
 
-import cn.edu.jmu.system.api.CreateUserGroupRequest;
-import cn.edu.jmu.system.api.SearchUserGroupResponse;
-import cn.edu.jmu.system.api.UpdateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.SearchUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupRequest;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.hutool.core.bean.BeanUtil;

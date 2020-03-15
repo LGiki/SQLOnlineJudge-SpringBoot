@@ -14,6 +14,7 @@ public interface SolutionService extends IService<Solution> {
 
     /**
      * 根据用户ID和题目ID获取到用户对某个题目最后一次提交的提交详情
+     *
      * @param uid 用户ID
      * @param pid 题目ID
      * @return Solution

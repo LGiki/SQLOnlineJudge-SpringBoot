@@ -3,6 +3,7 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
+import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
 import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Problem;
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
-
 
 import javax.annotation.Resource;
 

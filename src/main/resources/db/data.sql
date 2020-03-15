@@ -11,7 +11,7 @@
  Target Server Version : 50728
  File Encoding         : 65001
 
- Date: 22/02/2020 16:31:15
+ Date: 15/03/2020 21:40:17
 */
 
 SET NAMES utf8mb4;
@@ -71,14 +71,14 @@ VALUES (2, '16级 2');
 DROP TABLE IF EXISTS `problem_collections`;
 CREATE TABLE `problem_collections`
 (
-    `id`                  int(11) NOT NULL AUTO_INCREMENT,
-    `problem_category_id` int(11) NOT NULL,
-    `problem_id`          int(11) NOT NULL,
+    `id`          int(11) NOT NULL AUTO_INCREMENT,
+    `category_id` int(11) NOT NULL,
+    `problem_id`  int(11) NOT NULL,
     PRIMARY KEY (`id`) USING BTREE,
-    INDEX `problem_category_id` (`problem_category_id`) USING BTREE,
+    INDEX `category_id` (`category_id`) USING BTREE,
     INDEX `problem_id` (`problem_id`) USING BTREE,
     CONSTRAINT `problem_collections_ibfk_2` FOREIGN KEY (`problem_id`) REFERENCES `problems` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    CONSTRAINT `problem_collections_ibfk_3` FOREIGN KEY (`problem_category_id`) REFERENCES `problem_categories` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+    CONSTRAINT `problem_collections_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `problem_categories` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
   CHARACTER SET = utf8mb4

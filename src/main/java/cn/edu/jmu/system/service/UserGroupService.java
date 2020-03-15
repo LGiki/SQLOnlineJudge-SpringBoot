@@ -1,11 +1,11 @@
 package cn.edu.jmu.system.service;
 
-import cn.edu.jmu.system.api.CreateUserGroupRequest;
-import cn.edu.jmu.system.api.CreateUserGroupResponse;
-import cn.edu.jmu.system.api.DeleteUserGroupResponse;
-import cn.edu.jmu.system.api.SearchUserGroupResponse;
-import cn.edu.jmu.system.api.UpdateUserGroupRequest;
-import cn.edu.jmu.system.api.UpdateUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.DeleteUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.SearchUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -32,7 +32,7 @@ public interface UserGroupService extends IService<UserGroup> {
      * @param page         page
      * @return
      */
-    IPage<UserGroupDto> getAll(UserGroupDto userGroupDto, Page page);
+    IPage<UserGroupDto> search(UserGroupDto userGroupDto, Page page);
 
     /**
      * 创建用户组

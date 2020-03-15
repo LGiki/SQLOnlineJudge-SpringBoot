@@ -1,11 +1,11 @@
 package cn.edu.jmu.system.service.impl;
 
-import cn.edu.jmu.system.api.CreateUserGroupRequest;
-import cn.edu.jmu.system.api.CreateUserGroupResponse;
-import cn.edu.jmu.system.api.DeleteUserGroupResponse;
-import cn.edu.jmu.system.api.SearchUserGroupResponse;
-import cn.edu.jmu.system.api.UpdateUserGroupRequest;
-import cn.edu.jmu.system.api.UpdateUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.DeleteUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.SearchUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.edu.jmu.system.mapper.UserGroupMapper;
@@ -40,7 +40,7 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
     }
 
     @Override
-    public IPage<UserGroupDto> getAll(UserGroupDto userGroupDto, Page page) {
+    public IPage<UserGroupDto> search(UserGroupDto userGroupDto, Page page) {
         Page<UserGroup> userGroupPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<UserGroup> iPage = baseMapper.selectPage(userGroupPage, predicate(userGroupDto));
         return iPage.convert(UserGroupConverter::userGroupDto);

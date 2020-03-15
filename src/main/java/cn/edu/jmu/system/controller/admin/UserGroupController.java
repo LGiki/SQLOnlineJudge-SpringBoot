@@ -2,11 +2,11 @@ package cn.edu.jmu.system.controller.admin;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
-import cn.edu.jmu.system.api.CreateUserGroupRequest;
-import cn.edu.jmu.system.api.CreateUserGroupResponse;
-import cn.edu.jmu.system.api.DeleteUserGroupResponse;
-import cn.edu.jmu.system.api.UpdateUserGroupRequest;
-import cn.edu.jmu.system.api.UpdateUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.CreateUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.DeleteUserGroupResponse;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupRequest;
+import cn.edu.jmu.system.api.usergourp.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.edu.jmu.system.service.UserGroupService;
@@ -46,9 +46,9 @@ public class UserGroupController {
 //    }
 
     @GetMapping(value = "/user-group")
-    public ResponseEntity<BasicResponse> search(UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> search(@Validated UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<UserGroup> page = new Page<>(pageNum, pageSize);
-        IPage<UserGroupDto> iPage = userGroupService.getAll(userGroupDto, page);
+        IPage<UserGroupDto> iPage = userGroupService.search(userGroupDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
