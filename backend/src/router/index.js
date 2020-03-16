@@ -110,6 +110,34 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/problem-category',
+    component: Layout,
+    redirect: '/problem-category/index',
+    meta: { title: '题目集管理', icon: 'tree-table' },
+    children: [
+      {
+        path: 'index',
+        name: 'Problem collections',
+        component: () => import('@/views/problem_category/index'),
+        meta: { title: '题目集列表' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'Edit problem collection',
+        component: () => import('@/views/problem_category/edit'),
+        meta: { title: '编辑题目集' },
+        hidden: true
+      },
+      {
+        path: 'add',
+        name: 'Add problem collection',
+        component: () => import('@/views/problem_category/add'),
+        meta: { title: '添加题目集' },
+        hidden: true
+      }
+    ]
+  },
+  {
     path: '/user-group',
     component: Layout,
     redirect: '/user-group/index',

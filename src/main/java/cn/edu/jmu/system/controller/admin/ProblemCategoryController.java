@@ -8,6 +8,7 @@ import cn.edu.jmu.system.api.problemcategory.DeleteProblemCategoryResponse;
 import cn.edu.jmu.system.entity.ProblemCategory;
 import cn.edu.jmu.system.entity.dto.ProblemCategoryDto;
 import cn.edu.jmu.system.service.ProblemCategoryService;
+import cn.edu.jmu.system.service.converter.ProblemCategoryConverter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -45,6 +46,13 @@ public class ProblemCategoryController {
     public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateProblemCategoryRequest request) {
         CreateProblemCategoryResponse response = problemCategoryService.create(request);
         return ResponseUtil.buildResponse("新增成功", response);
+    }
+
+    @GetMapping(value = "/problem-category/{id}")
+    public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
+        ProblemCategory problemCategory = problemCategoryService.getById(id);
+        ProblemCategoryDto problemCategoryDto = ProblemCategoryConverter.problemCategoryDto(problemCategory);
+        return ResponseUtil.buildResponse("查询成功", problemCategoryDto);
     }
 
     @DeleteMapping("/problem-category/{id}")
