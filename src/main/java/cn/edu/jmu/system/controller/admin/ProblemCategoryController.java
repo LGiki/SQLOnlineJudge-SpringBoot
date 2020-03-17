@@ -57,10 +57,14 @@ public class ProblemCategoryController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
+    public ResponseEntity<BasicResponse> selectProblemCategoryById(@PathVariable("id") Integer id) {
         ProblemCategory problemCategory = problemCategoryService.getById(id);
-        ProblemCategoryDto problemCategoryDto = ProblemCategoryConverter.problemCategoryDto(problemCategory);
-        return ResponseUtil.buildResponse("查询成功", problemCategoryDto);
+        if (problemCategory == null) {
+            return ResponseUtil.fail("无此题目集！");
+        } else {
+            ProblemCategoryDto problemCategoryDto = ProblemCategoryConverter.problemCategoryDto(problemCategory);
+            return ResponseUtil.buildResponse("查询成功", problemCategoryDto);
+        }
     }
 
     @DeleteMapping("/{id}")

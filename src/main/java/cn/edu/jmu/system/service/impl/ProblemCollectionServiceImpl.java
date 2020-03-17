@@ -48,8 +48,8 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
         problemCollectionDto.setCategoryName(category.getName());
         Problem problem = problemService.getById(problemCollection.getProblemId());
         problemCollectionDto.setProblemTitle(problem.getTitle());
-        problemCollectionDto.setSolved(problem.getSolved());
-        problemCollectionDto.setSubmit(problem.getSubmit());
+        problemCollectionDto.setProblemSolved(problem.getSolved());
+        problemCollectionDto.setProblemSubmit(problem.getSubmit());
         Database database = databaseService.getById(problem.getDatabaseId());
         problemCollectionDto.setDatabaseId(database.getId());
         problemCollectionDto.setDatabaseName(database.getName());

@@ -45,14 +45,14 @@ public class ProblemCollectionDto implements Serializable {
     /**
      * 通过数
      */
-    @Property(name = "solved")
-    private Integer solved;
+    @Property(name = "problemSolved")
+    private Integer problemSolved;
 
     /**
      * 提交数
      */
-    @Property(name = "submit")
-    private Integer submit;
+    @Property(name = "problemSubmit")
+    private Integer problemSubmit;
 
     /**
      * 数据库 ID

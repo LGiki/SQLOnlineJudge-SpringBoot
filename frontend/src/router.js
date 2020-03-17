@@ -10,7 +10,8 @@ import Ranklist from "./views/Ranklist.vue";
 import Solution from "./views/Solution.vue";
 import ProblemDetail from "./views/ProblemDetail.vue";
 import Register from "./views/Register.vue";
-
+import ProblemCategory from "./views/ProblemCategory.vue"
+import ProblemCategoryDetail from "./views/ProblemCategoryDetail.vue"
 Vue.use(Router);
 
 export default new Router({
@@ -21,6 +22,24 @@ export default new Router({
       components: { default: Index, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 200 },
+        footer: { backgroundColor: "black" }
+      }
+    },
+    {
+      path: "/problem-category",
+      name: "problemCategory",
+      components: { default: ProblemCategory, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 80 },
+        footer: { backgroundColor: "black" }
+      }
+    },
+    {
+      path: "/problem-category/:id",
+      name: "problemCategory",
+      components: { default: ProblemCategoryDetail, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 80 },
         footer: { backgroundColor: "black" }
       }
     },

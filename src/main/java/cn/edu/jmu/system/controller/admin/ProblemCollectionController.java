@@ -29,25 +29,25 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequiresPermissions(value = {"admin"})
-@RequestMapping("/api/admin")
+@RequestMapping("/api/admin/problem-collection")
 public class ProblemCollectionController {
     @Resource
     ProblemCollectionService problemCollectionService;
 
-    @GetMapping("/problem-collection")
+    @GetMapping("/")
     public ResponseEntity<BasicResponse> search(ProblemCollectionDto problemCollectionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<ProblemCollection> page = new Page<>(pageNum, pageSize);
         IPage<ProblemCollectionDto> iPage = problemCollectionService.search(problemCollectionDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
-    @PostMapping("/problem-collection")
+    @PostMapping("/")
     public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateProblemCollectionRequest request) {
         CreateProblemCollectionResponse response = problemCollectionService.create(request);
         return ResponseUtil.buildResponse("新增成功", response);
     }
 
-    @DeleteMapping("/problem-collection/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable Integer id) {
         DeleteProblemCollectionResponse response = problemCollectionService.delete(id);
         return ResponseUtil.buildResponse("删除成功", response);

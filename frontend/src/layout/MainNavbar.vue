@@ -35,6 +35,12 @@
                   <b>首页</b>
                 </p>
               </md-list-item>
+              <md-list-item href="#/problem-category">
+                <i class="material-icons">collections_bookmark</i>
+                <p>
+                  <b>题目集</b>
+                </p>
+              </md-list-item>
               <md-list-item href="#/problem">
                 <i class="material-icons">content_paste</i>
                 <p>
