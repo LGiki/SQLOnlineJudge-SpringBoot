@@ -85,7 +85,7 @@ export const constantRoutes = [
     path: '/problem',
     component: Layout,
     redirect: '/problem/index',
-    meta: { title: '题目管理', icon: 'tree-table' },
+    meta: { title: '题目管理', icon: 'list' },
     children: [
       {
         path: 'index',
@@ -200,7 +200,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/admin/index',
     hidden: localStorage.role !== 'admin',
-    meta: { title: '管理员管理', icon: 'peoples' },
+    meta: { title: '管理员管理', icon: 'administrator' },
     children: [
       {
         path: 'index',

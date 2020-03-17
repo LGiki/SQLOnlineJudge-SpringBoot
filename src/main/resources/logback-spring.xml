@@ -188,18 +188,18 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     </logger>
 
     <!--开发环境:打印控制台-->
-    <!--    <springProfile name="dev">-->
-    <!--        <logger name="com.example" level="debug"/>-->
-    <!--    </springProfile>-->
+    <springProfile name="dev">
+        <logger name="cn.edu.jmu" level="debug"/>
+    </springProfile>
 
     <!--    生产环境:输出到文件-->
-    <!--    <springProfile name="pro">-->
-    <!--    <root level="info">-->
-    <!--    <appender-ref ref="console" />-->
-    <!--    <appender-ref ref="debug" />-->
-    <!--    <appender-ref ref="info" />-->
-    <!--    <appender-ref ref="warn" />-->
-    <!--    <appender-ref ref="error" />-->
-    <!--    </root>-->
-    <!--    </springProfile>-->
+    <springProfile name="prod">
+        <root level="error">
+            <appender-ref ref="console"/>
+            <appender-ref ref="debug"/>
+            <appender-ref ref="info"/>
+            <appender-ref ref="warn"/>
+            <appender-ref ref="error"/>
+        </root>
+    </springProfile>
 </configuration>

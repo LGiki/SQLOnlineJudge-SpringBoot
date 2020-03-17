@@ -15,24 +15,54 @@ public class ProblemCollectionDto implements Serializable {
     @Property(name = "id")
     private Integer id;
 
+    /**
+     * 题目集 ID
+     */
     @Property(name = "categoryId")
     private Integer categoryId;
 
+    /**
+     * 题目集名称
+     */
     @Property(name = "categoryName")
     private String categoryName;
 
+    /**
+     * 题目 ID
+     */
     @Property(name = "problemId")
     private Integer problemId;
 
+    /**
+     * 题目标题
+     */
     @Property(name = "problemTitle")
     private String problemTitle;
 
-    @Property(name = "problemDescription")
-    private String problemDescription;
+//    @Property(name = "problemDescription")
+//    private String problemDescription;
 
+    /**
+     * 通过数
+     */
+    @Property(name = "solved")
+    private Integer solved;
+
+    /**
+     * 提交数
+     */
+    @Property(name = "submit")
+    private Integer submit;
+
+    /**
+     * 数据库 ID
+     */
     @Property(name = "databaseId")
     private Integer databaseId;
 
+    /**
+     * 数据库名称
+     */
     @Property(name = "databaseName")
     private String databaseName;
 }

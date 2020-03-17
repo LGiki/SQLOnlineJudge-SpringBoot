@@ -14,14 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -30,32 +23,47 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequiresPermissions(value = {"admin"})
-@RequestMapping("/api/admin")
+@RequestMapping("/api/admin/problem-category")
 public class ProblemCategoryController {
     @Resource
     ProblemCategoryService problemCategoryService;
 
-    @GetMapping("/problem-category")
+    @GetMapping("/")
     public ResponseEntity<BasicResponse> search(ProblemCategoryDto problemCategoryDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<ProblemCategory> page = new Page<>(pageNum, pageSize);
         IPage<ProblemCategoryDto> iPage = problemCategoryService.search(problemCategoryDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
-    @PostMapping("/problem-category")
+    @PostMapping("/")
     public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateProblemCategoryRequest request) {
         CreateProblemCategoryResponse response = problemCategoryService.create(request);
         return ResponseUtil.buildResponse("新增成功", response);
     }
 
-    @GetMapping(value = "/problem-category/{id}")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> update(@RequestBody @Validated CreateProblemCategoryRequest request, @PathVariable("id") Integer id) {
+        ProblemCategory problemCategory = problemCategoryService.getById(id);
+        if (problemCategory == null) {
+            return ResponseUtil.fail("无此题目集");
+        } else {
+            problemCategory.setName(request.getName());
+            if (problemCategoryService.updateById(problemCategory)) {
+                return ResponseUtil.ok("更新题目集信息成功");
+            } else {
+                return ResponseUtil.fail("更新题目集信息失败");
+            }
+        }
+    }
+
+    @GetMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> selectUserById(@PathVariable("id") Integer id) {
         ProblemCategory problemCategory = problemCategoryService.getById(id);
         ProblemCategoryDto problemCategoryDto = ProblemCategoryConverter.problemCategoryDto(problemCategory);
         return ResponseUtil.buildResponse("查询成功", problemCategoryDto);
     }
 
-    @DeleteMapping("/problem-category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable Integer id) {
         DeleteProblemCategoryResponse response = problemCategoryService.delete(id);
         return ResponseUtil.buildResponse("删除成功", response);
