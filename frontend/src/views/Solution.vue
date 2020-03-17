@@ -137,6 +137,7 @@ export default {
   },
   data() {
     return {
+      intervalId: -1,
       searchTypeList: [
         {
           label: "提交ID",
@@ -411,7 +412,12 @@ export default {
   },
   mounted: function() {
     this.getSolutionList();
-    setInterval(this.getSolutionList, 5000);
+    this.intervalId = setInterval(this.getSolutionList, 5000);
+  },
+  destroyed: function() {
+    if (this.intervalId != -1) {
+      clearInterval(this.intervalId);
+    }
   }
 };
 </script>

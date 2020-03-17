@@ -3,7 +3,7 @@
     <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="name">
-        <h2 class="title"> {{ problemCategoryInfo.name }} </h2>
+        <h2 class="title">{{ problemCategoryInfo.name }}</h2>
       </div>
       <div class="section no-padding">
         <div class="container">
@@ -66,8 +66,8 @@ export default {
   data() {
     return {
       problemCategoryInfo: {
-          id: 0,
-          name: '默认题目集标题'
+        id: 0,
+        name: "默认题目集标题"
       },
       codeModal: false,
       pageNum: 1,
@@ -187,7 +187,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
+    }
   },
   computed: {
     headerStyle() {

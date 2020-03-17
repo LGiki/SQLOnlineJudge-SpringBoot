@@ -112,7 +112,7 @@ export default {
         {
           label: "题目集名称",
           value: "name"
-        },
+        }
       ],
       searchType: {
         label: "题目集ID",
@@ -144,7 +144,7 @@ export default {
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
-          },
+          }
         ]
       }
     };
