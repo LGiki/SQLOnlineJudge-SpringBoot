@@ -54,6 +54,7 @@
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
+          <p v-if="selectedProblems.length != 0">将新增 <strong>{{ selectedProblems.length }}</strong> 道题目到题目集中</p>
           <el-button
             type="danger"
             @click="addFromProblemListDialogVisible = false"
@@ -125,6 +126,7 @@ export default {
   data() {
     return {
       problemInCollection: [], //用于确定已经在题目集中的题目
+      lastSelectedProblems: [],
       selectedProblems: [],
       selectedProblemCollections: [],
       alreadyPerformAddedProblemCount: 0,
@@ -145,9 +147,6 @@ export default {
         name: ""
       },
       addFromProblemListDialogVisible: false,
-      searchType: "id",
-      inSearch: false,
-      searchKeyword: "",
       problemCollectionListPageNum: 1,
       problemCollectionListPageSize: 20,
       problemCollectionListTotalItems: 0,
@@ -229,9 +228,9 @@ export default {
       this.problemInCollection.length = 0;
       this.selectedProblems.length = 0;
       this.selectedProblemCollections.length = 0;
-      this.alreadyPerformAddedProblemCount= 0;
-      this.successAddedProblemCount= 0;
-      this.alreadyPerformDeletedProblemCollectionCount= 0;
+      this.alreadyPerformAddedProblemCount = 0;
+      this.successAddedProblemCount = 0;
+      this.alreadyPerformDeletedProblemCollectionCount = 0;
       this.successDeletedProblemCollectionCount = 0;
       let problemCategoryId = this.$route.params.id;
       this.getProblemCategoryDetail(problemCategoryId);
@@ -246,14 +245,43 @@ export default {
     problemCollectionListSelectGroupChange(selection) {
       this.selectedProblemCollections = selection;
     },
+    insertIntoSelectedProblems(selection) {
+      for (let item of selection) {
+        if (this.problemInCollection.indexOf(item.id) == -1 && this.selectedProblems.indexOf(item.id) == -1) {
+          this.selectedProblems.push(item.id);
+        }
+      }
+    },
     problemListSelectAll(selection) {
-      this.selectedProblems = selection;
+      this.insertIntoSelectedProblems(selection);
+    },
+    isIdExistsInSelection(selection, id) {
+      for (let item of selection) {
+        if (item.id == id) {
+          return true;
+        }
+      }
+      return false;
     },
     problemListSelectChange(selection, rowData) {
-      // console.log("select-change", selection, rowData);
+      if (typeof(this.lastSelectedProblems[this.problemListPageNum]) == "undefined") {
+        this.lastSelectedProblems[this.problemListPageNum] = []
+      }
+      if (this.lastSelectedProblems[this.problemListPageNum].length != 0) {
+        if(this.lastSelectedProblems[this.problemListPageNum].length > selection.length) {
+          let deletedId = -1;
+          for (let item of this.lastSelectedProblems[this.problemListPageNum]) {
+            if (!this.isIdExistsInSelection(selection, item.id)) {
+              deletedId = item.id;
+            }
+          }
+          this.selectedProblems.splice(this.selectedProblems.indexOf(deletedId), 1);
+        }
+      }
+      this.lastSelectedProblems[this.problemListPageNum] = selection;
     },
     problemListSelectGroupChange(selection) {
-      this.selectedProblems = selection;
+      this.insertIntoSelectedProblems(selection);
     },
     onSubmit() {
       this.$refs.problemCategoryDetail.validate(valid => {
@@ -320,35 +348,21 @@ export default {
     },
     problemCollectionListPageChange(pageNum) {
       this.problemCollectionListPageNum = pageNum;
-      if (this.inSearch) {
-        this.onSearch();
-      } else {
-        this.fetchProblemCategoryList();
-      }
+      this.fetchProblemCategoryList();
     },
     problemCollectionListPageSizeChange(newPageSize) {
       this.problemCollectionListPageSize = newPageSize;
-      if (this.inSearch) {
-        this.onSearch();
-      } else {
-        this.fetchProblemCategoryList();
-      }
+      this.fetchProblemCategoryList();
     },
     problemListPageChange(pageNum) {
+      // this.lastSelectedProblems[this.problemListPageNum].length = 0;
       this.problemListPageNum = pageNum;
-      if (this.inSearch) {
-        this.onSearch();
-      } else {
-        this.fetchProblemList();
-      }
+      this.fetchProblemList();
     },
     problemListPageSizeChange(newPageSize) {
       this.problemListPageSize = newPageSize;
-      if (this.inSearch) {
-        this.onSearch();
-      } else {
-        this.fetchProblemList();
-      }
+      // this.lastSelectedProblems.length = 0;
+      this.fetchProblemList();
     },
     problemCollectionListRowClick(rowIndex, rowData, column) {},
     problemListRowClick(rowIndex, rowData, column) {},
@@ -374,7 +388,6 @@ export default {
               this.problemInCollection.length = 0;
               for (let item of resData.data.records) {
                 this.problemInCollection.push(item.problemId);
-                this.selectedProblems.push(item);
               }
               this.problemCollectionListTotalItems = resData.data.total;
             } else {
@@ -407,7 +420,7 @@ export default {
             this.problemListTableConfig.tableData.length = 0;
             if (resData.code === 0) {
               for (let item of resData.data.records) {
-                if (this.problemInCollection.indexOf(item.id) != -1) {
+                if (this.problemInCollection.indexOf(item.id) != -1 || this.selectedProblems.indexOf(item.id) != -1) {
                   item._checked = true;
                 }
                 this.problemListTableConfig.tableData.push(item);
@@ -437,7 +450,9 @@ export default {
             const resData = res.data;
             if (resData.code === 0) {
               this.successDeletedProblemCollectionCount += 1;
-              if (this.alreadyPerformDeletedProblemCollectionCount == totalNum) {
+              if (
+                this.alreadyPerformDeletedProblemCollectionCount == totalNum
+              ) {
                 if (this.successDeletedProblemCollectionCount == totalNum) {
                   this.$message({
                     message: "删除题目成功！",
@@ -515,18 +530,21 @@ export default {
       let categoryId = this.$route.params.id;
       this.alreadyPerformAddedProblemCount = 0;
       this.successAddedProblemCount = 0;
-      let problemListToBeAdd = [];
-      for (let item of this.selectedProblems) {
-        if (this.problemInCollection.indexOf(item.id) == -1) {
-          problemListToBeAdd.push(item.id);
+      console.log(this.selectedProblems);
+      if (this.selectedProblems.length == 0) {
+        this.$message({
+          message: '您未选择任何题目！',
+          type: "warning"
+        });
+        this.addFromProblemListDialogVisible = false;
+      }else {
+        for (let problemId of this.selectedProblems) {
+          this.addProblemCollection(
+            categoryId,
+            problemId,
+            this.selectedProblems.length
+          );
         }
-      }
-      for (let problemId of problemListToBeAdd) {
-        this.addProblemCollection(
-          categoryId,
-          problemId,
-          problemListToBeAdd.length
-        );
       }
     }
   }
