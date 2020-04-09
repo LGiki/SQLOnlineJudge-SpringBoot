@@ -9,7 +9,7 @@ import Problem from "./views/Problem.vue";
 import Ranklist from "./views/Ranklist.vue";
 import Solution from "./views/Solution.vue";
 import ProblemDetail from "./views/ProblemDetail.vue";
-import Register from "./views/Register.vue";
+// import Register from "./views/Register.vue";
 import ProblemCategory from "./views/ProblemCategory.vue";
 import ProblemCategoryDetail from "./views/ProblemCategoryDetail.vue";
 Vue.use(Router);
@@ -91,14 +91,14 @@ export default new Router({
         footer: { backgroundColor: "black" }
       }
     },
-    {
-      path: "/register",
-      name: "register",
-      components: { default: Register, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 80 }
-      }
-    },
+    // {
+    //   path: "/register",
+    //   name: "register",
+    //   components: { default: Register, header: MainNavbar, footer: MainFooter },
+    //   props: {
+    //     header: { colorOnScroll: 80 }
+    //   }
+    // },
     {
       path: "/login",
       name: "login",
