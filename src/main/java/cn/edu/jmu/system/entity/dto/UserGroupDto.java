@@ -16,7 +16,6 @@ public class UserGroupDto implements Serializable {
     @Property(name = "id")
     private Integer id;
 
-    @NotBlank
     @Property(name = "name")
     private String name;
 
