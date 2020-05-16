@@ -3,7 +3,6 @@ package cn.edu.jmu.system.entity.dto;
 import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
