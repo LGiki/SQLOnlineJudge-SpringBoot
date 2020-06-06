@@ -31,7 +31,7 @@
     "@vue/cli-plugin-eslint": "3.4.0",
     "@vue/cli-service": "3.4.0",
     "@vue/eslint-config-prettier": "4.0.1",
-    "node-sass": "4.11.0",
+    "node-sass": "4.14.1",
     "sass-loader": "7.1.0",
     "vue-easytable": "^1.7.2",
     "vue-template-compiler": "2.6.6"
