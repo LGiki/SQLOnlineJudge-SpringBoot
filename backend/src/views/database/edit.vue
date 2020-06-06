@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form ref="databaseDetail" :model="databaseDetail" :rules="checkRules" label-width="120px">
-      <el-form-item label="数据库ID">
+      <el-form-item v-if="!isAdd" label="数据库ID">
         <el-input v-model="databaseDetail.id" disabled />
       </el-form-item>
       <el-form-item label="数据库名称" prop="name">
@@ -12,7 +12,7 @@
         <el-input v-if="false" v-model="databaseDetail.createTable" />
       </el-form-item>
       <el-dialog
-        title="从Excel导入测试数据 (BETA)"
+        title="从Excel导入测试数据"
         :visible.sync="importFromExcelDialogVisible"
         width="60%"
       >
@@ -31,7 +31,7 @@
         </span>
       </el-dialog>
       <el-form-item label="测试数据" prop="testData">
-        <p><el-button @click="importFromExcelDialogVisible = true">从Excel导入测试数据 (BETA)</el-button></p>
+        <p><el-button @click="importFromExcelDialogVisible = true">从Excel导入测试数据</el-button></p>
         <codemirror v-model="databaseDetail.testData" :options="cmOptions" @ready="onCmReady" />
         <el-input v-if="false" v-model="databaseDetail.testData" />
       </el-form-item>
@@ -107,11 +107,16 @@ export default {
   computed: {
     codemirror() {
       return this.$refs.myCm.codemirror
+    },
+    isAdd() {
+      return this.$route.params.id === undefined
     }
   },
   mounted: function() {
     const databaseId = this.$route.params.id
-    this.getDatabaseDetail(databaseId)
+    if (!this.isAdd) {
+      this.getDatabaseDetail(databaseId)
+    }
   },
   methods: {
     parseExcel(file) {
@@ -164,16 +169,29 @@ export default {
     onSubmit() {
       this.$refs.databaseDetail.validate(valid => {
         if (valid) {
-          const databaseId = this.$route.params.id
           const database = {
-            id: this.databaseDetail.id,
             name: this.databaseDetail.name.trim(),
-            createTable: this.databaseDetail.createTable,
-            testData: this.databaseDetail.testData
+            createTable: this.databaseDetail.createTable.trim(),
+            testData: this.databaseDetail.testData.trim()
           }
-          this.updateDatabase(databaseId, database, () => {
-            this.$router.back(-1)
-          })
+          if (this.isAdd) {
+            this.addDatabase(database, () => {
+              this.$message({
+                message: '成功添加数据库',
+                type: 'success'
+              })
+              this.$router.back(-1)
+            })
+          }else {
+            database.id = this.databaseDetail.id
+            this.updateDatabase(this.$route.params.id, database, () => {
+              this.$message({
+                message: '成功编辑数据库',
+                type: 'success'
+              })
+              this.$router.back(-1)
+            })
+          }
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
@@ -224,6 +242,27 @@ export default {
         })
         .catch(err => {
           console.log(err)
+        })
+    },
+    addDatabase(database, successCallback) {
+      const apiUrl = this.Url.databaseBaseUrl
+      this.$axios
+        .post(apiUrl, database)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('添加数据库失败，内部错误！')
+          } else {
+            const resData = res.data
+            if (resData.code === 0) {
+              successCallback()
+            } else {
+              this.$message.error(resData.message)
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.error('添加数据库失败！')
         })
     }
   }
