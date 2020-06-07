@@ -65,6 +65,10 @@ VALUES (1, '16级 1');
 INSERT INTO `problem_categories`
 VALUES (2, '16级 2');
 
+ALTER TABLE `problem_categories`
+ADD COLUMN `start_time` DATETIME NULL AFTER `name`,
+ADD COLUMN `end_time` DATETIME NULL AFTER `start_time`;
+
 -- ----------------------------
 -- Table structure for problem_collections
 -- ----------------------------

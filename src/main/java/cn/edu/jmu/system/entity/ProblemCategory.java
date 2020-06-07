@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author xeathen
@@ -21,4 +22,10 @@ public class ProblemCategory implements Serializable {
 
     @TableField(value = "name")
     protected String name;
+
+    @TableField(value = "start_time")
+    private Data startTime;
+
+    @TableField(value = "end_time")
+    private Data endTime;
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author xeathen
@@ -19,4 +20,10 @@ public class ProblemCategoryDto implements Serializable {
     @NotBlank
     @Property(name = "name")
     protected String name;
+
+    @Property(name = "startTime")
+    private Date startTime;
+
+    @Property(name = "endTime")
+    private Data endTime;
 }
