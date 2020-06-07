@@ -79,13 +79,6 @@ export const constantRoutes = [
         meta: { title: '添加数据库' },
         hidden: true
       }
-      // {
-      //   path: 'add',
-      //   name: 'Add Database',
-      //   component: () => import('@/views/database/add'),
-      //   meta: { title: '添加数据库' },
-      //   hidden: true
-      // }
     ]
   },
   {
@@ -110,7 +103,7 @@ export const constantRoutes = [
       {
         path: 'add',
         name: 'Add problem',
-        component: () => import('@/views/problem/add'),
+        component: () => import('@/views/problem/edit'),
         meta: { title: '添加题目' },
         hidden: true
       }

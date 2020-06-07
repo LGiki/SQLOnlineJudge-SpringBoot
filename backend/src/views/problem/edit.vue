@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form ref="problemDetail" :model="problemDetail" :rules="checkRules" label-width="120px">
-      <el-form-item label="题目ID">
+      <el-form-item v-if="!isAdd" label="题目ID">
         <el-input v-model="problemDetail.id" disabled />
       </el-form-item>
       <el-form-item label="题目标题" prop="title">
@@ -146,6 +146,13 @@ export default {
             trigger: 'blur'
           }
         ],
+        description: [
+          {
+            required: true,
+            message: '题目描述不能为空',
+            trigger: 'blur'
+          }
+        ],
         databaseId: [
           {
             required: true,
@@ -183,7 +190,7 @@ export default {
         answer: '',
         solve: 0,
         submit: 0,
-        databaseId: 0
+        databaseId: ''
       },
       runResult: '',
       databaseList: []
@@ -192,11 +199,16 @@ export default {
   computed: {
     codemirror() {
       return this.$refs.myCm.codemirror
+    },
+    isAdd() {
+      return this.$route.params.id === undefined
     }
   },
   mounted: function() {
     const problemId = this.$route.params.id
-    this.getProblemDetail(problemId)
+    if (!this.isAdd) {
+      this.getProblemDetail(problemId)
+    }
     this.getDatabaseList()
   },
   methods: {
@@ -213,20 +225,20 @@ export default {
       })
     },
     runCode() {
+      if (this.isEmpty(this.problemDetail.databaseId)) {
+        this.$message.error('请检查是否已选择数据库！')
+        return
+      }
       if (this.isEmpty(this.problemDetail.answer)) {
         this.$message.error('请检查SQL代码是否已输入！')
         return
-      }
-      if (this.isEmpty(this.problemDetail.databaseId)) {
-        this.$message.error('请检查是否已选择数据库！')
       }
       this.runResult = ''
       const apiUrl = this.Url.runCode
       this.$axios
         .post(apiUrl + this.problemDetail.databaseId,
           {
-            sourceCode: this.problemDetail.answer,
-            test: 123
+            sourceCode: this.problemDetail.answer
           })
         .then(res => {
           if (res.status !== 200) {
@@ -257,7 +269,6 @@ export default {
         if (valid) {
           const problemId = this.$route.params.id
           const problem = {
-            id: problemId,
             title: this.problemDetail.title.trim(),
             description: this.problemDetail.description.trim(),
             sampleOutput: this.problemDetail.sampleOutput.trim(),
@@ -267,9 +278,16 @@ export default {
             submit: this.problemDetail.submit,
             databaseId: this.problemDetail.databaseId
           }
-          this.updateProblem(problemId, problem, () => {
+          if (this.isAdd) {
+            this.addProblem(problem, () => {
+              this.$router.back(-1)
+            })
+          }else {
+            problem.id = problemId
+            this.updateProblem(problemId, problem, () => {
             this.$router.back(-1)
           })
+          }
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
@@ -348,6 +366,32 @@ export default {
           }
         })
         .catch(err => {
+          this.$message.error('添加题目失败！')
+          console.log(err)
+        })
+    },
+    addProblem(problem, successCallback) {
+      const apiUrl = this.Url.problemBaseUrl
+      this.$axios
+        .post(apiUrl, problem)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$message.error('添加题目失败，内部错误！')
+          } else {
+            const resData = res.data
+            if (resData.code === 0) {
+              this.$message({
+                message: resData.message,
+                type: 'success'
+              })
+              successCallback()
+            } else {
+              this.$message.error(resData.message)
+            }
+          }
+        })
+        .catch(err => {
+          this.$message.error('添加题目失败！')
           console.log(err)
         })
     },

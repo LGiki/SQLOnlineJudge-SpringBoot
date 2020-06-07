@@ -34,6 +34,10 @@ const Url = {
   // 图片显示接口
   showImageUrl: ApiHost + '/api/public/image/',
   // 用户组基础接口
-  userGroupBaseUrl: BaseUrl + '/user-group/'
+  userGroupBaseUrl: BaseUrl + '/user-group/',
+  // 调试运行接口
+  runCode: BaseUrl + '/problems/judgement/',
+  problemCategoryBaseUrl: BaseUrl + '/problem-category/',
+  problemCollectionBaseUrl: BaseUrl + '/problem-collection/'
 }
 export default Url
