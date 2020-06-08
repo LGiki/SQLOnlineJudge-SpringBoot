@@ -25,5 +25,5 @@ public class ProblemCategoryDto implements Serializable {
     private Date startTime;
 
     @Property(name = "endTime")
-    private Data endTime;
+    private Date endTime;
 }

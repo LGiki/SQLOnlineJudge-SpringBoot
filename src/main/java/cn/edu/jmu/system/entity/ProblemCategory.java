@@ -24,8 +24,8 @@ public class ProblemCategory implements Serializable {
     protected String name;
 
     @TableField(value = "start_time")
-    private Data startTime;
+    private Date startTime;
 
     @TableField(value = "end_time")
-    private Data endTime;
+    private Date endTime;
 }
