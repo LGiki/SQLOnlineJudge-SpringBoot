@@ -64,14 +64,14 @@
           `hire_date` date NOT NULL,
           PRIMARY KEY (`emp_no`));
         </highlight-code>
-        <p><h3>1. 对于select操作的题目</h3></p>
+        <h3>1. 对于select操作的题目</h3>
         <p>例如查找表employees中emp_no为奇数的记录</p>
         答案只需给出任意一种可行的答案即可，例如
         <highlight-code lang="sql">
           select * from employees where emp_no % 2 = 1;
         </highlight-code>
 
-        <p><h3>2. 对于update、delete等会对表中记录进行修改的题目</h3></p>
+        <h3>2. 对于update、delete等会对表中记录进行修改的题目</h3>
         <p>例如删除表employees中emp_no为奇数的记录</p>
         <p>答案应该这样给出：</p>
         <highlight-code lang="sql">
@@ -213,7 +213,7 @@ export default {
   },
   methods: {
     isEmpty(obj) {
-      if (typeof obj === 'undefined' || obj == null || obj == '') {
+      if (typeof obj === 'undefined' || obj === null || obj === '') {
         return true
       } else {
         return false
@@ -282,11 +282,11 @@ export default {
             this.addProblem(problem, () => {
               this.$router.back(-1)
             })
-          }else {
+          } else {
             problem.id = problemId
             this.updateProblem(problemId, problem, () => {
-            this.$router.back(-1)
-          })
+              this.$router.back(-1)
+            })
           }
         } else {
           this.$message.error('请确认所有项目均填写正确！')

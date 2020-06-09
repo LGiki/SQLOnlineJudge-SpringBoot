@@ -182,7 +182,7 @@ export default {
               })
               this.$router.back(-1)
             })
-          }else {
+          } else {
             database.id = this.databaseDetail.id
             this.updateDatabase(this.$route.params.id, database, () => {
               this.$message({

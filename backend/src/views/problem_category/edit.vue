@@ -20,7 +20,7 @@
           placeholder="请输入题目集名称"
         />
       </el-form-item>
-       <el-form-item label="题目集起止时间" prop="duration">
+      <el-form-item label="题目集起止时间" prop="duration">
         <div class="block">
           <el-date-picker
             v-model="problemCategoryDetail.duration"
@@ -28,8 +28,8 @@
             :picker-options="pickerOptions"
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期">
-          </el-date-picker>
+            end-placeholder="结束日期"
+          />
         </div>
       </el-form-item>
       <el-form-item label="题目集结束后学生能否查看题目" prop="viewAfterEnd">
@@ -37,8 +37,7 @@
           v-model="problemCategoryDetail.viewAfterEnd"
           active-text="能"
           inactive-text="否"
-          >
-        </el-switch>
+        />
       </el-form-item>
       <el-dialog
         title="选择题目添加到题目集"
@@ -77,11 +76,11 @@
           <el-button
             type="danger"
             @click="addFromProblemListDialogVisible = false"
-            >关 闭</el-button
-          >&nbsp;
-          <el-button type="primary" @click="onAddFromProblemListSubmit"
-            >确 定</el-button
-          >
+          >关 闭</el-button>&nbsp;
+          <el-button
+            type="primary"
+            @click="onAddFromProblemListSubmit"
+          >确 定</el-button>
         </span>
       </el-dialog>
       <el-form-item label="题目集题目列表">
@@ -134,8 +133,8 @@
 </template>
 
 <script>
-import "vue-easytable/libs/themes-base/index.css";
-import { VTable, VPagination } from "vue-easytable";
+import 'vue-easytable/libs/themes-base/index.css'
+import { VTable, VPagination } from 'vue-easytable'
 
 export default {
   components: {
@@ -144,7 +143,7 @@ export default {
   },
   data() {
     return {
-      problemInCollection: [], //用于确定已经在题目集中的题目
+      problemInCollection: [], // 用于确定已经在题目集中的题目
       lastSelectedProblems: [],
       selectedProblems: [],
       selectedProblemCollections: [],
@@ -156,28 +155,28 @@ export default {
         name: [
           {
             required: true,
-            message: "题目集名称不能为空",
-            trigger: "blur"
+            message: '题目集名称不能为空',
+            trigger: 'blur'
           }
         ],
         duration: [
-           {
+          {
             required: true,
-            message: "题目集起止时间不能为空",
-            trigger: "blur"
+            message: '题目集起止时间不能为空',
+            trigger: 'blur'
           }
         ],
         viewAfterEnd: [
-           {
+          {
             required: true,
-            message: "必须确定题目集结束后学生能否查看题目",
-            trigger: "blur"
+            message: '必须确定题目集结束后学生能否查看题目',
+            trigger: 'blur'
           }
         ]
       },
       problemCategoryDetail: {
-        id: "",
-        name: "",
+        id: '',
+        name: '',
         duration: [],
         viewAfterEnd: true
       },
@@ -192,32 +191,32 @@ export default {
         columns: [
           {
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
+            titleAlign: 'center',
+            columnAlign: 'center',
+            type: 'selection'
           },
           {
-            field: "problemId",
-            title: "题目ID",
+            field: 'problemId',
+            title: '题目ID',
             width: 30,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "problemTitle",
-            title: "题目标题",
+            field: 'problemTitle',
+            title: '题目标题',
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "databaseName",
-            title: "数据库名称",
+            field: 'databaseName',
+            title: '数据库名称',
             width: 30,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           }
         ]
@@ -225,30 +224,29 @@ export default {
       problemListPageNum: 1,
       problemListPageSize: 10,
       problemListTotalItems: 0,
-      problemListIsLoading: false,
       problemListTableConfig: {
         tableData: [],
         columns: [
           {
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
-            type: "selection"
+            titleAlign: 'center',
+            columnAlign: 'center',
+            type: 'selection'
           },
           {
-            field: "id",
-            title: "题目ID",
+            field: 'id',
+            title: '题目ID',
             width: 30,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           },
           {
-            field: "title",
-            title: "题目标题",
+            field: 'title',
+            title: '题目标题',
             width: 60,
-            titleAlign: "center",
-            columnAlign: "center",
+            titleAlign: 'center',
+            columnAlign: 'center',
             isResize: true
           }
         ]
@@ -258,185 +256,185 @@ export default {
           {
             text: '未来一周',
             onClick(picker) {
-              const start = new Date();
-              const end = new Date();
-              end.setTime(start.getTime() + 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
+              const start = new Date()
+              const end = new Date()
+              end.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
             }
           },
           {
             text: '未来一个月',
             onClick(picker) {
-              const start = new Date();
-              const end = new Date();
-              end.setTime(start.getTime() + 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
+              const start = new Date()
+              const end = new Date()
+              end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
             }
           }
         ]
       }
-    };
+    }
   },
   mounted: function() {
-    this.initPage();
+    this.initPage()
   },
   methods: {
     initPage() {
-      this.problemInCollection.length = 0;
-      this.selectedProblems.length = 0;
-      this.selectedProblemCollections.length = 0;
-      this.alreadyPerformAddedProblemCount = 0;
-      this.successAddedProblemCount = 0;
-      this.alreadyPerformDeletedProblemCollectionCount = 0;
-      this.successDeletedProblemCollectionCount = 0;
-      let problemCategoryId = this.$route.params.id;
-      this.getProblemCategoryDetail(problemCategoryId);
-      this.fetchProblemCollectionList(problemCategoryId);
+      this.problemInCollection.length = 0
+      this.selectedProblems.length = 0
+      this.selectedProblemCollections.length = 0
+      this.alreadyPerformAddedProblemCount = 0
+      this.successAddedProblemCount = 0
+      this.alreadyPerformDeletedProblemCollectionCount = 0
+      this.successDeletedProblemCollectionCount = 0
+      const problemCategoryId = this.$route.params.id
+      this.getProblemCategoryDetail(problemCategoryId)
+      this.fetchProblemCollectionList(problemCategoryId)
     },
     problemCollectionListSelectAll(selection) {
-      this.selectedProblemCollections = selection;
+      this.selectedProblemCollections = selection
     },
     problemCollectionListSelectChange(selection, rowData) {
       // console.log("select-change", selection, rowData);
     },
     problemCollectionListSelectGroupChange(selection) {
-      this.selectedProblemCollections = selection;
+      this.selectedProblemCollections = selection
     },
     insertIntoSelectedProblems(selection) {
-      for (let item of selection) {
-        if (this.problemInCollection.indexOf(item.id) == -1 && this.selectedProblems.indexOf(item.id) == -1) {
-          this.selectedProblems.push(item.id);
+      for (const item of selection) {
+        if (this.problemInCollection.indexOf(item.id) === -1 && this.selectedProblems.indexOf(item.id) === -1) {
+          this.selectedProblems.push(item.id)
         }
       }
     },
     problemListSelectAll(selection) {
-      this.insertIntoSelectedProblems(selection);
+      this.insertIntoSelectedProblems(selection)
     },
     isIdExistsInSelection(selection, id) {
-      for (let item of selection) {
-        if (item.id == id) {
-          return true;
+      for (const item of selection) {
+        if (item.id === id) {
+          return true
         }
       }
-      return false;
+      return false
     },
     problemListSelectChange(selection, rowData) {
-      if (typeof(this.lastSelectedProblems[this.problemListPageNum]) == "undefined") {
+      if (typeof (this.lastSelectedProblems[this.problemListPageNum]) === 'undefined') {
         this.lastSelectedProblems[this.problemListPageNum] = []
       }
-      if (this.lastSelectedProblems[this.problemListPageNum].length != 0) {
-        if(this.lastSelectedProblems[this.problemListPageNum].length > selection.length) {
-          let deletedId = -1;
-          for (let item of this.lastSelectedProblems[this.problemListPageNum]) {
+      if (this.lastSelectedProblems[this.problemListPageNum].length !== 0) {
+        if (this.lastSelectedProblems[this.problemListPageNum].length > selection.length) {
+          let deletedId = -1
+          for (const item of this.lastSelectedProblems[this.problemListPageNum]) {
             if (!this.isIdExistsInSelection(selection, item.id)) {
-              deletedId = item.id;
+              deletedId = item.id
             }
           }
-          this.selectedProblems.splice(this.selectedProblems.indexOf(deletedId), 1);
+          this.selectedProblems.splice(this.selectedProblems.indexOf(deletedId), 1)
         }
       }
-      this.lastSelectedProblems[this.problemListPageNum] = selection;
+      this.lastSelectedProblems[this.problemListPageNum] = selection
     },
     problemListSelectGroupChange(selection) {
-      this.insertIntoSelectedProblems(selection);
+      this.insertIntoSelectedProblems(selection)
     },
     // Convert date to: yyyy-MM-dd HH:mm:ss
     convertDateToString(date) {
-      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
     },
     onSubmit() {
       this.$refs.problemCategoryDetail.validate(valid => {
         if (valid) {
-          let problemCategoryId = this.$route.params.id;
-          let problemCategory = {
+          const problemCategoryId = this.$route.params.id
+          const problemCategory = {
             id: this.problemCategoryDetail.id,
             name: this.problemCategoryDetail.name.trim(),
             startTime: this.convertDateToString(this.problemCategoryDetail.duration[0]),
             endTime: this.convertDateToString(this.problemCategoryDetail.duration[1]),
             viewAfterEnd: this.problemCategoryDetail.viewAfterEnd
-          };
+          }
           this.updateProblemCategory(problemCategoryId, problemCategory, () => {
-            this.$router.back(-1);
-          });
+            this.$router.back(-1)
+          })
         } else {
-          this.$message.error("请确认所有项目均填写正确！");
+          this.$message.error('请确认所有项目均填写正确！')
         }
-      });
+      })
     },
     onCancel() {
-      this.$router.back(-1);
+      this.$router.back(-1)
     },
     getProblemCategoryDetail(problemCategoryId) {
-      const apiUrl = this.Url.problemCategoryBaseUrl;
+      const apiUrl = this.Url.problemCategoryBaseUrl
       this.$axios
         .get(apiUrl + problemCategoryId)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("获取题目集信息失败，内部错误！");
+            this.$message.error('获取题目集信息失败，内部错误！')
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
-              this.problemCategoryDetail.id = resData.data.id;
-              this.problemCategoryDetail.name = resData.data.name;
-              this.problemCategoryDetail.viewAfterEnd = resData.data.viewAfterEnd;
-              this.problemCategoryDetail.duration = [new Date(resData.data.startTime), new Date(resData.data.endTime)];
+              this.problemCategoryDetail.id = resData.data.id
+              this.problemCategoryDetail.name = resData.data.name
+              this.problemCategoryDetail.viewAfterEnd = resData.data.viewAfterEnd
+              this.problemCategoryDetail.duration = [new Date(resData.data.startTime), new Date(resData.data.endTime)]
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
         })
         .catch(err => {
-          this.$message.error("获取题目集信息失败！");
-          console.log(err);
-        });
+          this.$message.error('获取题目集信息失败！')
+          console.log(err)
+        })
     },
     updateProblemCategory(problemCategoryId, problemCategory, successCallback) {
-      const apiUrl = this.Url.problemCategoryBaseUrl;
+      const apiUrl = this.Url.problemCategoryBaseUrl
       this.$axios
         .put(apiUrl + problemCategoryId, problemCategory)
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("更新题目集信息失败，内部错误！");
+            this.$message.error('更新题目集信息失败，内部错误！')
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
               this.$message({
                 message: resData.message,
-                type: "success"
-              });
-              successCallback();
+                type: 'success'
+              })
+              successCallback()
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     problemCollectionListPageChange(pageNum) {
-      this.problemCollectionListPageNum = pageNum;
-      this.fetchProblemCategoryList();
+      this.problemCollectionListPageNum = pageNum
+      this.fetchProblemCategoryList()
     },
     problemCollectionListPageSizeChange(newPageSize) {
-      this.problemCollectionListPageSize = newPageSize;
-      this.fetchProblemCategoryList();
+      this.problemCollectionListPageSize = newPageSize
+      this.fetchProblemCategoryList()
     },
     problemListPageChange(pageNum) {
       // this.lastSelectedProblems[this.problemListPageNum].length = 0;
-      this.problemListPageNum = pageNum;
-      this.fetchProblemList();
+      this.problemListPageNum = pageNum
+      this.fetchProblemList()
     },
     problemListPageSizeChange(newPageSize) {
-      this.problemListPageSize = newPageSize;
+      this.problemListPageSize = newPageSize
       // this.lastSelectedProblems.length = 0;
-      this.fetchProblemList();
+      this.fetchProblemList()
     },
     problemCollectionListRowClick(rowIndex, rowData, column) {},
     problemListRowClick(rowIndex, rowData, column) {},
     fetchProblemCollectionList(problemCategoryId) {
-      this.problemCollectionListIsLoading = true;
-      let apiUrl = this.Url.problemCollectionBaseUrl;
+      this.problemCollectionListIsLoading = true
+      const apiUrl = this.Url.problemCollectionBaseUrl
       this.$axios
         .get(apiUrl, {
           params: {
@@ -447,32 +445,32 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("获取题目集详情失败，内部错误！");
+            this.$message.error('获取题目集详情失败，内部错误！')
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
               this.problemCollectionTableConfig.tableData =
-                resData.data.records;
-              this.problemInCollection.length = 0;
-              for (let item of resData.data.records) {
-                this.problemInCollection.push(item.problemId);
+                resData.data.records
+              this.problemInCollection.length = 0
+              for (const item of resData.data.records) {
+                this.problemInCollection.push(item.problemId)
               }
-              this.problemCollectionListTotalItems = resData.data.total;
+              this.problemCollectionListTotalItems = resData.data.total
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
-          this.problemCollectionListIsLoading = false;
+          this.problemCollectionListIsLoading = false
         })
         .catch(err => {
-          this.$message.error("获取题目集详情失败！");
-          this.problemCollectionListIsLoading = false;
-          console.log(err);
-        });
+          this.$message.error('获取题目集详情失败！')
+          this.problemCollectionListIsLoading = false
+          console.log(err)
+        })
     },
     fetchProblemList() {
-      this.problemListIsLoading = true;
-      const apiUrl = this.Url.problemBaseUrl;
+      this.problemListIsLoading = true
+      const apiUrl = this.Url.problemBaseUrl
       this.$axios
         .get(apiUrl, {
           params: {
@@ -482,141 +480,141 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error("获取题目列表失败，内部错误！");
+            this.$message.error('获取题目列表失败，内部错误！')
           } else {
-            const resData = res.data;
-            this.problemListTableConfig.tableData.length = 0;
+            const resData = res.data
+            this.problemListTableConfig.tableData.length = 0
             if (resData.code === 0) {
-              for (let item of resData.data.records) {
-                if (this.problemInCollection.indexOf(item.id) != -1 || this.selectedProblems.indexOf(item.id) != -1) {
-                  item._checked = true;
+              for (const item of resData.data.records) {
+                if (this.problemInCollection.indexOf(item.id) !== -1 || this.selectedProblems.indexOf(item.id) !== -1) {
+                  item._checked = true
                 }
-                this.problemListTableConfig.tableData.push(item);
+                this.problemListTableConfig.tableData.push(item)
               }
-              this.problemListTotalItems = resData.data.total;
+              this.problemListTotalItems = resData.data.total
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
-          this.problemListIsLoading = false;
+          this.problemListIsLoading = false
         })
         .catch(err => {
-          this.$message.error("获取题目列表失败！");
-          this.problemListIsLoading = false;
-          console.log(err);
-        });
+          this.$message.error('获取题目列表失败！')
+          this.problemListIsLoading = false
+          console.log(err)
+        })
     },
     deleteProblemCollection(problemCollectionId, totalNum) {
-      let apiUrl = this.Url.problemCollectionBaseUrl;
+      const apiUrl = this.Url.problemCollectionBaseUrl
       this.$axios
         .delete(apiUrl + problemCollectionId)
         .then(res => {
-          this.alreadyPerformDeletedProblemCollectionCount += 1;
+          this.alreadyPerformDeletedProblemCollectionCount += 1
           if (res.status !== 200) {
-            this.$message.error("删除题目失败，内部错误！");
+            this.$message.error('删除题目失败，内部错误！')
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
-              this.successDeletedProblemCollectionCount += 1;
+              this.successDeletedProblemCollectionCount += 1
               if (
-                this.alreadyPerformDeletedProblemCollectionCount == totalNum
+                this.alreadyPerformDeletedProblemCollectionCount === totalNum
               ) {
-                if (this.successDeletedProblemCollectionCount == totalNum) {
+                if (this.successDeletedProblemCollectionCount === totalNum) {
                   this.$message({
-                    message: "删除题目成功！",
-                    type: "success"
-                  });
+                    message: '删除题目成功！',
+                    type: 'success'
+                  })
                 } else {
-                  this.$message.error("题目删除完毕，部分题目删除失败！");
+                  this.$message.error('题目删除完毕，部分题目删除失败！')
                 }
-                this.initPage();
+                this.initPage()
               }
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
         })
         .catch(err => {
-          this.alreadyPerformDeletedProblemCollectionCount += 1;
-          this.$message.error("删除题目失败！");
-          console.log(err);
-        });
+          this.alreadyPerformDeletedProblemCollectionCount += 1
+          this.$message.error('删除题目失败！')
+          console.log(err)
+        })
     },
     deleteSelectedProblemFromProblemCollection() {
-      this.alreadyPerformDeletedProblemCollectionCount = 0;
-      this.successDeletedProblemCollectionCount = 0;
-      for (let item of this.selectedProblemCollections) {
+      this.alreadyPerformDeletedProblemCollectionCount = 0
+      this.successDeletedProblemCollectionCount = 0
+      for (const item of this.selectedProblemCollections) {
         this.deleteProblemCollection(
           item.id,
           this.selectedProblemCollections.length
-        );
+        )
       }
     },
     addFromProblemList() {
-      this.addFromProblemListDialogVisible = true;
-      this.fetchProblemList();
+      this.addFromProblemListDialogVisible = true
+      this.fetchProblemList()
     },
     addProblemCollection(categoryId, problemId, totalNum) {
-      let apiUrl = this.Url.problemCollectionBaseUrl;
+      const apiUrl = this.Url.problemCollectionBaseUrl
       this.$axios
         .post(apiUrl, {
           categoryId: categoryId,
           problemId: problemId
         })
         .then(res => {
-          this.alreadyPerformAddedProblemCount += 1;
+          this.alreadyPerformAddedProblemCount += 1
           if (res.status !== 200) {
-            this.$message.error("添加题目失败，内部错误！");
+            this.$message.error('添加题目失败，内部错误！')
           } else {
-            const resData = res.data;
+            const resData = res.data
             if (resData.code === 0) {
-              this.successAddedProblemCount += 1;
-              if (this.alreadyPerformAddedProblemCount == totalNum) {
-                if (this.successAddedProblemCount == totalNum) {
+              this.successAddedProblemCount += 1
+              if (this.alreadyPerformAddedProblemCount === totalNum) {
+                if (this.successAddedProblemCount === totalNum) {
                   this.$message({
-                    message: "添加题目成功！",
-                    type: "success"
-                  });
+                    message: '添加题目成功！',
+                    type: 'success'
+                  })
                 } else {
-                  this.$message.error("题目添加完毕，部分题目添加失败！");
+                  this.$message.error('题目添加完毕，部分题目添加失败！')
                 }
-                this.addFromProblemListDialogVisible = false;
-                this.initPage();
+                this.addFromProblemListDialogVisible = false
+                this.initPage()
               }
             } else {
-              this.$message.error(resData.message);
+              this.$message.error(resData.message)
             }
           }
         })
         .catch(err => {
-          this.alreadyPerformAddedProblemCount += 1;
-          this.$message.error("添加题目失败！");
-          console.log(err);
-        });
+          this.alreadyPerformAddedProblemCount += 1
+          this.$message.error('添加题目失败！')
+          console.log(err)
+        })
     },
     onAddFromProblemListSubmit() {
-      let categoryId = this.$route.params.id;
-      this.alreadyPerformAddedProblemCount = 0;
-      this.successAddedProblemCount = 0;
-      console.log(this.selectedProblems);
-      if (this.selectedProblems.length == 0) {
+      const categoryId = this.$route.params.id
+      this.alreadyPerformAddedProblemCount = 0
+      this.successAddedProblemCount = 0
+      console.log(this.selectedProblems)
+      if (this.selectedProblems.length === 0) {
         this.$message({
           message: '您未选择任何题目！',
-          type: "warning"
-        });
-        this.addFromProblemListDialogVisible = false;
-      }else {
-        for (let problemId of this.selectedProblems) {
+          type: 'warning'
+        })
+        this.addFromProblemListDialogVisible = false
+      } else {
+        for (const problemId of this.selectedProblems) {
           this.addProblemCollection(
             categoryId,
             problemId,
             this.selectedProblems.length
-          );
+          )
         }
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

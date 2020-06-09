@@ -132,7 +132,7 @@ export default {
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.viewAfterEnd ? "能" : "否";
+              return rowData.viewAfterEnd ? '能' : '否'
             }
           },
           {
