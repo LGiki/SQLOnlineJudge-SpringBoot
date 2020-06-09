@@ -24,6 +24,8 @@ const Url = {
   // 运行调试SQL代码接口
   runCode: BaseUrl + "/judgement/",
   // 获取用户对某一题目最后一次提交详情结构
-  latestSolution: ApiHost + "/api/public/latest_solution"
+  latestSolution: ApiHost + "/api/public/latest_solution",
+  problemCategoryBaseUrl: ApiHost + "/api/public/problem-category/",
+  problemCollectionBaseUrl: ApiHost + "/api/public/problem-collection/"
 };
 export default Url;
