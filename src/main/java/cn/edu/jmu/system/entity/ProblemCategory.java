@@ -28,4 +28,7 @@ public class ProblemCategory implements Serializable {
 
     @TableField(value = "end_time")
     private Date endTime;
+
+    @TableField(value = "view_after_end")
+    private Boolean viewAfterEnd;
 }

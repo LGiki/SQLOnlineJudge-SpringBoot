@@ -26,4 +26,7 @@ public class ProblemCategoryDto implements Serializable {
 
     @Property(name = "endTime")
     private Date endTime;
+
+    @Property(name = "viewAfterEnd")
+    private Boolean viewAfterEnd;
 }

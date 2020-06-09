@@ -48,6 +48,9 @@ public class ProblemCategoryController {
             return ResponseUtil.fail("无此题目集");
         } else {
             problemCategory.setName(request.getName());
+            problemCategory.setViewAfterEnd(request.getViewAfterEnd());
+            problemCategory.setStartTime(request.getStartTime());
+            problemCategory.setEndTime(request.getEndTime());
             if (problemCategoryService.updateById(problemCategory)) {
                 return ResponseUtil.ok("更新题目集信息成功");
             } else {

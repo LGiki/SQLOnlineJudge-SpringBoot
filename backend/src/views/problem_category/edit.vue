@@ -20,7 +20,26 @@
           placeholder="请输入题目集名称"
         />
       </el-form-item>
-
+       <el-form-item label="题目集起止时间" prop="duration">
+        <div class="block">
+          <el-date-picker
+            v-model="problemCategoryDetail.duration"
+            type="datetimerange"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </div>
+      </el-form-item>
+      <el-form-item label="题目集结束后学生能否查看题目" prop="viewAfterEnd">
+        <el-switch
+          v-model="problemCategoryDetail.viewAfterEnd"
+          active-text="能"
+          inactive-text="否"
+          >
+        </el-switch>
+      </el-form-item>
       <el-dialog
         title="选择题目添加到题目集"
         :visible.sync="addFromProblemListDialogVisible"
@@ -140,11 +159,27 @@ export default {
             message: "题目集名称不能为空",
             trigger: "blur"
           }
+        ],
+        duration: [
+           {
+            required: true,
+            message: "题目集起止时间不能为空",
+            trigger: "blur"
+          }
+        ],
+        viewAfterEnd: [
+           {
+            required: true,
+            message: "必须确定题目集结束后学生能否查看题目",
+            trigger: "blur"
+          }
         ]
       },
       problemCategoryDetail: {
         id: "",
-        name: ""
+        name: "",
+        duration: [],
+        viewAfterEnd: true
       },
       addFromProblemListDialogVisible: false,
       problemCollectionListPageNum: 1,
@@ -217,6 +252,28 @@ export default {
             isResize: true
           }
         ]
+      },
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '未来一周',
+            onClick(picker) {
+              const start = new Date();
+              const end = new Date();
+              end.setTime(start.getTime() + 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
+            text: '未来一个月',
+            onClick(picker) {
+              const start = new Date();
+              const end = new Date();
+              end.setTime(start.getTime() + 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
       }
     };
   },
@@ -283,13 +340,20 @@ export default {
     problemListSelectGroupChange(selection) {
       this.insertIntoSelectedProblems(selection);
     },
+    // Convert date to: yyyy-MM-dd HH:mm:ss
+    convertDateToString(date) {
+      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    },
     onSubmit() {
       this.$refs.problemCategoryDetail.validate(valid => {
         if (valid) {
           let problemCategoryId = this.$route.params.id;
           let problemCategory = {
             id: this.problemCategoryDetail.id,
-            name: this.problemCategoryDetail.name.trim()
+            name: this.problemCategoryDetail.name.trim(),
+            startTime: this.convertDateToString(this.problemCategoryDetail.duration[0]),
+            endTime: this.convertDateToString(this.problemCategoryDetail.duration[1]),
+            viewAfterEnd: this.problemCategoryDetail.viewAfterEnd
           };
           this.updateProblemCategory(problemCategoryId, problemCategory, () => {
             this.$router.back(-1);
@@ -312,13 +376,17 @@ export default {
           } else {
             const resData = res.data;
             if (resData.code === 0) {
-              this.problemCategoryDetail = resData.data;
+              this.problemCategoryDetail.id = resData.data.id;
+              this.problemCategoryDetail.name = resData.data.name;
+              this.problemCategoryDetail.viewAfterEnd = resData.data.viewAfterEnd;
+              this.problemCategoryDetail.duration = [new Date(resData.data.startTime), new Date(resData.data.endTime)];
             } else {
               this.$message.error(resData.message);
             }
           }
         })
         .catch(err => {
+          this.$message.error("获取题目集信息失败！");
           console.log(err);
         });
     },

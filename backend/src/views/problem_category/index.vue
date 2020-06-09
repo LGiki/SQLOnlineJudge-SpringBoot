@@ -91,8 +91,8 @@ export default {
         columns: [
           {
             field: 'id',
-            title: '题目集ID',
-            width: 30,
+            title: 'ID',
+            width: 5,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -100,18 +100,45 @@ export default {
           {
             field: 'name',
             title: '题目集名称',
-            width: 60,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem-collection/edit/${rowData.id}" title="${rowData.name}">${rowData.name}</a>`
+              return `<a href="#/problem-category/edit/${rowData.id}" title="${rowData.name}">${rowData.name}</a>`
+            }
+          },
+          {
+            field: 'startTime',
+            title: '开始时间',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
+            field: 'endTime',
+            title: '结束时间',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
+            field: 'viewAfterEnd',
+            title: '结束后能否查看题目',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return rowData.viewAfterEnd ? "能" : "否";
             }
           },
           {
             field: 'action',
             title: '操作',
-            width: 40,
+            width: 20,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,

@@ -47,6 +47,9 @@ public class ProblemCategoryServiceImpl extends ServiceImpl<ProblemCategoryMappe
     public CreateProblemCategoryResponse create(CreateProblemCategoryRequest request) {
         ProblemCategory problemCategory = new ProblemCategory();
         problemCategory.setName(request.getName());
+        problemCategory.setStartTime(request.getStartTime());
+        problemCategory.setEndTime(request.getEndTime());
+        problemCategory.setViewAfterEnd(request.getViewAfterEnd());
         baseMapper.insert(problemCategory);
         CreateProblemCategoryResponse response = new CreateProblemCategoryResponse();
         response.setId(problemCategory.getId());

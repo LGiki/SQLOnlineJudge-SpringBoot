@@ -67,8 +67,8 @@ VALUES (2, '16级 2');
 
 ALTER TABLE `problem_categories`
 ADD COLUMN `start_time` DATETIME NULL AFTER `name`,
-ADD COLUMN `end_time` DATETIME NULL AFTER `start_time`;
-
+ADD COLUMN `end_time` DATETIME NULL AFTER `start_time`,
+ADD COLUMN `view_after_end` BIT NOT NULL DEFAULT '1' AFTER `end_time`;
 -- ----------------------------
 -- Table structure for problem_collections
 -- ----------------------------
