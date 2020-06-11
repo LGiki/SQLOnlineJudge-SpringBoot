@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProblemCategoryService extends IService<ProblemCategory> {
     /**
-     * 查询题目分类
+     * 查询题目集
      *
      * @param problemCategoryDto
      * @param page
@@ -23,7 +23,7 @@ public interface ProblemCategoryService extends IService<ProblemCategory> {
     IPage<ProblemCategoryDto> search(ProblemCategoryDto problemCategoryDto, Page<ProblemCategory> page);
 
     /**
-     * 创建题目分类
+     * 创建题目集
      *
      * @param request
      * @return
@@ -31,10 +31,17 @@ public interface ProblemCategoryService extends IService<ProblemCategory> {
     CreateProblemCategoryResponse create(CreateProblemCategoryRequest request);
 
     /**
-     * 删除题目分类
+     * 删除题目集
      *
      * @param id
      * @return
      */
     DeleteProblemCategoryResponse delete(Integer id);
+
+    /**
+     * 题目集是否存在
+     * @param id 题目集ID
+     * @return Boolean 是否存在
+     */
+    Boolean exist(Integer id);
 }

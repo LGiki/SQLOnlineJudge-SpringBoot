@@ -68,7 +68,13 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Override
     public ProblemDetailToUserDto getToUserById(Integer id) {
         Problem problem = baseMapper.selectById(id);
+        if (problem == null) {
+            return null;
+        }
         Database database = databaseService.getById(problem.getDatabaseId());
+        if (database == null) {
+            return null;
+        }
         ProblemDetailToUserDto problemDetailToUserDto = new ProblemDetailToUserDto();
         problemDetailToUserDto.setCreateTable(database.getCreateTable());
         ProblemConverter.toUserDetailDto(problem, problemDetailToUserDto);

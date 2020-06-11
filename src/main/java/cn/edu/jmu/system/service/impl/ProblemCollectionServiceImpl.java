@@ -34,6 +34,8 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
     ProblemService problemService;
     @Resource
     DatabaseService databaseService;
+    @Resource
+    ProblemCollectionMapper problemCollectionMapper;
 
     @Override
     public IPage<ProblemCollectionDto> search(ProblemCollectionDto problemCollectionDto, Page<ProblemCollection> page) {
@@ -92,5 +94,10 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
         DeleteProblemCollectionResponse response = new DeleteProblemCollectionResponse();
         response.setId(id);
         return response;
+    }
+
+    @Override
+    public Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId) {
+        return problemCollectionMapper.countByProblemIdAndProblemCategoryId(problemId, problemCategoryId) > 0;
     }
 }

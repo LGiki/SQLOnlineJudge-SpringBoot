@@ -67,7 +67,7 @@ export default {
     return {
       problemCategoryInfo: {
         id: 0,
-        name: "默认题目集标题"
+        name: ""
       },
       codeModal: false,
       pageNum: 1,
@@ -145,13 +145,7 @@ export default {
       let problemCategoryId = this.$route.params.id;
       let apiUrl = this.Url.problemCollectionBaseUrl;
       this.$axios
-        .get(apiUrl, {
-          params: {
-            categoryId: problemCategoryId,
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
+        .get(apiUrl + problemCategoryId)
         .then(res => {
           if (res.status !== 200) {
             alert("获取题目集详情失败，内部错误！");

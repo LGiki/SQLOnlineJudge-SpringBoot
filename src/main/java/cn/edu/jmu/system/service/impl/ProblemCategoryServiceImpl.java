@@ -24,22 +24,21 @@ public class ProblemCategoryServiceImpl extends ServiceImpl<ProblemCategoryMappe
     @Override
     public IPage<ProblemCategoryDto> search(ProblemCategoryDto problemCategoryDto, Page<ProblemCategory> page) {
         Page<ProblemCategory> problemCategoryPage = new Page<>(page.getCurrent(), page.getSize());
-        IPage<ProblemCategory> iPage = baseMapper.selectPage(problemCategoryPage, predicate(problemCategoryDto));
+        IPage<ProblemCategory> iPage = baseMapper.selectPage(problemCategoryPage, predicate(problemCategoryDto).orderByDesc(ProblemCategory::getId));
         return iPage.convert(ProblemCategoryConverter::problemCategoryDto);
     }
 
-    private Wrapper<ProblemCategory> predicate(ProblemCategoryDto problemCategoryDto) {
+    private LambdaQueryWrapper<ProblemCategory> predicate(ProblemCategoryDto problemCategoryDto) {
         if (problemCategoryDto == null) {
             return null;
         } else {
-            LambdaQueryWrapper<ProblemCategory> queryWrapper = new LambdaQueryWrapper<>();
+            LambdaQueryWrapper<ProblemCategory> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             if (problemCategoryDto.getId() != null) {
-                queryWrapper.eq(ProblemCategory::getId, problemCategoryDto.getId());
-                return queryWrapper;
+                lambdaQueryWrapper.eq(ProblemCategory::getId, problemCategoryDto.getId());
             } else if (problemCategoryDto.getName() != null) {
-                queryWrapper.like(ProblemCategory::getName, "%" + problemCategoryDto.getName() + "%");
+                lambdaQueryWrapper.like(ProblemCategory::getName, "%" + problemCategoryDto.getName() + "%");
             }
-            return queryWrapper;
+            return lambdaQueryWrapper;
         }
     }
 
@@ -62,5 +61,11 @@ public class ProblemCategoryServiceImpl extends ServiceImpl<ProblemCategoryMappe
         DeleteProblemCategoryResponse response = new DeleteProblemCategoryResponse();
         response.setId(id);
         return response;
+    }
+
+    @Override
+    public Boolean exist(Integer id) {
+        ProblemCategory problemCategory = baseMapper.selectById(id);
+        return problemCategory != null;
     }
 }

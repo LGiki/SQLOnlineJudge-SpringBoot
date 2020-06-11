@@ -144,6 +144,22 @@ export default {
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "startTime",
+            title: "开始时间",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "endTime",
+            title: "结束时间",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
           }
         ]
       }

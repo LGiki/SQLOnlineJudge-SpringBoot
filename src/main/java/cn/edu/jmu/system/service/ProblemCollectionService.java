@@ -37,4 +37,12 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
      * @return
      */
     DeleteProblemCollectionResponse delete(Integer id);
+
+    /**
+     * 判断某个problemId对应的题目是否存在于problemCategoryId对应的题目集里
+     * @param problemId 题目ID
+     * @param problemCategoryId 题目集ID
+     * @return Boolean 题目是否存在于题目集里
+     */
+    Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId);
 }
