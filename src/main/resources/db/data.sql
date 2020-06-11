@@ -136,6 +136,8 @@ VALUES (2, '查找employees表', '查找employees表所有emp_no为奇数，且l
         'select * from employees where emp_no % 2 = 1 and last_name != \'Mary\'order by hire_date desc', 1, 1,
         'CF5A78656EBA8C87F885D99FFC057173', 1);
 
+ALTER TABLE `problems` ADD COLUMN `difficulty` TINYINT NOT NULL DEFAULT 1 COMMENT '题目难度' AFTER `true_result`;
+ALTER TABLE `problems` CHANGE COLUMN `true_result` `true_result` TEXT(32) NULL DEFAULT NULL COMMENT '正确输出' COLLATE 'utf8_general_ci' AFTER `submit`;
 -- ----------------------------
 -- Table structure for solutions
 -- ----------------------------
