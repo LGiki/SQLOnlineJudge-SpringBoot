@@ -29,4 +29,9 @@ public class ProblemCategoryDto implements Serializable {
 
     @Property(name = "viewAfterEnd")
     private Boolean viewAfterEnd;
+
+    /**
+     * 题目集状态：未开始、正在进行、已结束（分为结束后能查看题目、结束后不能查看题目）、未知
+     */
+    private String status;
 }

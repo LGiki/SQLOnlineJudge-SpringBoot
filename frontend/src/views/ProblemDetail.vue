@@ -329,10 +329,10 @@ export default {
         cm.showHint();
       });
     },
-    getProblemDetail(problemId) {
+    getProblemDetail(categoryId, problemId) {
       let apiUrl = this.Url.problemBaseUrl;
       this.$axios
-        .get(apiUrl + "/" + problemId)
+        .get(apiUrl + "/" + categoryId + "/" + problemId)
         .then(res => {
           if (res.status !== 200) {
             alert("获取题目详情失败，内部错误！");
@@ -357,7 +357,7 @@ export default {
       this.judgeResult = "Judging";
       this.runError = "";
       const apiUrl = this.Url.solutionSubmit;
-      const problemId = this.$route.params.id;
+      const problemId = this.$route.params.problemId;
       let postData = {
         pid: problemId,
         sourceCode: this.code
@@ -394,8 +394,9 @@ export default {
     }
   },
   mounted: function() {
-    let problemId = this.$route.params.id;
-    this.getProblemDetail(problemId);
+    let categoryId = this.$route.params.categoryId;
+    let problemId = this.$route.params.problemId;
+    this.getProblemDetail(categoryId, problemId);
     this.getLatestSolution();
   }
 };

@@ -61,7 +61,7 @@ export default new Router({
     //   }
     // },
     {
-      path: "/problem/:id",
+      path: "/problem/:categoryId/:problemId",
       name: "problemDetail",
       components: {
         default: ProblemDetail,

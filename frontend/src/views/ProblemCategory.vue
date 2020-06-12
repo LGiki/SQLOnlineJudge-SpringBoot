@@ -160,6 +160,14 @@ export default {
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
+          },
+          {
+            field: "status",
+            title: "状态",
+            width: 50,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
           }
         ]
       }

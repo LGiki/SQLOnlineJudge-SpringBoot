@@ -152,7 +152,8 @@ export default {
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: "/problem/" + rowData.problemId });
+      let problemCategoryId = this.$route.params.id;
+      this.$router.push({ path: "/problem/" + problemCategoryId + '/' + rowData.problemId });
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
