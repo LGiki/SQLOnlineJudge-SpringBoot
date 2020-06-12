@@ -38,6 +38,11 @@ public class ProblemDetailToUserDto extends ProblemDto implements Serializable {
     private String sampleOutput;
 
     /**
+     * 题目难度
+     */
+    private Integer difficulty;
+
+    /**
      * 提示
      */
     private String hint;

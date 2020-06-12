@@ -78,6 +78,12 @@ public class Problem implements Serializable {
     private String trueResult;
 
     /**
+     * 题目难度
+     */
+    @TableField(value = "difficulty")
+    private Integer difficulty;
+
+    /**
      * 数据库ID
      */
     @TableField(value = "database_id")

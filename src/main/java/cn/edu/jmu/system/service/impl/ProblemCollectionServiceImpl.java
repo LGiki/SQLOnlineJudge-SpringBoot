@@ -46,12 +46,11 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
 
     private ProblemCollectionDto problemCollectionDto(ProblemCollection problemCollection) {
         ProblemCollectionDto problemCollectionDto = ProblemCollectionConverter.problemCollectionDto(problemCollection);
-        ProblemCategory category = problemCategoryService.getById(problemCollectionDto.getCategoryId());
-        problemCollectionDto.setCategoryName(category.getName());
         Problem problem = problemService.getById(problemCollection.getProblemId());
         problemCollectionDto.setProblemTitle(problem.getTitle());
         problemCollectionDto.setProblemSolved(problem.getSolved());
         problemCollectionDto.setProblemSubmit(problem.getSubmit());
+        problemCollectionDto.setProblemDifficulty(problem.getDifficulty());
         Database database = databaseService.getById(problem.getDatabaseId());
         problemCollectionDto.setDatabaseId(database.getId());
         problemCollectionDto.setDatabaseName(database.getName());
@@ -65,7 +64,6 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
             LambdaQueryWrapper<ProblemCollection> queryWrapper = new LambdaQueryWrapper<>();
             if (problemCollectionDto.getId() != null) {
                 queryWrapper.eq(ProblemCollection::getId, problemCollectionDto.getId());
-                return queryWrapper;
             }
             if (problemCollectionDto.getCategoryId() != null) {
                 queryWrapper.eq(ProblemCollection::getCategoryId, problemCollectionDto.getCategoryId());

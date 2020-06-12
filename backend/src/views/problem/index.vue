@@ -73,6 +73,10 @@ export default {
         {
           label: '题目标题',
           value: 'title'
+        },
+        {
+          label: '题目难度',
+          value: 'difficulty'
         }
       ],
       searchType: 'id',
@@ -108,9 +112,24 @@ export default {
             }
           },
           {
+            field: 'difficulty',
+            title: '难度',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              let difficultyStars = '';
+              for (let i = 0; i < rowData.difficulty; i++) {
+                difficultyStars += '★';
+              }
+              return difficultyStars;
+            }
+          },
+          {
             field: 'solved',
             title: '通过数',
-            width: 80,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -118,7 +137,7 @@ export default {
           {
             field: 'submit',
             title: '提交数',
-            width: 80,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -126,7 +145,7 @@ export default {
           {
             field: 'accept_rate',
             title: '通过率',
-            width: 80,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -139,7 +158,7 @@ export default {
           {
             field: 'action',
             title: '操作',
-            width: 80,
+            width: 60,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,

@@ -35,6 +35,11 @@ public class ProblemDetailDto extends ProblemDto implements Serializable {
     private String hint;
 
     /**
+     * 题目难度
+     */
+    private Integer difficulty;
+
+    /**
      * 答案
      */
     @NotBlank

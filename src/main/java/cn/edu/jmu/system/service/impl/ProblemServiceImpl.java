@@ -59,9 +59,9 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     public boolean update(Problem problem) {
         Problem select = baseMapper.selectById(problem.getId());
         BeanUtil.copyProperties(problem, select, true,
-            CopyOptions.create().setIgnoreNullValue(true)
-                .setIgnoreError(true)
-                .setIgnoreProperties("id", "solve", "submit"));
+                CopyOptions.create().setIgnoreNullValue(true)
+                        .setIgnoreError(true)
+                        .setIgnoreProperties("id", "solve", "submit"));
         return baseMapper.updateById(select) >= 1;
     }
 
@@ -91,9 +91,10 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
             LambdaQueryWrapper<Problem> queryWrapper = new LambdaQueryWrapper<>();
             if (problemDto.getId() != null) {
                 queryWrapper.eq(Problem::getId, problemDto.getId());
-                return queryWrapper;
             } else if (problemDto.getTitle() != null) {
                 queryWrapper.like(Problem::getTitle, "%" + problemDto.getTitle() + "%");
+            } else if (problemDto.getDifficulty() != null) {
+                queryWrapper.eq(Problem::getDifficulty, problemDto.getDifficulty());
             }
             return queryWrapper;
         }
@@ -109,8 +110,8 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
         boolean success = true;
         for (Problem problem : problemDtoList) {
             String trueResult = PythonJudgeUtil.getTrueResult(problem.getAnswer(), problem.getDatabaseId())
-                .getData()
-                .getTrueResult();
+                    .getData()
+                    .getTrueResult();
             String trueResultMd5 = Md5Util.getStringMd5(trueResult);
             problem.setTrueResult(trueResultMd5);
             success = baseMapper.updateById(problem) == 1;

@@ -111,7 +111,9 @@ public class ProblemController {
             return ResponseUtil.fail("题目ID不存在");
         }
         if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
+            System.out.println(problemDetailDto);
             Problem problem = ProblemConverter.toEntity(problemDetailDto);
+            System.out.println(problem);
             // 更新数据库信息
             JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
             if ("0".equals(judgeResultJson.getCode())) {

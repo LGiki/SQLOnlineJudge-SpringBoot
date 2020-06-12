@@ -37,6 +37,11 @@ public class ProblemDto implements Serializable {
     private Integer submit;
 
     /**
+     * 题目难度
+     */
+    private Integer difficulty;
+
+    /**
      * 数据库ID
      */
     @NotNull

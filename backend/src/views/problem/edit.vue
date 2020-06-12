@@ -7,6 +7,13 @@
       <el-form-item label="题目标题" prop="title">
         <el-input v-model="problemDetail.title" />
       </el-form-item>
+      <el-form-item label="题目难度" prop="difficulty">
+        <el-rate
+          v-model="problemDetail.difficulty"
+          show-text
+          :texts="[1, 2, 3, 4, 5]">
+        </el-rate>
+      </el-form-item>
       <el-form-item label="数据库" prop="databaseId">
         <el-select v-model="problemDetail.databaseId" placeholder="选择数据库">
           <el-option
@@ -146,6 +153,13 @@ export default {
             trigger: 'blur'
           }
         ],
+        difficulty: [
+          {
+            required: true,
+            message: '题目难度不能为空',
+            trigger: 'blur'
+          },
+        ],
         description: [
           {
             required: true,
@@ -190,7 +204,8 @@ export default {
         answer: '',
         solve: 0,
         submit: 0,
-        databaseId: ''
+        databaseId: '',
+        difficulty: 1
       },
       runResult: '',
       databaseList: []
@@ -276,7 +291,8 @@ export default {
             answer: this.problemDetail.answer,
             solve: this.problemDetail.solve,
             submit: this.problemDetail.submit,
-            databaseId: this.problemDetail.databaseId
+            databaseId: this.problemDetail.databaseId,
+            difficulty: this.problemDetail.difficulty
           }
           if (this.isAdd) {
             this.addProblem(problem, () => {

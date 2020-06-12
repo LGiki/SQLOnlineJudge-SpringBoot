@@ -81,7 +81,15 @@ export default {
           {
             field: "problemId",
             title: "题目ID",
-            width: 50,
+            width: 10,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
+          },
+          {
+            field: "databaseName",
+            title: "数据库名称",
+            width: 80,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -89,15 +97,30 @@ export default {
           {
             field: "problemTitle",
             title: "题目名称",
-            width: 80,
+            width: 200,
+            titleAlign: "center",
+            columnAlign: "left",
+            isResize: true
+          },
+          {
+            field: "problemDifficulty",
+            title: "题目难度",
+            width: 20,
             titleAlign: "center",
             columnAlign: "center",
-            isResize: true
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              let difficultyStars = '';
+              for (let i = 0; i < rowData.problemDifficulty; i++) {
+                difficultyStars += '★';
+              }
+              return difficultyStars;
+            }
           },
           {
             field: "problemSolved",
             title: "通过数",
-            width: 50,
+            width: 15,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -105,7 +128,7 @@ export default {
           {
             field: "problemSubmit",
             title: "提交数",
-            width: 50,
+            width: 15,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -113,7 +136,7 @@ export default {
           {
             field: "accept_rate",
             title: "通过率",
-            width: 50,
+            width: 15,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,

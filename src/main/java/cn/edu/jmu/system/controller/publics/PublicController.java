@@ -74,10 +74,20 @@ public class PublicController {
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
+    /**
+     * 学生可正常查看题目集时调用的接口
+     */
     private interface ProblemCategoryStatusExecutor {
         ResponseEntity<BasicResponse> onStartOrAllowViewAfterEnd();
     }
 
+    /**
+     * 处理题目集的开始结束状态
+     *
+     * @param categoryId                    题目集ID
+     * @param problemCategoryStatusExecutor 学生可正常查看题目集时调用的接口
+     * @return ResponseEntity<BasicResponse>
+     */
     private ResponseEntity<BasicResponse> handleProblemCategoryStatus(Integer categoryId, ProblemCategoryStatusExecutor problemCategoryStatusExecutor) {
         ProblemCategory problemCategory = problemCategoryService.getById(categoryId);
         if (problemCategory == null) {

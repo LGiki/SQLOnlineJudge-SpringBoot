@@ -21,11 +21,11 @@ public class ProblemCollectionDto implements Serializable {
     @Property(name = "categoryId")
     private Integer categoryId;
 
-    /**
-     * 题目集名称
-     */
-    @Property(name = "categoryName")
-    private String categoryName;
+//    /**
+//     * 题目集名称
+//     */
+//    @Property(name = "categoryName")
+//    private String categoryName;
 
     /**
      * 题目 ID
@@ -39,8 +39,11 @@ public class ProblemCollectionDto implements Serializable {
     @Property(name = "problemTitle")
     private String problemTitle;
 
-//    @Property(name = "problemDescription")
-//    private String problemDescription;
+    /**
+     * 题目难度
+     */
+    @Property(name = "problemDifficulty")
+    private Integer problemDifficulty;
 
     /**
      * 通过数
