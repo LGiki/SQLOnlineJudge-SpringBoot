@@ -54,15 +54,15 @@ public class PublicController {
     @Resource
     private ProblemCollectionService problemCollectionService;
 
-    /**
-     * 查询所有题目
-     */
-    @GetMapping(value = "/problems")
-    public ResponseEntity<BasicResponse> selectAllProblem(ProblemDto problemDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
-        Page<Problem> page = new Page<>(pageNum, pageSize);
-        IPage<ProblemDto> iPage = problemService.getAll(problemDto, page);
-        return ResponseUtil.buildResponse("查询成功", iPage);
-    }
+//    /**
+//     * 查询所有题目
+//     */
+//    @GetMapping(value = "/problems")
+//    public ResponseEntity<BasicResponse> selectAllProblem(ProblemDto problemDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+//        Page<Problem> page = new Page<>(pageNum, pageSize);
+//        IPage<ProblemDto> iPage = problemService.getAll(problemDto, page);
+//        return ResponseUtil.buildResponse("查询成功", iPage);
+//    }
 
     /**
      * 查询所有题目集

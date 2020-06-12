@@ -41,12 +41,12 @@
                   <b>题目集</b>
                 </p>
               </md-list-item>
-              <md-list-item href="#/problem">
+              <!-- <md-list-item href="#/problem">
                 <i class="material-icons">content_paste</i>
                 <p>
                   <b>题库</b>
                 </p>
-              </md-list-item>
+              </md-list-item> -->
 
               <md-list-item href="#/ranklist">
                 <i class="material-icons">assessment</i>

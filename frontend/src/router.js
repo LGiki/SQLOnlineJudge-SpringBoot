@@ -51,15 +51,15 @@ export default new Router({
         footer: { backgroundColor: "black" }
       }
     },
-    {
-      path: "/problem",
-      name: "problem",
-      components: { default: Problem, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 80 },
-        footer: { backgroundColor: "black" }
-      }
-    },
+    // {
+    //   path: "/problem",
+    //   name: "problem",
+    //   components: { default: Problem, header: MainNavbar, footer: MainFooter },
+    //   props: {
+    //     header: { colorOnScroll: 80 },
+    //     footer: { backgroundColor: "black" }
+    //   }
+    // },
     {
       path: "/problem/:id",
       name: "problemDetail",
