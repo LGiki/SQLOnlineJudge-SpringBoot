@@ -125,6 +125,7 @@ export default {
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.menubar,
         plugins: plugins,
+        font_formats: "微软雅黑=Microsoft YaHei,sans-serif;宋体=宋体;仿宋=仿宋;黑体=黑体;楷体=楷体;隶书=隶书;幼圆=幼圆",
         end_container_on_empty_block: true,
         powerpaste_word_import: 'propmt',
         powerpaste_html_import: 'propmt',
