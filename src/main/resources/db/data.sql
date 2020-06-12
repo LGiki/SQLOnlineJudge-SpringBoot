@@ -140,7 +140,7 @@ ALTER TABLE `problems` ADD COLUMN `difficulty` TINYINT NOT NULL DEFAULT 1 COMMEN
 ALTER TABLE `problems` CHANGE COLUMN `true_result` `true_result` TEXT(32) NULL DEFAULT NULL COMMENT '正确输出' COLLATE 'utf8_general_ci' AFTER `submit`;
 ALTER TABLE `problems`
 ADD COLUMN `is_update` BIT NOT NULL DEFAULT 0 COMMENT '题目是否是Update/Delete等会对表中记录进行修改的题目' AFTER `difficulty`,
-ADD COLUMN `select_after_update` TEXT NULL DEFAULT NULL COMMENT 'Update类题目执行完之后对修改部分的Select语句，用于比对修改的结果是否正确' AFTER `isUpdate`;
+ADD COLUMN `select_after_update` TEXT NULL DEFAULT NULL COMMENT 'Update类题目执行完之后对修改部分的Select语句，用于比对修改的结果是否正确' AFTER `is_update`;
 
 -- ----------------------------
 -- Table structure for solutions
