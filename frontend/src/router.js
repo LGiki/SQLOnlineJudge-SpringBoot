@@ -73,15 +73,15 @@ export default new Router({
         footer: { backgroundColor: "black" }
       }
     },
-    {
-      path: "/ranklist",
-      name: "ranklist",
-      components: { default: Ranklist, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 80 },
-        footer: { backgroundColor: "black" }
-      }
-    },
+    // {
+    //   path: "/ranklist",
+    //   name: "ranklist",
+    //   components: { default: Ranklist, header: MainNavbar, footer: MainFooter },
+    //   props: {
+    //     header: { colorOnScroll: 80 },
+    //     footer: { backgroundColor: "black" }
+    //   }
+    // },
     {
       path: "/solution",
       name: "solution",

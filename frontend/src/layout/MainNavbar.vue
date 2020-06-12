@@ -48,12 +48,12 @@
                 </p>
               </md-list-item> -->
 
-              <md-list-item href="#/ranklist">
+              <!-- <md-list-item href="#/ranklist">
                 <i class="material-icons">assessment</i>
                 <p>
                   <b>排行榜</b>
                 </p>
-              </md-list-item>
+              </md-list-item> -->
 
               <md-list-item href="#/solution">
                 <i class="material-icons">info</i>
