@@ -138,6 +138,10 @@ VALUES (2, '查找employees表', '查找employees表所有emp_no为奇数，且l
 
 ALTER TABLE `problems` ADD COLUMN `difficulty` TINYINT NOT NULL DEFAULT 1 COMMENT '题目难度' AFTER `true_result`;
 ALTER TABLE `problems` CHANGE COLUMN `true_result` `true_result` TEXT(32) NULL DEFAULT NULL COMMENT '正确输出' COLLATE 'utf8_general_ci' AFTER `submit`;
+ALTER TABLE `problems`
+ADD COLUMN `isUpdate` BIT NOT NULL DEFAULT 0 COMMENT '题目是否是Update/Delete等会对表中记录进行修改的题目' AFTER `difficulty`,
+ADD COLUMN `selectAfterUpdate` TEXT NULL DEFAULT NULL COMMENT 'Update类题目执行完之后对修改部分的Select语句，用于比对修改的结果是否正确' AFTER `isUpdate`;
+
 -- ----------------------------
 -- Table structure for solutions
 -- ----------------------------
