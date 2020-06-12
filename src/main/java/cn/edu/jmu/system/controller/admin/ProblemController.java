@@ -85,8 +85,10 @@ public class ProblemController {
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> insertProblem(@RequestBody @Validated ProblemDetailDto problemDetailDto) {
         Problem problem = ProblemConverter.toEntity(problemDetailDto);
+        if (!problem.getIsUpdate()) {
+            problem.setSelectAfterUpdate(null);
+        }
         if (problemService.saveOrUpdate(problem)) {
-            log.debug(problem.toString());
             JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
             if ("0".equals(judgeResultJson.getCode())) {
                 problem.setTrueResult(judgeResultJson.getData().getTrueResult());
@@ -111,9 +113,10 @@ public class ProblemController {
             return ResponseUtil.fail("题目ID不存在");
         }
         if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
-            System.out.println(problemDetailDto);
             Problem problem = ProblemConverter.toEntity(problemDetailDto);
-            System.out.println(problem);
+            if (!problem.getIsUpdate()) {
+                problem.setSelectAfterUpdate(null);
+            }
             // 更新数据库信息
             JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
             if ("0".equals(judgeResultJson.getCode())) {

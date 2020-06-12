@@ -1,9 +1,6 @@
 package cn.edu.jmu.system.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -82,6 +79,18 @@ public class Problem implements Serializable {
      */
     @TableField(value = "difficulty")
     private Integer difficulty;
+
+    /**
+     * 题目是否是Update/Delete等会对表中记录进行修改的题目
+     */
+    @TableField(value = "is_update")
+    private Boolean isUpdate;
+
+    /**
+     * Update类题目执行完之后对修改部分的Select语句，用于比对修改的结果是否正确
+     */
+    @TableField(value = "select_after_update", updateStrategy = FieldStrategy.IGNORED)
+    private String selectAfterUpdate;
 
     /**
      * 数据库ID

@@ -58,10 +58,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Transactional(rollbackFor = Exception.class)
     public boolean update(Problem problem) {
         Problem select = baseMapper.selectById(problem.getId());
-        BeanUtil.copyProperties(problem, select, true,
-                CopyOptions.create().setIgnoreNullValue(true)
-                        .setIgnoreError(true)
-                        .setIgnoreProperties("id", "solve", "submit"));
+        BeanUtil.copyProperties(problem, select, true, CopyOptions.create().setIgnoreError(true).setIgnoreProperties("id", "solve", "submit"));
         return baseMapper.updateById(select) >= 1;
     }
 

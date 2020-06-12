@@ -40,6 +40,16 @@ public class ProblemDetailDto extends ProblemDto implements Serializable {
     private Integer difficulty;
 
     /**
+     * 题目是否是Update/Delete等会对表中记录进行修改的题目
+     */
+    private Boolean isUpdate;
+
+    /**
+     * Update类题目执行完之后对修改部分的Select语句，用于比对修改的结果是否正确
+     */
+    private String selectAfterUpdate;
+
+    /**
      * 答案
      */
     @NotBlank

@@ -37,20 +37,31 @@
         </span>
       </el-dialog>
       <el-form-item label="题目描述" prop="description">
-        <tinymce v-model="problemDetail.description" :height="250" />
+        <tinymce v-model="problemDetail.description" :height="200" />
       </el-form-item>
       <el-form-item label="表的样例" prop="sampleOutput">
-        <tinymce v-model="problemDetail.sampleOutput" :height="250" />
+        <tinymce v-model="problemDetail.sampleOutput" :height="200" />
       </el-form-item>
       <el-form-item label="提示" prop="hint">
-        <tinymce v-model="problemDetail.hint" :height="250" />
+        <tinymce v-model="problemDetail.hint" :height="100" />
       </el-form-item>
       <el-form-item>
         <el-button @click="updateAndDeleteProblemHintDialogVisible = true">查看答案填写说明</el-button>
       </el-form-item>
+      <el-form-item label="是否带有Update操作" prop="isUpdate">
+        <el-switch
+          v-model="problemDetail.isUpdate"
+          active-text="带有Update操作的题目"
+          inactive-text="常规Select题目">
+        </el-switch>
+      </el-form-item>
       <el-form-item label="答案" prop="answer">
         <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
-        <el-input v-if="false" v-model="problemDetail.answer" placeholder="请输入答案" />
+        <el-input v-if="false" v-model="problemDetail.answer"/>
+      </el-form-item>
+      <el-form-item v-if="problemDetail.isUpdate" label="对有进行修改的表的Select语句" prop="selectAfterUpdate">
+        <codemirror v-model="problemDetail.selectAfterUpdate" :options="cmOptions" @ready="onCmReady" />
+        <el-input v-if="false" v-model="problemDetail.selectAfterUpdate"/>
       </el-form-item>
       <el-form-item>
         <el-button type="warning" plain @click="runCode">调试运行答案</el-button>
@@ -77,17 +88,18 @@
         <highlight-code lang="sql">
           select * from employees where emp_no % 2 = 1;
         </highlight-code>
-
         <h3>2. 对于update、delete等会对表中记录进行修改的题目</h3>
         <p>例如删除表employees中emp_no为奇数的记录</p>
-        <p>答案应该这样给出：</p>
+        <p>则需要打开"<strong>是否带有Update操作</strong>"开关</p>
+        <p>答案正常给出：</p>
         <highlight-code lang="sql">
           delete from employees where emp_no % 2 = 1;
+        </highlight-code>
+        <p>之后在"<strong>对有进行修改的表的Select语句</strong>"中填入对有进行修改操作的表的select *语句：</p>
+        <highlight-code lang="sql">
           select * from employees;
         </highlight-code>
-        <p>其中最后一行需要给出有进行修改操作的表的select *操作，这样可以用来记录修改后表中数据的变化</p>
-        <p>此判题系统根据最后一行的select语句进行用户解答的正确性判断，请确保最后一行语句的正确性</p>
-        <p><b>每条语句之间请严格使用';'进行分割</b></p>
+        <p>本判题系统通过该Select语句来验证修改表格数据类题目中学生的答案是否正确的，所以请确保Select语句的正确性</p>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="updateAndDeleteProblemHintDialogVisible = false">确 定</el-button>
         </span>
@@ -180,6 +192,13 @@ export default {
             message: '答案不能为空',
             trigger: 'blur'
           }
+        ],
+        isUpdate: [
+          {
+            required: true,
+            message: '必须确定题目是否带有Update操作',
+            trigger: 'blur'
+          }
         ]
       },
       cmOptions: {
@@ -205,7 +224,9 @@ export default {
         solve: 0,
         submit: 0,
         databaseId: '',
-        difficulty: 1
+        difficulty: 1,
+        isUpdate: false,
+        selectAfterUpdate: ''
       },
       runResult: '',
       databaseList: []
@@ -292,7 +313,9 @@ export default {
             solve: this.problemDetail.solve,
             submit: this.problemDetail.submit,
             databaseId: this.problemDetail.databaseId,
-            difficulty: this.problemDetail.difficulty
+            difficulty: this.problemDetail.difficulty,
+            isUpdate: this.problemDetail.isUpdate,
+            selectAfterUpdate: this.problemDetail.selectAfterUpdate
           }
           if (this.isAdd) {
             this.addProblem(problem, () => {
@@ -442,9 +465,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.line {
-  text-align: center;
+<style>
+.CodeMirror {
+  height: 200px !important;
 }
 </style>
-
