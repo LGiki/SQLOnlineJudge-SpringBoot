@@ -8,7 +8,7 @@
       <div class="section no-padding">
         <div class="container">
           <div class="countdown">
-            <h4>离结束还有：{{ countDownStr }}</h4>
+            <h4>{{ countDownStr }}</h4>
           </div>
           <div class="features text-center">
             <div class="md-layout">
@@ -76,7 +76,7 @@ export default {
         startTime: null,
         endTime: null
       },
-      countDownStr: '123',
+      countDownStr: '',
       countDownStrRefreshIntervalId: -1,
       codeModal: false,
       pageNum: 1,
@@ -163,7 +163,7 @@ export default {
     setCountDownStrRefreshInterval() {
       let that = this;
       setInterval(function() {
-        that.countDownStr = that.getCountDown(that.problemCategoryInfo.endTime);
+        that.refreshCountDown(that.problemCategoryInfo.endTime);
       }, 1000);
     },
     clearCountDownStrRefreshInterval() {
@@ -171,28 +171,33 @@ export default {
         clearInterval(this.countDownStrRefreshIntervalId);
       } 
     },
-    getCountDown(endDatetimeStr) {
-      let currentDatetime = new Date();
-      let endDatetime = new Date(endDatetimeStr);
-      let totalLeftSeconds = parseInt((endDatetime.getTime() - currentDatetime.getTime()) / 1000);
-      let leftDays = parseInt(totalLeftSeconds / (24 * 60 * 60));
-      let leftHours = parseInt(totalLeftSeconds / (60 * 60) % 24);
-      let leftMinutes = parseInt(totalLeftSeconds / 60 % 60);
-      let leftSeconds = parseInt(totalLeftSeconds % 60);
-      let countDownStr = '';
-      if (leftDays > 0) {
-        countDownStr += `${leftDays} 天`;
+    refreshCountDown(endDatetimeStr) {
+      let currentTimestamp = new Date().getTime();
+      let endTimestamp = new Date(endDatetimeStr).getTime();
+      if (currentTimestamp <= endTimestamp) {
+        let totalLeftSeconds = parseInt((endTimestamp - currentTimestamp) / 1000);
+        let leftDays = parseInt(totalLeftSeconds / (24 * 60 * 60));
+        let leftHours = parseInt(totalLeftSeconds / (60 * 60) % 24);
+        let leftMinutes = parseInt(totalLeftSeconds / 60 % 60);
+        let leftSeconds = parseInt(totalLeftSeconds % 60);
+        let countDownStr = '';
+        if (leftDays > 0) {
+          countDownStr += `${leftDays} 天`;
+        }
+        if (leftHours > 0) {
+          countDownStr += ` ${leftHours} 小时`;
+        }
+        if (leftMinutes > 0) {
+          countDownStr += ` ${leftMinutes} 分钟`;
+        }
+        if (leftSeconds > 0) {
+          countDownStr += ` ${leftSeconds} 秒`;
+        }
+        this.countDownStr = '离结束还有：' + countDownStr;
+      }else{
+        this.clearCountDownStrRefreshInterval();
+        //TODO: 题目集已结束，清除页面
       }
-      if (leftHours > 0) {
-        countDownStr += ` ${leftHours} 小时`;
-      }
-      if (leftMinutes > 0) {
-        countDownStr += ` ${leftMinutes} 分钟`;
-      }
-      if (leftSeconds > 0) {
-        countDownStr += ` ${leftSeconds} 秒`;
-      }
-      return countDownStr;
     },
     rowClick(rowIndex, rowData, column) {
       let problemCategoryId = this.$route.params.id;
@@ -241,7 +246,7 @@ export default {
             alert("获取题目集详情失败，内部错误！");
           } else {
             this.problemCategoryInfo = res.data.data;
-            this.countDownStr = this.getCountDown(this.problemCategoryInfo.endTime);
+            this.refreshCountDown(this.problemCategoryInfo.endTime);
             this.setCountDownStrRefreshInterval();
           }
         })
