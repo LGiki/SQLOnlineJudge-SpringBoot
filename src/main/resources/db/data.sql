@@ -436,3 +436,12 @@ INSERT INTO `user_problems`
 VALUES (2, 1, 2, b'1');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE `user_group_collections` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL DEFAULT '0',
+  `user_group_id` INT NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK__sys_users` FOREIGN KEY (`user_id`) REFERENCES `sys_users` (`id`),
+  CONSTRAINT `FK__sys_user_groups` FOREIGN KEY (`user_group_id`) REFERENCES `sys_user_groups` (`id`)
+) COLLATE='utf8mb4_general_ci';
