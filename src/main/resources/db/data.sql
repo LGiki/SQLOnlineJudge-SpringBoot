@@ -189,6 +189,10 @@ VALUES (4, 1, 1,
 INSERT INTO `solutions`
 VALUES (5, 1, 1, 'ffff', '2019-10-09 10:04:40', 'near \"ffff\": syntax error', '2');
 
+ALTER TABLE `solutions`
+ADD COLUMN `pcid` INT NOT NULL DEFAULT 1 COMMENT '题目集ID' AFTER `pid`,
+ADD CONSTRAINT `FK_solutions_problem_categories` FOREIGN KEY (`pcid`) REFERENCES `problem_categories` (`id`);
+
 -- ----------------------------
 -- Table structure for sys_admin_role
 -- ----------------------------
