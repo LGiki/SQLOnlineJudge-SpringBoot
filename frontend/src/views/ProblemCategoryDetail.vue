@@ -3,14 +3,19 @@
     <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="name">
-        <h2 class="title">{{ problemCategoryInfo.name }}</h2>
+        <h2><strong>{{ problemCategoryInfo.name }}</strong></h2>
       </div>
       <div class="section no-padding">
         <div class="container">
+          <div class="countdown">
+            <h4>离结束还有：{{ countDownStr }}</h4>
+          </div>
           <div class="features text-center">
             <div class="md-layout">
               <template>
                 <v-table
+                  :width="1000"
+                  column-width-drag
                   :is-loading="isLoading"
                   is-horizontal-resize
                   style="width:100%"
@@ -67,8 +72,12 @@ export default {
     return {
       problemCategoryInfo: {
         id: 0,
-        name: ""
+        name: "",
+        startTime: null,
+        endTime: null
       },
+      countDownStr: '123',
+      countDownStrRefreshIntervalId: -1,
       codeModal: false,
       pageNum: 1,
       pageSize: 20,
@@ -81,7 +90,7 @@ export default {
           {
             field: "problemId",
             title: "题目ID",
-            width: 10,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -89,7 +98,7 @@ export default {
           {
             field: "databaseName",
             title: "数据库名称",
-            width: 80,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -97,7 +106,7 @@ export default {
           {
             field: "problemTitle",
             title: "题目名称",
-            width: 200,
+            width: 600,
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
@@ -105,7 +114,7 @@ export default {
           {
             field: "problemDifficulty",
             title: "题目难度",
-            width: 20,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -120,7 +129,7 @@ export default {
           {
             field: "problemSolved",
             title: "通过数",
-            width: 15,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -128,7 +137,7 @@ export default {
           {
             field: "problemSubmit",
             title: "提交数",
-            width: 15,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -136,7 +145,7 @@ export default {
           {
             field: "accept_rate",
             title: "通过率",
-            width: 15,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -151,6 +160,40 @@ export default {
     };
   },
   methods: {
+    setCountDownStrRefreshInterval() {
+      let that = this;
+      setInterval(function() {
+        that.countDownStr = that.getCountDown(that.problemCategoryInfo.endTime);
+      }, 1000);
+    },
+    clearCountDownStrRefreshInterval() {
+      if (this.countDownStrRefreshIntervalId != -1) {
+        clearInterval(this.countDownStrRefreshIntervalId);
+      } 
+    },
+    getCountDown(endDatetimeStr) {
+      let currentDatetime = new Date();
+      let endDatetime = new Date(endDatetimeStr);
+      let totalLeftSeconds = parseInt((endDatetime.getTime() - currentDatetime.getTime()) / 1000);
+      let leftDays = parseInt(totalLeftSeconds / (24 * 60 * 60));
+      let leftHours = parseInt(totalLeftSeconds / (60 * 60) % 24);
+      let leftMinutes = parseInt(totalLeftSeconds / 60 % 60);
+      let leftSeconds = parseInt(totalLeftSeconds % 60);
+      let countDownStr = '';
+      if (leftDays > 0) {
+        countDownStr += `${leftDays} 天`;
+      }
+      if (leftHours > 0) {
+        countDownStr += ` ${leftHours} 小时`;
+      }
+      if (leftMinutes > 0) {
+        countDownStr += ` ${leftMinutes} 分钟`;
+      }
+      if (leftSeconds > 0) {
+        countDownStr += ` ${leftSeconds} 秒`;
+      }
+      return countDownStr;
+    },
     rowClick(rowIndex, rowData, column) {
       let problemCategoryId = this.$route.params.id;
       this.$router.push({ path: "/problem/" + problemCategoryId + '/' + rowData.problemId });
@@ -163,7 +206,6 @@ export default {
       this.pageSize = newPageSize;
       this.getProblemCategoryDetail();
     },
-    // 获取题目集的题目列表
     getProblemCategoryDetail() {
       this.isLoading = true;
       let problemCategoryId = this.$route.params.id;
@@ -189,7 +231,6 @@ export default {
           console.log(err);
         });
     },
-    //获取题目集的基本信息，包括题目集名称等
     getProblemCategoryInfo() {
       let problemCategoryId = this.$route.params.id;
       let apiUrl = this.Url.problemCategoryBaseUrl;
@@ -200,6 +241,8 @@ export default {
             alert("获取题目集详情失败，内部错误！");
           } else {
             this.problemCategoryInfo = res.data.data;
+            this.countDownStr = this.getCountDown(this.problemCategoryInfo.endTime);
+            this.setCountDownStrRefreshInterval();
           }
         })
         .catch(err => {
@@ -217,6 +260,9 @@ export default {
   mounted: function() {
     this.getProblemCategoryDetail();
     this.getProblemCategoryInfo();
+  },
+  destroyed: function() {
+    this.clearCountDownStrRefreshInterval();
   }
 };
 </script>
@@ -243,5 +289,9 @@ export default {
 
 .no-padding {
   padding: 0 !important;
+}
+
+.countdown {
+  text-align: right;
 }
 </style>
