@@ -99,6 +99,11 @@ VALUES (2, 1, 2);
 INSERT INTO `problem_collections`
 VALUES (3, 2, 2);
 
+ALTER TABLE `problem_collections`
+CHANGE COLUMN `category_id` `category_id` INT(11) NOT NULL COMMENT '题目集ID' AFTER `id`,
+CHANGE COLUMN `problem_id` `problem_id` INT(11) NOT NULL COMMENT '题目ID' AFTER `category_id`,
+ADD COLUMN `problem_score` INT NOT NULL DEFAULT 0 COMMENT '题目分值' AFTER `problem_id`;
+
 -- ----------------------------
 -- Table structure for problems
 -- ----------------------------
