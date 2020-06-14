@@ -50,6 +50,11 @@ public class SolutionDto implements Serializable {
     private Integer pid;
 
     /**
+     * 题目集ID
+     */
+    private Integer problemCategoryId;
+
+    /**
      * 题目标题
      */
     private String title;

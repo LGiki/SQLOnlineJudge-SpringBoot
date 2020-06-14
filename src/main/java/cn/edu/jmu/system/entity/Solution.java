@@ -1,6 +1,7 @@
 package cn.edu.jmu.system.entity;
 
 import cn.edu.jmu.system.service.enums.SolutionResultEnum;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +34,12 @@ public class Solution implements Serializable {
      * 题目ID
      */
     private Integer pid;
+
+    /**
+     * 题目集ID
+     */
+    @TableField("pcid")
+    private Integer problemCategoryId;
 
     /**
      * 源代码
