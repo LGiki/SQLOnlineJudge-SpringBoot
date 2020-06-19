@@ -6,14 +6,12 @@ import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.judge.enums.JudgeResponseCodeEnum;
 import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
+import cn.edu.jmu.system.controller.handler.ProblemCategoryStatusHandler;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.entity.dto.UserDto;
-import cn.edu.jmu.system.service.ProblemService;
-import cn.edu.jmu.system.service.SolutionService;
-import cn.edu.jmu.system.service.UserProblemService;
-import cn.edu.jmu.system.service.UserService;
+import cn.edu.jmu.system.service.*;
 import cn.edu.jmu.system.service.converter.UserConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -22,13 +20,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -59,6 +51,9 @@ public class UserOperationController {
 
     @Resource
     private ProblemService problemService;
+
+    @Resource
+    private ProblemCategoryService problemCategoryService;
 
     /**
      * 获取登录用户的信息
@@ -137,6 +132,10 @@ public class UserOperationController {
         return ResponseUtil.buildResponse(data);
     }
 
+    /**
+     * 用户提交解答接口
+     * TODO: 修改为题目集内题目的解答提交接口
+     */
     @PostMapping(value = "/judgement")
     public ResponseEntity<BasicResponse> judge(@RequestBody @Validated SolutionDto solutionDto) {
         Integer databaseId = problemService.getById(solutionDto.getPid()).getDatabaseId();
@@ -150,5 +149,31 @@ public class UserOperationController {
             return ResponseUtil.fail("系统错误," + result.getMessage());
         }
         return ResponseUtil.fail("未知错误");
+    }
+
+
+    /**
+     * 查询用户最后一次对某个题目提交的代码
+     *
+     * @param categoryId
+     * @param problemId
+     * @return
+     */
+    @GetMapping(value = "/latest_solution/{categoryId}/{problemId}")
+    public ResponseEntity<BasicResponse> getLatestSolutionByUserIdAndProblemId(@PathVariable("categoryId") Integer categoryId, @PathVariable("problemId") Integer problemId) {
+        return ProblemCategoryStatusHandler.handle(categoryId, problemCategoryService, () -> {
+            Subject subject = SecurityUtils.getSubject();
+            User user = (User) subject.getPrincipal();
+            if (user == null) {
+                return ResponseUtil.fail("您还未登录，请登录后再试！");
+            } else {
+                Solution solution = solutionService.getLatestSubmittedSolution(user.getId(), categoryId, problemId);
+                if (solution == null) {
+                    return ResponseUtil.fail("查询失败，无法找到该题目的提交记录！");
+                } else {
+                    return ResponseUtil.buildResponse("查询成功", solution);
+                }
+            }
+        });
     }
 }

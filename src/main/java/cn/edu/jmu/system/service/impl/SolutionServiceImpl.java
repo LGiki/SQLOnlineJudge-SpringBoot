@@ -41,20 +41,20 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
     private JudgeService judgeService;
 
     /**
-     * 根据用户ID和题目ID获取到用户对某个题目最后一次提交的提交详情
+     * 根据用户ID、题目集ID、题目ID获取到用户对某个题目最后一次提交的提交详情
      *
-     * @param uid 用户ID
-     * @param pid 题目ID
-     * @return Solution
+     * @param userId            用户ID
+     * @param problemCategoryId 题目集ID
+     * @param problemId         题目ID
+     * @return Solution解答
      */
     @Override
-    public Solution getLatestSolutionByUserIdAndProblemId(Integer uid, Integer pid) {
-        if (uid == null || pid == null) {
+    public Solution getLatestSubmittedSolution(Integer userId, Integer problemCategoryId, Integer problemId) {
+        if (userId == null || problemCategoryId == null || problemId == null) {
             return null;
         }
         SolutionDto solutionDto = new SolutionDto();
-        Solution solution = baseMapper.selectOne(new QueryWrapper<>(SolutionConverter.toEntity(solutionDto)).lambda().eq(Solution::getUid, uid).eq(Solution::getPid, pid).orderByDesc(Solution::getSubmitTime).last("limit 1"));
-        return solution;
+        return baseMapper.selectOne(new QueryWrapper<>(SolutionConverter.toEntity(solutionDto)).lambda().eq(Solution::getUid, userId).eq(Solution::getProblemCategoryId, problemCategoryId).eq(Solution::getPid, problemId).orderByDesc(Solution::getSubmitTime).last("limit 1"));
     }
 
     /**
@@ -66,23 +66,27 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
         IPage<Solution> iPage;
         if (ObjectUtil.isNull(solutionDto)) {
             iPage = baseMapper.selectPage(solutionPage
-                , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
         } else {
             if (solutionDto.getId() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionConverter
-                        .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().like(Solution::getId, "%" + solutionDto.getId() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getUid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionConverter
-                        .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().like(Solution::getUid, "%" + solutionDto.getUid() + "%").orderByDesc(Solution::getId));
             } else if (solutionDto.getPid() != null) {
                 iPage = baseMapper.selectPage(solutionPage
-                    , new QueryWrapper<>(SolutionConverter
-                        .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().like(Solution::getPid, "%" + solutionDto.getPid() + "%").orderByDesc(Solution::getId));
+            } else if (solutionDto.getProblemCategoryId() != null) {
+                iPage = baseMapper.selectPage(solutionPage
+                        , new QueryWrapper<>(SolutionConverter
+                                .toEntity(solutionDto)).lambda().eq(Solution::getProblemCategoryId, solutionDto.getProblemCategoryId()).orderByDesc(Solution::getId));
             } else {
                 iPage = baseMapper.selectPage(solutionPage
-                    , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
+                        , Wrappers.<Solution>lambdaQuery().orderByDesc(Solution::getId));
             }
         }
         IPage<SolutionDto> convert = iPage.convert(SolutionConverter::toDto);

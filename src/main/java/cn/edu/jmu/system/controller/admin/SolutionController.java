@@ -42,4 +42,13 @@ public class SolutionController {
             return ResponseUtil.fail("无此解答");
         }
     }
+
+    /**
+     * 查询Solution的数量
+     */
+    @GetMapping(value = "/count")
+    public ResponseEntity<BasicResponse> count() {
+        int count = solutionService.count();
+        return ResponseUtil.buildResponse(count);
+    }
 }
