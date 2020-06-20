@@ -439,6 +439,10 @@ VALUES (1, 1, 1, b'1');
 INSERT INTO `user_problems`
 VALUES (2, 1, 2, b'1');
 
+ALTER TABLE `user_problems`
+ADD COLUMN `pcid` INT NOT NULL DEFAULT 10 COMMENT '题目集ID' AFTER `uid`,
+ADD CONSTRAINT `FK_user_problems_problem_categories` FOREIGN KEY (`pcid`) REFERENCES `problem_categories` (`id`);
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE `user_group_collections` (
