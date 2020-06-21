@@ -443,6 +443,9 @@ ALTER TABLE `user_problems`
 ADD COLUMN `pcid` INT NOT NULL DEFAULT 10 COMMENT '题目集ID' AFTER `uid`,
 ADD CONSTRAINT `FK_user_problems_problem_categories` FOREIGN KEY (`pcid`) REFERENCES `problem_categories` (`id`);
 
+ALTER TABLE `user_problems`
+CHANGE COLUMN `state` `passed` BIT(1) NOT NULL COMMENT '用户题目状态（是否通过）' AFTER `pid`;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE `user_group_collections` (
