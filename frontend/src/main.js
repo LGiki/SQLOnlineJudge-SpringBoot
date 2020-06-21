@@ -7,13 +7,15 @@ import VueHighlightJS from "vue-highlight.js";
 import Axios from "axios";
 import Url from "./urlConfig";
 import { exists } from "fs";
-import Notifications from "./components/NotificationPlugin";
+import Notifications from 'vue-notification'
+// import Notifications from "./components/NotificationPlugin";
 
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
 Vue.use(VueHighlightJS);
 Vue.use(Notifications);
+// Vue.use(Notifications);
 
 Axios.interceptors.request.use(
   config => {
