@@ -88,9 +88,33 @@ export default {
         tableData: [],
         columns: [
           {
+            field: "progress",
+            title: "做题进度",
+            width: 40,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              switch (rowData.progress) {
+                case 1:
+                  // 已经通过
+                  return '<i class="material-icons status-icon">check_box</i>';
+                case 2:
+                  // 尝试过
+                  return '<i class="material-icons status-icon">indeterminate_check_box</i>';
+                case 0:
+                  // 未尝试
+                  return '<i class="material-icons status-icon">check_box_outline_blank</i>';
+                default:
+                  // 未知
+                  return '<i class="material-icons status-icon">help_center</i>';
+              }
+            }
+          },
+          {
             field: "problemId",
             title: "题目ID",
-            width: 50,
+            width: 40,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -156,13 +180,14 @@ export default {
             }
           }
         ]
-      }
+      },
+      userCategoryProgress: null
     };
   },
   methods: {
     setCountDownStrRefreshInterval() {
       let that = this;
-      setInterval(function() {
+      this.countDownStrRefreshIntervalId = setInterval(function() {
         that.refreshCountDown(that.problemCategoryInfo.endTime);
       }, 1000);
     },
@@ -200,29 +225,82 @@ export default {
       }
     },
     rowClick(rowIndex, rowData, column) {
-      let problemCategoryId = this.$route.params.id;
-      this.$router.push({ path: "/problem/" + problemCategoryId + '/' + rowData.problemId });
+      this.$router.push({ path: "/problem/" + this.problemCategoryId + '/' + rowData.problemId });
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
-      this.getProblemCategoryDetail();
+      this.getProblemCategoryDetail(this.problemCategoryId);
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize;
-      this.getProblemCategoryDetail();
+      this.getProblemCategoryDetail(this.problemCategoryId);
     },
-    getProblemCategoryDetail() {
-      this.isLoading = true;
-      let problemCategoryId = this.$route.params.id;
-      let apiUrl = this.Url.problemCollectionBaseUrl;
-      this.$axios
+    calcProblemProgress() {
+      for (let i = 0; i < this.tableConfig.tableData.length; i++) {
+        let problemItem = this.tableConfig.tableData[i];
+        let problemId = problemItem.problemId;
+        if (this.userCategoryProgress.accept.indexOf(problemId) != -1) {
+          problemItem.progress = 1;
+        } else if (
+          this.userCategoryProgress.try &&
+          this.userCategoryProgress.try.indexOf(problemId) != -1
+        ) {
+          problemItem.progress = 2;
+        } else {
+          problemItem.progress = 0;
+        }
+      }
+    },
+    async getUserCategoryProgress(problemCategoryId) {
+      let apiUrl = this.Url.userCategoryProgress;
+      await this.$axios
         .get(apiUrl + problemCategoryId)
         .then(res => {
           if (res.status !== 200) {
-            alert("获取题目集详情失败，内部错误！");
+            this.$notify({
+              group: 'notify',
+              text: '获取用户已做题目列表失败！',
+              type: 'error'
+            });
+          } else {
+            if (res.data.code === 0) {
+              this.userCategoryProgress = res.data.data;
+            } else {
+              this.$notify({
+                group: 'notify',
+                text: res.data.message,
+                type: 'error'
+              });
+            }
+          }
+        })
+        .catch(err => {
+            this.$notify({
+              group: 'notify',
+              text: '获取用户已做题目列表失败！',
+              type: 'error'
+            });
+          console.log(err);
+        });
+    },
+    async getProblemCategoryDetail(problemCategoryId) {
+      this.isLoading = true;
+      let apiUrl = this.Url.problemCollectionBaseUrl;
+      await this.$axios
+        .get(apiUrl + problemCategoryId)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$notify({
+              group: 'notify',
+              text: '获取题目集的题目列表失败！',
+              type: 'error'
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
+              resData.data.records.forEach(element => {
+                element.progress = 3;
+              });
               this.tableConfig.tableData = resData.data.records;
               this.totalItems = resData.data.total;
             } else {
@@ -234,16 +312,24 @@ export default {
         .catch(err => {
           this.isLoading = false;
           console.log(err);
+          this.$notify({
+            group: 'notify',
+            text: '获取题目集的题目列表失败！',
+            type: 'error'
+          });
         });
     },
-    getProblemCategoryInfo() {
-      let problemCategoryId = this.$route.params.id;
+    async getProblemCategoryInfo(problemCategoryId) {
       let apiUrl = this.Url.problemCategoryBaseUrl;
-      this.$axios
+      await this.$axios
         .get(apiUrl + problemCategoryId)
         .then(res => {
           if (res.status !== 200) {
-            alert("获取题目集详情失败，内部错误！");
+            this.$notify({
+              group: 'notify',
+              text: '获取题目集详情失败！',
+              type: 'error'
+            });
           } else {
             this.problemCategoryInfo = res.data.data;
             this.refreshCountDown(this.problemCategoryInfo.endTime);
@@ -252,6 +338,11 @@ export default {
         })
         .catch(err => {
           console.log(err);
+          this.$notify({
+            group: 'notify',
+            text: '获取题目集详情失败！',
+            type: 'error'
+          });
         });
     }
   },
@@ -260,11 +351,18 @@ export default {
       return {
         backgroundImage: `url(${this.header})`
       };
+    },
+    problemCategoryId() {
+      return this.$route.params.id;
     }
   },
-  mounted: function() {
-    this.getProblemCategoryDetail();
-    this.getProblemCategoryInfo();
+  created: async function() {
+    this.getProblemCategoryInfo(this.problemCategoryId);
+    await this.getProblemCategoryDetail(this.problemCategoryId);
+    if (localStorage.JWT_TOKEN) {
+      await this.getUserCategoryProgress(this.problemCategoryId);
+    }
+    this.calcProblemProgress();
   },
   destroyed: function() {
     this.clearCountDownStrRefreshInterval();

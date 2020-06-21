@@ -3,7 +3,7 @@
     <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="name">
-        <h2 class="title">题目集</h2>
+        <h2><strong>题目集列表</strong></h2>
       </div>
       <div class="section no-padding">
         <div class="container">

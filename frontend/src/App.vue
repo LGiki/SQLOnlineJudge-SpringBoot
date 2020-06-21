@@ -1,5 +1,6 @@
 <template>
   <div id="material-kit">
+    <notifications position="top right" group="notify" />
     <div :class="{ 'nav-open': NavbarStore.showNavbar }">
       <router-view name="header" />
       <div>
