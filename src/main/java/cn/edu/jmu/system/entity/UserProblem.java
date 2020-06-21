@@ -31,6 +31,12 @@ public class UserProblem implements Serializable {
     private Integer uid;
 
     /**
+     * 题目集ID
+     */
+    @TableField("pcid")
+    private Integer problemCategoryId;
+
+    /**
      * 题目ID
      */
     @TableField(value = "pid")
@@ -39,6 +45,6 @@ public class UserProblem implements Serializable {
     /**
      * 状态
      */
-    @TableField(value = "state")
-    private Boolean state;
+    @TableField(value = "passed")
+    private Boolean passed;
 }

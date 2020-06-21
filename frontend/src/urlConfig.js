@@ -20,11 +20,11 @@ const Url = {
   // 用户提交解答接口
   solutionSubmit: BaseUrl + "/solutions/",
   // 获取用户通过和尝试过的题目列表
-  userDoProblemList: BaseUrl + "/problems",
+  userCategoryProgress: BaseUrl + "/category_progress/",
   // 运行调试SQL代码接口
   runCode: BaseUrl + "/judgement/",
   // 获取用户对某一题目最后一次提交详情结构
-  latestSolution: ApiHost + "/api/public/latest_solution",
+  latestSolution: BaseUrl + "/latest_solution/",
   problemCategoryBaseUrl: ApiHost + "/api/public/problem-category/",
   problemCollectionBaseUrl: ApiHost + "/api/public/problem-collection/"
 };

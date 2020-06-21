@@ -224,12 +224,7 @@ export default {
         let userId = localStorage.USER_ID;
         const apiUrl = this.Url.latestSolution;
         this.$axios
-          .get(apiUrl, {
-            params: {
-              uid: userId,
-              pid: this.$route.params.id
-            }
-          })
+          .get(apiUrl + this.problemCategoryId + '/' + this.problemId)
           .then(res => {
             if (res.status !== 200) {
               console.log(res);
@@ -391,12 +386,16 @@ export default {
     },
     codemirror() {
       return this.$refs.myCm.codemirror;
+    },
+    problemCategoryId() {
+      return this.$route.params.categoryId;
+    },
+    problemId() {
+      return this.$route.params.problemId;
     }
   },
   mounted: function() {
-    let categoryId = this.$route.params.categoryId;
-    let problemId = this.$route.params.problemId;
-    this.getProblemDetail(categoryId, problemId);
+    this.getProblemDetail(this.problemCategoryId, this.problemId);
     this.getLatestSolution();
   }
 };

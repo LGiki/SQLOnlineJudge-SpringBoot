@@ -4,12 +4,11 @@ import cn.edu.jmu.system.entity.UserProblem;
 import cn.edu.jmu.system.mapper.UserProblemMapper;
 import cn.edu.jmu.system.service.UserProblemService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -20,15 +19,14 @@ import java.util.stream.Collectors;
 public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserProblem> implements UserProblemService {
 
     /**
-     * @param uid
-     * @param pid
-     * @return
+     * @param userId    用户ID
+     * @param problemId 题目ID
      */
     @Override
-    public Integer find(Integer uid, Integer pid) {
+    public Integer find(Integer userId, Integer problemId) {
         UserProblem userProblem = new UserProblem();
-        userProblem.setUid(uid);
-        userProblem.setPid(pid);
+        userProblem.setUid(userId);
+        userProblem.setPid(problemId);
         UserProblem selectOne = query(userProblem);
         if (selectOne == null) {
             return 0;
@@ -38,17 +36,16 @@ public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserP
     }
 
     /**
-     * @param uid
-     * @param pid
-     * @param state
-     * @return
+     * @param userId 用户ID
+     * @param problemId 题目ID
+     * @param passed 是否通过
      */
     @Override
-    public Integer find(Integer uid, Integer pid, Boolean state) {
+    public Integer find(Integer userId, Integer problemId, Boolean passed) {
         UserProblem userProblem = new UserProblem();
-        userProblem.setUid(uid);
-        userProblem.setPid(pid);
-        userProblem.setState(state);
+        userProblem.setUid(userId);
+        userProblem.setPid(problemId);
+        userProblem.setPassed(passed);
         UserProblem selectOne = query(userProblem);
         if (selectOne == null) {
             return 0;
@@ -62,11 +59,16 @@ public class UserProblemServiceImpl extends ServiceImpl<UserProblemMapper, UserP
         return baseMapper.selectOne(queryWrapper);
     }
 
+    /**
+     * 通过用户ID、题目集ID、通过状态查找题目ID集合
+     *
+     * @param userId            用户ID
+     * @param problemCategoryId 题目集ID
+     * @param passed            是否通过
+     * @return List<Integer> 题目ID列表
+     */
     @Override
-    public List<Integer> findByUidAndState(Integer uid, Boolean state) {
-        Map<String, Object> columnMap = new HashMap<>();
-        columnMap.put("uid", uid);
-        columnMap.put("state", state);
-        return baseMapper.selectByMap(columnMap).stream().map(UserProblem::getPid).collect(Collectors.toList());
+    public List<Integer> findByUserIdAndProblemCategoryIdAndPassed(Integer userId, Integer problemCategoryId, Boolean passed) {
+        return baseMapper.selectList(Wrappers.<UserProblem>lambdaQuery().eq(UserProblem::getUid, userId).eq(UserProblem::getProblemCategoryId, problemCategoryId).eq(UserProblem::getPassed, passed)).stream().map(UserProblem::getPid).collect(Collectors.toList());
     }
 }

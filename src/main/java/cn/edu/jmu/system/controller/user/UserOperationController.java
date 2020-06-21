@@ -122,14 +122,20 @@ public class UserOperationController {
     /**
      * 得到用户通过题目和尝试题目的集合
      */
-    @GetMapping(value = "/problems")
-    public ResponseEntity<BasicResponse> getProblemStatus() {
+    @GetMapping(value = "/category_progress/{problemCategoryId}")
+    public ResponseEntity<BasicResponse> getProblemStatus(@PathVariable("problemCategoryId") Integer problemCategoryId) {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        Map<String, List> data = new HashMap<>();
-        data.put("accept", userProblemService.findByUidAndState(user.getId(), true));
-        data.put("try", userProblemService.findByUidAndState(user.getId(), false));
-        return ResponseUtil.buildResponse(data);
+        if (user == null) {
+            return ResponseUtil.fail("您还未登录，请登录后再试！");
+        } else {
+            return ProblemCategoryStatusHandler.handle(problemCategoryId, problemCategoryService, () -> {
+                Map<String, List<Integer>> data = new HashMap<>();
+                data.put("accept", userProblemService.findByUserIdAndProblemCategoryIdAndPassed(user.getId(), problemCategoryId, true));
+                data.put("try", userProblemService.findByUserIdAndProblemCategoryIdAndPassed(user.getId(), problemCategoryId, false));
+                return ResponseUtil.buildResponse(data);
+            });
+        }
     }
 
     /**
@@ -155,25 +161,24 @@ public class UserOperationController {
     /**
      * 查询用户最后一次对某个题目提交的代码
      *
-     * @param categoryId
-     * @param problemId
-     * @return
+     * @param problemCategoryId 题目集ID
+     * @param problemId         题目ID
      */
-    @GetMapping(value = "/latest_solution/{categoryId}/{problemId}")
-    public ResponseEntity<BasicResponse> getLatestSolutionByUserIdAndProblemId(@PathVariable("categoryId") Integer categoryId, @PathVariable("problemId") Integer problemId) {
-        return ProblemCategoryStatusHandler.handle(categoryId, problemCategoryService, () -> {
-            Subject subject = SecurityUtils.getSubject();
-            User user = (User) subject.getPrincipal();
-            if (user == null) {
-                return ResponseUtil.fail("您还未登录，请登录后再试！");
-            } else {
-                Solution solution = solutionService.getLatestSubmittedSolution(user.getId(), categoryId, problemId);
+    @GetMapping(value = "/latest_solution/{problemCategoryId}/{problemId}")
+    public ResponseEntity<BasicResponse> getLatestSolutionByUserIdAndProblemId(@PathVariable("problemCategoryId") Integer problemCategoryId, @PathVariable("problemId") Integer problemId) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        if (user == null) {
+            return ResponseUtil.fail("您还未登录，请登录后再试！");
+        } else {
+            return ProblemCategoryStatusHandler.handle(problemCategoryId, problemCategoryService, () -> {
+                Solution solution = solutionService.getLatestSubmittedSolution(user.getId(), problemCategoryId, problemId);
                 if (solution == null) {
                     return ResponseUtil.fail("查询失败，无法找到该题目的提交记录！");
                 } else {
                     return ResponseUtil.buildResponse("查询成功", solution);
                 }
-            }
-        });
+            });
+        }
     }
 }

@@ -18,9 +18,9 @@ public interface SolutionService extends IService<Solution> {
      * @param userId            用户ID
      * @param problemCategoryId 题目集ID
      * @param problemId         题目ID
-     * @return Solution解答
+     * @return Solution 解答
      */
-    public Solution getLatestSubmittedSolution(Integer userId, Integer problemCategoryId, Integer problemId);
+    Solution getLatestSubmittedSolution(Integer userId, Integer problemCategoryId, Integer problemId);
 
     /**
      * 得到所有解答

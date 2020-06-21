@@ -12,23 +12,31 @@ import java.util.List;
 public interface UserProblemService extends IService<UserProblem> {
 
     /**
-     * 根据uid与pid查找记录
+     * 根据用户ID和题目ID查找UserProblem记录
      *
-     * @param uid 用户id
-     * @param pid 题目id
+     * @param userId    用户id
+     * @param problemId 题目id
      * @return Integer
      */
-    Integer find(Integer uid, Integer pid);
+    Integer find(Integer userId, Integer problemId);
 
     /**
-     * 根据uid与pid及state查找
+     * 根据用户ID、题目ID和是否通过查找UserProblem记录
      *
-     * @param uid
-     * @param pid
-     * @param state
-     * @return
+     * @param userId    用户ID
+     * @param problemId 题目ID
+     * @param passed    是否通过
+     * @return Integer
      */
-    Integer find(Integer uid, Integer pid, Boolean state);
+    Integer find(Integer userId, Integer problemId, Boolean passed);
 
-    List<Integer> findByUidAndState(Integer uid, Boolean state);
+    /**
+     * 通过用户ID、题目集ID、通过状态查找题目ID集合
+     *
+     * @param userId            用户ID
+     * @param problemCategoryId 题目集ID
+     * @param passed            是否通过
+     * @return List<Integer> 题目ID集合
+     */
+    List<Integer> findByUserIdAndProblemCategoryIdAndPassed(Integer userId, Integer problemCategoryId, Boolean passed);
 }

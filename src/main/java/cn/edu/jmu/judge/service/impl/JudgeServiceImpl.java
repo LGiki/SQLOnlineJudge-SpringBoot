@@ -79,7 +79,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                     if (userProblemId != 0) {
                         userProblem.setId(userProblemId);
                     }
-                    userProblem.setState(true);
+                    userProblem.setPassed(true);
                 } else {
                     if (SolutionResultEnum.COMPILE_ERROR.getValue().equals(resultCode)) {
                         solution.setResult(SolutionResultEnum.COMPILE_ERROR);
@@ -92,7 +92,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                         solution.setRunError(runError);
                     }
                     if (userProblemId == 0) {
-                        userProblem.setState(false);
+                        userProblem.setPassed(false);
                     } else {
                         userProblem.setId(userProblemId);
                     }

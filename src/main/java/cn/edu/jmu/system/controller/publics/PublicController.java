@@ -80,14 +80,14 @@ public class PublicController {
     }
 
     /**
-     * @param categoryId 题目集ID
-     * @param problemId  题目集中题目的ID
+     * @param problemCategoryId 题目集ID
+     * @param problemId         题目集中题目的ID
      */
-    @GetMapping(value = "/problem/{categoryId}/{problemId}")
-    public ResponseEntity<BasicResponse> selectProblemByCategoryIdAndProblemId(@PathVariable("categoryId") Integer categoryId, @PathVariable("problemId") Integer problemId) {
-        return ProblemCategoryStatusHandler.handle(categoryId, problemCategoryService, () -> {
+    @GetMapping(value = "/problem/{problemCategoryId}/{problemId}")
+    public ResponseEntity<BasicResponse> selectProblemByCategoryIdAndProblemId(@PathVariable("problemCategoryId") Integer problemCategoryId, @PathVariable("problemId") Integer problemId) {
+        return ProblemCategoryStatusHandler.handle(problemCategoryId, problemCategoryService, () -> {
             // 判断题目ID是否在题目集里，如果在，则查询对应的题目信息，如果不在，则抛出错误
-            if (problemCollectionService.isProblemInProblemCollection(problemId, categoryId)) {
+            if (problemCollectionService.isProblemInProblemCollection(problemId, problemCategoryId)) {
                 ProblemDetailToUserDto detailToUserDto = problemService.getToUserById(problemId);
                 if (detailToUserDto == null) {
                     return ResponseUtil.fail("无法找到该题目或题目对应的数据库信息不存在！");
@@ -103,11 +103,11 @@ public class PublicController {
     /**
      * 通过题目集ID查询题目集的基础信息
      *
-     * @param categoryId 题目集ID
+     * @param problemCategoryId 题目集ID
      */
-    @GetMapping(value = "/problem-category/{categoryId}")
-    public ResponseEntity<BasicResponse> selectProblemCategoryById(@PathVariable("categoryId") Integer categoryId) {
-        ProblemCategory problemCategory = problemCategoryService.getById(categoryId);
+    @GetMapping(value = "/problem-category/{problemCategoryId}")
+    public ResponseEntity<BasicResponse> selectProblemCategoryById(@PathVariable("problemCategoryId") Integer problemCategoryId) {
+        ProblemCategory problemCategory = problemCategoryService.getById(problemCategoryId);
         if (problemCategory == null) {
             return ResponseUtil.fail("该ID所对应的题目集不存在！");
         }
@@ -118,8 +118,8 @@ public class PublicController {
     /**
      * TODO: Rank榜
      */
-    @GetMapping(value = "/rank/{categoryId}")
-    public ResponseEntity<BasicResponse> rank(@PathVariable("categoryId") Integer categoryId, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    @GetMapping(value = "/rank/{problemCategoryId}")
+    public ResponseEntity<BasicResponse> rank(@PathVariable("problemCategoryId") Integer problemCategoryId, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<User> userPage = new Page<>(pageNum, pageSize);
         UserDto userDto = new UserDto();
         userDto.setStatus(UserStatusEnum.NORMAL);

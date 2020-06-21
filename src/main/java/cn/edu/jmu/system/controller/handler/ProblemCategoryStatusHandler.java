@@ -19,12 +19,12 @@ public class ProblemCategoryStatusHandler {
     /**
      * 处理题目集的开始结束状态
      *
-     * @param categoryId                    题目集ID
+     * @param problemCategoryId             题目集ID
      * @param problemCategoryStatusExecutor 学生可正常查看题目集时调用的接口
      * @return ResponseEntity<BasicResponse>
      */
-    public static ResponseEntity<BasicResponse> handle(Integer categoryId, ProblemCategoryService problemCategoryService, ProblemCategoryStatusExecutor problemCategoryStatusExecutor) {
-        ProblemCategory problemCategory = problemCategoryService.getById(categoryId);
+    public static ResponseEntity<BasicResponse> handle(Integer problemCategoryId, ProblemCategoryService problemCategoryService, ProblemCategoryStatusExecutor problemCategoryStatusExecutor) {
+        ProblemCategory problemCategory = problemCategoryService.getById(problemCategoryId);
         if (problemCategory == null) {
             return ResponseUtil.fail("该ID所对应的题目集不存在！");
         }
