@@ -233,7 +233,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取题目集列表失败：无法发送请求",
+            text: "获取题目集列表失败：发送请求失败",
             type: "error"
           });
         });
@@ -286,7 +286,7 @@ export default {
             console.log(err);
             this.$notify({
               group: "notify",
-              text: "搜索题目集失败：无法发送请求",
+              text: "搜索题目集失败：发送请求失败",
               type: "error"
             });
           });

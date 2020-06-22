@@ -325,7 +325,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取用户解答代码失败：无法发送请求",
+            text: "获取用户解答代码失败：发送请求失败",
             type: "error"
           });
         });
@@ -383,7 +383,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取用户提交列表失败：无法发送请求",
+            text: "获取用户提交列表失败：发送请求失败",
             type: "error"
           });
         });
@@ -436,7 +436,7 @@ export default {
             console.log(err);
             this.$notify({
               group: "notify",
-              text: "搜索用户提交失败：无法发送请求",
+              text: "搜索用户提交失败：发送请求失败",
               type: "error"
             });
           });

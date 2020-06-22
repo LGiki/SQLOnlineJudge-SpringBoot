@@ -321,7 +321,7 @@ export default {
         .catch(err => {
           this.$notify({
             group: "notify",
-            text: "调试运行失败：无法发送请求",
+            text: "调试运行失败：发送请求失败",
             type: "error"
           });
           console.log(err);
@@ -369,7 +369,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取题目详情失败：无法发送请求",
+            text: "获取题目详情失败：发送请求失败",
             type: "error"
           });
         });
@@ -419,7 +419,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "提交解答代码失败：无法发送请求",
+            text: "提交解答代码失败：发送请求失败",
             type: "error"
           });
         });

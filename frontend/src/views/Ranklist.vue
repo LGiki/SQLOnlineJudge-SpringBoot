@@ -175,7 +175,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取排名失败：无法发送请求",
+            text: "获取排名失败：发送请求失败",
             type: "error"
           });
         });

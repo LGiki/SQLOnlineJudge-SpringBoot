@@ -97,6 +97,9 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
+              if (!localStorage.JWT_TOKEN) {
+                return '<i class="material-icons status-icon">help_center</i>';
+              }
               switch (rowData.progress) {
                 case 1:
                   // 已经通过
@@ -283,7 +286,7 @@ export default {
         .catch(err => {
           this.$notify({
             group: "notify",
-            text: "获取用户已做题目列表失败：无法发送请求",
+            text: "获取用户已做题目列表失败：发送请求失败",
             type: "error"
           });
           console.log(err);
@@ -324,7 +327,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取题目集的题目列表失败：无法发送请求",
+            text: "获取题目集的题目列表失败：发送请求失败",
             type: "error"
           });
         });
@@ -350,7 +353,7 @@ export default {
           console.log(err);
           this.$notify({
             group: "notify",
-            text: "获取题目集详情失败：无法发送请求",
+            text: "获取题目集详情失败：发送请求失败",
             type: "error"
           });
         });
@@ -371,8 +374,8 @@ export default {
     await this.getProblemCategoryDetail(this.problemCategoryId);
     if (localStorage.JWT_TOKEN) {
       await this.getUserCategoryProgress(this.problemCategoryId);
+      this.calcProblemProgress();
     }
-    this.calcProblemProgress();
   },
   destroyed: function() {
     this.clearCountDownStrRefreshInterval();

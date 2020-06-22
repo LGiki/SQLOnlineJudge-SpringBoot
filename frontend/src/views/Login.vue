@@ -101,7 +101,7 @@ export default {
         .catch(err => {
           this.$notify({
             group: "notify",
-            text: "登录失败：无法发送请求",
+            text: "登录失败：发送请求失败",
             type: "error"
           });
           console.log(err);

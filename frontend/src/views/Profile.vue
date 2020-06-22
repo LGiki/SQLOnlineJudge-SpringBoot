@@ -240,7 +240,7 @@ export default {
         .catch(err => {
           this.$notify({
             group: "notify",
-            text: "获取用户详细信息失败：无法发送请求",
+            text: "获取用户详细信息失败：发送请求失败",
             type: "error"
           });
           console.log(err);
