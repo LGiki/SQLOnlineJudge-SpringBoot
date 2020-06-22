@@ -224,7 +224,7 @@ export default {
         let userId = localStorage.USER_ID;
         const apiUrl = this.Url.latestSolution;
         this.$axios
-          .get(apiUrl + this.problemCategoryId + '/' + this.problemId)
+          .get(apiUrl + this.problemCategoryId + "/" + this.problemId)
           .then(res => {
             if (res.status !== 200) {
               console.log(res);
@@ -277,7 +277,11 @@ export default {
     },
     runCode() {
       if (this.isEmpty(this.code)) {
-        alert("请检查SQL代码是否已输入！");
+        this.$notify({
+          group: "notify",
+          text: "请检查SQL代码是否已输入",
+          type: "error"
+        });
         return;
       }
       const apiUrl = this.Url.runCode;
@@ -288,7 +292,11 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("调试运行失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "调试运行失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             this.runResult = "";
             let resData = res.data;
@@ -302,11 +310,20 @@ export default {
               }
               this.runResultShow();
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
         .catch(err => {
+          this.$notify({
+            group: "notify",
+            text: "调试运行失败：无法发送请求",
+            type: "error"
+          });
           console.log(err);
         });
     },
@@ -330,23 +347,40 @@ export default {
         .get(apiUrl + "/" + categoryId + "/" + problemId)
         .then(res => {
           if (res.status !== 200) {
-            alert("获取题目详情失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "获取题目详情失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
               this.problemDetail = resData.data;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
         .catch(err => {
           console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "获取题目详情失败：无法发送请求",
+            type: "error"
+          });
         });
     },
     submitSolution() {
       if (this.isEmpty(this.code)) {
-        alert("请检查SQL代码是否已输入！");
+        this.$notify({
+          group: "notify",
+          text: "请检查SQL代码是否已输入",
+          type: "error"
+        });
         return;
       }
       this.judgeResult = "Judging";
@@ -361,7 +395,11 @@ export default {
         .post(apiUrl, postData)
         .then(res => {
           if (res.status !== 200) {
-            alert("提交解答代码失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "提交解答代码失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
@@ -369,12 +407,21 @@ export default {
               setInterval(this.fetchSolutionCode(solutionId), 5000);
               this.judgeResultModal = true;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
         .catch(err => {
           console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "提交解答代码失败：无法发送请求",
+            type: "error"
+          });
         });
     }
   },

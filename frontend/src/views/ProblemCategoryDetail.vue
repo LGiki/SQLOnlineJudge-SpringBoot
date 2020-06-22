@@ -3,7 +3,9 @@
     <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="name">
-        <h2><strong>{{ problemCategoryInfo.name }}</strong></h2>
+        <h2>
+          <strong>{{ problemCategoryInfo.name }}</strong>
+        </h2>
       </div>
       <div class="section no-padding">
         <div class="container">
@@ -76,7 +78,7 @@ export default {
         startTime: null,
         endTime: null
       },
-      countDownStr: '',
+      countDownStr: "",
       countDownStrRefreshIntervalId: -1,
       codeModal: false,
       pageNum: 1,
@@ -143,9 +145,9 @@ export default {
             columnAlign: "center",
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              let difficultyStars = '';
+              let difficultyStars = "";
               for (let i = 0; i < rowData.problemDifficulty; i++) {
-                difficultyStars += '★';
+                difficultyStars += "★";
               }
               return difficultyStars;
             }
@@ -194,18 +196,20 @@ export default {
     clearCountDownStrRefreshInterval() {
       if (this.countDownStrRefreshIntervalId != -1) {
         clearInterval(this.countDownStrRefreshIntervalId);
-      } 
+      }
     },
     refreshCountDown(endDatetimeStr) {
       let currentTimestamp = new Date().getTime();
       let endTimestamp = new Date(endDatetimeStr).getTime();
       if (currentTimestamp <= endTimestamp) {
-        let totalLeftSeconds = parseInt((endTimestamp - currentTimestamp) / 1000);
+        let totalLeftSeconds = parseInt(
+          (endTimestamp - currentTimestamp) / 1000
+        );
         let leftDays = parseInt(totalLeftSeconds / (24 * 60 * 60));
-        let leftHours = parseInt(totalLeftSeconds / (60 * 60) % 24);
-        let leftMinutes = parseInt(totalLeftSeconds / 60 % 60);
+        let leftHours = parseInt((totalLeftSeconds / (60 * 60)) % 24);
+        let leftMinutes = parseInt((totalLeftSeconds / 60) % 60);
         let leftSeconds = parseInt(totalLeftSeconds % 60);
-        let countDownStr = '';
+        let countDownStr = "";
         if (leftDays > 0) {
           countDownStr += `${leftDays} 天`;
         }
@@ -218,14 +222,16 @@ export default {
         if (leftSeconds > 0) {
           countDownStr += ` ${leftSeconds} 秒`;
         }
-        this.countDownStr = '离结束还有：' + countDownStr;
-      }else{
+        this.countDownStr = "离结束还有：" + countDownStr;
+      } else {
         this.clearCountDownStrRefreshInterval();
         //TODO: 题目集已结束，清除页面
       }
     },
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: "/problem/" + this.problemCategoryId + '/' + rowData.problemId });
+      this.$router.push({
+        path: "/problem/" + this.problemCategoryId + "/" + rowData.problemId
+      });
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
@@ -258,28 +264,28 @@ export default {
         .then(res => {
           if (res.status !== 200) {
             this.$notify({
-              group: 'notify',
-              text: '获取用户已做题目列表失败！',
-              type: 'error'
+              group: "notify",
+              text: "获取用户已做题目列表失败：远程服务器错误",
+              type: "error"
             });
           } else {
             if (res.data.code === 0) {
               this.userCategoryProgress = res.data.data;
             } else {
               this.$notify({
-                group: 'notify',
+                group: "notify",
                 text: res.data.message,
-                type: 'error'
+                type: "error"
               });
             }
           }
         })
         .catch(err => {
-            this.$notify({
-              group: 'notify',
-              text: '获取用户已做题目列表失败！',
-              type: 'error'
-            });
+          this.$notify({
+            group: "notify",
+            text: "获取用户已做题目列表失败：无法发送请求",
+            type: "error"
+          });
           console.log(err);
         });
     },
@@ -291,9 +297,9 @@ export default {
         .then(res => {
           if (res.status !== 200) {
             this.$notify({
-              group: 'notify',
-              text: '获取题目集的题目列表失败！',
-              type: 'error'
+              group: "notify",
+              text: "获取题目集的题目列表失败：远程服务器错误",
+              type: "error"
             });
           } else {
             let resData = res.data;
@@ -304,7 +310,11 @@ export default {
               this.tableConfig.tableData = resData.data.records;
               this.totalItems = resData.data.total;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
           this.isLoading = false;
@@ -313,9 +323,9 @@ export default {
           this.isLoading = false;
           console.log(err);
           this.$notify({
-            group: 'notify',
-            text: '获取题目集的题目列表失败！',
-            type: 'error'
+            group: "notify",
+            text: "获取题目集的题目列表失败：无法发送请求",
+            type: "error"
           });
         });
     },
@@ -326,9 +336,9 @@ export default {
         .then(res => {
           if (res.status !== 200) {
             this.$notify({
-              group: 'notify',
-              text: '获取题目集详情失败！',
-              type: 'error'
+              group: "notify",
+              text: "获取题目集详情失败：远程服务器错误",
+              type: "error"
             });
           } else {
             this.problemCategoryInfo = res.data.data;
@@ -339,9 +349,9 @@ export default {
         .catch(err => {
           console.log(err);
           this.$notify({
-            group: 'notify',
-            text: '获取题目集详情失败！',
-            type: 'error'
+            group: "notify",
+            text: "获取题目集详情失败：无法发送请求",
+            type: "error"
           });
         });
     }

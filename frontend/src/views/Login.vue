@@ -65,7 +65,11 @@ export default {
     },
     login() {
       if (this.isEmpty(this.username) || this.isEmpty(this.password)) {
-        alert("请检查所有项是否都填写完整！");
+        this.$notify({
+          group: "notify",
+          text: "请检查所有项是否都填写完整",
+          type: "error"
+        });
         return;
       }
       let postData = qs.stringify({
@@ -76,16 +80,30 @@ export default {
         .post(this.Url.login, postData)
         .then(res => {
           if (res.status === 401) {
-            alert(res.data.message);
+            this.$notify({
+              group: "notify",
+              text: res.data.message,
+              type: "error"
+            });
           } else if (res.status === 200) {
             localStorage.setItem("JWT_TOKEN", res.data.data.token);
             localStorage.setItem("USER_ID", res.data.data.id);
             window.location.href = "/";
           } else {
-            alert("登录失败，内部错误!");
+            this.$notify({
+              group: "notify",
+              text: "登录失败：未知错误",
+              type: "error"
+            });
+            console.log(res);
           }
         })
         .catch(err => {
+          this.$notify({
+            group: "notify",
+            text: "登录失败：无法发送请求",
+            type: "error"
+          });
           console.log(err);
         });
     }

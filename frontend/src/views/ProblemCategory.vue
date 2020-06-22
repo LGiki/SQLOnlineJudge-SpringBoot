@@ -208,14 +208,22 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("获取题目集列表失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "获取题目集列表失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
               this.tableConfig.tableData = resData.data.records;
               this.totalItems = resData.data.total;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
           this.isLoading = false;
@@ -223,13 +231,22 @@ export default {
         .catch(err => {
           this.isLoading = false;
           console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "获取题目集列表失败：无法发送请求",
+            type: "error"
+          });
         });
     },
     onSearch() {
       const keyword = this.searchKeyword.trim();
       this.pageNum = 1;
       if (keyword.length === 0) {
-        alert("请输入关键字！");
+        this.$notify({
+          group: "notify",
+          text: "请输入关键字之后再进行搜索",
+          type: "error"
+        });
       } else {
         this.isLoading = true;
         const apiUrl = this.Url.problemCategoryBaseUrl;
@@ -243,7 +260,11 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              alert("题目集搜索失败，内部错误！");
+              this.$notify({
+                group: "notify",
+                text: "搜索题目集失败：远程服务器错误",
+                type: "error"
+              });
             } else {
               const resData = res.data;
               if (resData.code === 0) {
@@ -251,7 +272,11 @@ export default {
                 this.totalItems = resData.data.total;
                 this.inSearch = true;
               } else {
-                alert(resData.message);
+                this.$notify({
+                  group: "notify",
+                  text: resData.message,
+                  type: "error"
+                });
               }
             }
             this.isLoading = false;
@@ -259,6 +284,11 @@ export default {
           .catch(err => {
             this.isLoading = false;
             console.log(err);
+            this.$notify({
+              group: "notify",
+              text: "搜索题目集失败：无法发送请求",
+              type: "error"
+            });
           });
       }
     },

@@ -7,7 +7,7 @@ import VueHighlightJS from "vue-highlight.js";
 import Axios from "axios";
 import Url from "./urlConfig";
 import { exists } from "fs";
-import Notifications from 'vue-notification'
+import Notifications from "vue-notification";
 // import Notifications from "./components/NotificationPlugin";
 
 Vue.config.productionTip = false;

@@ -170,11 +170,19 @@ export default {
         this.isEmpty(this.newPassword) ||
         this.isEmpty(this.newPasswordRepeat)
       ) {
-        alert("请检查输入是否完整！");
+        this.$notify({
+          group: "notify",
+          text: "请检查输入是否完整",
+          type: "error"
+        });
         return;
       }
       if (this.newPassword !== this.newPasswordRepeat) {
-        alert("两次输入的密码不一致，请检查后重新输入！");
+        this.$notify({
+          group: "notify",
+          text: "两次输入的密码不一致，请检查后重新输入",
+          type: "error"
+        });
         return;
       }
       let userId = this.$route.params.id;
@@ -185,10 +193,17 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("修改用户密码失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "修改用户密码失败：远程服务器错误",
+              type: "error"
+            });
           } else {
-            const resData = res.data;
-            alert(resData.message);
+            this.$notify({
+              group: "notify",
+              text: res.data.message,
+              type: "error"
+            });
             this.logout();
           }
         })
@@ -204,18 +219,30 @@ export default {
         .get(this.Url.userDetail + userId)
         .then(res => {
           if (res.status !== 200) {
-            // alert("获取用户详细信息失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "获取用户详细信息失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             const resData = res.data;
             if (resData.code === 0) {
               this.userDetail = resData.data;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
         .catch(err => {
-          // alert("获取用户详细信息失败，未知错误！");
+          this.$notify({
+            group: "notify",
+            text: "获取用户详细信息失败：无法发送请求",
+            type: "error"
+          });
           console.log(err);
         });
     }

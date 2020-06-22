@@ -151,7 +151,11 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("获取排名失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "获取排名失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
@@ -159,12 +163,21 @@ export default {
               this.totalItems = resData.data.total;
               this.isLoading = false;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
         .catch(err => {
           console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "获取排名失败：无法发送请求",
+            type: "error"
+          });
         });
     }
   },
@@ -182,26 +195,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .section {
-//   padding: 0;
-// }
-
-// .section-with-padding {
-//   padding-bottom: 40px;
-// }
-
-// .img-middle {
-//   transform: translate3d(0, -50%, 0);
-//   background: rgba(255, 255, 255, 0.835);
-// }
-
-// .md-size-6x {
-//   width: 150px;
-//   min-width: 150px;
-//   height: 150px;
-//   font-size: 120px !important;
-// }
-
 .bd {
   padding-top: 25px;
   width: 100%;

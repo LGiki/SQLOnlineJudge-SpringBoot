@@ -271,7 +271,11 @@ export default {
           if (
             this.tableConfig.tableData[rowIndex].uid != localStorage.USER_ID
           ) {
-            alert("只能查看自己提交的代码哦！");
+            this.$notify({
+              group: "notify",
+              text: "只允许查看自己提交的代码",
+              type: "error"
+            });
           } else {
             let solutionId = this.tableConfig.tableData[rowIndex].id;
             this.fetchSolutionCode(solutionId);
@@ -297,7 +301,11 @@ export default {
         .get(apiUrl + solutionId)
         .then(res => {
           if (res.status !== 200) {
-            alert("获取用户解答代码失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "获取用户解答代码失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
@@ -305,13 +313,21 @@ export default {
               this.runError = resData.data.runError;
               this.codeModal = true;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
         .catch(err => {
-          alert("获取用户解答代码失败！");
           console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "获取用户解答代码失败：无法发送请求",
+            type: "error"
+          });
         });
     },
     pageChange(pageNum) {
@@ -342,29 +358,45 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            alert("获取用户提交列表失败，内部错误！");
+            this.$notify({
+              group: "notify",
+              text: "获取用户提交列表失败：远程服务器错误",
+              type: "error"
+            });
           } else {
             let resData = res.data;
             if (resData.code === 0) {
               this.tableConfig.tableData = resData.data.records;
               this.totalItems = resData.data.total;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
           this.isLoading = false;
         })
         .catch(err => {
-          alert("获取用户提交列表失败！");
           this.isLoading = false;
           console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "获取用户提交列表失败：无法发送请求",
+            type: "error"
+          });
         });
     },
     onSearch() {
       const keyword = this.searchKeyword.trim();
       this.pageNum = 1;
       if (keyword.length === 0) {
-        alert("请输入关键字！");
+        this.$notify({
+          group: "notify",
+          text: "请输入搜索关键字",
+          type: "error"
+        });
       } else {
         this.isLoading = true;
         const apiUrl = this.Url.solutionBaseUrl;
@@ -378,7 +410,11 @@ export default {
           })
           .then(res => {
             if (res.status !== 200) {
-              alert("用户提交搜索失败，内部错误！");
+              this.$notify({
+                group: "notify",
+                text: "搜索用户提交失败：远程服务器错误",
+                type: "error"
+              });
             } else {
               const resData = res.data;
               if (resData.code === 0) {
@@ -386,15 +422,23 @@ export default {
                 this.totalItems = resData.data.total;
                 this.inSearch = true;
               } else {
-                alert(resData.message);
+                this.$notify({
+                  group: "notify",
+                  text: resData.message,
+                  type: "error"
+                });
               }
             }
             this.isLoading = false;
           })
           .catch(err => {
             this.isLoading = false;
-            alert("用户提交搜索失败！");
             console.log(err);
+            this.$notify({
+              group: "notify",
+              text: "搜索用户提交失败：无法发送请求",
+              type: "error"
+            });
           });
       }
     },

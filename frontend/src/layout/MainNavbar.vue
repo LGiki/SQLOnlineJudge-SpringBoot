@@ -163,7 +163,11 @@ export default {
             if (resData.code === 0) {
               this.userDetail = resData.data;
             } else {
-              alert(resData.message);
+              this.$notify({
+                group: "notify",
+                text: resData.message,
+                type: "error"
+              });
             }
           }
         })
@@ -174,7 +178,6 @@ export default {
     },
     bodyClick() {
       let bodyClick = document.getElementById("bodyClick");
-
       if (bodyClick === null) {
         let body = document.querySelector("body");
         let elem = document.createElement("div");
