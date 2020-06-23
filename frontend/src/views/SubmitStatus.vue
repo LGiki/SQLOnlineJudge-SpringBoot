@@ -3,7 +3,7 @@
     <parallax class="section header-filter" :style="headerStyle"></parallax>
     <div class="main main-raised">
       <div class="name">
-        <h2 class="title">提交状态</h2>
+        <h2><strong>{{ problemCategoryInfo ? problemCategoryInfo.name + ' - ' : '' }}提交状态</strong></h2>
       </div>
       <div class="section no-padding">
         <div class="container">
@@ -251,10 +251,35 @@ export default {
             }
           }
         ]
-      }
+      },
+      problemCategoryInfo: null
     };
   },
   methods: {
+    getProblemCategoryInfo(problemCategoryId) {
+      let apiUrl = this.Url.problemCategoryBaseUrl;
+      this.$axios
+        .get(apiUrl + problemCategoryId)
+        .then(res => {
+          if (res.status !== 200) {
+            this.$notify({
+              group: "notify",
+              text: "获取题目集详情失败：远程服务器错误",
+              type: "error"
+            });
+          } else {
+            this.problemCategoryInfo = res.data.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.$notify({
+            group: "notify",
+            text: "获取题目集详情失败：发送请求失败",
+            type: "error"
+          });
+        });
+    },
     selectSearchType(searchTypeItem) {
       this.searchType = searchTypeItem;
     },
@@ -268,7 +293,13 @@ export default {
       switch (column.field) {
         case "result":
         case "submitTime":
-          if (
+          if(!localStorage.JWT_TOKEN) {
+            this.$notify({
+              group: "notify",
+              text: "请登录后再查看提交的代码",
+              type: "error"
+            });
+          } else if (
             this.tableConfig.tableData[rowIndex].uid != localStorage.USER_ID
           ) {
             this.$notify({
@@ -290,7 +321,7 @@ export default {
         case "pid":
         case "title":
           this.$router.push({
-            path: "/problem/" + this.tableConfig.tableData[rowIndex].pid
+            path: "/problem/" + this.problemCategoryId + "/" + this.tableConfig.tableData[rowIndex].pid
           });
           break;
       }
@@ -348,9 +379,9 @@ export default {
     },
     getSolutionList() {
       this.isLoading = true;
-      let apiUrl = this.Url.solutionBaseUrl;
+      let apiUrl = this.Url.submitStatusUrl;
       this.$axios
-        .get(apiUrl, {
+        .get(apiUrl + this.problemCategoryId, {
           params: {
             pageNum: this.pageNum,
             pageSize: this.pageSize
@@ -452,11 +483,15 @@ export default {
       return {
         backgroundImage: `url(${this.header})`
       };
+    },
+    problemCategoryId() {
+      return this.$route.params.categoryId;
     }
   },
   mounted: function() {
     this.getSolutionList();
     this.intervalId = setInterval(this.getSolutionList, 5000);
+    this.getProblemCategoryInfo(this.problemCategoryId);
   },
   destroyed: function() {
     if (this.intervalId != -1) {

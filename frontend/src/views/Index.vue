@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <notifications></notifications> -->
     <parallax class="page-header header-filter" :style="headerStyle">
       <div class="md-layout">
         <div class="md-layout-item">
@@ -13,60 +12,16 @@
               <h1>SQL Online Judge</h1>
             </div>
             <div class="brand">
-              <md-button href="#/problem" class="md-success md-lg">
+              <md-button href="#/problem_category" class="md-success md-lg">
                 <font size="5em">即刻开始刷题</font>
               </md-button>
-              <!-- <md-button @click="notifyVue('bottom','right')" class="md-success md-lg">
-                <font size="5em">即刻开始刷题</font>
-              </md-button> -->
             </div>
           </div>
         </div>
       </div>
     </parallax>
-    <div class="main main-raised">
-      <div class="section">
-        <div class="container">
-          <div class="features text-center">
-            <div class="md-layout">
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="info">
-                  <div class="icon icon-info">
-                    <md-icon>bug_report</md-icon>
-                  </div>
-                  <h4 class="info-title">强大的在线调试</h4>
-                  <p>
-                    我们提供在线调试SQL代码功能，您可以在提交您的解答之前，充分调试您的代码，直到您认为有把握了之后再进行提交。
-                  </p>
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="info">
-                  <div class="icon icon-success">
-                    <md-icon>spellcheck</md-icon>
-                  </div>
-                  <h4 class="info-title">享受编程的乐趣</h4>
-                  <p>
-                    刷过千道题，不是大咖也是高手，比的就是手快，刷的就是未来......
-                  </p>
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="info">
-                  <div class="icon icon-danger">
-                    <md-icon>thumb_up</md-icon>
-                  </div>
-                  <h4 class="info-title">焕然一新的感受</h4>
-                  <p>
-                    我们有一流的UI设计,
-                    我们着眼细节，追求品质；提供给学生最友好高效的训练平台。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="justify-content-center copyright" align="center">
+      &copy; {{ year }}, JiMei University
     </div>
   </div>
 </template>
@@ -99,10 +54,8 @@ export default {
   },
   data() {
     return {
-      firstname: null,
-      email: null,
-      password: null,
-      leafShow: false
+      leafShow: false,
+      year: new Date().getFullYear()
     };
   },
   methods: {
@@ -120,11 +73,6 @@ export default {
         backgroundImage: `url(${this.image})`
       };
     },
-    signupImage() {
-      return {
-        backgroundImage: `url(${this.signup})`
-      };
-    }
   },
   mounted() {
     this.leafActive();
@@ -146,5 +94,19 @@ export default {
   .btn-container {
     display: flex;
   }
+}
+</style>
+<style scoped>
+.page-header {
+  height: 100vh !important;
+}
+
+.copyright {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  color: #ccc;
+  bottom: 0px;
+  padding: 15px 0;
 }
 </style>
