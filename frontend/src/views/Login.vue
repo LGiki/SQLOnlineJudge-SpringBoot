@@ -118,5 +118,3 @@ export default {
   created: function() {}
 };
 </script>
-
-<style lang="css"></style>

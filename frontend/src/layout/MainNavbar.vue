@@ -8,8 +8,8 @@
   >
     <div class="md-toolbar-row md-collapse-lateral">
       <div class="md-toolbar-section-start">
-        <h3 class="md-title">
-          SQL自动评测系统
+        <h3 class="md-title" style="cursor:pointer" @click="$router.push({path: '/'})">
+          SQL在线考试系统
         </h3>
       </div>
       <div class="md-toolbar-section-end">
@@ -26,7 +26,6 @@
         <div class="md-collapse">
           <div class="md-collapse-wrapper">
             <mobile-menu nav-mobile-section-start="false">
-              <!-- Here you can add your items from the section-start of your toolbar -->
             </mobile-menu>
             <md-list>
               <md-list-item href="#/">
@@ -35,7 +34,7 @@
                   <b>首页</b>
                 </p>
               </md-list-item>
-              <md-list-item href="#/problem-category">
+              <md-list-item href="#/problem_category">
                 <i class="material-icons">collections_bookmark</i>
                 <p>
                   <b>题目集列表</b>
@@ -55,12 +54,12 @@
                 </p>
               </md-list-item> -->
 
-              <md-list-item href="#/solution">
+              <!-- <md-list-item href="#/solution">
                 <i class="material-icons">info</i>
                 <p>
                   <b>提交状态</b>
                 </p>
-              </md-list-item>
+              </md-list-item> -->
               <template v-if="!userDetail">
                 <!-- <md-list-item href="#/register">
                   <i class="material-icons">how_to_reg</i>
@@ -231,4 +230,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>

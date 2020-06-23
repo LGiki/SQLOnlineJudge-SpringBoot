@@ -5,7 +5,8 @@ import Login from "./views/Login.vue";
 import Profile from "./views/Profile.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
-import Solution from "./views/Solution.vue";
+import EmptyFooter from "./layout/EmptyFooter.vue"
+import SubmitStatus from "./views/SubmitStatus.vue";
 import ProblemDetail from "./views/ProblemDetail.vue";
 import ProblemCategory from "./views/ProblemCategory.vue";
 import ProblemCategoryDetail from "./views/ProblemCategoryDetail.vue";
@@ -16,15 +17,15 @@ export default new Router({
     {
       path: "/",
       name: "index",
-      components: { default: Index, header: MainNavbar, footer: MainFooter },
+      components: { default: Index, header: MainNavbar, footer: EmptyFooter },
       props: {
         header: { colorOnScroll: 200 },
         footer: { backgroundColor: "black" }
       }
     },
     {
-      path: "/problem-category",
-      name: "problemCategory",
+      path: "/problem_category",
+      name: "problemCategoryList",
       components: {
         default: ProblemCategory,
         header: MainNavbar,
@@ -36,7 +37,7 @@ export default new Router({
       }
     },
     {
-      path: "/problem-category/:id",
+      path: "/problem_category/:id",
       name: "problemCategory",
       components: {
         default: ProblemCategoryDetail,
@@ -48,15 +49,6 @@ export default new Router({
         footer: { backgroundColor: "black" }
       }
     },
-    // {
-    //   path: "/problem",
-    //   name: "problem",
-    //   components: { default: Problem, header: MainNavbar, footer: MainFooter },
-    //   props: {
-    //     header: { colorOnScroll: 80 },
-    //     footer: { backgroundColor: "black" }
-    //   }
-    // },
     {
       path: "/problem/:categoryId/:problemId",
       name: "problemDetail",
@@ -70,32 +62,15 @@ export default new Router({
         footer: { backgroundColor: "black" }
       }
     },
-    // {
-    //   path: "/ranklist",
-    //   name: "ranklist",
-    //   components: { default: Ranklist, header: MainNavbar, footer: MainFooter },
-    //   props: {
-    //     header: { colorOnScroll: 80 },
-    //     footer: { backgroundColor: "black" }
-    //   }
-    // },
     {
-      path: "/solution",
+      path: "/submit_status/:categoryId",
       name: "solution",
-      components: { default: Solution, header: MainNavbar, footer: MainFooter },
+      components: { default: SubmitStatus, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 80 },
         footer: { backgroundColor: "black" }
       }
     },
-    // {
-    //   path: "/register",
-    //   name: "register",
-    //   components: { default: Register, header: MainNavbar, footer: MainFooter },
-    //   props: {
-    //     header: { colorOnScroll: 80 }
-    //   }
-    // },
     {
       path: "/login",
       name: "login",

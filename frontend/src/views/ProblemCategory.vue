@@ -50,6 +50,7 @@
             <div class="md-layout">
               <template>
                 <v-table
+                  :width="1000"
                   :is-loading="isLoading"
                   is-horizontal-resize
                   style="width:100%"
@@ -140,7 +141,7 @@ export default {
           {
             field: "name",
             title: "题目集名称",
-            width: 80,
+            width: 400,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -148,7 +149,7 @@ export default {
           {
             field: "startTime",
             title: "开始时间",
-            width: 50,
+            width: 200,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -156,7 +157,7 @@ export default {
           {
             field: "endTime",
             title: "结束时间",
-            width: 50,
+            width: 200,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -164,7 +165,7 @@ export default {
           {
             field: "status",
             title: "状态",
-            width: 50,
+            width: 100,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -178,7 +179,7 @@ export default {
       this.searchType = searchTypeItem;
     },
     rowClick(rowIndex, rowData, column) {
-      this.$router.push({ path: "/problem-category/" + rowData.id });
+      this.$router.push({ path: "/problem_category/" + rowData.id });
     },
     pageChange(pageNum) {
       this.pageNum = pageNum;
@@ -198,7 +199,7 @@ export default {
     },
     getProblemCategoryList() {
       this.isLoading = true;
-      let apiUrl = this.Url.problemCategoryBaseUrl;
+      const apiUrl = this.Url.problemCategoryListUrl;
       this.$axios
         .get(apiUrl, {
           params: {
@@ -249,7 +250,7 @@ export default {
         });
       } else {
         this.isLoading = true;
-        const apiUrl = this.Url.problemCategoryBaseUrl;
+        const apiUrl = this.Url.problemCategoryListUrl;
         this.$axios
           .get(apiUrl, {
             params: {

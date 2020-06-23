@@ -9,6 +9,10 @@
       </div>
       <div class="section no-padding">
         <div class="container">
+          <div class="operation-area">
+            <md-button class="md-success md-round operation" @click="goToSubmitStatus"><md-icon>dns</md-icon>提交状态</md-button>
+            <md-button class="md-success md-round operation"><md-icon>insert_chart_outlined</md-icon>排行榜</md-button>
+          </div>
           <div class="countdown">
             <h4>{{ countDownStr }}</h4>
           </div>
@@ -190,6 +194,9 @@ export default {
     };
   },
   methods: {
+    goToSubmitStatus() {
+      this.$router.push({ path: "/submit_status/" + this.problemCategoryId });
+    },
     setCountDownStrRefreshInterval() {
       let that = this;
       this.countDownStrRefreshIntervalId = setInterval(function() {
@@ -375,6 +382,8 @@ export default {
     if (localStorage.JWT_TOKEN) {
       await this.getUserCategoryProgress(this.problemCategoryId);
       this.calcProblemProgress();
+    } else {
+      this.tableConfig.columns.splice(0, 1);
     }
   },
   destroyed: function() {
@@ -409,5 +418,13 @@ export default {
 
 .countdown {
   text-align: right;
+}
+
+.operation-area {
+  text-align: right;
+}
+
+.operation {
+  margin: 5px;
 }
 </style>
