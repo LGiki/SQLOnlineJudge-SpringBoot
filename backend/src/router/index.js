@@ -141,13 +141,13 @@ export const constantRoutes = [
     path: '/user-group',
     component: Layout,
     redirect: '/user-group/index',
-    meta: { title: '用户组管理(开发中)', icon: 'tree' },
+    meta: { title: '用户组管理', icon: 'tree' },
     children: [
       {
         path: 'index',
         name: 'UserGroups List',
         component: () => import('@/views/user_group/index'),
-        meta: { title: '用户组列表(开发中)' }
+        meta: { title: '用户组列表' }
         // hidden: true
       },
       {

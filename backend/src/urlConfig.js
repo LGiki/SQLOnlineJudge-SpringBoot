@@ -34,10 +34,14 @@ const Url = {
   // 图片显示接口
   showImageUrl: ApiHost + '/api/public/image/',
   // 用户组基础接口
-  userGroupBaseUrl: BaseUrl + '/user-group/',
+  userGroupBaseUrl: BaseUrl + '/user_group/',
   // 调试运行接口
   runCode: BaseUrl + '/problems/judgement/',
-  problemCategoryBaseUrl: BaseUrl + '/problem-category/',
-  problemCollectionBaseUrl: BaseUrl + '/problem-collection/'
+  // 题目集接口
+  problemCategoryBaseUrl: BaseUrl + '/problem_category/',
+  // 题目集题目列表接口
+  problemCollectionBaseUrl: BaseUrl + '/problem_collection/',
+  // 批量向题目集中添加题目接口
+  createProblemCollectionInBulkUrl: BaseUrl + '/problem_collection/bulk',
 }
 export default Url
