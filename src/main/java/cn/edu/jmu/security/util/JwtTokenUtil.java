@@ -25,7 +25,8 @@ public class JwtTokenUtil implements Serializable {
 
     public static final String SECRET = "MySecret";
 
-    public static final Long EXPIRATION = 72000L;
+    // Token过期时间，单位：秒
+    public static final Long EXPIRATION = 7 * 24 * 60 * 60L;
 
     public static final String HEADER = "Authorization";
 
@@ -37,6 +38,7 @@ public class JwtTokenUtil implements Serializable {
         claims.put(LOGIN_TYPE, userToken.getLoginType());
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + EXPIRATION * 1000);
+        System.out.println(expirationDate);
         return Jwts.builder()
             .setClaims(claims)
             .setSubject(userToken.getUsername())
@@ -84,8 +86,7 @@ public class JwtTokenUtil implements Serializable {
 
     public static String getLoginTypeFromToken(String token) {
         Claims claims = getAllClaimsFromToken(token);
-        String loginType = (String) claims.get(LOGIN_TYPE);
-        return loginType;
+        return (String) claims.get(LOGIN_TYPE);
     }
 
     public static Date getIssuedAtDateFromToken(String token) {
