@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,15 +21,19 @@ public class ProblemCategory implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    @NotNull
     @TableField(value = "name")
     protected String name;
 
+    @NotNull
     @TableField(value = "start_time")
     private Date startTime;
 
+    @NotNull
     @TableField(value = "end_time")
     private Date endTime;
 
+    @NotNull
     @TableField(value = "view_after_end")
     private Boolean viewAfterEnd;
 }

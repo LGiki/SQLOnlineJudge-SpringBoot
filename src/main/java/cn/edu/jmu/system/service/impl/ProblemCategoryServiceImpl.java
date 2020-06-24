@@ -1,14 +1,11 @@
 package cn.edu.jmu.system.service.impl;
 
-import cn.edu.jmu.system.api.problemcategory.CreateProblemCategoryRequest;
-import cn.edu.jmu.system.api.problemcategory.CreateProblemCategoryResponse;
 import cn.edu.jmu.system.api.problemcategory.DeleteProblemCategoryResponse;
 import cn.edu.jmu.system.entity.ProblemCategory;
 import cn.edu.jmu.system.entity.dto.ProblemCategoryDto;
 import cn.edu.jmu.system.mapper.ProblemCategoryMapper;
 import cn.edu.jmu.system.service.ProblemCategoryService;
 import cn.edu.jmu.system.service.converter.ProblemCategoryConverter;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -43,16 +40,10 @@ public class ProblemCategoryServiceImpl extends ServiceImpl<ProblemCategoryMappe
     }
 
     @Override
-    public CreateProblemCategoryResponse create(CreateProblemCategoryRequest request) {
-        ProblemCategory problemCategory = new ProblemCategory();
-        problemCategory.setName(request.getName());
-        problemCategory.setStartTime(request.getStartTime());
-        problemCategory.setEndTime(request.getEndTime());
-        problemCategory.setViewAfterEnd(request.getViewAfterEnd());
+    public Integer create(ProblemCategory problemCategory) {
+        problemCategory.setId(null);
         baseMapper.insert(problemCategory);
-        CreateProblemCategoryResponse response = new CreateProblemCategoryResponse();
-        response.setId(problemCategory.getId());
-        return response;
+        return problemCategory.getId();
     }
 
     @Override

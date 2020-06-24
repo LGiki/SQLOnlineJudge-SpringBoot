@@ -3,7 +3,6 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.api.problemcategory.CreateProblemCategoryRequest;
-import cn.edu.jmu.system.api.problemcategory.CreateProblemCategoryResponse;
 import cn.edu.jmu.system.api.problemcategory.DeleteProblemCategoryResponse;
 import cn.edu.jmu.system.entity.ProblemCategory;
 import cn.edu.jmu.system.entity.dto.ProblemCategoryDto;
@@ -17,13 +16,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 
 /**
  * @author xeathen
  */
 @RestController
 @RequiresPermissions(value = {"admin"})
-@RequestMapping("/api/admin/problem-category")
+@RequestMapping("/api/admin/problem_category")
 public class ProblemCategoryController {
     @Resource
     ProblemCategoryService problemCategoryService;
@@ -36,9 +36,11 @@ public class ProblemCategoryController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateProblemCategoryRequest request) {
-        CreateProblemCategoryResponse response = problemCategoryService.create(request);
-        return ResponseUtil.buildResponse("新增成功", response);
+    public ResponseEntity<BasicResponse> create(@RequestBody @Validated ProblemCategory problemCategory) {
+        Integer newProblemCategoryId = problemCategoryService.create(problemCategory);
+        HashMap<String, Integer> responseHashmap = new HashMap<>(1);
+        responseHashmap.put("id", newProblemCategoryId);
+        return ResponseUtil.buildResponse("新增成功", responseHashmap);
     }
 
     @PutMapping(value = "/{id}")

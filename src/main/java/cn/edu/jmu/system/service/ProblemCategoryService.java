@@ -1,7 +1,5 @@
 package cn.edu.jmu.system.service;
 
-import cn.edu.jmu.system.api.problemcategory.CreateProblemCategoryRequest;
-import cn.edu.jmu.system.api.problemcategory.CreateProblemCategoryResponse;
 import cn.edu.jmu.system.api.problemcategory.DeleteProblemCategoryResponse;
 import cn.edu.jmu.system.entity.ProblemCategory;
 import cn.edu.jmu.system.entity.dto.ProblemCategoryDto;
@@ -24,11 +22,10 @@ public interface ProblemCategoryService extends IService<ProblemCategory> {
 
     /**
      * 创建题目集
-     *
-     * @param request
+     * @param problemCategory
      * @return
      */
-    CreateProblemCategoryResponse create(CreateProblemCategoryRequest request);
+    Integer create(ProblemCategory problemCategory);
 
     /**
      * 删除题目集
