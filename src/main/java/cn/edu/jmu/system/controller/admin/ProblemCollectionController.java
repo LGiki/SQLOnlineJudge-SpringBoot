@@ -2,11 +2,9 @@ package cn.edu.jmu.system.controller.admin;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
-import cn.edu.jmu.system.api.problemcollection.CreateProblemCollectionRequest;
-import cn.edu.jmu.system.api.problemcollection.CreateProblemCollectionResponse;
-import cn.edu.jmu.system.api.problemcollection.DeleteProblemCollectionResponse;
 import cn.edu.jmu.system.entity.ProblemCollection;
 import cn.edu.jmu.system.entity.dto.ProblemCollectionDto;
+import cn.edu.jmu.system.service.ProblemCategoryService;
 import cn.edu.jmu.system.service.ProblemCollectionService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,16 +21,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author xeathen
  */
 @RestController
 @RequiresPermissions(value = {"admin"})
-@RequestMapping("/api/admin/problem-collection")
+@RequestMapping("/api/admin/problem_collection")
 public class ProblemCollectionController {
     @Resource
     ProblemCollectionService problemCollectionService;
+
+    @Resource
+    ProblemCategoryService problemCategoryService;
 
     @GetMapping("/")
     public ResponseEntity<BasicResponse> search(ProblemCollectionDto problemCollectionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -42,14 +46,78 @@ public class ProblemCollectionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateProblemCollectionRequest request) {
-        CreateProblemCollectionResponse response = problemCollectionService.create(request);
-        return ResponseUtil.buildResponse("新增成功", response);
+    public ResponseEntity<BasicResponse> create(@RequestBody @Validated ProblemCollection problemCollection) {
+        problemCollection.setId(null);
+        Boolean insertResult = problemCollectionService.save(problemCollection);
+        return ResponseUtil.buildResponse(insertResult, "新增题目成功", "新增题目失败");
+    }
+
+    /**
+     * 批量创建ProblemCollection
+     *
+     * @param problemCategoryId 题目集ID
+     * @param problemIds        要添加到题目集中的题目ID
+     */
+    @PostMapping("/bulk/{problemCategoryId}")
+    public ResponseEntity<BasicResponse> createInBulk(@PathVariable("problemCategoryId") Integer problemCategoryId, @RequestBody List<Integer> problemIds) {
+        Boolean isProblemCategoryExist = problemCategoryService.exist(problemCategoryId);
+        if (!isProblemCategoryExist) {
+            return ResponseUtil.fail("该题目集不存在");
+        }
+        if (problemIds.isEmpty()) {
+            return ResponseUtil.fail("请选择要添加到题目集中的题目");
+        }
+        List<Integer> success = new ArrayList<>();
+        List<Integer> fail = new ArrayList<>();
+        List<Integer> duplicated = new ArrayList<>();
+        ProblemCollection problemCollection = new ProblemCollection();
+        problemCollection.setCategoryId(problemCategoryId);
+        for (Integer problemId : problemIds) {
+            if (problemCollectionService.isProblemInProblemCollection(problemId, problemCategoryId)) {
+                duplicated.add(problemId);
+            } else {
+                problemCollection.setProblemId(problemId);
+                if (problemCollectionService.save(problemCollection)) {
+                    success.add(problemId);
+                } else {
+                    fail.add(problemId);
+                }
+            }
+        }
+        HashMap<String, List<Integer>> responseHashMap = new HashMap<>(3);
+        responseHashMap.put("success", success);
+        responseHashMap.put("duplicated", duplicated);
+        responseHashMap.put("fail", fail);
+        return ResponseUtil.buildResponse("新增题目完成", responseHashMap);
+    }
+
+    /**
+     * 批量从从题目集中删除题目
+     *
+     * @param problemCollectionIds 要删除的ProblemCollection ID
+     */
+    @DeleteMapping("/bulk")
+    public ResponseEntity<BasicResponse> deleteInBulk(@RequestBody List<Integer> problemCollectionIds) {
+        if (problemCollectionIds.isEmpty()) {
+            return ResponseUtil.fail("请选择要删除的题目");
+        }
+        List<Integer> success = new ArrayList<>();
+        List<Integer> fail = new ArrayList<>();
+        for (Integer problemCollectionId : problemCollectionIds) {
+            if (problemCollectionService.delete(problemCollectionId)) {
+                success.add(problemCollectionId);
+            } else {
+                fail.add(problemCollectionId);
+            }
+        }
+        HashMap<String, List<Integer>> responseHashMap = new HashMap<>(2);
+        responseHashMap.put("success", success);
+        responseHashMap.put("fail", fail);
+        return ResponseUtil.buildResponse("删除完成", responseHashMap);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable Integer id) {
-        DeleteProblemCollectionResponse response = problemCollectionService.delete(id);
-        return ResponseUtil.buildResponse("删除成功", response);
+        return ResponseUtil.buildResponse(problemCollectionService.delete(id), "删除成功", "删除失败");
     }
 }

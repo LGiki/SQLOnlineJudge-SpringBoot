@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProblemCollectionService extends IService<ProblemCollection> {
     /**
-     * s
+     * 搜索题目集关系
      *
      * @param problemCollectionDto
      * @param page
@@ -36,11 +36,12 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
      * @param id
      * @return
      */
-    DeleteProblemCollectionResponse delete(Integer id);
+    Boolean delete(Integer id);
 
     /**
      * 判断某个problemId对应的题目是否存在于problemCategoryId对应的题目集里
-     * @param problemId 题目ID
+     *
+     * @param problemId         题目ID
      * @param problemCategoryId 题目集ID
      * @return Boolean 题目是否存在于题目集里
      */

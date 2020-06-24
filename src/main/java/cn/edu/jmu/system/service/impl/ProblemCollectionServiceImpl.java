@@ -87,11 +87,8 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
     }
 
     @Override
-    public DeleteProblemCollectionResponse delete(Integer id) {
-        baseMapper.deleteById(id);
-        DeleteProblemCollectionResponse response = new DeleteProblemCollectionResponse();
-        response.setId(id);
-        return response;
+    public Boolean delete(Integer id) {
+        return baseMapper.deleteById(id) >= 1;
     }
 
     @Override

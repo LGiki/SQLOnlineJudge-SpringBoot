@@ -68,4 +68,10 @@ public class ProblemCollectionDto implements Serializable {
      */
     @Property(name = "databaseName")
     private String databaseName;
+
+    /**
+     * 题目的分值
+     */
+    @Property(name = "problemScore")
+    private Integer problemScore;
 }

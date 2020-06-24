@@ -34,7 +34,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
-@RequestMapping("/api/admin")
+@RequestMapping("/api/admin/user_group")
 public class UserGroupController {
     @Resource
     UserGroupService userGroupService;
@@ -45,26 +45,26 @@ public class UserGroupController {
 //        return ResponseUtil.buildResponse(response);
 //    }
 
-    @GetMapping(value = "/user-group")
+    @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> search(@Validated UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<UserGroup> page = new Page<>(pageNum, pageSize);
         IPage<UserGroupDto> iPage = userGroupService.search(userGroupDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
-    @PostMapping(value = "/user-group")
+    @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateUserGroupRequest request) {
         CreateUserGroupResponse response = userGroupService.create(request);
         return ResponseUtil.buildResponse("新增成功", response);
     }
 
-    @PutMapping(value = "/user-group/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> update(@PathVariable Integer id, @RequestBody UpdateUserGroupRequest request) {
         UpdateUserGroupResponse response = userGroupService.update(id, request);
         return ResponseUtil.buildResponse("更新成功", response);
     }
 
-    @DeleteMapping(value = "/user-group/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable Integer id) {
         DeleteUserGroupResponse response = userGroupService.delete(id);
         return ResponseUtil.buildResponse("删除成功", response);
