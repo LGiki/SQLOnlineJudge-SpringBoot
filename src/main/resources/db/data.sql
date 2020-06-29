@@ -104,6 +104,9 @@ CHANGE COLUMN `category_id` `category_id` INT(11) NOT NULL COMMENT '题目集ID'
 CHANGE COLUMN `problem_id` `problem_id` INT(11) NOT NULL COMMENT '题目ID' AFTER `category_id`,
 ADD COLUMN `problem_score` INT NOT NULL DEFAULT 0 COMMENT '题目分值' AFTER `problem_id`;
 
+ALTER TABLE `problem_collections`
+ADD COLUMN `problem_submit` INT NOT NULL DEFAULT 0 COMMENT '题目提交数' AFTER `problem_id`,
+ADD COLUMN `problem_solved` INT NOT NULL DEFAULT 0 COMMENT '题目通过数' AFTER `submit`;
 -- ----------------------------
 -- Table structure for problems
 -- ----------------------------
@@ -146,6 +149,10 @@ ALTER TABLE `problems` CHANGE COLUMN `true_result` `true_result` TEXT(32) NULL D
 ALTER TABLE `problems`
 ADD COLUMN `is_update` BIT NOT NULL DEFAULT 0 COMMENT '题目是否是Update/Delete等会对表中记录进行修改的题目' AFTER `difficulty`,
 ADD COLUMN `select_after_update` TEXT NULL DEFAULT NULL COMMENT 'Update类题目执行完之后对修改部分的Select语句，用于比对修改的结果是否正确' AFTER `is_update`;
+
+ALTER TABLE `problems`
+DROP COLUMN `solved`,
+DROP COLUMN `submit`;
 
 -- ----------------------------
 -- Table structure for solutions
@@ -391,6 +398,10 @@ VALUES (2, 'user_xdh', 201621121101, 'xdh@qq.com', 'c51f9c7eba223c36a9e79aef5dbe
 INSERT INTO `sys_users`
 VALUES (3, 'user_ljq', 201621121108, 'ljq@qq.com', 'd1abfc1dcd61244bed23b54ad3e67142', 'u5EUoEIF0yerJVoQLye8', 0, 0,
         'default.jpg', b'1', 1);
+
+ALTER TABLE `sys_users`
+    DROP COLUMN `submit`,
+    DROP COLUMN `solved`;
 
 -- ----------------------------
 -- Table structure for upload_images
