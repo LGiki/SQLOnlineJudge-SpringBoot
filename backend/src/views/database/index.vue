@@ -36,7 +36,7 @@
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
-        @on-custom-comp="customCompFunc"
+        @on-custom-comp="onTableOperation"
       />
     </template>
     <template>
@@ -169,15 +169,20 @@ export default {
     onNewDatabase() {
       this.$router.push({ path: '/database/add/' })
     },
-    customCompFunc(params) {
+    onTableOperation(params) {
       const index = params.index
       const databaseId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
-        if (confirm('您确定要删除该数据库吗？')) {
+        this.$confirm('此操作将永久删除该数据库, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.deleteDatabase(databaseId, () => {
+            this.$message.success('成功删除数据库！')
             this.fetchDatabaseList()
           })
-        }
+        });
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/database/edit/' + databaseId })
       }

@@ -146,7 +146,7 @@
         row-hover-color="#eee"
         row-click-color="#edf7ff"
         @sort-change="sortChange"
-        @on-custom-comp="customCompFunc"
+        @on-custom-comp="onTableOperation"
       />
     </template>
     <template>
@@ -274,35 +274,6 @@ export default {
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
-          },
-          {
-            field: 'solved',
-            title: '通过数',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'submit',
-            title: '提交数',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'accept_rate',
-            title: '通过率',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit === 0
-                ? 0
-                : (rowData.solved / rowData.submit).toFixed(2)
-            }
           },
           {
             field: 'status',
@@ -553,7 +524,7 @@ export default {
     onNewUser() {
       this.$router.push({ path: '/user/add/' })
     },
-    customCompFunc(params) {
+    onTableOperation(params) {
       const index = params.index
       const userId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
@@ -563,11 +534,15 @@ export default {
           confirmMessage = '您确定要解锁该用户吗？'
           operationTypeString = '解锁'
         }
-        if (confirm(confirmMessage)) {
+        this.$confirm(confirmMessage, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.deleteUser(userId, operationTypeString, () => {
             this.fetchUserList()
           })
-        }
+        });
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/user/edit/' + userId })
       }

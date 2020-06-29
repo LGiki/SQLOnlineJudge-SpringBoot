@@ -37,7 +37,7 @@
         row-hover-color="#eee"
         row-click-color="#edf7ff"
         :row-click="rowClick"
-        @on-custom-comp="customCompFunc"
+        @on-custom-comp="onTableOperation"
       />
     </template>
     <template>
@@ -222,7 +222,7 @@ export default {
           console.log(err)
         })
     },
-    customCompFunc(params) {
+    onTableOperation(params) {
       const index = params.index
       const userGroupId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {

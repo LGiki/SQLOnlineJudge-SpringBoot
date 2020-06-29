@@ -37,7 +37,7 @@
         row-hover-color="#eee"
         row-click-color="#edf7ff"
         :row-click="rowClick"
-        @on-custom-comp="customCompFunc"
+        @on-custom-comp="onTableOperation"
       />
     </template>
     <template>
@@ -238,16 +238,20 @@ export default {
           console.log(err)
         })
     },
-    customCompFunc(params) {
+    onTableOperation(params) {
       const index = params.index
       const problemCategoryId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
-        if (confirm('您确定要删除该题目集吗？')) {
+        this.$confirm('此操作将永久删除该题目集, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.deleteProblemCategory(problemCategoryId, () => {
-            this.$message.success('删除题目集成功！')
+            this.$message.success('成功删除题目集！')
             this.fetchProblemCategoryList()
           })
-        }
+        });
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/problem-category/edit/' + problemCategoryId })
       }

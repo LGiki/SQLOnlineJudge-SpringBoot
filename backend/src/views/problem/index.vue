@@ -29,6 +29,7 @@
     </div>
     <template>
       <v-table
+        :width="1000"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
@@ -36,7 +37,7 @@
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
-        @on-custom-comp="customCompFunc"
+        @on-custom-comp="onTableOperation"
       />
     </template>
     <template>
@@ -90,75 +91,57 @@ export default {
         tableData: [],
         columns: [
           {
-            field: 'id',
+            field: 'problemId',
             title: '题目ID',
-            width: 80,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem/edit/${rowData.id}">${rowData.id}</a>`
+              return `<a href="#/problem/edit/${rowData.problemId}">${rowData.problemId}</a>`
             }
           },
           {
-            field: 'title',
-            title: '题目标题',
-            width: 280,
+            field: 'databaseName',
+            title: '数据库',
+            width: 200,
             titleAlign: 'center',
-            // columnAlign: 'center',
+            columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem/edit/${rowData.id}" title="${rowData.title}">${rowData.title}</a>`
+              return `<a href="#/problem/database/${rowData.databaseId}" title="${rowData.databaseName}">${rowData.databaseName}</a>`
             }
           },
           {
-            field: 'difficulty',
+            field: 'problemTitle',
+            title: '题目标题',
+            width: 500,
+            titleAlign: 'center',
+            columnAlign: 'left',
+            isResize: true,
+            formatter: function(rowData, rowIndex, pagingIndex, field) {
+              return `<a href="#/problem/edit/${rowData.problemId}" title="${rowData.problemTitle}">${rowData.problemTitle}</a>`
+            }
+          },
+          {
+            field: 'problemDifficulty',
             title: '难度',
-            width: 50,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
               let difficultyStars = '';
-              for (let i = 0; i < rowData.difficulty; i++) {
+              for (let i = 0; i < rowData.problemDifficulty; i++) {
                 difficultyStars += '★';
               }
               return difficultyStars;
             }
           },
           {
-            field: 'solved',
-            title: '通过数',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'submit',
-            title: '提交数',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'accept_rate',
-            title: '通过率',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return rowData.submit === 0
-                ? 0
-                : (rowData.solved / rowData.submit).toFixed(2)
-            }
-          },
-          {
             field: 'action',
             title: '操作',
-            width: 60,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -169,7 +152,7 @@ export default {
     }
   },
   mounted: function() {
-    this.fetchProblemList()
+    this.getProblemList()
   },
   methods: {
     onSearch() {
@@ -212,21 +195,25 @@ export default {
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchProblemList()
+      this.getProblemList()
     },
     onNewProblem() {
       this.$router.push({ path: '/problem/add/' })
     },
-    customCompFunc(params) {
+    onTableOperation(params) {
       const index = params.index
-      const problemId = this.tableConfig.tableData[index].id
+      const problemId = this.tableConfig.tableData[index].problemId
       if (params.type === 'delete') {
-        if (confirm('您确定要删除该题目吗？')) {
+        this.$confirm('此操作将永久删除该题目, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.deleteProblem(problemId, () => {
-            this.$message.success('删除题目成功！')
-            this.fetchProblemList()
+            this.$message.success('成功删除题目！')
+            this.getProblemList()
           })
-        }
+        });
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/problem/edit/' + problemId })
       }
@@ -236,7 +223,7 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchProblemList()
+        this.getProblemList()
       }
     },
     pageSizeChange(newPageSize) {
@@ -244,10 +231,10 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchProblemList()
+        this.getProblemList()
       }
     },
-    fetchProblemList() {
+    getProblemList() {
       this.isLoading = true
       const apiUrl = this.Url.problemBaseUrl
       this.$axios
@@ -259,7 +246,7 @@ export default {
         })
         .then(res => {
           if (res.status !== 200) {
-            this.$message.error('获取题目列表失败，内部错误！')
+            this.$message.error('获取题目列表失败：远程服务器错误')
           } else {
             const resData = res.data
             if (resData.code === 0) {
@@ -272,7 +259,7 @@ export default {
           this.isLoading = false
         })
         .catch(err => {
-          this.$message.error('获取题目列表失败！')
+          this.$message.error('获取题目列表失败：发送请求失败')
           this.isLoading = false
           console.log(err)
         })

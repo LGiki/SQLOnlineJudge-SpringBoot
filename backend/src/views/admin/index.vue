@@ -36,7 +36,7 @@
         :table-data="tableConfig.tableData"
         row-hover-color="#eee"
         row-click-color="#edf7ff"
-        @on-custom-comp="customCompFunc"
+        @on-custom-comp="onTableOperation"
       />
     </template>
     <template>
@@ -182,7 +182,7 @@ export default {
     onNewUser() {
       this.$router.push({ path: '/admin/add/' })
     },
-    customCompFunc(params) {
+    onTableOperation(params) {
       const index = params.index
       const userId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {

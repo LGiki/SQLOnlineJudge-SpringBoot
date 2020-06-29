@@ -110,13 +110,11 @@ Vue.component('table-operation', {
   },
   methods: {
     update() {
-      // 参数根据业务场景随意构造
       const params = { type: 'edit', index: this.index, rowData: this.rowData }
       this.$emit('on-custom-comp', params)
     },
 
     deleteRow() {
-      // 参数根据业务场景随意构造
       const params = { type: 'delete', index: this.index }
       this.$emit('on-custom-comp', params)
     }
@@ -141,13 +139,11 @@ Vue.component('user-operation', {
   },
   methods: {
     update() {
-      // 参数根据业务场景随意构造
       const params = { type: 'edit', index: this.index, rowData: this.rowData }
       this.$emit('on-custom-comp', params)
     },
 
     deleteRow() {
-      // 参数根据业务场景随意构造
       const params = { type: 'delete', index: this.index }
       this.$emit('on-custom-comp', params)
     }

@@ -96,7 +96,7 @@ export default {
           {
             field: "progress",
             title: "做题进度",
-            width: 40,
+            width: 75,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true,
@@ -123,7 +123,7 @@ export default {
           {
             field: "problemId",
             title: "题目ID",
-            width: 40,
+            width: 50,
             titleAlign: "center",
             columnAlign: "center",
             isResize: true
@@ -139,7 +139,7 @@ export default {
           {
             field: "problemTitle",
             title: "题目名称",
-            width: 600,
+            width: 450,
             titleAlign: "center",
             columnAlign: "left",
             isResize: true
@@ -158,6 +158,14 @@ export default {
               }
               return difficultyStars;
             }
+          },
+          {
+            field: "problemScore",
+            title: "题目分值",
+            width: 75,
+            titleAlign: "center",
+            columnAlign: "center",
+            isResize: true
           },
           {
             field: "problemSolved",
@@ -235,7 +243,7 @@ export default {
         this.countDownStr = "离结束还有：" + countDownStr;
       } else {
         this.clearCountDownStrRefreshInterval();
-        //TODO: 题目集已结束，清除页面
+        //TODO: 题目集已结束，判断能否继续查看题目，不能则清除页面
       }
     },
     rowClick(rowIndex, rowData, column) {
