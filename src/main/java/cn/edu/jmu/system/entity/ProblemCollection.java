@@ -35,7 +35,19 @@ public class ProblemCollection implements Serializable {
     private Integer problemId;
 
     /**
-     * 题目的分值
+     * 题目提交数
+     */
+    @TableField(value = "problem_submit")
+    private Integer problemSubmit;
+
+    /**
+     * 题目通过数
+     */
+    @TableField(value = "problem_solved")
+    private Integer problemSolved;
+
+    /**
+     * 题目分值
      */
     @TableField(value = "problem_score")
     private Integer problemScore;

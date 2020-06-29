@@ -3,6 +3,7 @@ package cn.edu.jmu.system.service;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailToUserDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
+import cn.edu.jmu.system.entity.dto.ProblemListDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -23,7 +24,7 @@ public interface ProblemService extends IService<Problem> {
      * @param page       page
      * @return IPage<problem>
      */
-    IPage<ProblemDto> getAll(ProblemDto problemDto, Page page);
+    IPage<ProblemListDto> getAll(ProblemDto problemDto, Page page);
 
     /**
      * 更新题目

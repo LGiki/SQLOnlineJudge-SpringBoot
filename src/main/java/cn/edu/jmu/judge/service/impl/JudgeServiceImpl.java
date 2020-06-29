@@ -74,7 +74,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                 if (SolutionResultEnum.ACCEPTED.getValue().equals(resultCode)) {
                     solution.setResult(SolutionResultEnum.ACCEPTED);
                     if (userProblemService.find(uid, pid, true) == 0) {
-                        increaseSolvedCount(user, problem);
+//                        increaseSolvedCount(user, problem);
                     }
                     if (userProblemId != 0) {
                         userProblem.setId(userProblemId);
@@ -97,7 +97,7 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
                         userProblem.setId(userProblemId);
                     }
                 }
-                increaseSubmitCount(user, problem);
+//                increaseSubmitCount(user, problem);
             } else if (JudgeResponseCodeEnum.FAIL.getValue().equals(code)) {
                 baseMapper.deleteById(solution.getId());
                 return false;
@@ -151,15 +151,15 @@ public class JudgeServiceImpl extends ServiceImpl<SolutionMapper, Solution> impl
         return judgeResultJson;
     }
 
-    private void increaseSubmitCount(User user, Problem problem) {
-        user.setSubmit(user.getSubmit() + 1);
-        problem.setSubmit(problem.getSubmit() + 1);
-    }
+//    private void increaseSubmitCount(User user, Problem problem) {
+//        user.setSubmit(user.getSubmit() + 1);
+//        problem.setSubmit(problem.getSubmit() + 1);
+//    }
 
-    private void increaseSolvedCount(User user, Problem problem) {
-        user.setSolved(user.getSolved() + 1);
-        problem.setSolved(problem.getSolved() + 1);
-    }
+//    private void increaseSolvedCount(User user, Problem problem) {
+//        user.setSolved(user.getSolved() + 1);
+//        problem.setSolved(problem.getSolved() + 1);
+//    }
 
     private JudgeResultJson executeTask(Integer solutionId) {
         JudgeResultJson result = null;

@@ -27,16 +27,6 @@ public class ProblemDto implements Serializable {
     private String title;
 
     /**
-     * 通过数
-     */
-    private Integer solved;
-
-    /**
-     * 提交数
-     */
-    private Integer submit;
-
-    /**
      * 题目难度
      */
     private Integer difficulty;

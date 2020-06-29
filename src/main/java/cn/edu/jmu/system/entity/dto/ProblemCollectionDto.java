@@ -46,13 +46,13 @@ public class ProblemCollectionDto implements Serializable {
     private Integer problemDifficulty;
 
     /**
-     * 通过数
+     * 题目通过数
      */
     @Property(name = "problemSolved")
     private Integer problemSolved;
 
     /**
-     * 提交数
+     * 题目提交数
      */
     @Property(name = "problemSubmit")
     private Integer problemSubmit;

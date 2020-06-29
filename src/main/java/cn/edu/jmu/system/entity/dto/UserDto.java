@@ -57,14 +57,4 @@ public class UserDto implements Serializable {
      * 状态
      */
     private UserStatusEnum status;
-
-    /**
-     * 提交数
-     */
-    private Integer submit;
-
-    /**
-     * 通过数
-     */
-    private Integer solved;
 }

@@ -52,6 +52,16 @@ public class UserGroupController {
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BasicResponse> getOneById(@PathVariable("id") Integer userGroupId) {
+        UserGroup userGroup = userGroupService.getById(userGroupId);
+        if (userGroup != null) {
+            return ResponseUtil.buildResponse("查询成功", userGroup);
+        } else {
+            return ResponseUtil.fail("无法找到该ID对应的用户组");
+        }
+    }
+
     @PostMapping(value = "/")
     public ResponseEntity<BasicResponse> create(@RequestBody @Validated CreateUserGroupRequest request) {
         CreateUserGroupResponse response = userGroupService.create(request);

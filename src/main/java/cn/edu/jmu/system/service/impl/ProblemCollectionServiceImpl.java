@@ -2,10 +2,8 @@ package cn.edu.jmu.system.service.impl;
 
 import cn.edu.jmu.system.api.problemcollection.CreateProblemCollectionRequest;
 import cn.edu.jmu.system.api.problemcollection.CreateProblemCollectionResponse;
-import cn.edu.jmu.system.api.problemcollection.DeleteProblemCollectionResponse;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
-import cn.edu.jmu.system.entity.ProblemCategory;
 import cn.edu.jmu.system.entity.ProblemCollection;
 import cn.edu.jmu.system.entity.dto.ProblemCollectionDto;
 import cn.edu.jmu.system.mapper.ProblemCollectionMapper;
@@ -41,15 +39,13 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
     public IPage<ProblemCollectionDto> search(ProblemCollectionDto problemCollectionDto, Page<ProblemCollection> page) {
         Page<ProblemCollection> problemCollectionPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<ProblemCollection> iPage = baseMapper.selectPage(problemCollectionPage, predicate(problemCollectionDto));
-        return iPage.convert(this::problemCollectionDto);
+        return iPage.convert(this::convertProblemCollectionToProblemCollectionDto);
     }
 
-    private ProblemCollectionDto problemCollectionDto(ProblemCollection problemCollection) {
+    private ProblemCollectionDto convertProblemCollectionToProblemCollectionDto(ProblemCollection problemCollection) {
         ProblemCollectionDto problemCollectionDto = ProblemCollectionConverter.problemCollectionDto(problemCollection);
         Problem problem = problemService.getById(problemCollection.getProblemId());
         problemCollectionDto.setProblemTitle(problem.getTitle());
-        problemCollectionDto.setProblemSolved(problem.getSolved());
-        problemCollectionDto.setProblemSubmit(problem.getSubmit());
         problemCollectionDto.setProblemDifficulty(problem.getDifficulty());
         Database database = databaseService.getById(problem.getDatabaseId());
         problemCollectionDto.setDatabaseId(database.getId());

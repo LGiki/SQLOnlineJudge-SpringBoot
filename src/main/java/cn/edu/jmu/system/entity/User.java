@@ -62,18 +62,6 @@ public class User implements Serializable {
     private String email;
 
     /**
-     * 提交数
-     */
-    @TableField(value = "submit")
-    private Integer submit;
-
-    /**
-     * 通过数
-     */
-    @TableField(value = "solved")
-    private Integer solved;
-
-    /**
      * 头像
      */
     @TableField(value = "avatar")

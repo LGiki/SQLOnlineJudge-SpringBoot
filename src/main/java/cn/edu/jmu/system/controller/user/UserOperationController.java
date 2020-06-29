@@ -83,8 +83,6 @@ public class UserOperationController {
             userDto.setStatus(user.getStatus());
             userDto.setUsername(user.getUsername());
             userDto.setStudentNo(user.getStudentNo());
-            userDto.setSolved(user.getSolved());
-            userDto.setSubmit(user.getSubmit());
             userDto.setEmail(user.getEmail());
             boolean success = userService.update(userDto);
             return ResponseUtil.buildResponse(success, "修改成功", "修改失败");
@@ -226,23 +224,19 @@ public class UserOperationController {
      * TODO: Rank榜
      */
     @GetMapping(value = "/rank/{problemCategoryId}")
-    public ResponseEntity<BasicResponse> getRanklist(@PathVariable("problemCategoryId") Integer problemCategoryId, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
-        Page<User> userPage = new Page<>(pageNum, pageSize);
-        UserDto userDto = new UserDto();
-        userDto.setStatus(UserStatusEnum.NORMAL);
-        IPage<UserDto> iPage = userService.getAll(userDto, userPage, User::getSolved, true);
-        return ResponseUtil.buildResponse("查询成功", iPage);
+    public ResponseEntity<BasicResponse> getRankList(@PathVariable("problemCategoryId") Integer problemCategoryId, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+        return null;
     }
 
     /**
      * 通过题目集ID查询题目集包含的题目列表
      */
-    @GetMapping(value = "/problem-collection/{id}")
-    public ResponseEntity<BasicResponse> selectProblemCategoryDetail(@PathVariable("id") Integer categoryId, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
-        return ProblemCategoryStatusHandler.handle(categoryId, problemCategoryService, () -> {
+    @GetMapping(value = "/problem-collection/{problemCategoryId}")
+    public ResponseEntity<BasicResponse> selectProblemCategoryDetail(@PathVariable("problemCategoryId") Integer problemCategoryId, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+        return ProblemCategoryStatusHandler.handle(problemCategoryId, problemCategoryService, () -> {
             Page<ProblemCollection> page = new Page<>(pageNum, pageSize);
             ProblemCollectionDto problemCollectionDto = new ProblemCollectionDto();
-            problemCollectionDto.setCategoryId(categoryId);
+            problemCollectionDto.setCategoryId(problemCategoryId);
             IPage<ProblemCollectionDto> iPage = problemCollectionService.search(problemCollectionDto, page);
             return ResponseUtil.buildResponse("查询成功", iPage);
         });

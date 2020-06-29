@@ -9,6 +9,7 @@ import cn.edu.jmu.judge.util.PythonJudgeUtil;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
+import cn.edu.jmu.system.entity.dto.ProblemListDto;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.converter.ProblemConverter;
@@ -53,9 +54,9 @@ public class ProblemController {
      * 查询所有题目
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<BasicResponse> selectAll(ProblemDto problemDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> getAll(ProblemDto problemDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Problem> page = new Page<>(pageNum, pageSize);
-        IPage<ProblemDto> iPage = problemService.getAll(problemDto, page);
+        IPage<ProblemListDto> iPage = problemService.getAll(problemDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 

@@ -57,18 +57,6 @@ public class Problem implements Serializable {
     private String answer;
 
     /**
-     * 通过数
-     */
-    @TableField(value = "solved")
-    private Integer solved;
-
-    /**
-     * 提交数
-     */
-    @TableField(value = "submit")
-    private Integer submit;
-
-    /**
      * 正确输出
      */
     @TableField(value = "true_result")

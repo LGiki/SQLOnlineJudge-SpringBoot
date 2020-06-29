@@ -6,6 +6,7 @@ import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.ProblemDetailToUserDto;
 import cn.edu.jmu.system.entity.dto.ProblemDto;
+import cn.edu.jmu.system.entity.dto.ProblemListDto;
 import cn.edu.jmu.system.mapper.ProblemMapper;
 import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.ProblemService;
@@ -42,10 +43,18 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @return IPage<problem>
      */
     @Override
-    public IPage<ProblemDto> getAll(ProblemDto problemDto, Page page) {
+    public IPage<ProblemListDto> getAll(ProblemDto problemDto, Page page) {
         Page<Problem> problemPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Problem> iPage = baseMapper.selectPage(problemPage, predicate(problemDto).orderByAsc(Problem::getTitle));
-        return iPage.convert(ProblemConverter::toDto);
+        return iPage.convert(this::convertProblemDtoToProblemListDto);
+    }
+
+    private ProblemListDto convertProblemDtoToProblemListDto(Problem problem) {
+        ProblemListDto problemListDto = new ProblemListDto(problem);
+        Database problemDatabase = databaseService.getById(problem.getDatabaseId());
+        problemListDto.setDatabaseId(problem.getDatabaseId());
+        problemListDto.setDatabaseName(problemDatabase.getName());
+        return problemListDto;
     }
 
     /**
