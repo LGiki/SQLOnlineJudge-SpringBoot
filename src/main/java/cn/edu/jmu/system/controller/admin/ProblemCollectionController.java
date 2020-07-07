@@ -2,6 +2,7 @@ package cn.edu.jmu.system.controller.admin;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.system.api.problemcollection.UpdateProblemScoreRequest;
 import cn.edu.jmu.system.entity.ProblemCollection;
 import cn.edu.jmu.system.entity.dto.ProblemCollectionDto;
 import cn.edu.jmu.system.service.ProblemCategoryService;
@@ -11,14 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -51,6 +45,23 @@ public class ProblemCollectionController {
         Boolean insertResult = problemCollectionService.save(problemCollection);
         return ResponseUtil.buildResponse(insertResult, "新增题目成功", "新增题目失败");
     }
+
+
+    /**
+     * 通过题目集ID查找题目集所包含的所有题目的ID
+     *
+     * @param problemCategoryId 题目集ID
+     */
+    @GetMapping("/problem_ids/{problemCategoryId}")
+    public ResponseEntity<BasicResponse> getProblemIdsByProblemCategoryId(@PathVariable("problemCategoryId") Integer problemCategoryId) {
+        Boolean isProblemCategoryExist = problemCategoryService.exist(problemCategoryId);
+        if (!isProblemCategoryExist) {
+            return ResponseUtil.fail("该题目集不存在");
+        } else {
+            return ResponseUtil.buildResponse("查询成功", problemCollectionService.getProblemIdsByProblemCategoryId(problemCategoryId));
+        }
+    }
+
 
     /**
      * 批量创建ProblemCollection
@@ -119,5 +130,11 @@ public class ProblemCollectionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable Integer id) {
         return ResponseUtil.buildResponse(problemCollectionService.delete(id), "删除成功", "删除失败");
+    }
+
+    @PutMapping("/update_score/{id}")
+    public ResponseEntity<BasicResponse> updateProblemScoreById(@PathVariable Integer id, @RequestBody UpdateProblemScoreRequest updateProblemScoreRequest) {
+        boolean updateResult = problemCollectionService.updateProblemScoreById(id, updateProblemScoreRequest.getNewProblemScore());
+        return ResponseUtil.buildResponse(updateResult, "修改题目分值成功", "修改题目分值失败，请检查题目集ID是否正确");
     }
 }

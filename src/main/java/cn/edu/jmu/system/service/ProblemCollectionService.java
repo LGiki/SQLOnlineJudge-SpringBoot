@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author xeathen
  */
@@ -33,8 +35,8 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
     /**
      * 删除题目集关系
      *
-     * @param id
-     * @return
+     * @param id ProblemCollection ID
+     * @return Boolean 是否删除成功
      */
     Boolean delete(Integer id);
 
@@ -46,4 +48,29 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
      * @return Boolean 题目是否存在于题目集里
      */
     Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId);
+
+    /**
+     * 根据题目集ID获取该题目集的所有题目ID
+     *
+     * @param problemCategoryId 题目集ID
+     * @return List<Integer>
+     */
+    List<Integer> getProblemIdsByProblemCategoryId(Integer problemCategoryId);
+
+    /**
+     * 通过ProblemCollection ID更新题目分值
+     *
+     * @param id           ProblemCollection ID
+     * @param problemScore 新的题目分值
+     * @return Boolean 是否更新成功
+     */
+    Boolean updateProblemScoreById(Integer id, Integer problemScore);
+
+    /**
+     * 通过Problem Collection ID判断Problem Collection是否存在
+     *
+     * @param id Problem Collection ID
+     * @return Boolean Problem Collection是否存在
+     */
+    Boolean exist(Integer id);
 }

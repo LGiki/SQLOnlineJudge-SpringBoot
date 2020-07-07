@@ -67,7 +67,7 @@ public class AdminController {
      */
     @PutMapping(value = "/status/{id}")
     public ResponseEntity<BasicResponse> status(@PathVariable("id") Integer id) {
-        boolean success = adminService.changeAdminStatus(id);
+        boolean success = adminService.toggleAdminStatus(id);
         return ResponseUtil.buildResponse(success, "更改成功", "更改失败");
     }
 

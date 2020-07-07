@@ -30,10 +30,10 @@ public interface AdminService extends IService<Admin> {
     boolean insert(Admin admin);
 
     /**
-     * 更改管理员状态
+     * 切换管理员状态：正常 <-> 正常
      *
-     * @param id id
-     * @return boolean
+     * @param id 管理员ID
+     * @return boolean 操作是否执行成功
      */
-    boolean changeAdminStatus(Integer id);
+    boolean toggleAdminStatus(Integer id);
 }

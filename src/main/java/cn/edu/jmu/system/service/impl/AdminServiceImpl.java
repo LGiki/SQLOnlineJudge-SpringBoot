@@ -58,13 +58,13 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     }
 
     /**
-     * 更改用户状态
+     * 切换管理员状态：正常 <-> 正常
      *
-     * @param id id
-     * @return boolean
+     * @param id 管理员ID
+     * @return boolean 操作是否执行成功
      */
     @Override
-    public boolean changeAdminStatus(Integer id) {
+    public boolean toggleAdminStatus(Integer id) {
         Admin admin = baseMapper.selectById(id);
         if (admin.getStatus() == UserStatusEnum.NORMAL) {
             admin.setStatus(UserStatusEnum.LOCK);

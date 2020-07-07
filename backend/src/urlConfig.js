@@ -43,5 +43,11 @@ const Url = {
   problemCollectionBaseUrl: BaseUrl + '/problem_collection/',
   // 批量向题目集中添加题目接口
   createProblemCollectionInBulkUrl: BaseUrl + '/problem_collection/bulk',
+  // 批量添加、删除题目集题目接口
+  problemCollectionBulkUrl: BaseUrl + '/problem_collection/bulk/',
+  // 查询题目集包含的题目ID接口
+  problemCollectionProblemIdsUrl: BaseUrl + '/problem_collection/problem_ids/',
+  // 更新题目集的题目分值接口
+  problemCollectionUpdateProblemScoreUrl: BaseUrl + '/problem_collection/update_score/'
 }
 export default Url

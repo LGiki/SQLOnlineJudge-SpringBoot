@@ -14,12 +14,16 @@ import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.converter.ProblemCollectionConverter;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author xeathen
@@ -90,5 +94,24 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
     @Override
     public Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId) {
         return problemCollectionMapper.countByProblemIdAndProblemCategoryId(problemId, problemCategoryId) > 0;
+    }
+
+    @Override
+    public List<Integer> getProblemIdsByProblemCategoryId(Integer problemCategoryId) {
+        return baseMapper.selectList(Wrappers.<ProblemCollection>lambdaQuery().eq(ProblemCollection::getCategoryId, problemCategoryId)).stream().map(ProblemCollection::getProblemId).collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean exist(Integer id) {
+        return baseMapper.selectById(id) != null;
+    }
+
+    @Override
+    public Boolean updateProblemScoreById(Integer id, Integer problemScore) {
+        if (this.exist(id)) {
+            return problemCollectionMapper.updateProblemScoreById(id, problemScore) >= 1;
+        } else {
+            return false;
+        }
     }
 }
