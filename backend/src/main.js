@@ -15,7 +15,7 @@ import router from './router'
 import '@/icons' // icon
 
 import VueHighlightJS from 'vue-highlight.js'
-
+import { handleResponse } from '@/utils/response-handler'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -25,52 +25,14 @@ import VueHighlightJS from 'vue-highlight.js'
  * please remove it before going online! ! !
  */
 // import { mockXHR } from '../mock'
-import Url from './urlConfig'
-import Axios from 'axios'
 // if (process.env.NODE_ENV === 'production') {
 //   mockXHR()
 // }
 
-Axios.interceptors.request.use(
-  config => {
-    if (localStorage.JWT_TOKEN) { // 判断是否存在token，如果存在的话，则每个http header都加上token
-      config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`
-    }
-    return config
-  },
-  err => {
-    return Promise.reject(err)
-  }
-)
-
-Axios.interceptors.response.use(
-  response => {
-    if (response.status === 403) {
-      this.$router.push({ path: '/login' })
-    }
-    return response
-  },
-  error => {
-    if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          localStorage.removeItem('JWT_TOKEN')
-          localStorage.removeItem('role')
-          router.replace({
-            path: '/login'
-          })
-          location.reload()
-      }
-    }
-    return Promise.reject(error) // 返回接口返回的错误信息
-  }
-)
-
-// set ElementUI lang to EN
+// set ElementUI locale
 Vue.use(ElementUI, { locale })
 Vue.use(VueHighlightJS)
-Vue.prototype.Url = Url
-Vue.prototype.$axios = Axios
+Vue.prototype.handleResponse = handleResponse
 Vue.prototype.constructSQLExpression = function(tableName, tableFieldList, tableValues) {
   let sqlExpression = 'INSERT INTO `' + tableName + '` ('
   for (let i = 0; i < tableFieldList.length; i++) {

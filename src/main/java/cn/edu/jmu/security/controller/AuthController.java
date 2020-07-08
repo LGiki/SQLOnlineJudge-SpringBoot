@@ -31,7 +31,7 @@ import java.util.Map;
  * @date 2019/8/21 下午3:38
  */
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/api")
 public class AuthController {
 
     @Resource
@@ -46,7 +46,7 @@ public class AuthController {
     /**
      * 用户登录
      */
-    @PostMapping(value = "/user/login")
+    @PostMapping(value = "/user/auth")
     public ResponseEntity<BasicResponse> userLogin(@RequestParam String username, @RequestParam String password) {
         // 支持通过学号登录
         User userByStudentNo = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getStudentNo, username));
@@ -68,7 +68,7 @@ public class AuthController {
     /**
      * 管理员登录
      */
-    @PostMapping(value = "/admin/login")
+    @PostMapping(value = "/admin/auth")
     public ResponseEntity<BasicResponse> adminLogin(@RequestParam String username, @RequestParam String password) {
         // 得到当前 subject
         Subject subject = SecurityUtils.getSubject();
