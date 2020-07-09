@@ -57,6 +57,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getDatabaseList, deleteDatabase } from '@/api/database'
 
 export default {
   components: {
@@ -121,50 +122,36 @@ export default {
     }
   },
   mounted: function() {
-    this.fetchDatabaseList()
+    this.getDatabaseList()
   },
   methods: {
     onSearch() {
       const keyword = this.searchKeyword.trim()
       this.pageNum = 1
       if (keyword.length === 0) {
-        this.$message.error('请输入关键字！')
+        this.$message.error('请输入关键字后再进行搜索')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.databaseBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum,
-              pageSize: this.pageSize
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
-            this.isLoading = false
-          })
-          .catch(err => {
-            this.$message.error('搜索失败！')
-            this.isLoading = false
-            console.log(err)
-          })
+        this.handleResponse(getDatabaseList(this.pageNum, this.pageSize, this.searchType, keyword), '搜索数据库', (res) => {
+          if (res.data.total === 0) {
+            this.$message({
+              type: 'warning',
+              message: '未找到相关数据库'
+            })
+          }
+          this.tableConfig.tableData = res.data.records
+          this.totalItems = res.data.total
+          this.inSearch = true
+        },
+        null,
+        () => {
+          this.isLoading = false
+        })
       }
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchDatabaseList()
+      this.getDatabaseList()
     },
     onNewDatabase() {
       this.$router.push({ path: '/database/add/' })
@@ -178,11 +165,11 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.deleteDatabase(databaseId, () => {
+          this.handleResponse(deleteDatabase(databaseId), '删除数据库', () => {
             this.$message.success('成功删除数据库！')
-            this.fetchDatabaseList()
+            this.getDatabaseList()
           })
-        });
+        })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/database/edit/' + databaseId })
       }
@@ -192,7 +179,7 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchDatabaseList()
+        this.getDatabaseList()
       }
     },
     pageSizeChange(newPageSize) {
@@ -200,66 +187,31 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchDatabaseList()
+        this.getDatabaseList()
       }
     },
-    fetchDatabaseList() {
+    getDatabaseList() {
       this.isLoading = true
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取数据库列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取数据库列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    deleteDatabase(databaseId, successCallback) {
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .delete(apiUrl + databaseId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('删除数据库失败，内部错误！')
-          } else {
-            successCallback()
-          }
-        })
-        .catch(err => {
-          this.$message.error('删除数据库失败！')
-          console.log(err)
-        })
+      this.handleResponse(getDatabaseList(this.pageNum, this.pageSize), '获取数据库列表', res => {
+        this.tableConfig.tableData = res.data.records
+        this.totalItems = res.data.total
+      },
+      null,
+      () => {
+        this.isLoading = false
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.bd {
-  padding-top: 15px;
-  text-align: center;
-}
+  .bd {
+    padding-top: 15px;
+    text-align: center;
+  }
 
-.operation-button {
-  float: right;
-  padding-bottom: 10px;
-}
+  .operation-button {
+    float: right;
+    padding-bottom: 10px;
+  }
 </style>

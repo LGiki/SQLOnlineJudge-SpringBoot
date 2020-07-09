@@ -45,6 +45,11 @@ public class UserGroupController {
 //        return ResponseUtil.buildResponse(response);
 //    }
 
+    @GetMapping("/count")
+    public ResponseEntity<BasicResponse> count() {
+        return ResponseUtil.buildResponse(userGroupService.count());
+    }
+
     @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> search(@Validated UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<UserGroup> page = new Page<>(pageNum, pageSize);

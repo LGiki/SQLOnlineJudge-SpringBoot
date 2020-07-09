@@ -28,6 +28,11 @@ public class ProblemCategoryController {
     @Resource
     ProblemCategoryService problemCategoryService;
 
+    @GetMapping("/count")
+    public ResponseEntity<BasicResponse> count() {
+        return ResponseUtil.buildResponse(problemCategoryService.count());
+    }
+
     @GetMapping("/")
     public ResponseEntity<BasicResponse> search(ProblemCategoryDto problemCategoryDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<ProblemCategory> page = new Page<>(pageNum, pageSize);

@@ -40,13 +40,16 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button @click="onCancel">取消</el-button>
+        <el-button @click="this.$router.back(-1)">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import ConvertUtil from '@/utils/convert-util'
+import { createProblemCategory } from '@/api/problem-category'
+
 export default {
   data() {
     return {
@@ -106,49 +109,21 @@ export default {
     onSubmit() {
       this.$refs.problemCategoryDetail.validate(valid => {
         if (valid) {
-          this.addProblemCategory()
+          const postData = {
+            name: this.problemCategoryDetail.name.trim(),
+            startTime: ConvertUtil.convertDateToString(this.problemCategoryDetail.duration[0]),
+            endTime: ConvertUtil.convertDateToString(this.problemCategoryDetail.duration[1]),
+            viewAfterEnd: this.problemCategoryDetail.viewAfterEnd
+          }
+          this.handleResponse(createProblemCategory(postData.name, postData.startTime, postData.endTime, postData.viewAfterEnd), '添加题目集',
+            (res) => {
+              this.$message.success('添加题目集成功')
+              this.$router.push('/problem-category/edit/' + res.data.id)
+            })
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
       })
-    },
-    onCancel() {
-      this.$router.back(-1)
-    },
-    // Convert date to: yyyy-MM-dd HH:mm:ss
-    convertDateToString(date) {
-      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
-    },
-    addProblemCategory() {
-      const apiUrl = this.Url.problemCategoryBaseUrl
-      const postData = {
-        name: this.problemCategoryDetail.name.trim(),
-        startTime: this.convertDateToString(this.problemCategoryDetail.duration[0]),
-        endTime: this.convertDateToString(this.problemCategoryDetail.duration[1]),
-        viewAfterEnd: this.problemCategoryDetail.viewAfterEnd
-      }
-      this.$axios
-        .post(apiUrl, postData)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('添加题目集失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              this.$router.push('/problem-category/edit/' + resData.data.id)
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          this.$message.error('添加题目集失败！')
-          console.log(err)
-        })
     }
   }
 }

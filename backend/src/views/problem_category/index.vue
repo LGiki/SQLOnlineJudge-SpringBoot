@@ -58,6 +58,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getProblemCategoryList, deleteProblemCategory } from '@/api/problem-category'
 
 export default {
   components: {
@@ -150,7 +151,7 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchProblemCategoryList()
+    this.getProblemCategoryList()
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
@@ -162,80 +163,28 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.problemCategoryBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
+        this.handleResponse(getProblemCategoryList(this.pageNum, this.pageSize, this.searchType, keyword), '搜索题目集',
+          (res) => {
+            this.tableConfig.tableData = res.data.records
+            this.totalItems = res.data.total
+            this.inSearch = true
+          },
+          null,
+          () => {
             this.isLoading = false
-          })
-          .catch(err => {
-            this.$message.error('搜索失败！')
-            this.isLoading = false
-            console.log(err)
           })
       }
     },
-    fetchProblemCategoryList() {
+    getProblemCategoryList() {
       this.isLoading = true
-      const apiUrl = this.Url.problemCategoryBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取题目集列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getProblemCategoryList(this.pageNum, this.pageSize), '搜索题目集',
+        (res) => {
+          this.tableConfig.tableData = res.data.records
+          this.totalItems = res.data.total
+        },
+        null,
+        () => {
           this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取题目集列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    deleteProblemCategory(problemCategoryId, successCallback) {
-      const apiUrl = this.Url.problemCategoryBaseUrl
-      this.$axios
-        .delete(apiUrl + problemCategoryId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('删除题目集失败，内部错误！')
-          } else {
-            successCallback()
-          }
-        })
-        .catch(err => {
-          this.$message.error('删除题目集失败！')
-          console.log(err)
         })
     },
     onTableOperation(params) {
@@ -247,11 +196,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.deleteProblemCategory(problemCategoryId, () => {
-            this.$message.success('成功删除题目集！')
-            this.fetchProblemCategoryList()
-          })
-        });
+          this.handleResponse(deleteProblemCategory(problemCategoryId), '删除题目集',
+            (res) => {
+              this.$message.success('成功删除题目集！')
+              this.getProblemCategoryList()
+            })
+        })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/problem-category/edit/' + problemCategoryId })
       }
@@ -261,14 +211,14 @@ export default {
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchProblemCategoryList()
+      this.getProblemCategoryList()
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchProblemCategoryList()
+        this.getProblemCategoryList()
       }
     },
     pageSizeChange(newPageSize) {
@@ -276,7 +226,7 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchProblemCategoryList()
+        this.getProblemCategoryList()
       }
     }
   }

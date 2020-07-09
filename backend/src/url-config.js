@@ -33,20 +33,24 @@ const baseApiUrlConfig = {
   uploadImage: '/util/upload',
   // 用户组基础接口
   userGroupBase: '/user_group',
+  // 用户组数量接口
+  userGroupCount: '/user_group/count',
   // 调试运行接口
   runCode: '/problems/judgement',
   // 题目集基础接口
-  problemCategoryBase: '/problem_category/',
+  problemCategoryBase: '/problem_category',
+  // 用户组数量接口
+  problemCategoryCount: '/problem_category/count',
   // 题目集题目列表接口
-  problemCollectionBase: '/problem_collection/',
+  problemCollectionBase: '/problem_collection',
   // 批量向题目集中添加题目接口
   createProblemCollectionInBulk: '/problem_collection/bulk',
   // 批量添加、删除题目集题目接口
-  problemCollectionBulk: '/problem_collection/bulk/',
+  problemCollectionBulk: '/problem_collection/bulk',
   // 查询题目集包含的题目ID接口
-  problemCollectionProblemIds: '/problem_collection/problem_ids/',
+  problemCollectionProblemIds: '/problem_collection/problem_ids',
   // 更新题目集的题目分值接口
-  problemCollectionUpdateProblemScore: '/problem_collection/update_score/'
+  problemCollectionUpdateProblemScore: '/problem_collection/update_score'
 }
 const specialApiUrlConfig = {
   // 解答基础操作

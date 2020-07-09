@@ -48,7 +48,6 @@ public class SolutionController {
      */
     @GetMapping(value = "/count")
     public ResponseEntity<BasicResponse> count() {
-        int count = solutionService.count();
-        return ResponseUtil.buildResponse(count);
+        return ResponseUtil.buildResponse(solutionService.count());
     }
 }

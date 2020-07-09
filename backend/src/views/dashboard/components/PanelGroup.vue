@@ -3,14 +3,14 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handlePanelClick('user')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <svg-icon icon-class="people" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">用户数量</div>
           <count-to
             :start-val="0"
             :end-val="systemDetail.userCount"
-            :duration="1600"
+            :duration="1500"
             class="card-panel-num"
           />
         </div>
@@ -26,7 +26,7 @@
           <count-to
             :start-val="0"
             :end-val="systemDetail.databaseCount"
-            :duration="2000"
+            :duration="1500"
             class="card-panel-num"
           />
         </div>
@@ -42,7 +42,7 @@
           <count-to
             :start-val="0"
             :end-val="systemDetail.problemCount"
-            :duration="2200"
+            :duration="1500"
             class="card-panel-num"
           />
         </div>
@@ -58,7 +58,39 @@
           <count-to
             :start-val="0"
             :end-val="systemDetail.solutionCount"
-            :duration="2600"
+            :duration="1500"
+            class="card-panel-num"
+          />
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handlePanelClick('problemCategory')">
+        <div class="card-panel-icon-wrapper icon-shanjihuang">
+          <svg-icon icon-class="tree-table" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">题目集数量</div>
+          <count-to
+            :start-val="0"
+            :end-val="systemDetail.problemCategoryCount"
+            :duration="1500"
+            class="card-panel-num"
+          />
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handlePanelClick('userGroup')">
+        <div class="card-panel-icon-wrapper icon-xiekehong">
+          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">用户组数量</div>
+          <count-to
+            :start-val="0"
+            :end-val="systemDetail.userGroupCount"
+            :duration="1500"
             class="card-panel-num"
           />
         </div>
@@ -69,6 +101,12 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { getProblemCount } from '@/api/problem'
+import { getUserCount } from '@/api/user'
+import { getDatabaseCount } from '@/api/database'
+import { getSolutionCount } from '@/api/solution'
+import { getUserGroupCount } from '@/api/user-group'
+import { getProblemCategoryCount } from '@/api/problem-category'
 
 export default {
   components: {
@@ -80,7 +118,9 @@ export default {
         databaseCount: 0,
         problemCount: 0,
         userCount: 0,
-        solutionCount: 0
+        solutionCount: 0,
+        problemCategoryCount: 0,
+        userGroupCount: 0
       }
     }
   },
@@ -89,6 +129,8 @@ export default {
     this.getDatabaseCount()
     this.getProblemCount()
     this.getSolutionCount()
+    this.getProblemCategoryCount()
+    this.getUserGroupCount()
   },
   methods: {
     handlePanelClick(type) {
@@ -105,87 +147,45 @@ export default {
         case 'database':
           this.$router.push({ path: '/database/index/' })
           break
+        case 'userGroup':
+          this.$router.push({ path: '/user-group/index/' })
+          break
+        case 'problemCategory':
+          this.$router.push({ path: '/problem-category/index/' })
+          break
+        default:
+          this.$message.error('您好像点击了一个未知的按钮')
       }
     },
     getUserCount() {
-      const apiUrl = this.Url.userCount
-      this.$axios
-        .get(apiUrl)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户数量失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.systemDetail.userCount = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.handleResponse(getUserCount(), '获取用户数量', res => {
+        this.systemDetail.userCount = res.data
+      })
+    },
+    getUserGroupCount() {
+      this.handleResponse(getUserGroupCount(), '获取用户组数量', res => {
+        this.systemDetail.userGroupCount = res.data
+      })
     },
     getDatabaseCount() {
-      const apiUrl = this.Url.databaseCount
-      this.$axios
-        .get(apiUrl)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取数据库数量失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.systemDetail.databaseCount = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.handleResponse(getDatabaseCount(), '获取数据库数量', res => {
+        this.systemDetail.databaseCount = res.data
+      })
     },
     getProblemCount() {
-      const apiUrl = this.Url.problemCount
-      this.$axios
-        .get(apiUrl)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取题目数量失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.systemDetail.problemCount = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.handleResponse(getProblemCount(), '获取题目数量', res => {
+        this.systemDetail.problemCount = res.data
+      })
+    },
+    getProblemCategoryCount() {
+      this.handleResponse(getProblemCategoryCount(), '获取题目集数量', res => {
+        this.systemDetail.problemCategoryCount = res.data
+      })
     },
     getSolutionCount() {
-      const apiUrl = this.Url.solutionCount
-      this.$axios
-        .get(apiUrl)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户提交数量失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.systemDetail.solutionCount = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.handleResponse(getSolutionCount(), '获取解答数量', res => {
+        this.systemDetail.solutionCount = res.data
+      })
     }
   }
 }
@@ -230,6 +230,14 @@ export default {
       .icon-shopping {
         background: #34bfa3;
       }
+
+      .icon-shanjihuang {
+        background: #b78b26;
+      }
+
+      .icon-xiekehong {
+        background: #f27635;
+      }
     }
 
     .icon-people {
@@ -246,6 +254,14 @@ export default {
 
     .icon-shopping {
       color: #34bfa3;
+    }
+
+    .icon-shanjihuang {
+      color: #b78b26;
+    }
+
+    .icon-xiekehong {
+      color: #f27635;
     }
 
     .card-panel-icon-wrapper {
