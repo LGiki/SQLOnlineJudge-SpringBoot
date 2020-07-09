@@ -23,13 +23,34 @@ export function getDatabaseList(pageNum, pageSize, searchType, keyword) {
   })
 }
 
-export function createDatabase() {
+export function getAllDatabase() {
+  return httpRequest({
+    url: baseApiUrlConfig.getAllDatabase,
+    method: 'get'
+  })
+}
 
+export function createDatabase(name, createTable, testData) {
+  return httpRequest({
+    url: `${baseApiUrlConfig.databaseBase}/`,
+    method: 'post',
+    data: {
+      name: name,
+      createTable: createTable,
+      testData: testData
+    }
+  })
 }
 
 export function updateDatabase(databaseId, name, createTable, testData) {
   return httpRequest({
-    url: `${baseApiUrlConfig.databaseBase}/${databaseId}`
+    url: `${baseApiUrlConfig.databaseBase}/${databaseId}`,
+    method: 'put',
+    data: {
+      name: name,
+      createTable: createTable,
+      testData: testData
+    }
   })
 }
 

@@ -11,8 +11,8 @@
         <el-rate
           v-model="problemDetail.difficulty"
           show-text
-          :texts="[1, 2, 3, 4, 5]">
-        </el-rate>
+          :texts="[1, 2, 3, 4, 5]"
+        />
       </el-form-item>
       <el-form-item label="数据库" prop="databaseId">
         <el-select v-model="problemDetail.databaseId" placeholder="选择数据库">
@@ -52,16 +52,16 @@
         <el-switch
           v-model="problemDetail.isUpdate"
           active-text="带有Update操作的题目"
-          inactive-text="常规Select题目">
-        </el-switch>
+          inactive-text="常规Select题目"
+        />
       </el-form-item>
       <el-form-item label="答案" prop="answer">
         <codemirror v-model="problemDetail.answer" :options="cmOptions" @ready="onCmReady" />
-        <el-input v-if="false" v-model="problemDetail.answer"/>
+        <el-input v-if="false" v-model="problemDetail.answer" />
       </el-form-item>
       <el-form-item v-if="problemDetail.isUpdate" label="对有进行修改的表的Select语句" prop="selectAfterUpdate">
         <codemirror v-model="problemDetail.selectAfterUpdate" :options="cmOptions" @ready="onCmReady" />
-        <el-input v-if="false" v-model="problemDetail.selectAfterUpdate"/>
+        <el-input v-if="false" v-model="problemDetail.selectAfterUpdate" />
       </el-form-item>
       <el-form-item>
         <el-button type="warning" plain @click="runCode">调试运行答案</el-button>
@@ -138,6 +138,9 @@ import 'codemirror/addon/hint/sql-hint.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 import 'codemirror/addon/hint/show-hint.css'
 import Tinymce from '@/components/Tinymce'
+import { updateProblem, createProblem, getProblemDetail } from '@/api/problem'
+import { getAllDatabase, getDatabaseDetail } from '@/api/database'
+import { runCode } from '@/api/judge'
 
 export default {
   components: {
@@ -170,7 +173,7 @@ export default {
             required: true,
             message: '题目难度不能为空',
             trigger: 'blur'
-          },
+          }
         ],
         description: [
           {
@@ -241,17 +244,25 @@ export default {
   mounted: function() {
     const problemId = this.$route.params.id
     if (!this.isAdd) {
-      this.getProblemDetail(problemId)
+      this.handleResponse(getProblemDetail(problemId), '获取题目详情',
+        (res) => {
+          this.problemDetail = res.data
+          if (!this.problemDetail.description) {
+            this.problemDetail.description = ''
+          }
+          if (!this.problemDetail.sampleOutput) {
+            this.problemDetail.sampleOutput = ''
+          }
+          if (!this.problemDetail.hint) {
+            this.problemDetail.hint = ''
+          }
+        })
     }
     this.getDatabaseList()
   },
   methods: {
     isEmpty(obj) {
-      if (typeof obj === 'undefined' || obj === null || obj === '') {
-        return true
-      } else {
-        return false
-      }
+      return typeof obj === 'undefined' || obj === null || obj === ''
     },
     onCmReady(cm) {
       cm.on('keypress', () => {
@@ -268,34 +279,16 @@ export default {
         return
       }
       this.runResult = ''
-      const apiUrl = this.Url.runCode
-      this.$axios
-        .post(apiUrl + this.problemDetail.databaseId,
-          {
-            sourceCode: this.problemDetail.answer
-          })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('调试运行失败，内部错误！')
-          } else {
-            this.runResult = ''
-            const resData = res.data
-            if (resData.code === 0) {
-              const runResult = resData.data
-              const reg = /\((.*?)\)/g
-              let res = reg.exec(runResult)
-              while (res) {
-                this.runResult += res[0] + '\r\n'
-                res = reg.exec(runResult)
-              }
-              this.runCodeDialogVisible = true
-            } else {
-              this.$message.error(resData.message)
-            }
+      this.handleResponse(runCode(this.problemDetail.databaseId, this.problemDetail.answer), '调试运行',
+        (res) => {
+          const runResult = res.data
+          const reg = /\((.*?)\)/g
+          let regResult = reg.exec(runResult)
+          while (regResult) {
+            this.runResult += regResult[0] + '\r\n'
+            regResult = reg.exec(runResult)
           }
-        })
-        .catch(err => {
-          console.log(err)
+          this.runCodeDialogVisible = true
         })
     },
     onSubmit() {
@@ -314,14 +307,17 @@ export default {
             selectAfterUpdate: this.problemDetail.selectAfterUpdate
           }
           if (this.isAdd) {
-            this.addProblem(problem, () => {
-              this.$router.back(-1)
-            })
+            this.handleResponse(createProblem(problem.title, problem.description, problem.sampleOutput, problem.hint, problem.answer, problem.databaseId, problem.difficulty, problem.isUpdate, problem.selectAfterUpdate), '添加题目',
+              (res) => {
+                this.$message.success('添加题目成功')
+                this.$router.back(-1)
+              })
           } else {
-            problem.id = problemId
-            this.updateProblem(problemId, problem, () => {
-              this.$router.back(-1)
-            })
+            this.handleResponse(updateProblem(problemId, problem.title, problem.description, problem.sampleOutput, problem.hint, problem.answer, problem.databaseId, problem.difficulty, problem.isUpdate, problem.selectAfterUpdate), '添加题目',
+              (res) => {
+                this.$message.success('更新题目成功')
+                this.$router.back(-1)
+              })
           }
         } else {
           this.$message.error('请确认所有项目均填写正确！')
@@ -331,130 +327,27 @@ export default {
     onCancel() {
       this.$router.back(-1)
     },
-    getProblemDetail(problemId) {
-      const apiUrl = this.Url.problemBaseUrl
-      this.$axios
-        .get(apiUrl + problemId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取题目详情失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.problemDetail = resData.data
-              if (!this.problemDetail.description) {
-                this.problemDetail.description = ''
-              }
-              if (!this.problemDetail.sampleOutput) {
-                this.problemDetail.sampleOutput = ''
-              }
-              if (!this.problemDetail.hint) {
-                this.problemDetail.hint = ''
-              }
-            } else {
-              this.$message.error('获取题目详情失败！')
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     getDatabaseList() {
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .get(apiUrl)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取数据库列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.databaseList = resData.data.records
-            } else {
-              this.$message.error('获取数据库列表失败！')
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    updateProblem(problemId, problem, successCallback) {
-      const apiUrl = this.Url.problemBaseUrl
-      this.$axios
-        .put(apiUrl + problemId, problem)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新题目失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          this.$message.error('添加题目失败！')
-          console.log(err)
-        })
-    },
-    addProblem(problem, successCallback) {
-      const apiUrl = this.Url.problemBaseUrl
-      this.$axios
-        .post(apiUrl, problem)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('添加题目失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          this.$message.error('添加题目失败！')
-          console.log(err)
+      this.handleResponse(getAllDatabase(), '获取数据库列表',
+        (res) => {
+          this.databaseList = res.data
         })
     },
     getDatabaseDetail(databaseId, viewType) {
-      const apiUrl = this.Url.databaseBaseUrl
       if (viewType === 'createTable') {
         this.viewDatabaseDetailDialogTitle = '查看建表语句'
       } else if (viewType === 'testData') {
         this.viewDatabaseDetailDialogTitle = '查看测试数据'
       }
       this.databaseDetailCode = ''
-      this.$axios
-        .get(apiUrl + databaseId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取数据库建表语句失败，内部错误！')
+      this.handleResponse(getDatabaseDetail(databaseId), '获取数据库详情',
+        (res) => {
+          if (res.code === 0) {
+            this.databaseDetailCode = res.data[viewType]
+            this.viewDatabaseDetailDialogVisible = true
           } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.databaseDetailCode = resData.data[viewType]
-              this.viewDatabaseDetailDialogVisible = true
-            } else {
-              this.$message.error(resData.message)
-            }
+            this.$message.error(res.message)
           }
-        })
-        .catch(err => {
-          console.log(err)
         })
     }
   }

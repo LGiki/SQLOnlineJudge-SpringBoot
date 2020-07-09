@@ -18,13 +18,13 @@
         />
       </el-select>
       <el-button type="primary" @click="onSearch">
-        <svg-icon icon-class="search" />&nbsp;搜索
+        <svg-icon icon-class="search"/>&nbsp;搜索
       </el-button>
       <el-button v-if="inSearch" type="primary" @click="onCancelSearch">
-        <i class="el-icon-close" />&nbsp;取消搜索
+        <i class="el-icon-close"/>&nbsp;取消搜索
       </el-button>
       <el-button type="danger" @click="onNewProblem">
-        <i class="el-icon-plus" />&nbsp;新建题目
+        <i class="el-icon-plus"/>&nbsp;新建题目
       </el-button>
     </div>
     <template>
@@ -58,6 +58,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getProblemList, deleteProblem } from '@/api/problem'
 
 export default {
   components: {
@@ -131,11 +132,11 @@ export default {
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              let difficultyStars = '';
+              let difficultyStars = ''
               for (let i = 0; i < rowData.problemDifficulty; i++) {
-                difficultyStars += '★';
+                difficultyStars += '★'
               }
-              return difficultyStars;
+              return difficultyStars
             }
           },
           {
@@ -162,34 +163,15 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.problemBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum,
-              pageSize: this.pageSize
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
+        this.handleResponse(getProblemList(this.pageNum, this.pageSize, this.searchType, keyword), '搜索题目',
+          (res) => {
+            this.tableConfig.tableData = res.data.records
+            this.totalItems = res.data.total
+            this.inSearch = true
+          },
+          null,
+          () => {
             this.isLoading = false
-          })
-          .catch(err => {
-            this.isLoading = false
-            this.$message.error('搜索失败！')
-            console.log(err)
           })
       }
     },
@@ -209,11 +191,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.deleteProblem(problemId, () => {
-            this.$message.success('成功删除题目！')
-            this.getProblemList()
-          })
-        });
+          this.handleResponse(deleteProblem(problemId), '删除题目',
+            (res) => {
+              this.$message.success('成功删除题目！')
+              this.getProblemList()
+            })
+        })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/problem/edit/' + problemId })
       }
@@ -236,61 +219,27 @@ export default {
     },
     getProblemList() {
       this.isLoading = true
-      const apiUrl = this.Url.problemBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取题目列表失败：远程服务器错误')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getProblemList(this.pageNum, this.pageSize), '获取题目列表',
+        (res) => {
+          this.tableConfig.tableData = res.data.records
+          this.totalItems = res.data.total
+        },
+        null,
+        () => {
           this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取题目列表失败：发送请求失败')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    deleteProblem(problemId, successCallback) {
-      const apiUrl = this.Url.problemBaseUrl
-      this.$axios
-        .delete(apiUrl + problemId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('删除题目失败，内部错误！')
-          } else {
-            successCallback()
-          }
-        })
-        .catch(err => {
-          this.$message.error('删除题目失败！')
-          console.log(err)
         })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.bd {
-  padding-top: 15px;
-  text-align: center;
-}
+  .bd {
+    padding-top: 15px;
+    text-align: center;
+  }
 
-.operation-button {
-  float: right;
-  padding-bottom: 10px;
-}
+  .operation-button {
+    float: right;
+    padding-bottom: 10px;
+  }
 </style>

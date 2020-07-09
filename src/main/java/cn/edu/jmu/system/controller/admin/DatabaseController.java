@@ -3,6 +3,7 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
+import cn.edu.jmu.system.api.database.DatabaseListResponse;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.Problem;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
@@ -47,10 +48,15 @@ public class DatabaseController {
      * 查询所有数据库
      */
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getAll(DatabaseDto databaseDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> getDatabaseList(DatabaseDto databaseDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Database> page = new Page<>(pageNum, pageSize);
-        IPage<DatabaseDto> iPage = databaseService.getAll(databaseDto, page);
+        IPage<DatabaseListResponse> iPage = databaseService.getDatabaseList(databaseDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
+    }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<BasicResponse> getAllDatabaseList() {
+        return ResponseUtil.buildResponse("查询成功", databaseService.getAll());
     }
 
     /**
@@ -97,28 +103,28 @@ public class DatabaseController {
     /**
      * 通过ID更新数据库
      */
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("id") Integer id, @RequestBody @Validated DatabaseDto databaseDto) {
-        if (databaseDto.getId() != null && id.equals(databaseDto.getId())) {
-            // 更新数据库信息
-            Database database = DatabaseConverter.toEntity(databaseDto);
-            JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
-            if ("1".equals(judgeResultJson.getCode())) {
-                return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
-            } else {
-                List<Problem> problemList = problemService.getByDatabaseId(database.getId());
-                if (problemService.updateTrueResult(problemList)) {
-                    if (databaseService.saveOrUpdate(database)) {
-                        return ResponseUtil.ok("更新数据库成功");
-                    } else {
-                        return ResponseUtil.fail("更新数据库失败");
-                    }
-                } else {
-                    return ResponseUtil.fail("更新题目正确答案失败");
-                }
-            }
+    @PutMapping(value = "/{databaseId}")
+    public ResponseEntity<BasicResponse> updateDatabaseById(@PathVariable("databaseId") Integer databaseId, @RequestBody @Validated DatabaseDto databaseDto) {
+        if (!databaseService.existById(databaseId)) {
+            return ResponseUtil.fail("数据库ID不存在");
+        }
+        // 更新数据库信息
+        Database database = DatabaseConverter.toEntity(databaseDto);
+        database.setId(databaseId);
+        JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
+        if ("1".equals(judgeResultJson.getCode())) {
+            return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
         } else {
-            return ResponseUtil.fail("id不一致");
+            List<Problem> problemList = problemService.getByDatabaseId(database.getId());
+            if (problemService.updateTrueResult(problemList)) {
+                if (databaseService.saveOrUpdate(database)) {
+                    return ResponseUtil.ok("更新数据库成功");
+                } else {
+                    return ResponseUtil.fail("更新数据库失败");
+                }
+            } else {
+                return ResponseUtil.fail("更新题目正确答案失败");
+            }
         }
     }
 

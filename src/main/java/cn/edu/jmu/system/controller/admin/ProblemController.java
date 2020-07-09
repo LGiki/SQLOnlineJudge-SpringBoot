@@ -108,27 +108,24 @@ public class ProblemController {
     /**
      * 通过ID更新题目
      */
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("id") Integer id, @RequestBody @Validated ProblemDetailDto problemDetailDto) {
-        if (problemService.getById(id) == null) {
+    @PutMapping(value = "/{problemId}")
+    public ResponseEntity<BasicResponse> updateProblemById(@PathVariable("problemId") Integer problemId, @RequestBody @Validated ProblemDetailDto problemDetailDto) {
+        if (!problemService.existById(problemId)) {
             return ResponseUtil.fail("题目ID不存在");
         }
-        if (problemDetailDto.getId() != null && problemDetailDto.getId().equals(id)) {
-            Problem problem = ProblemConverter.toEntity(problemDetailDto);
-            if (!problem.getIsUpdate()) {
-                problem.setSelectAfterUpdate(null);
-            }
-            // 更新数据库信息
-            JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
-            if ("0".equals(judgeResultJson.getCode())) {
-                problem.setTrueResult(judgeResultJson.getData().getTrueResult());
-                problemService.update(problem);
-                return ResponseUtil.ok("更新题目信息成功");
-            } else {
-                return ResponseUtil.fail("给出的答案有误," + judgeResultJson.getMessage());
-            }
+        Problem problem = ProblemConverter.toEntity(problemDetailDto);
+        problem.setId(problemId);
+        if (!problem.getIsUpdate()) {
+            problem.setSelectAfterUpdate(null);
+        }
+        // 更新数据库信息
+        JudgeResultJson judgeResultJson = judgeService.getTrueResultMd5(problem.getAnswer(), problem.getDatabaseId());
+        if ("0".equals(judgeResultJson.getCode())) {
+            problem.setTrueResult(judgeResultJson.getData().getTrueResult());
+            problemService.update(problem);
+            return ResponseUtil.ok("更新题目信息成功");
         } else {
-            return ResponseUtil.fail("id不一致");
+            return ResponseUtil.fail("给出的答案有误," + judgeResultJson.getMessage());
         }
     }
 
@@ -141,13 +138,6 @@ public class ProblemController {
         return ResponseUtil.buildResponse(count);
     }
 
-    /**
-     * 调试运行代码
-     *
-     * @param sourceCode 源代码
-     * @param databaseId 数据库ID
-     * @return 调试运行结果
-     */
     @PostMapping(value = "/judgement/{id}")
     public ResponseEntity<BasicResponse> judge(@PathVariable(value = "id") Integer databaseId, @RequestBody SolutionDto solutionDto) {
         JudgeResultJson result = PythonJudgeUtil.getTrueResult(solutionDto.getSourceCode(), databaseId);

@@ -2,6 +2,7 @@ package cn.edu.jmu.system.service.impl;
 
 import cn.edu.jmu.judge.entity.json.JudgeResultJson;
 import cn.edu.jmu.judge.util.PythonJudgeUtil;
+import cn.edu.jmu.system.api.database.DatabaseListResponse;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.edu.jmu.system.mapper.DatabaseMapper;
@@ -9,9 +10,14 @@ import cn.edu.jmu.system.service.DatabaseService;
 import cn.edu.jmu.system.service.converter.DatabaseConverter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LGiki
@@ -29,10 +35,20 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
      * @return IPage<database>
      */
     @Override
-    public IPage<DatabaseDto> getAll(DatabaseDto databaseDto, Page page) {
+    public IPage<DatabaseListResponse> getDatabaseList(DatabaseDto databaseDto, Page page) {
         Page<Database> databasePage = new Page<>(page.getCurrent(), page.getSize());
         IPage<Database> iPage = baseMapper.selectPage(databasePage, predicate(databaseDto));
-        return iPage.convert(DatabaseConverter::toDto);
+        return iPage.convert(DatabaseConverter::toDatabaseListResponse);
+    }
+
+    /**
+     * 得到全部的数据库列表
+     *
+     * @return List<DatabaseListResponse> 数据库列表
+     */
+    @Override
+    public List<DatabaseListResponse> getAll() {
+        return baseMapper.selectList(Wrappers.<Database>lambdaQuery()).stream().map(DatabaseConverter::toDatabaseListResponse).collect(Collectors.toList());
     }
 
     /**
@@ -66,5 +82,10 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
         JudgeResultJson judgeResultJson = PythonJudgeUtil.createDatabase(databaseDto.getId(), databaseDto.getCreateTable(), databaseDto.getTestData());
         log.debug(judgeResultJson.toString());
         return judgeResultJson;
+    }
+
+    @Override
+    public Boolean existById(Integer databaseId) {
+        return baseMapper.selectById(databaseId) != null;
     }
 }

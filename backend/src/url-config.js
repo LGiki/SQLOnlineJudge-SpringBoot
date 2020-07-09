@@ -13,6 +13,8 @@ const baseApiUrlConfig = {
   solutionCode: '/solutions',
   // 数据库基础接口
   databaseBase: '/databases',
+  // 查询全部数据库的ID和名称
+  getAllDatabase: '/databases/all',
   // 数据库数量接口
   databaseCount: '/databases/count',
   // 用户基础接口

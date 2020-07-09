@@ -1,5 +1,6 @@
 package cn.edu.jmu.system.service.converter;
 
+import cn.edu.jmu.system.api.database.DatabaseListResponse;
 import cn.edu.jmu.system.entity.Database;
 import cn.edu.jmu.system.entity.dto.DatabaseDto;
 import cn.hutool.core.bean.BeanUtil;
@@ -21,5 +22,11 @@ public class DatabaseConverter {
         Database database = new Database();
         BeanUtil.copyProperties(databaseDto, database, true, CopyOptions.create().setIgnoreNullValue(true));
         return database;
+    }
+
+    public static DatabaseListResponse toDatabaseListResponse(Database database) {
+        DatabaseListResponse databaseListResponse = new DatabaseListResponse();
+        BeanUtil.copyProperties(database, databaseListResponse);
+        return databaseListResponse;
     }
 }

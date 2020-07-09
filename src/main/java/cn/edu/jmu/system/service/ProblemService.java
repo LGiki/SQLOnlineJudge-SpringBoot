@@ -57,4 +57,11 @@ public interface ProblemService extends IService<Problem> {
      * @return
      */
     Boolean updateTrueResult(List<Problem> problemList);
+
+    /**
+     * 根据题目ID判断题目是否存在
+     *
+     * @param problemId 题目ID
+     */
+    Boolean existById(Integer problemId);
 }

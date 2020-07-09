@@ -124,4 +124,9 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
         }
         return success;
     }
+
+    @Override
+    public Boolean existById(Integer problemId) {
+        return baseMapper.selectById(problemId) != null;
+    }
 }
