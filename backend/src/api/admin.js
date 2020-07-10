@@ -31,9 +31,7 @@ export function updateAdmin(adminId, password) {
   return httpRequest({
     url: `${baseApiUrlConfig.adminBase}/${adminId}`,
     method: 'put',
-    data: {
-      password: password
-    }
+    data: `password=${password}`
   })
 }
 

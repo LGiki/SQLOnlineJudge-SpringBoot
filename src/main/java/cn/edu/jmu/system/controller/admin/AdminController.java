@@ -77,10 +77,10 @@ public class AdminController {
      * @param password 新密码
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> password(@RequestParam String password, @PathVariable(value = "id") Integer id) {
+    public ResponseEntity<BasicResponse> password(@RequestParam(name = "password") String password, @PathVariable(value = "id") Integer id) {
         Admin admin = adminService.getById(id);
         if (admin == null) {
-            return ResponseUtil.fail("id无效");
+            return ResponseUtil.fail("该管理员ID不存在");
         }
         admin.setPassword(EncryptUtil.encryption(admin.getUsername(), password, admin.getSalt()));
         boolean success = adminService.saveOrUpdate(admin);

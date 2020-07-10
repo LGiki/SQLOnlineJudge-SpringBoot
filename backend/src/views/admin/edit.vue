@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { getAdminDetail, updateAdmin } from '@/api/admin'
+
 export default {
   data() {
     return {
@@ -37,7 +39,7 @@ export default {
   },
   mounted: function() {
     const userId = this.$route.params.id
-    this.getUserDetail(userId)
+    this.getAdminDetail(userId)
   },
   methods: {
     showPwd() {
@@ -53,11 +55,13 @@ export default {
     onSubmit() {
       this.$refs.userDetail.validate(valid => {
         if (valid) {
-          const userId = this.$route.params.id
+          const adminId = this.$route.params.id
           if (this.password) {
-            this.updateUserPassword(userId, 'password=' + this.password.trim(), () => {
-              this.$router.back(-1)
-            })
+            this.handleResponse(updateAdmin(adminId, this.password), '修改管理员密码',
+              (res) => {
+                this.$message.success('修改管理员密码成功')
+                this.$router.back(-1)
+              })
           } else {
             this.$message({
               message: '没做任何修改',
@@ -73,48 +77,10 @@ export default {
     onCancel() {
       this.$router.back(-1)
     },
-    getUserDetail(userId) {
-      const apiUrl = this.Url.adminBaseUrl
-      this.$axios
-        .get(apiUrl + userId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取管理员信息失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.userDetail = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    updateUserPassword(userId, newPassword, successCallback) {
-      const apiUrl = this.Url.adminBaseUrl
-      this.$axios
-        .put(apiUrl + userId, newPassword)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新管理员资料失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
+    getAdminDetail(adminId) {
+      this.handleResponse(getAdminDetail(adminId), '获取管理员详情',
+        (res) => {
+          this.userDetail = res.data
         })
     }
   }

@@ -16,7 +16,7 @@ import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 import Axios from 'axios'
-import Url from '../../urlConfig'
+import { baseUrl, baseApiUrlConfig, specialApiUrlConfig } from '@/url-config'
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
@@ -125,7 +125,7 @@ export default {
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.menubar,
         plugins: plugins,
-        font_formats: "微软雅黑=Microsoft YaHei,sans-serif;宋体=宋体;仿宋=仿宋;黑体=黑体;楷体=楷体;隶书=隶书;幼圆=幼圆",
+        font_formats: '微软雅黑=Microsoft YaHei,sans-serif;宋体=宋体;仿宋=仿宋;黑体=黑体;楷体=楷体;隶书=隶书;幼圆=幼圆',
         end_container_on_empty_block: true,
         powerpaste_word_import: 'propmt',
         powerpaste_html_import: 'propmt',
@@ -157,17 +157,6 @@ export default {
           })
         },
         images_dataimg_filter(img) {
-          // setTimeout(() => {
-          //   const $image = $(img)
-          //   $image.removeAttr('width')
-          //   $image.removeAttr('height')
-          //   if ($image[0].height && $image[0].width) {
-          //     $image.attr('data-wscntype', 'image')
-          //     $image.attr('data-wscnh', $image[0].height)
-          //     $image.attr('data-wscnw', $image[0].width)
-          //     $image.addClass('wscnph')
-          //   }
-          // }, 0)
           return img
         },
         images_upload_handler(blobInfo, success, failure, progress) {
@@ -176,15 +165,14 @@ export default {
           formData.append('file', blobInfo.blob(), blobInfo.filename())
           Axios({
             method: 'POST',
-            url: Url.uploadImageUrl,
+            url: `${baseUrl}${baseApiUrlConfig.uploadImage}`,
             data: formData
           }).then((res) => {
-            success(Url.showImageUrl + res.data.data.id)
+            success(`${specialApiUrlConfig.getImage}/${res.data.data.id}`)
             progress(100)
+          }).catch(() => {
+            failure('图片上传失败！')
           })
-            .catch(() => {
-              failure('图片上传失败！')
-            })
         }
       })
     },
