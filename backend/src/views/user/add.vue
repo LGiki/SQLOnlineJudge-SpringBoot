@@ -24,13 +24,15 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button @click="onCancel">取消</el-button>
+        <el-button @click="this.$router.back(-1)">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { createUser } from '@/api/user'
+
 export default {
   data() {
     return {
@@ -83,53 +85,21 @@ export default {
     onSubmit() {
       this.$refs.userDetail.validate(valid => {
         if (valid) {
-          this.addUser()
+          this.handleResponse(createUser(this.userDetail.username.trim(), this.userDetail.password.trim(), this.userDetail.email.trim(), this.userDetail.studentNo.trim()), '添加用户',
+            (res) => {
+              this.$message.success('添加用户成功')
+              this.$router.back(-1)
+            })
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
       })
-    },
-    onCancel() {
-      this.$router.back(-1)
-    },
-    addUser() {
-      const apiUrl = this.Url.userBaseUrl
-      const postData = this.userDetail
-      postData.username.trim()
-      postData.password.trim()
-      postData.email.trim()
-      postData.studentNo.trim()
-      this.$axios
-        .post(apiUrl, postData)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('添加用户失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              this.$router.back(-1)
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   }
 }
 </script>
 
 <style scoped>
-.line {
-  text-align: center;
-}
-
 .show-pwd {
   position: absolute;
   right: 10px;

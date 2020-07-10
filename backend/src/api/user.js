@@ -8,10 +8,11 @@ export function getUserCount() {
   })
 }
 
-export function getUserList(pageNum, pageSize, searchType, keyword) {
+export function getUserList(pageNum, pageSize, orderByStudentNo, searchType, keyword) {
   const params = {
     pageNum: pageNum,
-    pageSize: pageSize
+    pageSize: pageSize,
+    orderByStudentNo: orderByStudentNo
   }
   if (searchType && keyword) {
     params[searchType] = keyword
@@ -37,15 +38,18 @@ export function createUser(username, password, email, studentNo) {
 }
 
 export function updateUser(userId, username, password, email, studentNo) {
+  const user = {
+    username: username,
+    email: email,
+    studentNo: studentNo
+  }
+  if (password) {
+    user.password = password
+  }
   return httpRequest({
     url: `${baseApiUrlConfig.userBase}/${userId}`,
     method: 'put',
-    data: {
-      username: username,
-      password: password,
-      email: email,
-      studentNo: studentNo
-    }
+    data: user
   })
 }
 

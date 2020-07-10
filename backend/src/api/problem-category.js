@@ -49,16 +49,16 @@ export function updateProblemCategory(problemCategoryId, name, startTime, endTim
   })
 }
 
-export function getProblemCategoryDetail(databaseId) {
+export function getProblemCategoryDetail(problemCategoryId) {
   return httpRequest({
-    url: `${baseApiUrlConfig.problemCategoryBase}/${databaseId}`,
+    url: `${baseApiUrlConfig.problemCategoryBase}/${problemCategoryId}`,
     method: 'get'
   })
 }
 
-export function deleteProblemCategory(databaseId) {
+export function deleteProblemCategory(problemCategoryId) {
   return httpRequest({
-    url: `${baseApiUrlConfig.problemCategoryBase}/${databaseId}`,
+    url: `${baseApiUrlConfig.problemCategoryBase}/${problemCategoryId}`,
     method: 'delete'
   })
 }

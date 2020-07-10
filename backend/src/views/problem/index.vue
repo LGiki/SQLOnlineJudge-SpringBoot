@@ -18,13 +18,13 @@
         />
       </el-select>
       <el-button type="primary" @click="onSearch">
-        <svg-icon icon-class="search"/>&nbsp;搜索
+        <svg-icon icon-class="search" />&nbsp;搜索
       </el-button>
       <el-button v-if="inSearch" type="primary" @click="onCancelSearch">
-        <i class="el-icon-close"/>&nbsp;取消搜索
+        <i class="el-icon-close" />&nbsp;取消搜索
       </el-button>
       <el-button type="danger" @click="onNewProblem">
-        <i class="el-icon-plus"/>&nbsp;新建题目
+        <i class="el-icon-plus" />&nbsp;新建题目
       </el-button>
     </div>
     <template>
@@ -170,6 +170,7 @@ export default {
             this.inSearch = true
           },
           null,
+          null,
           () => {
             this.isLoading = false
           })
@@ -224,6 +225,7 @@ export default {
           this.tableConfig.tableData = res.data.records
           this.totalItems = res.data.total
         },
+        null,
         null,
         () => {
           this.isLoading = false

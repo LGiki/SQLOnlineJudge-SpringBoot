@@ -58,6 +58,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getUserGroupList, deleteUserGroup } from '@/api/user-group'
 
 export default {
   components: {
@@ -134,7 +135,7 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchUserGroupList()
+    this.getUserGroupList()
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
@@ -146,80 +147,30 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.userGroupBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
+        this.handleResponse(getUserGroupList(this.pageNum, this.pageSize, this.searchType, keyword), '搜索用户组',
+          (res) => {
+            this.tableConfig.tableData = res.data.records
+            this.totalItems = res.data.total
+            this.inSearch = true
+          },
+          null,
+          null,
+          () => {
             this.isLoading = false
-          })
-          .catch(err => {
-            this.$message.error('搜索失败！')
-            this.isLoading = false
-            console.log(err)
           })
       }
     },
-    fetchUserGroupList() {
+    getUserGroupList() {
       this.isLoading = true
-      const apiUrl = this.Url.userGroupBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户组列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getUserGroupList(this.pageNum, this.pageSize), '获取用户组列表',
+        (res) => {
+          this.tableConfig.tableData = res.data.records
+          this.totalItems = res.data.total
+        },
+        null,
+        null,
+        () => {
           this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取用户组列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    deleteUserGroup(userGroupId, successCallback) {
-      const apiUrl = this.Url.userGroupBaseUrl
-      this.$axios
-        .delete(apiUrl + userGroupId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('删除用户组失败，内部错误！')
-          } else {
-            successCallback()
-          }
-        })
-        .catch(err => {
-          this.$message.error('删除用户组失败！')
-          console.log(err)
         })
     },
     onTableOperation(params) {
@@ -227,10 +178,11 @@ export default {
       const userGroupId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
         if (confirm('您确定要删除该用户组吗？')) {
-          this.deleteUserGroup(userGroupId, () => {
-            this.$message.success('删除用户组成功！')
-            this.fetchUserGroupList()
-          })
+          this.handleResponse(deleteUserGroup(userGroupId), '删除用户组',
+            (res) => {
+              this.$message.success('删除用户组成功')
+              this.getUserGroupList()
+            })
         }
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/user-group/edit/' + userGroupId })
@@ -241,14 +193,14 @@ export default {
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchUserGroupList()
+      this.getUserGroupList()
     },
     pageChange(pageNum) {
       this.pageNum = pageNum
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchUserGroupList()
+        this.getUserGroupList()
       }
     },
     pageSizeChange(newPageSize) {
@@ -256,7 +208,7 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchUserGroupList()
+        this.getUserGroupList()
       }
     }
   }

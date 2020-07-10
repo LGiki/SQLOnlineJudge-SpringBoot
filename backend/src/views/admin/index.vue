@@ -57,6 +57,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getAdminList, deleteAdmin } from '@/api/admin'
 
 export default {
   components: {
@@ -134,7 +135,7 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchUserList()
+    this.getAdminList()
   },
   methods: {
     onSearch() {
@@ -144,47 +145,29 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.adminBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum,
-              pageSize: this.pageSize
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
+        this.handleResponse(getAdminList(this.pageNum, this.pageSize, this.searchType, keyword), '搜索管理员',
+          (res) => {
+            this.tableConfig.tableData = res.data.records
+            this.totalItems = res.data.total
+            this.inSearch = true
+          },
+          null,
+          null,
+          () => {
             this.isLoading = false
-          })
-          .catch(err => {
-            this.isLoading = false
-            this.$message.error('搜索失败！')
-            console.log(err)
           })
       }
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchUserList()
+      this.getAdminList()
     },
     onNewUser() {
       this.$router.push({ path: '/admin/add/' })
     },
     onTableOperation(params) {
       const index = params.index
-      const userId = this.tableConfig.tableData[index].id
+      const adminId = this.tableConfig.tableData[index].id
       if (params.type === 'delete') {
         let confirmMessage = '您确定要锁定该管理员吗？'
         let operationTypeString = '锁定'
@@ -193,12 +176,14 @@ export default {
           operationTypeString = '解锁'
         }
         if (confirm(confirmMessage)) {
-          this.deleteUser(userId, operationTypeString, () => {
-            this.fetchUserList()
-          })
+          this.handleResponse(deleteAdmin(adminId), '删除管理员',
+            (res) => {
+              this.$message.success(`${operationTypeString}管理员成功`)
+              this.getAdminList()
+            })
         }
       } else if (params.type === 'edit') {
-        this.$router.push({ path: '/admin/edit/' + userId })
+        this.$router.push({ path: '/admin/edit/' + adminId })
       }
     },
     pageChange(pageNum) {
@@ -206,7 +191,7 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchUserList()
+        this.getAdminList()
       }
     },
     pageSizeChange(newPageSize) {
@@ -214,53 +199,20 @@ export default {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchUserList()
+        this.getAdminList()
       }
     },
-    fetchUserList() {
+    getAdminList() {
       this.isLoading = true
-      const apiUrl = this.Url.adminBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取管理员列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getAdminList(this.pageNum, this.pageSize), '获取管理员列表',
+        (res) => {
+          this.tableConfig.tableData = res.data.records
+          this.totalItems = res.data.total
+        },
+        null,
+        null,
+        () => {
           this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取管理员列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    deleteUser(userId, operationTypeString, successCallback) {
-      const apiUrl = this.Url.adminStatusUrl
-      this.$axios
-        .put(apiUrl + userId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error(operationTypeString + '管理员失败，内部错误！')
-          } else {
-            successCallback()
-          }
-        })
-        .catch(err => {
-          this.$message.error(operationTypeString + '管理员失败！')
-          console.log(err)
         })
     }
   }

@@ -37,4 +37,11 @@ public interface UserService extends IService<User> {
      * @return boolean
      */
     boolean changeUserStatus(Integer id);
+
+    /**
+     * 根据用户ID判断用户是否存在
+     * @param id 用户ID
+     * @return Boolean 用户是否存在
+     */
+    Boolean existById(Integer id);
 }

@@ -70,6 +70,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return baseMapper.updateById(user) >= 1;
     }
 
+    @Override
+    public Boolean existById(Integer id) {
+        return baseMapper.selectById(id) != null;
+    }
+
     /**
      * 条件构造器
      *

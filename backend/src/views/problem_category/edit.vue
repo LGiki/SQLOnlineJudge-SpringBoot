@@ -47,7 +47,7 @@
           <el-button
             v-if="problemCollectionProblemListSelection && problemCollectionProblemListSelection.length > 0"
             type="danger"
-            @click="onDelectCollectionProblemSelection"
+            @click="onDeleteCollectionProblemSelection"
           >
             <i class="el-icon-delete" />&nbsp;删除所选题目
           </el-button>
@@ -140,7 +140,7 @@
           />
         </div>
         <span slot="footer" class="dialog-footer">
-          <p v-if="selectedProblemIds.length != 0">将新增 <strong>{{ selectedProblemIds.length }}</strong> 道题目到题目集中</p>
+          <template v-if="selectedProblemIds.length !== 0"><p>将新增 <strong>{{ selectedProblemIds.length }}</strong> 道题目到题目集中</p></template>
           <el-button
             type="warning"
             @click="resetSelectedProblemIds"
@@ -162,6 +162,10 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import ConvertUtil from '@/utils/convert-util'
+import { getProblemCategoryDetail, updateProblemCategory } from '@/api/problem-category'
+import { getProblemCollectionList, updateProblemScore, getProblemIdsByProblemCategoryId, insertProblemInBulk, deleteProblemInBulk } from '@/api/problem-collection'
+import { getProblemList } from '@/api/problem'
 
 export default {
   components: {
@@ -307,74 +311,33 @@ export default {
   methods: {
     // 获取题目集详情
     getProblemCategoryDetail(problemCategoryId) {
-      const apiUrl = this.Url.problemCategoryBaseUrl
-      if (apiUrl) {
-        this.$axios
-          .get(apiUrl + problemCategoryId)
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('获取题目集信息失败：远程服务器错误')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.problemCategoryDetail.id = resData.data.id
-                this.problemCategoryDetail.name = resData.data.name
-                this.problemCategoryDetail.viewAfterEnd = resData.data.viewAfterEnd
-                this.problemCategoryDetail.duration = [new Date(resData.data.startTime), new Date(resData.data.endTime)]
-              } else {
-                this.$message.error('获取题目集信息失败：' + resData.message)
-              }
-            }
-          })
-          .catch(err => {
-            console.log(err)
-            this.$message.error('获取题目集信息失败：发送请求失败')
-          })
-      } else {
-        this.$message.error('获取题目集信息失败：API接口URL未配置')
-      }
+      this.handleResponse(getProblemCategoryDetail(problemCategoryId), '获取题目集详情',
+        (res) => {
+          this.problemCategoryDetail.id = res.data.id
+          this.problemCategoryDetail.name = res.data.name
+          this.problemCategoryDetail.viewAfterEnd = res.data.viewAfterEnd
+          this.problemCategoryDetail.duration = [new Date(res.data.startTime), new Date(res.data.endTime)]
+        })
     },
     // 获取题目集包含的题目列表
     getProblemCollectionList(problemCategoryId) {
       this.problemCollectionListIsLoading = true
-      const apiUrl = this.Url.problemCollectionBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            categoryId: problemCategoryId,
-            pageNum: this.problemCollectionListPageNum,
-            pageSize: this.problemCollectionListPageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取题目集详情失败：远程服务器错误')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.problemCollectionTableConfig.tableData = resData.data.records
-              this.problemCollectionListTotalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getProblemCollectionList(this.problemCollectionListPageNum, this.problemCollectionListPageSize, 'categoryId', problemCategoryId), '获取题目集的题目列表',
+        (res) => {
+          this.problemCollectionTableConfig.tableData = res.data.records
+          this.problemCollectionListTotalItems = res.data.total
+        },
+        null,
+        null,
+        () => {
           this.problemCollectionListIsLoading = false
         })
-        .catch(err => {
-          this.$message.error('获取题目集详情失败：发送请求失败')
-          this.problemCollectionListIsLoading = false
-          console.log(err)
-        })
-    },
-    // 将日期转换为：yyyy-MM-dd HH:mm:ss
-    convertDateToString(date) {
-      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
     },
     // 打开添加题目窗口
     async openAddFromProblemListDialog() {
       this.addFromProblemListDialogVisible = true
       await this.getProblemIdsByProblemCategoryId(this.problemCategoryId)
-      this.refreshProblemList()
+      await this.refreshProblemList()
     },
     // 刷新题目列表
     async refreshProblemList() {
@@ -391,63 +354,23 @@ export default {
     // 获取题目列表
     async getProblemList() {
       this.problemListIsLoading = true
-      const apiUrl = this.Url.problemBaseUrl
-      if (apiUrl) {
-        await this.$axios
-          .get(apiUrl, {
-            params: {
-              pageNum: this.problemListPageNum,
-              pageSize: this.problemListPageSize
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('获取题目列表失败：远程服务器错误')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.problemListTableData = resData.data.records
-                this.problemListTotalItems = resData.data.total
-              } else {
-                this.$message.error('获取题目列表失败：' + resData.message)
-              }
-            }
-            this.problemListIsLoading = false
-          })
-          .catch(err => {
-            this.$message.error('获取题目列表失败：发送请求失败')
-            this.problemListIsLoading = false
-            console.log(err)
-          })
-      } else {
-        this.$message.error('获取题目列表失败：API接口URL未配置')
-      }
+      await this.handleResponse(getProblemList(this.problemListPageNum, this.problemListPageSize), '获取题目列表',
+        (res) => {
+          this.problemListTableData = res.data.records
+          this.problemListTotalItems = res.data.total
+        },
+        null,
+        null,
+        () => {
+          this.problemListIsLoading = false
+        })
     },
     // 获取当前题目集包含的所有题目ID
     async getProblemIdsByProblemCategoryId(problemCategoryId) {
-      const apiUrl = this.Url.problemCollectionProblemIdsUrl
-      if (apiUrl) {
-        await this.$axios
-          .get(apiUrl + problemCategoryId)
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('获取题目集包含的全部题目失败：远程服务器错误')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.collectionProblemIds = resData.data
-              } else {
-                this.$message.error('获取题目集包含的全部题目失败：' + resData.message)
-              }
-            }
-          })
-          .catch(err => {
-            this.$message.error('获取题目集包含的全部题目失败：发送请求失败')
-            console.log(err)
-          })
-      } else {
-        this.$message.error('获取题目集包含的全部题目失败：API接口URL未配置')
-      }
+      await this.handleResponse(getProblemIdsByProblemCategoryId(problemCategoryId), '获取题目集包含的全部题目ID',
+        (res) => {
+          this.collectionProblemIds = res.data
+        })
     },
     // 题目集的题目列表全选事件，selection：已选项
     onProblemCollectionListSelectAll(selection) {
@@ -462,7 +385,7 @@ export default {
       this.problemCollectionProblemListSelection = selection
     },
     // 从题目集删除选中的题目事件
-    onDelectCollectionProblemSelection() {
+    onDeleteCollectionProblemSelection() {
       this.$confirm('是否从题目集中移除已选中的题目?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -473,89 +396,33 @@ export default {
           for (const problem of this.problemCollectionProblemListSelection) {
             problemCollectionIds.push(problem.id)
           }
-          this.deleteProblemInBulk(problemCollectionIds, (resData) => {
-            if (resData.data.fail && resData.data.fail.length > 0) {
-              this.$message({
-                message: '成功执行移除操作，但部分题目移除失败：' + resData.data.fail,
-                type: 'warning'
-              })
-            } else {
-              this.$message.success('成功从题目集中移除选中的题目')
-            }
-            this.getProblemCollectionList(this.problemCategoryId)
-          })
+          this.handleResponse(deleteProblemInBulk(problemCollectionIds), '删除题目',
+            (res) => {
+              if (res.data.fail && res.data.fail.length > 0) {
+                this.$message({
+                  message: '成功执行移除操作，但部分题目移除失败：' + res.data.fail,
+                  type: 'warning'
+                })
+              } else {
+                this.$message.success('成功从题目集中移除选中的题目')
+              }
+              this.getProblemCollectionList(this.problemCategoryId)
+            })
         } else {
           this.$message.error('请检查是否选择了要删除的题目')
         }
-      }).catch(() => {
-
       })
-    },
-    // 批量从题目集中删除题目
-    deleteProblemInBulk(problemCollectionIds, successCallback) {
-      if (problemCollectionIds && problemCollectionIds.length > 0) {
-        const apiUrl = this.Url.problemCollectionBulkUrl
-        if (apiUrl) {
-          this.$axios.delete(apiUrl, {
-            data: problemCollectionIds
-          })
-            .then(res => {
-              if (res.status !== 200) {
-                this.$message.error('删除题目失败：远程服务器错误')
-              } else {
-                const resData = res.data
-                if (resData.code === 0) {
-                  successCallback(resData)
-                } else {
-                  this.$message.error('删除题目失败：' + resData.message)
-                }
-              }
-            })
-            .catch(err => {
-              this.$message.error('删除题目失败：发送请求失败')
-              console.log(err)
-            })
-        } else {
-          this.$message.error('删除题目失败：API接口URL未配置')
-        }
-      }
-    },
-    // 批量插入题目到题目集
-    insertProblemInBulk(problemCategoryId, problemIds, successCallback) {
-      if (problemIds && problemIds.length > 0) {
-        const apiUrl = this.Url.problemCollectionBulkUrl + problemCategoryId
-        if (apiUrl) {
-          this.$axios.post(apiUrl, problemIds)
-            .then(res => {
-              if (res.status !== 200) {
-                this.$message.error('添加题目失败：远程服务器错误')
-              } else {
-                const resData = res.data
-                if (resData.code === 0) {
-                  successCallback(resData)
-                } else {
-                  this.$message.error('添加题目失败：' + resData.message)
-                }
-              }
-            })
-            .catch(err => {
-              console.log(err)
-              this.$message.error('添加题目失败：发送请求失败')
-            })
-        }else{
-          this.$message.error('添加题目失败：API接口URL未配置')
-        }
-      }
     },
     // 选择题目添加到题目集对话框确定事件
     onAddProblem() {
       if (this.selectedProblemIds && this.selectedProblemIds.length !== 0) {
-        this.insertProblemInBulk(this.problemCategoryId, this.selectedProblemIds, () => {
-          this.$message.success('插入题目成功')
-          this.addFromProblemListDialogVisible = false
-          this.selectedProblemIds.length = 0
-          this.getProblemCollectionList(this.problemCategoryId)
-        })
+        this.handleResponse(insertProblemInBulk(this.problemCategoryId, this.selectedProblemIds), '添加题目',
+          (res) => {
+            this.$message.success('插入题目成功')
+            this.addFromProblemListDialogVisible = false
+            this.selectedProblemIds.length = 0
+            this.getProblemCollectionList(this.problemCategoryId)
+          })
       } else {
         this.$message.error('请确认所有项目均填写正确')
       }
@@ -580,32 +447,6 @@ export default {
       this.problemCollectionListPageSize = pageSize
       this.getProblemCollectionList(this.problemCategoryId)
     },
-    // 更新题目集信息
-    updateProblemCategory(problemCategoryId, problemCategory, successCallback) {
-      const apiUrl = this.Url.problemCategoryBaseUrl
-      if (apiUrl) {
-        this.$axios
-        .put(apiUrl + problemCategoryId, problemCategory)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新题目集信息失败：远程服务器错误')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          this.$message.error('更新题目集信息失败：发送请求失败')
-        })
-      } else {
-        this.$message.error('更新题目集信息失败：API接口URL未配置')
-      }
-    },
     // 重置已选择的题目
     resetSelectedProblemIds() {
       this.selectedProblemIds.length = 0
@@ -619,14 +460,15 @@ export default {
           const problemCategory = {
             id: this.problemCategoryDetail.id,
             name: this.problemCategoryDetail.name.trim(),
-            startTime: this.convertDateToString(this.problemCategoryDetail.duration[0]),
-            endTime: this.convertDateToString(this.problemCategoryDetail.duration[1]),
+            startTime: ConvertUtil.convertDateToString(this.problemCategoryDetail.duration[0]),
+            endTime: ConvertUtil.convertDateToString(this.problemCategoryDetail.duration[1]),
             viewAfterEnd: this.problemCategoryDetail.viewAfterEnd
           }
-          this.updateProblemCategory(problemCategoryId, problemCategory, () => {
-            this.$message.success('更新题目集成功')
-            this.$router.back(-1)
-          })
+          this.handleResponse(updateProblemCategory(problemCategoryId, problemCategory.name, problemCategory.startTime, problemCategory.endTime, problemCategory.viewAfterEnd), '更新题目集',
+            (res) => {
+              this.$message.success('更新题目集成功')
+              this.$router.back(-1)
+            })
         } else {
           this.$message.error('请确认所有项目均填写正确')
         }
@@ -636,49 +478,29 @@ export default {
     onCancel() {
       this.$router.back(-1)
     },
-    // 修改题目分值
-    updateProblemScore(problemCollectionId, newScore, successCallback) {
-      const apiUrl = this.Url.problemCollectionUpdateProblemScoreUrl + problemCollectionId
-      if (apiUrl) {
-        this.$axios.put(apiUrl, {
-          newProblemScore: newScore
-        })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('修改题目分值失败：远程服务器错误')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                successCallback(resData)
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
-          })
-          .catch(err => {
-            console.log(err)
-            this.$message.error('修改题目分值失败：发送请求失败')
-          })
-      }else{
-        this.$message.error('修改题目分值失败：API接口URL未配置')
-      }
-    },
     isPositiveInteger(value) {
       return /^[0-9]*[1-9][0-9]*$/.test(value)
     },
     // 题目分值编辑完成事件
     problemScoreEditDone(newValue, oldValue, rowIndex, rowData, field) {
-      if (newValue !== '') {
-        if (this.isPositiveInteger(newValue)) {
-          this.updateProblemScore(rowData.id, parseInt(newValue), (resData) => {
-            this.$message.success(resData.message)
+      if (newValue !== oldValue) {
+        if (newValue !== '') {
+          if (this.isPositiveInteger(newValue)) {
             this.problemCollectionTableConfig.tableData[rowIndex][field] = parseInt(newValue)
-          })
+            this.handleResponse(updateProblemScore(rowData.id, parseInt(newValue)), '修改题目分值',
+              (res) => {
+                this.$message.success(res.message)
+              },
+              null,
+              () => {
+                this.problemCollectionTableConfig.tableData[rowIndex][field] = parseInt(oldValue)
+              })
+          } else {
+            this.$message.error('请输入一个正整数')
+          }
         } else {
-          this.$message.error('请输入一个正整数')
+          this.$message.error('请输入题目分值')
         }
-      } else {
-        this.$message.error('请输入题目分值')
       }
     },
     // 选中的题目列表发生更改事件（选择了新的题目）

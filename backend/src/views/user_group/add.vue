@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { createUserGroup } from '@/api/user-group'
 export default {
   data() {
     return {
@@ -48,39 +49,12 @@ export default {
       this.$router.back(-1)
     },
     addUserGroup() {
-      const apiUrl = this.Url.userGroupBaseUrl
-      const postData = this.userGroupDetail
-      postData.name.trim()
-      postData.description.trim()
-      this.$axios
-        .post(apiUrl, postData)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('添加用户组失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              this.$router.back(-1)
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
+      this.handleResponse(createUserGroup(this.userGroupDetail.name.trim(), this.userGroupDetail.description.trim()), '添加用户组',
+        (res) => {
+          this.$message.success('添加用户组成功')
+          this.$router.back(-1)
         })
     }
   }
 }
 </script>
-
-<style scoped>
-.line {
-  text-align: center;
-}
-</style>
-

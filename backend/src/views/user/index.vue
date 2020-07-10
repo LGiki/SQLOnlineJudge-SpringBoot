@@ -167,6 +167,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getUserList, deleteUser } from '@/api/user'
 
 export default {
   components: {
@@ -298,14 +299,14 @@ export default {
   },
   created() {},
   mounted: function() {
-    this.fetchUserList()
+    this.getUserList()
   },
   methods: {
     onChangeTableStatus() {
       if (this.inSearch) {
         this.onSearch()
       } else {
-        this.fetchUserList()
+        this.getUserList()
       }
     },
     sortChange(params) {
@@ -318,10 +319,12 @@ export default {
       var reader = new FileReader()
       reader.onload = function(e) {
         var data = e.target.result
+        // eslint-disable-next-line no-undef
         var workbook = XLSX.read(data, {
           type: 'binary'
         })
         workbook.SheetNames.forEach(function(sheetName) {
+          // eslint-disable-next-line no-undef
           var XL_row_object = XLSX.utils.sheet_to_row_object_array(
             workbook.Sheets[sheetName]
           )
@@ -361,14 +364,10 @@ export default {
     },
     closeNewUserBatchProgressDialog() {
       this.newUserBatchProgressDialogVisible = false
-      this.fetchUserList()
+      this.getUserList()
     },
     isEmpty(obj) {
-      if (typeof obj === 'undefined' || obj == null || obj == '') {
-        return true
-      } else {
-        return false
-      }
+      return typeof obj === 'undefined' || obj == null || obj === ''
     },
     onExcelFileChange(event) {
       this.selectedFile = event.target.files[0]
@@ -380,35 +379,16 @@ export default {
         this.$message.error('请输入关键字！')
       } else {
         this.isLoading = true
-        const apiUrl = this.Url.userBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum,
-              pageSize: this.pageSize,
-              orderByStudentNo: this.orderByStudentNo
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
+        this.handleResponse(getUserList(this.pageNum, this.pageSize, this.orderByStudentNo, this.searchType, keyword), '搜索用户',
+          (res) => {
+            this.tableConfig.tableData = res.data.records
+            this.totalItems = res.data.total
+            this.inSearch = true
+          },
+          null,
+          null,
+          () => {
             this.isLoading = false
-          })
-          .catch(err => {
-            this.isLoading = false
-            this.$message.error('搜索失败！')
-            console.log(err)
           })
       }
     },
@@ -421,7 +401,7 @@ export default {
     },
     onCancelSearch() {
       this.inSearch = false
-      this.fetchUserList()
+      this.getUserList()
     },
     refreshStudentNoListStr() {
       if (this.newStudentNoList) {
@@ -539,10 +519,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.deleteUser(userId, operationTypeString, () => {
-            this.fetchUserList()
-          })
-        });
+          this.handleResponse(deleteUser(userId),
+            (res) => {
+              this.$message.success(`${operationTypeString}用户成功`)
+              this.getUserList()
+            })
+        })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/user/edit/' + userId })
       }
@@ -555,51 +537,17 @@ export default {
       this.pageSize = newPageSize
       this.onChangeTableStatus()
     },
-    fetchUserList() {
+    getUserList() {
       this.isLoading = true
-      const apiUrl = this.Url.userBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
-            orderByStudentNo: this.orderByStudentNo
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getUserList(this.pageNum, this.pageSize, this.orderByStudentNo), '获取用户列表',
+        (res) => {
+          this.tableConfig.tableData = res.data.records
+          this.totalItems = res.data.total
+        },
+        null,
+        null,
+        () => {
           this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取用户列表失败！')
-          this.isLoading = false
-          console.log(err)
-        })
-    },
-    deleteUser(userId, operationTypeString, successCallback) {
-      const apiUrl = this.Url.userStatusUrl
-      this.$axios
-        .put(apiUrl + userId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error(operationTypeString + '用户失败，内部错误！')
-          } else {
-            successCallback()
-          }
-        })
-        .catch(err => {
-          this.$message.error(operationTypeString + '用户失败！')
-          console.log(err)
         })
     }
   }

@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { getUserGroupDetail, updateUserGroup } from '@/api/user-group'
+
 export default {
   data() {
     return {
@@ -47,9 +49,11 @@ export default {
             name: this.userGroupDetail.name.trim(),
             description: this.userGroupDetail.description.trim()
           }
-          this.updateUserGroup(userGroupId, userGroup, () => {
-            this.$router.back(-1)
-          })
+          this.handleResponse(updateUserGroup(userGroupId, userGroup.name, userGroup.description), '更新用户组',
+            (res) => {
+              this.$message.success('更新用户组成功')
+              this.$router.back(-1)
+            })
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
@@ -59,47 +63,9 @@ export default {
       this.$router.back(-1)
     },
     getUserGroupDetail(userGroupId) {
-      const apiUrl = this.Url.userGroupBaseUrl
-      this.$axios
-        .get(apiUrl + userGroupId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户组信息失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.userGroupDetail = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    updateUserGroup(userGroupId, userGroup, successCallback) {
-      const apiUrl = this.Url.userGroupBaseUrl
-      this.$axios
-        .put(apiUrl + userGroupId, userGroup)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新用户组信息失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
+      this.handleResponse(getUserGroupDetail(userGroupId), '获取用户组详情',
+        (res) => {
+          this.userGroupDetail = res.data
         })
     }
   }

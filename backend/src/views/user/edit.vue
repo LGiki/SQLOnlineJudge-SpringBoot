@@ -27,13 +27,15 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button @click="onCancel">取消</el-button>
+        <el-button @click="this.$router.back(-1)">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { getUserDetail, updateUser } from '@/api/user'
+
 export default {
   data() {
     return {
@@ -68,7 +70,10 @@ export default {
   },
   mounted: function() {
     const userId = this.$route.params.id
-    this.getUserDetail(userId)
+    this.handleResponse(getUserDetail(userId), '获取用户详情',
+      (res) => {
+        this.userDetail = res.data
+      })
   },
   methods: {
     showPwd() {
@@ -94,60 +99,15 @@ export default {
           if (this.password) {
             user.password = this.password.trim()
           }
-          this.updateUser(userId, user, () => {
-            this.$router.back(-1)
-          })
+          this.handleResponse(updateUser(userId, user.username, user.password, user.email, user.studentNo), '更新用户信息',
+            (res) => {
+              this.$message.success('更新用户信息成功')
+              this.$router.back(-1)
+            })
         } else {
           this.$message.error('请确认所有项目均填写正确！')
         }
       })
-    },
-    onCancel() {
-      this.$router.back(-1)
-    },
-    getUserDetail(userId) {
-      const apiUrl = this.Url.userBaseUrl
-      this.$axios
-        .get(apiUrl + userId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户信息失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.userDetail = resData.data
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    updateUser(userId, user, successCallback) {
-      const apiUrl = this.Url.userBaseUrl
-      this.$axios
-        .put(apiUrl + userId, user)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新用户资料失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   }
 }

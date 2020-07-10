@@ -170,6 +170,7 @@ export default {
             this.inSearch = true
           },
           null,
+          null,
           () => {
             this.isLoading = false
           })
@@ -182,6 +183,7 @@ export default {
           this.tableConfig.tableData = res.data.records
           this.totalItems = res.data.total
         },
+        null,
         null,
         () => {
           this.isLoading = false

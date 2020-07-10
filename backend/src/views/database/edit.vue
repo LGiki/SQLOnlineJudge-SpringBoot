@@ -17,7 +17,7 @@
         width="60%"
       >
         <el-form>
-          <p><strong><h3>Excel中的数据需要严格按照下图中的要求：</h3></strong></p>
+          <h3>Excel中的数据需要严格按照下图中的要求：</h3>
           <img id="hint-image" src="@/assets/import_excel_description.png" alt="import_excel_description">
           <form enctype="multipart/form-data">
             <el-form-item label="选择要导入的Excel">
@@ -52,6 +52,8 @@ import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/sql-hint.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 import 'codemirror/addon/hint/show-hint.css'
+import { getDatabaseDetail, createDatabase, updateDatabase } from '@/api/database'
+
 export default {
   components: {
     codemirror
@@ -124,11 +126,13 @@ export default {
       var reader = new FileReader()
       reader.onload = function(e) {
         var data = e.target.result
+        // eslint-disable-next-line no-undef
         var workbook = XLSX.read(data, {
           type: 'binary'
         })
         that.databaseDetail.testData = ''
         workbook.SheetNames.forEach(function(sheetName) {
+          // eslint-disable-next-line no-undef
           var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName])
           var json_object = JSON.stringify(XL_row_object)
           var jsonResult = JSON.parse(json_object)
@@ -175,22 +179,18 @@ export default {
             testData: this.databaseDetail.testData.trim()
           }
           if (this.isAdd) {
-            this.addDatabase(database, () => {
-              this.$message({
-                message: '成功添加数据库',
-                type: 'success'
+            this.handleResponse(createDatabase(database.name, database.createTable, database.testData), '添加数据库',
+              (res) => {
+                this.$message.success('添加数据库成功')
+                this.$router.back(-1)
               })
-              this.$router.back(-1)
-            })
           } else {
-            database.id = this.databaseDetail.id
-            this.updateDatabase(this.$route.params.id, database, () => {
-              this.$message({
-                message: '成功编辑数据库',
-                type: 'success'
-              })
-              this.$router.back(-1)
-            })
+            this.handleResponse(updateDatabase(this.$route.params.id, database.name, database.createTable, database.testData), '更新数据库',
+              (res) => {
+                this.$message.success('更新数据库成功')
+                this.$router.back(-1)
+              }
+            )
           }
         } else {
           this.$message.error('请确认所有项目均填写正确！')
@@ -201,69 +201,9 @@ export default {
       this.$router.back(-1)
     },
     getDatabaseDetail(databaseId) {
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .get(apiUrl + databaseId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取数据库详情失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.databaseDetail = resData.data
-            } else {
-              this.$message.error('获取数据库详情失败！')
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    updateDatabase(databaseId, database, successCallback) {
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .put(apiUrl + databaseId, database)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('更新数据库失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.$message({
-                message: resData.message,
-                type: 'success'
-              })
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    addDatabase(database, successCallback) {
-      const apiUrl = this.Url.databaseBaseUrl
-      this.$axios
-        .post(apiUrl, database)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('添加数据库失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              successCallback()
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          this.$message.error('添加数据库失败！')
-        })
+      this.handleResponse(getDatabaseDetail(databaseId), '获取数据库详情', res => {
+        this.databaseDetail = res.data
+      })
     }
   }
 }

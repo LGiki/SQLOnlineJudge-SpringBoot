@@ -1,13 +1,15 @@
 import { Message } from 'element-ui'
 
-export function handleResponse(AxiosPromise, operationString, successCallback, failResponseCallback, finallyCallback) {
-  AxiosPromise.then(res => {
+export function handleResponse(AxiosPromise, operationString, successCallback, failResponseCallback, failCallback, finallyCallback) {
+  return AxiosPromise.then(res => {
     if (res.status !== 200) {
       Message.error(`${operationString}失败：远程服务器错误`)
     } else {
       const resData = res.data
       if (resData.code === 0) {
-        successCallback(resData)
+        if (successCallback) {
+          successCallback(resData)
+        }
       } else {
         Message.error(`${operationString}失败：${resData.message}`)
       }
@@ -23,6 +25,9 @@ export function handleResponse(AxiosPromise, operationString, successCallback, f
       Message.error(`${operationString}失败：远程服务器未响应请求`)
     } else {
       Message.error(`${operationString}失败：发送请求失败`)
+    }
+    if (failCallback) {
+      failCallback(err)
     }
   }).finally(finallyCallback)
 }
