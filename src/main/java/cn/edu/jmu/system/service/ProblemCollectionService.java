@@ -72,5 +72,5 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
      * @param id Problem Collection ID
      * @return Boolean Problem Collection是否存在
      */
-    Boolean exist(Integer id);
+    Boolean existById(Integer id);
 }

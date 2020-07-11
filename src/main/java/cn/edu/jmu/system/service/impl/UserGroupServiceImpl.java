@@ -14,6 +14,7 @@ import cn.edu.jmu.system.service.converter.UserGroupConverter;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,11 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
         UpdateUserGroupResponse response = new UpdateUserGroupResponse();
         response.setId(id);
         return response;
+    }
+
+    @Override
+    public Boolean existById(Integer id) {
+        return baseMapper.selectCount(Wrappers.<UserGroup>lambdaQuery().eq(UserGroup::getId, id)) != 0;
     }
 
     @Override

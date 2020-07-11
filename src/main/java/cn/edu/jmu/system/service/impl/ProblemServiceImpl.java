@@ -127,6 +127,6 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
 
     @Override
     public Boolean existById(Integer problemId) {
-        return baseMapper.selectById(problemId) != null;
+        return baseMapper.selectCount(Wrappers.<Problem>lambdaQuery().eq(Problem::getId, problemId)) != 0;
     }
 }

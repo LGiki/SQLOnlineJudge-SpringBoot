@@ -86,6 +86,6 @@ public class DatabaseServiceImpl extends ServiceImpl<DatabaseMapper, Database> i
 
     @Override
     public Boolean existById(Integer databaseId) {
-        return baseMapper.selectById(databaseId) != null;
+        return baseMapper.selectCount(Wrappers.<Database>lambdaQuery().eq(Database::getId, databaseId)) != 0;
     }
 }

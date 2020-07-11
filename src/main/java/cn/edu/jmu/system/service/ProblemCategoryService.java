@@ -40,5 +40,5 @@ public interface ProblemCategoryService extends IService<ProblemCategory> {
      * @param id 题目集ID
      * @return Boolean 是否存在
      */
-    Boolean exist(Integer id);
+    Boolean existById(Integer id);
 }

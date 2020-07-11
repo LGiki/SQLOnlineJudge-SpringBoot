@@ -93,7 +93,7 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
 
     @Override
     public Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId) {
-        return problemCollectionMapper.countByProblemIdAndProblemCategoryId(problemId, problemCategoryId) > 0;
+        return baseMapper.selectCount(Wrappers.<ProblemCollection>lambdaQuery().eq(ProblemCollection::getProblemId, problemId).eq(ProblemCollection::getCategoryId, problemCategoryId)) > 0;
     }
 
     @Override
@@ -102,13 +102,13 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
     }
 
     @Override
-    public Boolean exist(Integer id) {
-        return baseMapper.selectById(id) != null;
+    public Boolean existById(Integer id) {
+        return baseMapper.selectCount(Wrappers.<ProblemCollection>lambdaQuery().eq(ProblemCollection::getId, id)) != 0;
     }
 
     @Override
     public Boolean updateProblemScoreById(Integer id, Integer problemScore) {
-        if (this.exist(id)) {
+        if (this.existById(id)) {
             return problemCollectionMapper.updateProblemScoreById(id, problemScore) >= 1;
         } else {
             return false;

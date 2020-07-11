@@ -9,6 +9,7 @@ import cn.edu.jmu.system.service.converter.UserConverter;
 import cn.edu.jmu.system.service.enums.UserStatusEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -72,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Boolean existById(Integer id) {
-        return baseMapper.selectById(id) != null;
+        return baseMapper.selectCount(Wrappers.<User>lambdaQuery().eq(User::getId, id)) != 0;
     }
 
     /**

@@ -75,9 +75,7 @@ public class ProblemController {
      */
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<BasicResponse> delete(@PathVariable("id") Integer id) {
-        // 删除题目
-        boolean success = problemService.removeById(id);
-        return ResponseUtil.buildResponse(success, "删除题目成功", "删除题目失败");
+        return ResponseUtil.buildResponse(problemService.removeById(id), "删除题目成功", "删除题目失败");
     }
 
     /**

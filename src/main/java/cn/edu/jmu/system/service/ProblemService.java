@@ -62,6 +62,7 @@ public interface ProblemService extends IService<Problem> {
      * 根据题目ID判断题目是否存在
      *
      * @param problemId 题目ID
+     * @return Boolean 题目是否存在
      */
     Boolean existById(Integer problemId);
 }

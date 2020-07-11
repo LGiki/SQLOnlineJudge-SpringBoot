@@ -1,0 +1,95 @@
+package cn.edu.jmu.system.controller.admin;
+
+import cn.edu.jmu.common.response.BasicResponse;
+import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.system.entity.UserGroupCollection;
+import cn.edu.jmu.system.service.UserGroupCollectionService;
+import cn.edu.jmu.system.service.UserGroupService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+@RestController
+@RequiresRoles(value = {"admin", "teacher"}, logical = Logical.OR)
+@RequestMapping("/api/admin/user_group_collection")
+@Slf4j
+public class UserGroupCollectionController {
+    @Resource
+    private UserGroupCollectionService userGroupCollectionService;
+
+    @Resource
+    private UserGroupService userGroupService;
+
+    @GetMapping(value = "/")
+    public ResponseEntity<BasicResponse> getList(@RequestBody UserGroupCollection userGroupCollection, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<UserGroupCollection> page = new Page<>(pageNum, pageSize);
+        IPage<UserGroupCollection> iPage = userGroupCollectionService.getUserGroupCollectionList(userGroupCollection, page);
+        return ResponseUtil.buildResponse("查询成功", iPage);
+    }
+
+    @DeleteMapping(value = "/{userGroupCollectionId}")
+    public ResponseEntity<BasicResponse> deleteById(@PathVariable("userGroupCollectionId") Integer userGroupCollectionId) {
+        return ResponseUtil.buildResponse(userGroupCollectionService.removeById(userGroupCollectionId), "删除用户组关系成功", "删除用户组关系失败");
+    }
+
+    @PostMapping(value = "/bulk/{userGroupId}")
+    public ResponseEntity<BasicResponse> insertUserToUserGroupInBulk(@PathVariable("userGroupId") Integer userGroupId, @RequestBody List<Integer> userIds) {
+        if (userIds.isEmpty()) {
+            return ResponseUtil.fail("请选择要添加到用户组中的用户");
+        }
+        if (!userGroupService.existById(userGroupId)) {
+            return ResponseUtil.fail("该用户组ID不存在");
+        }
+        List<Integer> successIds = new ArrayList<>();
+        List<Integer> failIds = new ArrayList<>();
+        List<Integer> duplicatedIds = new ArrayList<>();
+        UserGroupCollection userGroupCollection = new UserGroupCollection();
+        userGroupCollection.setUserGroupId(userGroupId);
+        for (Integer userId : userIds) {
+            if (userGroupCollectionService.isUserInUserGroupCollection(userId, userGroupId)) {
+                duplicatedIds.add(userId);
+            } else {
+                userGroupCollection.setUserId(userId);
+                if (userGroupCollectionService.save(userGroupCollection)) {
+                    successIds.add(userId);
+                } else {
+                    failIds.add(userId);
+                }
+            }
+        }
+        HashMap<String, List<Integer>> responseHashMap = new HashMap<>(3);
+        responseHashMap.put("success", successIds);
+        responseHashMap.put("duplicated", duplicatedIds);
+        responseHashMap.put("fail", failIds);
+        return ResponseUtil.buildResponse("添加用户完成", responseHashMap);
+    }
+
+    @DeleteMapping(value = "/bulk")
+    public ResponseEntity<BasicResponse> deleteUserGroupCollectionInBulk(@RequestBody List<Integer> userGroupCollectionIds) {
+        if (userGroupCollectionIds.isEmpty()) {
+            return ResponseUtil.fail("请选择要删除的用户组关系");
+        }
+        List<Integer> successIds = new ArrayList<>();
+        List<Integer> failIds = new ArrayList<>();
+        for (Integer userGroupCollectionId : userGroupCollectionIds) {
+            if (userGroupCollectionService.removeById(userGroupCollectionId)) {
+                successIds.add(userGroupCollectionId);
+            } else {
+                failIds.add(userGroupCollectionId);
+            }
+        }
+        HashMap<String, List<Integer>> responseHashMap = new HashMap<>(2);
+        responseHashMap.put("success", successIds);
+        responseHashMap.put("fail", failIds);
+        return ResponseUtil.buildResponse("删除完成", responseHashMap);
+    }
+}

@@ -54,7 +54,7 @@ public class ProblemCollectionController {
      */
     @GetMapping("/problem_ids/{problemCategoryId}")
     public ResponseEntity<BasicResponse> getProblemIdsByProblemCategoryId(@PathVariable("problemCategoryId") Integer problemCategoryId) {
-        Boolean isProblemCategoryExist = problemCategoryService.exist(problemCategoryId);
+        Boolean isProblemCategoryExist = problemCategoryService.existById(problemCategoryId);
         if (!isProblemCategoryExist) {
             return ResponseUtil.fail("该题目集不存在");
         } else {
@@ -71,12 +71,11 @@ public class ProblemCollectionController {
      */
     @PostMapping("/bulk/{problemCategoryId}")
     public ResponseEntity<BasicResponse> createInBulk(@PathVariable("problemCategoryId") Integer problemCategoryId, @RequestBody List<Integer> problemIds) {
-        Boolean isProblemCategoryExist = problemCategoryService.exist(problemCategoryId);
-        if (!isProblemCategoryExist) {
-            return ResponseUtil.fail("该题目集不存在");
-        }
         if (problemIds.isEmpty()) {
             return ResponseUtil.fail("请选择要添加到题目集中的题目");
+        }
+        if (!problemCategoryService.existById(problemCategoryId)) {
+            return ResponseUtil.fail("该题目集不存在");
         }
         List<Integer> success = new ArrayList<>();
         List<Integer> fail = new ArrayList<>();
@@ -115,7 +114,7 @@ public class ProblemCollectionController {
         List<Integer> success = new ArrayList<>();
         List<Integer> fail = new ArrayList<>();
         for (Integer problemCollectionId : problemCollectionIds) {
-            if (problemCollectionService.delete(problemCollectionId)) {
+            if (problemCollectionService.removeById(problemCollectionId)) {
                 success.add(problemCollectionId);
             } else {
                 fail.add(problemCollectionId);

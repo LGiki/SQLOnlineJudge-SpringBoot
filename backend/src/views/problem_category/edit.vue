@@ -398,7 +398,9 @@ export default {
           }
           this.handleResponse(deleteProblemInBulk(problemCollectionIds), '删除题目',
             (res) => {
-              if (res.data.fail && res.data.fail.length > 0) {
+              if (res.data.success && res.data.success.length === 0) {
+                this.$message.error('从题目集中移除选中的题目失败，请稍后再试')
+              } else if (res.data.fail && res.data.fail.length > 0) {
                 this.$message({
                   message: '成功执行移除操作，但部分题目移除失败：' + res.data.fail,
                   type: 'warning'
@@ -418,7 +420,23 @@ export default {
       if (this.selectedProblemIds && this.selectedProblemIds.length !== 0) {
         this.handleResponse(insertProblemInBulk(this.problemCategoryId, this.selectedProblemIds), '添加题目',
           (res) => {
-            this.$message.success('插入题目成功')
+            if (res.data.success && res.data.success.length === 0) {
+              this.$message.error('插入题目失败，请稍后再试')
+            } else if ((res.data.fail && res.data.fail.length) > 0 || (res.data.duplicated && res.data.duplicated.length) > 0) {
+              let messageString = '成功执行插入操作'
+              if (res.data.fail.length > 0) {
+                messageString += '，部分题目插入失败：' + res.data.fail
+              }
+              if (res.data.duplicated.length > 0) {
+                messageString += '，部分题目已存在题目集中：' + res.data.duplicated
+              }
+              this.$message({
+                message: messageString,
+                type: 'warning'
+              })
+            } else {
+              this.$message.success('插入题目成功')
+            }
             this.addFromProblemListDialogVisible = false
             this.selectedProblemIds.length = 0
             this.getProblemCollectionList(this.problemCategoryId)

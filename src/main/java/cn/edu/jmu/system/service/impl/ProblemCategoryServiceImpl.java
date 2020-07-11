@@ -8,6 +8,7 @@ import cn.edu.jmu.system.service.ProblemCategoryService;
 import cn.edu.jmu.system.service.converter.ProblemCategoryConverter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -55,8 +56,7 @@ public class ProblemCategoryServiceImpl extends ServiceImpl<ProblemCategoryMappe
     }
 
     @Override
-    public Boolean exist(Integer id) {
-        ProblemCategory problemCategory = baseMapper.selectById(id);
-        return problemCategory != null;
+    public Boolean existById(Integer id) {
+        return baseMapper.selectCount(Wrappers.<ProblemCategory>lambdaQuery().eq(ProblemCategory::getId, id)) != 0;
     }
 }

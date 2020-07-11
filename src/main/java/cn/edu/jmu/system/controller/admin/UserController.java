@@ -70,21 +70,12 @@ public class UserController {
     /**
      * 更新用户
      */
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<BasicResponse> update(@RequestBody @Validated UserDto userDto, @PathVariable("id") Integer id) {
-        if (userDto.getId() == null) {
-            return ResponseUtil.fail("用户id不能为空");
-        }
-        User byId = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, userDto.getEmail()));
-        if (ObjectUtil.isNull(byId) || byId.getId().equals(id)) {
-            if (userDto.getId().equals(id)) {
-                boolean success = userService.update(userDto);
-                return ResponseUtil.buildResponse(success, "更新用户信息成功", "更新用户信息失败");
-            } else {
-                return ResponseUtil.fail("用户id不一致");
-            }
+    @PutMapping(value = "/{userId}")
+    public ResponseEntity<BasicResponse> update(@PathVariable("userId") Integer userId, @RequestBody @Validated UserDto userDto) {
+        if (userService.existById(userId)) {
+            return ResponseUtil.buildResponse(userService.update(userDto), "更新用户信息成功", "更新用户信息失败");
         } else {
-            return ResponseUtil.fail("该邮箱已被注册");
+            return ResponseUtil.fail("用户ID不存在");
         }
     }
 
