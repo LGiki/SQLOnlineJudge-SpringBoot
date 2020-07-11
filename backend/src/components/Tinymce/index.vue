@@ -15,8 +15,8 @@
 import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
-import Axios from 'axios'
-import { baseUrl, baseApiUrlConfig, specialApiUrlConfig } from '@/url-config'
+import { specialApiUrlConfig } from '@/url-config'
+import { uploadImage } from '@/api/util'
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
@@ -163,11 +163,7 @@ export default {
           progress(0)
           const formData = new FormData()
           formData.append('file', blobInfo.blob(), blobInfo.filename())
-          Axios({
-            method: 'POST',
-            url: `${baseUrl}${baseApiUrlConfig.uploadImage}`,
-            data: formData
-          }).then((res) => {
+          uploadImage(formData).then((res) => {
             success(`${specialApiUrlConfig.getImage}/${res.data.data.id}`)
             progress(100)
           }).catch(() => {
