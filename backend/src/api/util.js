@@ -1,4 +1,4 @@
-import httpRequest from '../utils/request'
+import httpRequest from '@/utils/request'
 import { baseUrl, baseApiUrlConfig } from '@/url-config'
 
 export function uploadImage(formData) {

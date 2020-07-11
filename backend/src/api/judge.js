@@ -1,5 +1,5 @@
-import httpRequest from '../utils/request'
-import { baseApiUrlConfig } from '../url-config'
+import httpRequest from '@/utils/request'
+import { baseApiUrlConfig } from '@/url-config'
 
 export function runCode(databaseId, code) {
   return httpRequest({

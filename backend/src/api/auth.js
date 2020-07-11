@@ -1,5 +1,5 @@
-import httpRequest from '../utils/request'
-import { baseApiUrlConfig } from '../url-config'
+import httpRequest from '@/utils/request'
+import { baseApiUrlConfig } from '@/url-config'
 import qs from 'qs'
 
 export function login(username, password) {

@@ -1,5 +1,5 @@
-import httpRequest from '../utils/request'
-import { baseApiUrlConfig, specialApiUrlConfig } from '../url-config'
+import httpRequest from '@/utils/request'
+import { baseApiUrlConfig } from '@/url-config'
 
 export function getSolutionCount() {
   return httpRequest({
