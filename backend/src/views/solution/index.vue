@@ -41,7 +41,6 @@
       :visible.sync="dialogVisible"
       width="50%"
     >
-      <!-- <code>{{ sourceCode }}</code> -->
       <highlight-code lang="sql">{{ sourceCode }}</highlight-code>
       <h3 v-if="runError">运行错误详情：</h3>
       <code v-if="runError">{{ runError }}</code>
@@ -225,7 +224,7 @@ export default {
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
-      if (column.field == 'sourceCode') {
+      if (column.field === 'sourceCode') {
         this.fetchSolutionCode(rowData.id)
       }
     },

@@ -127,7 +127,7 @@ export default {
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'user-operation'
+            componentName: 'user-operation-button'
           }
         ]
       }

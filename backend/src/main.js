@@ -16,6 +16,11 @@ import '@/icons' // icon
 
 import VueHighlightJS from 'vue-highlight.js'
 import { handleResponse } from '@/utils/response-handler'
+
+import CommonOperationButton from '@/components/OperationButton/CommonOperationButton'
+import CommonOperationButtonWithSolution from '@/components/OperationButton/CommonOperationButtonWithSolution'
+import UserOperationButton from '@/components/OperationButton/UserOperationButton'
+import UserOperationButtonWithSolution from '@/components/OperationButton/UserOperationButtonWithSolution'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -58,63 +63,10 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-Vue.component('table-operation', {
-  props: {
-    rowData: {
-      type: Object
-    },
-    field: {
-      type: String
-    },
-    index: {
-      type: Number
-    }
-  },
-  methods: {
-    update() {
-      const params = { type: 'edit', index: this.index, rowData: this.rowData }
-      this.$emit('on-custom-comp', params)
-    },
-
-    deleteRow() {
-      const params = { type: 'delete', index: this.index }
-      this.$emit('on-custom-comp', params)
-    }
-  },
-  template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)"><svg-icon icon-class="edit" /></a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)"><i class="el-icon-delete" /></a>
-        </span>`
-})
-
-Vue.component('user-operation', {
-  props: {
-    rowData: {
-      type: Object
-    },
-    field: {
-      type: String
-    },
-    index: {
-      type: Number
-    }
-  },
-  methods: {
-    update() {
-      const params = { type: 'edit', index: this.index, rowData: this.rowData }
-      this.$emit('on-custom-comp', params)
-    },
-
-    deleteRow() {
-      const params = { type: 'delete', index: this.index }
-      this.$emit('on-custom-comp', params)
-    }
-  },
-  template: `<span>
-        <a href="" @click.stop.prevent="update(rowData,index)"><svg-icon icon-class="edit" /></a>&nbsp;
-        <a href="" @click.stop.prevent="deleteRow(rowData,index)"><svg-icon icon-class="lock" /></a>
-        </span>`
-})
+Vue.component('common-operation-button', CommonOperationButton)
+Vue.component('common-operation-button-with-solution', CommonOperationButtonWithSolution)
+Vue.component('user-operation-button', UserOperationButton)
+Vue.component('user-operation-button-with-solution', UserOperationButtonWithSolution)
 
 Vue.config.productionTip = false
 

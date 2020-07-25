@@ -4,16 +4,16 @@ import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.dto.SolutionCodeDto;
+import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.converter.SolutionConverter;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -28,6 +28,16 @@ public class SolutionController {
 
     @Resource
     private SolutionService solutionService;
+
+    /**
+     * 管理员查询全部提交列表
+     */
+    @GetMapping(value = "/")
+    public ResponseEntity<BasicResponse> getList(SolutionDto solutionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<Solution> solutionPage = new Page<>(pageNum, pageSize);
+        IPage<SolutionDto> iPage = solutionService.getAll(solutionDto, solutionPage);
+        return ResponseUtil.buildResponse("查询成功", iPage);
+    }
 
     /**
      * 管理员查看提交的源代码

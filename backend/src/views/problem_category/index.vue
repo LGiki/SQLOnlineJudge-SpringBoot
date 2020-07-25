@@ -29,6 +29,7 @@
     </div>
     <template>
       <v-table
+        :width="1100"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
@@ -93,7 +94,7 @@ export default {
           {
             field: 'id',
             title: 'ID',
-            width: 5,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -101,7 +102,7 @@ export default {
           {
             field: 'name',
             title: '题目集名称',
-            width: 50,
+            width: 350,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -112,7 +113,7 @@ export default {
           {
             field: 'startTime',
             title: '开始时间',
-            width: 50,
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -120,7 +121,7 @@ export default {
           {
             field: 'endTime',
             title: '结束时间',
-            width: 50,
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -139,11 +140,11 @@ export default {
           {
             field: 'action',
             title: '操作',
-            width: 20,
+            width: 300,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'table-operation'
+            componentName: 'common-operation-button-with-solution'
           }
         ]
       }

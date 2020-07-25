@@ -2,7 +2,7 @@ const ApiHost = "http://127.0.0.1:8080";
 const BaseUrl = ApiHost + "/api/user";
 const Url = {
   // 用户登录接口
-  login: ApiHost + "/auth/user/login",
+  login: ApiHost + "/api/user/auth",
   // 题目基础接口
   problemBaseUrl: BaseUrl + "/problem",
   // 排行榜基础接口
