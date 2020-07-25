@@ -29,7 +29,7 @@
     </div>
     <template>
       <v-table
-        :width="1000"
+        :width="1100"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
@@ -142,11 +142,11 @@ export default {
           {
             field: 'action',
             title: '操作',
-            width: 100,
+            width: 300,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'table-operation'
+            componentName: 'common-operation-button-with-solution'
           }
         ]
       }
@@ -200,6 +200,8 @@ export default {
         })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/problem/edit/' + problemId })
+      } else if (params.type === 'showSolution') {
+        this.$router.push({ path: '/solution/problem/' + problemId })
       }
     },
     pageChange(pageNum) {

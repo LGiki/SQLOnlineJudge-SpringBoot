@@ -137,6 +137,7 @@
     </div>
     <template>
       <v-table
+        :width="1000"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
@@ -240,7 +241,7 @@ export default {
           {
             field: 'id',
             title: '用户ID',
-            width: 35,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -251,7 +252,7 @@ export default {
           {
             field: 'username',
             title: '用户名',
-            width: 60,
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -262,7 +263,7 @@ export default {
           {
             field: 'studentNo',
             title: '学号',
-            width: 80,
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -279,7 +280,7 @@ export default {
           {
             field: 'status',
             title: '用户状态',
-            width: 50,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -287,11 +288,11 @@ export default {
           {
             field: 'action',
             title: '操作',
-            width: 80,
+            width: 300,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
-            componentName: 'user-operation'
+            componentName: 'user-operation-button-with-solution'
           }
         ]
       }

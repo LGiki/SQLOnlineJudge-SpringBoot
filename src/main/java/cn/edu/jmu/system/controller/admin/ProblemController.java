@@ -53,7 +53,7 @@ public class ProblemController {
     /**
      * 查询所有题目
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> getAll(ProblemDto problemDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Problem> page = new Page<>(pageNum, pageSize);
         IPage<ProblemListDto> iPage = problemService.getAll(problemDto, page);
