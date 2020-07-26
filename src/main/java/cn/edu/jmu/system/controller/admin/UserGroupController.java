@@ -39,19 +39,13 @@ public class UserGroupController {
     @Resource
     UserGroupService userGroupService;
 
-//    @GetMapping(value = "/user-group")
-//    public ResponseEntity<BasicResponse> search(@RequestParam Integer skip, @RequestParam Integer limit) {
-//        SearchUserGroupResponse response = userGroupService.search(skip, limit);
-//        return ResponseUtil.buildResponse(response);
-//    }
-
     @GetMapping("/count")
     public ResponseEntity<BasicResponse> count() {
         return ResponseUtil.buildResponse(userGroupService.count());
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> search(@Validated UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> getUserGroupList(@Validated UserGroupDto userGroupDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<UserGroup> page = new Page<>(pageNum, pageSize);
         IPage<UserGroupDto> iPage = userGroupService.search(userGroupDto, page);
         return ResponseUtil.buildResponse("查询成功", iPage);

@@ -1,13 +1,6 @@
 import httpRequest from '@/utils/request'
 import { baseApiUrlConfig } from '@/url-config'
 
-export function getProblemCollectionCount() {
-  return httpRequest({
-    url: baseApiUrlConfig.problemCollectionBase,
-    method: 'get'
-  })
-}
-
 export function getProblemCollectionList(pageNum, pageSize, searchType, keyword) {
   const params = {
     pageNum: pageNum,

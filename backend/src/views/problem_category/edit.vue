@@ -49,7 +49,7 @@
             type="danger"
             @click="onDeleteCollectionProblemSelection"
           >
-            <i class="el-icon-delete" />&nbsp;删除所选题目
+            <i class="el-icon-delete" />&nbsp;从题目集中移除所选题目
           </el-button>
         </div>
         <template>
@@ -536,9 +536,6 @@ export default {
 <style scoped>
 .bd {
   padding-top: 15px;
-  text-align: center;
-}
-.line {
   text-align: center;
 }
 .operation-button {

@@ -128,9 +128,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.line {
-  text-align: center;
-}
-</style>

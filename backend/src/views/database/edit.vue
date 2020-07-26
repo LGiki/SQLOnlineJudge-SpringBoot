@@ -210,9 +210,6 @@ export default {
 </script>
 
 <style scoped>
-.line {
-  text-align: center;
-}
 #hint-image {
   margin-bottom: 5px;
   width: auto;

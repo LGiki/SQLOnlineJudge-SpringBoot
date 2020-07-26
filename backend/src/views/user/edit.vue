@@ -114,10 +114,6 @@ export default {
 </script>
 
 <style scoped>
-.line {
-  text-align: center;
-}
-
 .show-pwd {
   position: absolute;
   right: 10px;
