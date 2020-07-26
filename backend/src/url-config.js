@@ -10,7 +10,7 @@ const baseApiUrlConfig = {
   // 解答数量
   solutionCount: '/solutions/count',
   // 查询解答代码接口
-  solutionCode: '/solutions',
+  solutionBase: '/solutions',
   // 数据库基础接口
   databaseBase: '/databases',
   // 查询全部数据库的ID和名称
@@ -53,8 +53,6 @@ const baseApiUrlConfig = {
   problemCollectionUpdateProblemScore: '/problem_collection/update_score'
 }
 const specialApiUrlConfig = {
-  // 解答基础操作
-  solutionBase: apiHost + '/api/public/solutions',
   // 图片显示接口
   getImage: apiHost + '/api/public/image'
 }

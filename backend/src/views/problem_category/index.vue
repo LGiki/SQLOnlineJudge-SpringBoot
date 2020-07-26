@@ -207,6 +207,8 @@ export default {
         })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/problem-category/edit/' + problemCategoryId })
+      } else if (params.type === 'showSolution') {
+        this.$router.push({ path: '/solution/problem_category/' + problemCategoryId })
       }
     },
     onNewProblemCollection() {

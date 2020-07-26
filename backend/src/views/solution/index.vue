@@ -1,31 +1,8 @@
 <template>
   <div class="app-container">
-    <div class="operation-button">
-      <el-input
-        v-model="searchKeyword"
-        prefix-icon="el-icon-search"
-        placeholder="请输入搜索关键字"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="onSearch"
-      />
-      <el-select v-model="searchType">
-        <el-option
-          v-for="item in searchTypeList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      <el-button type="primary" @click="onSearch">
-        <svg-icon icon-class="search" />&nbsp;搜索
-      </el-button>
-      <el-button v-if="inSearch" type="primary" @click="onCancelSearch">
-        <i class="el-icon-close" />&nbsp;取消搜索
-      </el-button>
-    </div>
     <template>
       <v-table
+        :width="1350"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
@@ -64,40 +41,22 @@
 </template>
 
 <script>
-import VueHighlightJS from 'vue-highlight.js'
 import 'vue-highlight.js/lib/allLanguages'
 import 'highlight.js/styles/atom-one-light.css'
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
+import { getSolutionList, getSolutionDetail } from '@/api/solution'
 
 export default {
   components: {
-    VueHighlightJS,
     VTable,
     VPagination
   },
   data() {
     return {
-      searchTypeList: [
-        {
-          label: '提交ID',
-          value: 'id'
-        },
-        {
-          label: '用户ID',
-          value: 'uid'
-        },
-        {
-          label: '题目ID',
-          value: 'pid'
-        }
-      ],
       sourceCode: '',
       dialogVisible: false,
       runError: null,
-      searchType: 'id',
-      inSearch: false,
-      searchKeyword: '',
       pageNum: 1,
       pageSize: 20,
       totalItems: 0,
@@ -108,26 +67,26 @@ export default {
           {
             field: 'id',
             title: '提交ID',
-            width: 30,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
           },
-          {
-            field: 'uid',
-            title: '用户ID',
-            width: 30,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user/edit/${rowData.uid}" title="${rowData.uid}">${rowData.uid}</a>`
-            }
-          },
+          // {
+          //   field: 'uid',
+          //   title: '用户ID',
+          //   width: 50,
+          //   titleAlign: 'center',
+          //   columnAlign: 'center',
+          //   isResize: true,
+          //   formatter: function(rowData, rowIndex, pagingIndex, field) {
+          //     return `<a href="#/user/edit/${rowData.uid}" title="${rowData.uid}">${rowData.uid}</a>`
+          //   }
+          // },
           {
             field: 'username',
             title: '用户名',
-            width: 50,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -138,7 +97,7 @@ export default {
           {
             field: 'studentNo',
             title: '学号',
-            width: 100,
+            width: 150,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -146,21 +105,43 @@ export default {
               return `<a href="#/user/edit/${rowData.uid}" title="${rowData.studentNo}">${rowData.studentNo}</a>`
             }
           },
+          // {
+          //   field: 'problemCategoryId',
+          //   title: '题目集ID',
+          //   width: 50,
+          //   titleAlign: 'center',
+          //   columnAlign: 'center',
+          //   isResize: true,
+          //   formatter: function(rowData, rowIndex, pagingIndex, field) {
+          //     return `<a href="#/problem-category/edit/${rowData.problemCategoryId}" title="${rowData.problemCategoryId}">${rowData.problemCategoryId}</a>`
+          //   }
+          // },
           {
-            field: 'pid',
-            title: '题目ID',
-            width: 30,
+            field: 'problemCategoryTitle',
+            title: '题目集标题',
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
             formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.pid}">${rowData.pid}</a>`
+              return `<a href="#/problem-category/edit/${rowData.problemCategoryId}" title="${rowData.problemCategoryTitle}">${rowData.problemCategoryTitle}</a>`
             }
           },
+          // {
+          //   field: 'pid',
+          //   title: '题目ID',
+          //   width: 50,
+          //   titleAlign: 'center',
+          //   columnAlign: 'center',
+          //   isResize: true,
+          //   formatter: function(rowData, rowIndex, pagingIndex, field) {
+          //     return `<a href="#/problem/edit/${rowData.pid}" title="${rowData.pid}">${rowData.pid}</a>`
+          //   }
+          // },
           {
             field: 'title',
             title: '题目标题',
-            width: 300,
+            width: 400,
             titleAlign: 'center',
             // columnAlign: 'center',
             isResize: true,
@@ -171,7 +152,7 @@ export default {
           {
             field: 'submitTime',
             title: '提交时间',
-            width: 180,
+            width: 200,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -179,7 +160,7 @@ export default {
           {
             field: 'sourceCode',
             title: '代码',
-            width: 80,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -190,7 +171,7 @@ export default {
           {
             field: 'result',
             title: '运行结果',
-            width: 80,
+            width: 150,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -218,8 +199,37 @@ export default {
       }
     }
   },
-  created() {},
+  computed: {
+    searchType() {
+      switch (this.$route.name) {
+        case 'Problem Solution':
+          return 'pid'
+        case 'Problem Category Solution':
+          return 'problemCategoryId'
+        case 'User Solution':
+          return 'uid'
+        default:
+          return null
+      }
+    },
+    searchId() {
+      if (this.$route.params.problemId) {
+        return this.$route.params.problemId
+      } else if (this.$route.params.userId) {
+        return this.$route.params.userId
+      } else if (this.$route.params.problemCategoryId) {
+        return this.$route.params.problemCategoryId
+      }
+      return null
+    }
+  },
   mounted: function() {
+    if (!this.searchType || !this.searchId) {
+      this.$message({
+        message: '未指定过滤条件，将显示全部提交',
+        type: 'warning'
+      })
+    }
     this.fetchSolutionList()
   },
   methods: {
@@ -228,116 +238,33 @@ export default {
         this.fetchSolutionCode(rowData.id)
       }
     },
-    onSearch() {
-      const keyword = this.searchKeyword.trim()
-      this.pageNum = 1
-      if (keyword.length === 0) {
-        this.$message.error('请输入关键字！')
-      } else {
-        this.isLoading = true
-        const apiUrl = this.Url.solutionBaseUrl
-        this.$axios
-          .get(apiUrl, {
-            params: {
-              [this.searchType]: keyword,
-              pageNum: this.pageNum,
-              pageSize: this.pageSize
-            }
-          })
-          .then(res => {
-            if (res.status !== 200) {
-              this.$message.error('搜索失败，内部错误！')
-            } else {
-              const resData = res.data
-              if (resData.code === 0) {
-                this.tableConfig.tableData = resData.data.records
-                this.totalItems = resData.data.total
-                this.inSearch = true
-              } else {
-                this.$message.error(resData.message)
-              }
-            }
-            this.isLoading = false
-          })
-          .catch(err => {
-            this.$message.error('搜索失败！')
-            this.isLoading = false
-            console.log(err)
-          })
-      }
-    },
-    onCancelSearch() {
-      this.inSearch = false
-      this.fetchSolutionList()
-    },
     pageChange(pageNum) {
       this.pageNum = pageNum
-      if (this.inSearch) {
-        this.onSearch()
-      } else {
-        this.fetchSolutionList()
-      }
+      this.fetchSolutionList()
     },
     pageSizeChange(newPageSize) {
       this.pageSize = newPageSize
-      if (this.inSearch) {
-        this.onSearch()
-      } else {
-        this.fetchSolutionList()
-      }
+      this.fetchSolutionList()
     },
     fetchSolutionList() {
       this.isLoading = true
-      const apiUrl = this.Url.solutionBaseUrl
-      this.$axios
-        .get(apiUrl, {
-          params: {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize
-          }
-        })
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取用户提交列表失败，内部错误！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.tableConfig.tableData = resData.data.records
-              this.totalItems = resData.data.total
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
+      this.handleResponse(getSolutionList(this.pageNum, this.pageSize, this.searchType, this.searchId), '获取解答列表',
+        (resData) => {
+          this.tableConfig.tableData = resData.data.records
+          this.totalItems = resData.data.total
+        },
+        null,
+        null,
+        () => {
           this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取用户提交列表失败！')
-          this.isLoading = false
-          console.log(err)
         })
     },
     fetchSolutionCode(solutionId) {
-      const apiUrl = this.Url.solutionCode
-      this.$axios
-        .get(apiUrl + solutionId)
-        .then(res => {
-          if (res.status !== 200) {
-            this.$message.error('获取解答代码失败！')
-          } else {
-            const resData = res.data
-            if (resData.code === 0) {
-              this.sourceCode = resData.data.sourceCode
-              this.runError = resData.data.runError
-              this.dialogVisible = true
-            } else {
-              this.$message.error(resData.message)
-            }
-          }
-          this.isLoading = false
-        })
-        .catch(err => {
-          this.$message.error('获取解答代码失败！')
-          console.log(err)
+      this.handleResponse(getSolutionDetail(solutionId), '获取解答代码',
+        (resData) => {
+          this.sourceCode = resData.data.sourceCode
+          this.runError = resData.data.runError
+          this.dialogVisible = true
         })
     }
   }
@@ -347,10 +274,5 @@ export default {
 .bd {
   padding-top: 15px;
   text-align: center;
-}
-
-.operation-button {
-  float: right;
-  padding-bottom: 10px;
 }
 </style>

@@ -229,13 +229,32 @@ export const constantRoutes = [
     path: '/solution',
     component: Layout,
     redirect: '/solution/index',
-    meta: { title: '提交查看', icon: 'chart' },
+    meta: { title: '全部提交', icon: 'chart' },
+    hidden: true,
     children: [
       {
         path: 'index',
-        name: 'Solutions',
+        name: 'Solution',
         component: () => import('@/views/solution/index'),
-        meta: { title: '提交列表' }
+        meta: { title: '全部提交列表' }
+      },
+      {
+        path: 'problem/:problemId',
+        name: 'Problem Solution',
+        component: () => import('@/views/solution/index'),
+        meta: { title: '题目提交列表' }
+      },
+      {
+        path: 'problem_category/:problemCategoryId',
+        name: 'Problem Category Solution',
+        component: () => import('@/views/solution/index'),
+        meta: { title: '题目集提交列表' }
+      },
+      {
+        path: 'user/:userId',
+        name: 'User Solution',
+        component: () => import('@/views/solution/index'),
+        meta: { title: '用户提交列表' }
       }
     ]
   },

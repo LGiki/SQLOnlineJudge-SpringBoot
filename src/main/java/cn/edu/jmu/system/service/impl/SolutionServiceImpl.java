@@ -2,10 +2,12 @@ package cn.edu.jmu.system.service.impl;
 
 import cn.edu.jmu.judge.service.JudgeService;
 import cn.edu.jmu.system.entity.Problem;
+import cn.edu.jmu.system.entity.ProblemCategory;
 import cn.edu.jmu.system.entity.Solution;
 import cn.edu.jmu.system.entity.User;
 import cn.edu.jmu.system.entity.dto.SolutionDto;
 import cn.edu.jmu.system.mapper.SolutionMapper;
+import cn.edu.jmu.system.service.ProblemCategoryService;
 import cn.edu.jmu.system.service.ProblemService;
 import cn.edu.jmu.system.service.SolutionService;
 import cn.edu.jmu.system.service.UserService;
@@ -39,6 +41,9 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
 
     @Resource
     private JudgeService judgeService;
+
+    @Resource
+    private ProblemCategoryService problemCategoryService;
 
     /**
      * 根据用户ID、题目集ID、题目ID获取到用户对某个题目最后一次提交的提交详情
@@ -115,7 +120,13 @@ public class SolutionServiceImpl extends ServiceImpl<SolutionMapper, Solution> i
             solutionDto.setUsername(user.getUsername());
             solutionDto.setStudentNo(user.getStudentNo());
         }
+        ProblemCategory problemCategory = problemCategoryService.getById(solutionDto.getProblemCategoryId());
+        if (problemCategory != null) {
+            solutionDto.setProblemCategoryTitle(problemCategory.getName());
+        }
         Problem problem = problemService.getById(solutionDto.getPid());
-        solutionDto.setTitle(problem.getTitle());
+        if (problem != null) {
+            solutionDto.setTitle(problem.getTitle());
+        }
     }
 }

@@ -435,14 +435,14 @@ export default {
             const resData = res.data
             if (resData.code === 0) {
               const studentNoIndexOf = this.newStudentNoList.indexOf(student)
-              if (studentNoIndexOf != -1) {
+              if (studentNoIndexOf !== -1) {
                 this.newStudentNoList.splice(studentNoIndexOf, 1)
                 this.studentNoAddedList.push(student.studentNo)
               }
             }
           }
           this.currentAddProgress += 1
-          if (this.currentAddProgress == this.newStudentNoListCount) {
+          if (this.currentAddProgress === this.newStudentNoListCount) {
             if (this.newStudentNoList.length === 0) {
               this.$message({
                 message: '批量添加用户操作完成，全部用户均添加成功！',
@@ -528,6 +528,8 @@ export default {
         })
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/user/edit/' + userId })
+      } else if (params.type === 'showSolution') {
+        this.$router.push({ path: '/solution/user/' + userId })
       }
     },
     pageChange(pageNum) {

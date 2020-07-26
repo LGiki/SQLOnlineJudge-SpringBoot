@@ -55,6 +55,11 @@ public class SolutionDto implements Serializable {
     private Integer problemCategoryId;
 
     /**
+     * 题目集标题
+     */
+    private String problemCategoryTitle;
+
+    /**
      * 题目标题
      */
     private String title;

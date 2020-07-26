@@ -126,7 +126,6 @@
 </template>
 
 <script>
-import VueHighlightJS from 'vue-highlight.js'
 import 'vue-highlight.js/lib/allLanguages'
 import 'highlight.js/styles/atom-one-light.css'
 import { codemirror } from 'vue-codemirror'
@@ -144,7 +143,6 @@ import { runCode } from '@/api/judge'
 
 export default {
   components: {
-    VueHighlightJS,
     codemirror,
     Tinymce
   },
@@ -239,12 +237,14 @@ export default {
     },
     isAdd() {
       return this.$route.params.id === undefined
+    },
+    problemId() {
+      return this.$route.params.id
     }
   },
   mounted: function() {
-    const problemId = this.$route.params.id
     if (!this.isAdd) {
-      this.handleResponse(getProblemDetail(problemId), '获取题目详情',
+      this.handleResponse(getProblemDetail(this.problemId), '获取题目详情',
         (res) => {
           this.problemDetail = res.data
           if (!this.problemDetail.description) {
@@ -294,7 +294,6 @@ export default {
     onSubmit() {
       this.$refs.problemDetail.validate(valid => {
         if (valid) {
-          const problemId = this.$route.params.id
           const problem = {
             title: this.problemDetail.title.trim(),
             description: this.problemDetail.description.trim(),
@@ -313,7 +312,7 @@ export default {
                 this.$router.back(-1)
               })
           } else {
-            this.handleResponse(updateProblem(problemId, problem.title, problem.description, problem.sampleOutput, problem.hint, problem.answer, problem.databaseId, problem.difficulty, problem.isUpdate, problem.selectAfterUpdate), '添加题目',
+            this.handleResponse(updateProblem(this.problemId, problem.title, problem.description, problem.sampleOutput, problem.hint, problem.answer, problem.databaseId, problem.difficulty, problem.isUpdate, problem.selectAfterUpdate), '添加题目',
               (res) => {
                 this.$message.success('更新题目成功')
                 this.$router.back(-1)

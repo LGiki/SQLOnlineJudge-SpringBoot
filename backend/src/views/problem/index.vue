@@ -29,7 +29,7 @@
     </div>
     <template>
       <v-table
-        :width="1100"
+        :width="1000"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
