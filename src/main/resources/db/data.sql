@@ -68,7 +68,7 @@ VALUES (2, '16级 2');
 ALTER TABLE `problem_categories`
 ADD COLUMN `start_time` DATETIME NULL AFTER `name`,
 ADD COLUMN `end_time` DATETIME NULL AFTER `start_time`,
-ADD COLUMN `view_after_end` BIT NOT NULL DEFAULT '1' AFTER `end_time`;
+ADD COLUMN `view_after_end` BIT NOT NULL DEFAULT 1 AFTER `end_time`;
 -- ----------------------------
 -- Table structure for problem_collections
 -- ----------------------------
@@ -106,7 +106,7 @@ ADD COLUMN `problem_score` INT NOT NULL DEFAULT 0 COMMENT '题目分值' AFTER `
 
 ALTER TABLE `problem_collections`
 ADD COLUMN `problem_submit` INT NOT NULL DEFAULT 0 COMMENT '题目提交数' AFTER `problem_id`,
-ADD COLUMN `problem_solved` INT NOT NULL DEFAULT 0 COMMENT '题目通过数' AFTER `submit`;
+ADD COLUMN `problem_solved` INT NOT NULL DEFAULT 0 COMMENT '题目通过数' AFTER `problem_submit`;
 -- ----------------------------
 -- Table structure for problems
 -- ----------------------------
