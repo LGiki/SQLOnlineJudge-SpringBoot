@@ -138,35 +138,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/user-group',
-    component: Layout,
-    redirect: '/user-group/index',
-    meta: { title: '用户组管理', icon: 'tree' },
-    children: [
-      {
-        path: 'index',
-        name: 'UserGroups List',
-        component: () => import('@/views/user_group/index'),
-        meta: { title: '用户组列表' }
-        // hidden: true
-      },
-      {
-        path: 'edit/:id',
-        name: 'Edit UserGrous',
-        component: () => import('@/views/user_group/edit'),
-        meta: { title: '编辑用户组' },
-        hidden: true
-      },
-      {
-        path: 'add',
-        name: 'Add UserGroup',
-        component: () => import('@/views/user_group/add'),
-        meta: { title: '添加用户组' },
-        hidden: true
-      }
-    ]
-  },
-  {
     path: '/user',
     component: Layout,
     redirect: '/user/index',
@@ -191,6 +162,35 @@ export const constantRoutes = [
         name: 'Add Users',
         component: () => import('@/views/user/add'),
         meta: { title: '添加用户' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/user-group',
+    component: Layout,
+    redirect: '/user-group/index',
+    meta: { title: '用户组管理', icon: 'tree' },
+    children: [
+      {
+        path: 'index',
+        name: 'UserGroups List',
+        component: () => import('@/views/user_group/index'),
+        meta: { title: '用户组列表' }
+        // hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: 'Edit UserGrous',
+        component: () => import('@/views/user_group/edit'),
+        meta: { title: '编辑用户组' },
+        hidden: true
+      },
+      {
+        path: 'add',
+        name: 'Add UserGroup',
+        component: () => import('@/views/user_group/add'),
+        meta: { title: '添加用户组' },
         hidden: true
       }
     ]

@@ -61,6 +61,7 @@ public interface UserGroupService extends IService<UserGroup> {
 
     /**
      * 通过用户组ID判断用户组是否存在
+     *
      * @param id 用户组ID
      * @return Boolean 用户组是否存在
      */

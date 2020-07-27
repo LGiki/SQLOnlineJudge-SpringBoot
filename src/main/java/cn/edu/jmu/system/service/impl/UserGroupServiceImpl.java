@@ -9,6 +9,7 @@ import cn.edu.jmu.system.api.usergourp.UpdateUserGroupResponse;
 import cn.edu.jmu.system.entity.UserGroup;
 import cn.edu.jmu.system.entity.dto.UserGroupDto;
 import cn.edu.jmu.system.mapper.UserGroupMapper;
+import cn.edu.jmu.system.service.UserGroupCollectionService;
 import cn.edu.jmu.system.service.UserGroupService;
 import cn.edu.jmu.system.service.converter.UserGroupConverter;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -31,6 +32,9 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
     @Resource
     UserGroupMapper userGroupMapper;
 
+    @Resource
+    UserGroupCollectionService userGroupCollectionService;
+
     @Override
     public SearchUserGroupResponse search(Integer skip, Integer limit) {
         List<UserGroup> userGroups = userGroupMapper.list(skip, limit);
@@ -44,7 +48,16 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
     public IPage<UserGroupDto> search(UserGroupDto userGroupDto, Page page) {
         Page<UserGroup> userGroupPage = new Page<>(page.getCurrent(), page.getSize());
         IPage<UserGroup> iPage = baseMapper.selectPage(userGroupPage, predicate(userGroupDto));
-        return iPage.convert(UserGroupConverter::userGroupDto);
+        IPage<UserGroupDto> userGroupDtoIPage = iPage.convert(UserGroupConverter::toUserGroupDto);
+        userGroupDtoIPage.getRecords().forEach(this::addUserCount);
+        return userGroupDtoIPage;
+    }
+
+    /**
+     * 为UserGroupDto添加用户数量字段
+     */
+    private void addUserCount(UserGroupDto userGroupDto) {
+        userGroupDto.setCount(userGroupCollectionService.countByUserGroupId(userGroupDto.getId()));
     }
 
     private Wrapper<UserGroup> predicate(UserGroupDto userGroupDto) {

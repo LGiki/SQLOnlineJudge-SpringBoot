@@ -2,7 +2,6 @@ package cn.edu.jmu.system.service;
 
 import cn.edu.jmu.system.api.problemcollection.CreateProblemCollectionRequest;
 import cn.edu.jmu.system.api.problemcollection.CreateProblemCollectionResponse;
-import cn.edu.jmu.system.api.problemcollection.DeleteProblemCollectionResponse;
 import cn.edu.jmu.system.entity.ProblemCollection;
 import cn.edu.jmu.system.entity.dto.ProblemCollectionDto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -53,7 +52,7 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
      * 根据题目集ID获取该题目集的所有题目ID
      *
      * @param problemCategoryId 题目集ID
-     * @return List<Integer>
+     * @return List<Integer> 题目ID集合
      */
     List<Integer> getProblemIdsByProblemCategoryId(Integer problemCategoryId);
 

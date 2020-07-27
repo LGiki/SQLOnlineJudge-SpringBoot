@@ -33,7 +33,7 @@ export function getProblemIdsByProblemCategoryId(problemCategoryId) {
   })
 }
 
-export function deleteProblemInBulk(problemCollectionIds) {
+export function deleteProblemCollectionInBulk(problemCollectionIds) {
   return httpRequest({
     url: baseApiUrlConfig.problemCollectionBulk,
     method: 'delete',
@@ -41,7 +41,7 @@ export function deleteProblemInBulk(problemCollectionIds) {
   })
 }
 
-export function insertProblemInBulk(problemCategoryId, problemIds) {
+export function insertProblemCollectionInBulk(problemCategoryId, problemIds) {
   return httpRequest({
     url: `${baseApiUrlConfig.problemCollectionBulk}/${problemCategoryId}`,
     method: 'post',

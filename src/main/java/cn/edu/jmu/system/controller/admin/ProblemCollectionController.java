@@ -54,8 +54,7 @@ public class ProblemCollectionController {
      */
     @GetMapping("/problem_ids/{problemCategoryId}")
     public ResponseEntity<BasicResponse> getProblemIdsByProblemCategoryId(@PathVariable("problemCategoryId") Integer problemCategoryId) {
-        Boolean isProblemCategoryExist = problemCategoryService.existById(problemCategoryId);
-        if (!isProblemCategoryExist) {
+        if (!problemCategoryService.existById(problemCategoryId)) {
             return ResponseUtil.fail("该题目集不存在");
         } else {
             return ResponseUtil.buildResponse("查询成功", problemCollectionService.getProblemIdsByProblemCategoryId(problemCategoryId));

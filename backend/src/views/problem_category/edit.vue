@@ -95,7 +95,8 @@
           :data="problemListTableData"
           tooltip-effect="dark"
           style="width: 100%"
-          @selection-change="onProblemListSelectionChange"
+          @select="onProblemListSelect"
+          @select-all="onProblemListSelectAll"
         >
           <el-table-column
             type="selection"
@@ -142,6 +143,7 @@
         <span slot="footer" class="dialog-footer">
           <template v-if="selectedProblemIds.length !== 0"><p>将新增 <strong>{{ selectedProblemIds.length }}</strong> 道题目到题目集中</p></template>
           <el-button
+            v-if="selectedProblemIds.length !== 0"
             type="warning"
             @click="resetSelectedProblemIds"
           >重 置</el-button>
@@ -164,7 +166,7 @@ import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
 import ConvertUtil from '@/utils/convert-util'
 import { getProblemCategoryDetail, updateProblemCategory } from '@/api/problem-category'
-import { getProblemCollectionList, updateProblemScore, getProblemIdsByProblemCategoryId, insertProblemInBulk, deleteProblemInBulk } from '@/api/problem-collection'
+import { getProblemCollectionList, updateProblemScore, getProblemIdsByProblemCategoryId, insertProblemCollectionInBulk, deleteProblemCollectionInBulk } from '@/api/problem-collection'
 import { getProblemList } from '@/api/problem'
 
 export default {
@@ -343,10 +345,7 @@ export default {
     async refreshProblemList() {
       await this.getProblemList()
       for (const problem of this.problemListTableData) {
-        if (this.collectionProblemIds.indexOf(problem.problemId) !== -1) {
-          this.$refs.problemListTable.toggleRowSelection(problem, true)
-        }
-        if (this.selectedProblemIds.indexOf(problem.problemId) !== -1) {
+        if (this.collectionProblemIds.indexOf(problem.problemId) !== -1 || this.selectedProblemIds.indexOf(problem.problemId) !== -1) {
           this.$refs.problemListTable.toggleRowSelection(problem, true)
         }
       }
@@ -384,9 +383,34 @@ export default {
     onProblemCollectionSelectGroupChange(selection) {
       this.problemCollectionProblemListSelection = selection
     },
+    // 题目列表全选事件
+    onProblemListSelectAll(selection) {
+      if (selection.length > 0) {
+        // 全选
+        selection.forEach((problem) => {
+          if (this.collectionProblemIds.indexOf(problem.problemId) === -1 && this.selectedProblemIds.indexOf(problem.problemId) === -1) {
+            this.selectedProblemIds.push(problem.problemId)
+          }
+        })
+      } else {
+        // 取消全选
+        this.problemListTableData.forEach((problem) => {
+          if (this.collectionProblemIds.indexOf(problem.problemId) === -1) {
+            // 只移除不在题目集内的题目的选中状态
+            const tempIndex = this.selectedProblemIds.indexOf(problem.problemId)
+            if (tempIndex !== -1) {
+              this.selectedProblemIds.splice(tempIndex, 1)
+            }
+          } else {
+            // 确保已经在题目集内的题目依旧是选中状态
+            this.$refs.problemListTable.toggleRowSelection(problem, true)
+          }
+        })
+      }
+    },
     // 从题目集删除选中的题目事件
     onDeleteCollectionProblemSelection() {
-      this.$confirm('是否从题目集中移除已选中的题目?', '提示', {
+      this.$confirm('是否从题目集中移除选中的题目?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -396,7 +420,7 @@ export default {
           for (const problem of this.problemCollectionProblemListSelection) {
             problemCollectionIds.push(problem.id)
           }
-          this.handleResponse(deleteProblemInBulk(problemCollectionIds), '删除题目',
+          this.handleResponse(deleteProblemCollectionInBulk(problemCollectionIds), '删除题目',
             (res) => {
               if (res.data.success && res.data.success.length === 0) {
                 this.$message.error('从题目集中移除选中的题目失败，请稍后再试')
@@ -418,14 +442,14 @@ export default {
     // 选择题目添加到题目集对话框确定事件
     onAddProblem() {
       if (this.selectedProblemIds && this.selectedProblemIds.length !== 0) {
-        this.handleResponse(insertProblemInBulk(this.problemCategoryId, this.selectedProblemIds), '添加题目',
+        this.handleResponse(insertProblemCollectionInBulk(this.problemCategoryId, this.selectedProblemIds), '添加题目',
           (res) => {
             if (res.data.success && res.data.success.length === 0) {
-              this.$message.error('插入题目失败，请稍后再试')
+              this.$message.error('添加题目失败，请稍后再试')
             } else if ((res.data.fail && res.data.fail.length) > 0 || (res.data.duplicated && res.data.duplicated.length) > 0) {
-              let messageString = '成功执行插入操作'
+              let messageString = '成功执行添加操作'
               if (res.data.fail.length > 0) {
-                messageString += '，部分题目插入失败：' + res.data.fail
+                messageString += '，部分题目添加失败：' + res.data.fail
               }
               if (res.data.duplicated.length > 0) {
                 messageString += '，部分题目已存在题目集中：' + res.data.duplicated
@@ -435,14 +459,14 @@ export default {
                 type: 'warning'
               })
             } else {
-              this.$message.success('插入题目成功')
+              this.$message.success('添加题目成功')
             }
             this.addFromProblemListDialogVisible = false
             this.selectedProblemIds.length = 0
             this.getProblemCollectionList(this.problemCategoryId)
           })
       } else {
-        this.$message.error('请确认所有项目均填写正确')
+        this.$message.error('请选择要添加到题目集中的题目')
       }
     },
     // 题目列表页面切换事件
@@ -521,13 +545,21 @@ export default {
         }
       }
     },
-    // 选中的题目列表发生更改事件（选择了新的题目）
-    onProblemListSelectionChange(selection) {
-      selection.forEach((problem) => {
-        if (this.collectionProblemIds.indexOf(problem.problemId) === -1 && this.selectedProblemIds.indexOf(problem.problemId) === -1) {
-          this.selectedProblemIds.push(problem.problemId)
+    // 题目列表选项框状态变更事件（选择了新的题目 or 取消了某个已选择的题目）
+    onProblemListSelect(selection, row) {
+      const selected = selection.length && selection.indexOf(row) !== -1
+      if (selected) {
+        selection.forEach((problem) => {
+          if (this.collectionProblemIds.indexOf(problem.problemId) === -1 && this.selectedProblemIds.indexOf(problem.problemId) === -1) {
+            this.selectedProblemIds.push(problem.problemId)
+          }
+        })
+      } else {
+        const rowInSelectedIndex = this.selectedProblemIds.indexOf(row.problemId)
+        if (rowInSelectedIndex !== -1) {
+          this.selectedProblemIds.splice(rowInSelectedIndex, 1)
         }
-      })
+      }
     }
   }
 }

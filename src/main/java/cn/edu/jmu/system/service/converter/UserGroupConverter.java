@@ -36,7 +36,7 @@ public class UserGroupConverter {
         return userGroup;
     }
 
-    public static UserGroupDto userGroupDto(UserGroup userGroup) {
+    public static UserGroupDto toUserGroupDto(UserGroup userGroup) {
         UserGroupDto userGroupDto = new UserGroupDto();
         BeanUtil.copyProperties(userGroup, userGroupDto, true, CopyOptions.create()
             .setIgnoreNullValue(true));

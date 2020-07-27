@@ -29,6 +29,7 @@
     </div>
     <template>
       <v-table
+        :width="400"
         is-horizontal-resize
         style="width:100%"
         :is-loading="isLoading"
@@ -93,7 +94,7 @@ export default {
           {
             field: 'id',
             title: '用户组ID',
-            width: 30,
+            width: 50,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -101,7 +102,7 @@ export default {
           {
             field: 'name',
             title: '用户组名称',
-            width: 60,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -110,9 +111,17 @@ export default {
             }
           },
           {
+            field: 'count',
+            title: '用户数量',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
             field: 'description',
             title: '用户组简介',
-            width: 200,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,
@@ -123,7 +132,7 @@ export default {
           {
             field: 'action',
             title: '操作',
-            width: 40,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true,

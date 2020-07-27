@@ -3,6 +3,7 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.entity.UserGroupCollection;
+import cn.edu.jmu.system.entity.dto.UserGroupCollectionDto;
 import cn.edu.jmu.system.service.UserGroupCollectionService;
 import cn.edu.jmu.system.service.UserGroupService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -30,9 +31,9 @@ public class UserGroupCollectionController {
     private UserGroupService userGroupService;
 
     @GetMapping(value = "/")
-    public ResponseEntity<BasicResponse> getList(@RequestBody UserGroupCollection userGroupCollection, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<BasicResponse> getList(UserGroupCollection userGroupCollection, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<UserGroupCollection> page = new Page<>(pageNum, pageSize);
-        IPage<UserGroupCollection> iPage = userGroupCollectionService.getUserGroupCollectionList(userGroupCollection, page);
+        IPage<UserGroupCollectionDto> iPage = userGroupCollectionService.getUserGroupCollectionList(userGroupCollection, page);
         return ResponseUtil.buildResponse("查询成功", iPage);
     }
 
@@ -92,4 +93,19 @@ public class UserGroupCollectionController {
         responseHashMap.put("fail", failIds);
         return ResponseUtil.buildResponse("删除完成", responseHashMap);
     }
+
+    /**
+     * 通过用户组ID查找用户组所包含的所有用户的ID
+     *
+     * @param userGroupId 用户组ID
+     */
+    @GetMapping("/user_ids/{userGroupId}")
+    public ResponseEntity<BasicResponse> getUserIdsByUserGroupId(@PathVariable("userGroupId") Integer userGroupId) {
+        if (!userGroupService.existById(userGroupId)) {
+            return ResponseUtil.fail("该用户组不存在");
+        }else{
+            return ResponseUtil.buildResponse("查询成功", userGroupCollectionService.getUserIdsByUserGroupId(userGroupId));
+        }
+    }
+
 }

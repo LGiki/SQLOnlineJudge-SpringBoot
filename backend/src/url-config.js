@@ -21,6 +21,8 @@ const baseApiUrlConfig = {
   userBase: '/users',
   // 用户数量接口
   userCount: '/users/count',
+  // 用户组用户集合基本接口
+  userCollectionBase: '/user_group_collection',
   // 管理员基础接口
   adminBase: '/admins',
   // 管理员数量接口
@@ -49,6 +51,10 @@ const baseApiUrlConfig = {
   problemCollectionBulk: '/problem_collection/bulk',
   // 查询题目集包含的题目ID接口
   problemCollectionProblemIds: '/problem_collection/problem_ids',
+  // 查询用户组包含的用户ID接口
+  userCollectionUserIds: '/user_group_collection/user_ids',
+  // 批量添加、删除用户组用户接口
+  userCollectionBulk: '/user_group_collection/bulk',
   // 更新题目集的题目分值接口
   problemCollectionUpdateProblemScore: '/problem_collection/update_score'
 }
