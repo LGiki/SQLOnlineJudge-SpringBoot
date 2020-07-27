@@ -38,7 +38,7 @@ public class User implements Serializable {
      * 学号
      */
     @TableField(value = "student_no")
-    private Long studentNo;
+    private String studentNo;
 
     /**
      * 密码

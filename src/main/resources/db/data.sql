@@ -403,6 +403,9 @@ ALTER TABLE `sys_users`
     DROP COLUMN `submit`,
     DROP COLUMN `solved`;
 
+ALTER TABLE `sys_users`
+    CHANGE COLUMN `student_no` `student_no` VARCHAR(20) NULL DEFAULT NULL COMMENT '学号' AFTER `username`;
+
 -- ----------------------------
 -- Table structure for upload_images
 -- ----------------------------
