@@ -39,47 +39,82 @@
           inactive-text="否"
         />
       </el-form-item>
-      <el-form-item label="题目集题目列表">
+      <el-form-item label="题目列表">
         <div class="operation-button">
           <el-button type="primary" @click="openAddFromProblemListDialog">
-            <i class="el-icon-plus" />&nbsp;添加题目
+            <i class="el-icon-plus"/>&nbsp;添加题目
           </el-button>
           <el-button
             v-if="problemCollectionProblemListSelection && problemCollectionProblemListSelection.length > 0"
             type="danger"
             @click="onDeleteCollectionProblemSelection"
           >
-            <i class="el-icon-delete" />&nbsp;从题目集中移除所选题目
+            <i class="el-icon-delete"/>&nbsp;移除所选的{{ problemCollectionProblemListSelection ? problemCollectionProblemListSelection.length + '个' : '' }}题目
           </el-button>
         </div>
-        <template>
-          <v-table
-            :width="800"
-            is-horizontal-resize
-            style="width:100%"
-            :is-loading="problemCollectionListIsLoading"
-            :columns="problemCollectionTableConfig.columns"
-            :table-data="problemCollectionTableConfig.tableData"
-            row-hover-color="#eee"
-            row-click-color="#edf7ff"
-            :select-all="onProblemCollectionListSelectAll"
-            :select-change="onProblemCollectionListSelectChange"
-            :select-group-change="onProblemCollectionSelectGroupChange"
-            :cell-edit-done="problemScoreEditDone"
+        <v-table
+          :width="800"
+          is-horizontal-resize
+          style="width:100%"
+          :is-loading="problemCollectionListIsLoading"
+          :columns="problemCollectionTableConfig.columns"
+          :table-data="problemCollectionTableConfig.tableData"
+          row-hover-color="#eee"
+          row-click-color="#edf7ff"
+          :select-all="onProblemCollectionListSelectAll"
+          :select-change="onProblemCollectionListSelectChange"
+          :cell-edit-done="problemScoreEditDone"
+        />
+        <div class="bd">
+          <el-pagination
+            background
+            :current-page="problemCollectionListPageNum"
+            :page-sizes="[10, 20, 30]"
+            :page-size="problemCollectionListPageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="problemCollectionListTotalItems"
+            @size-change="onProblemCollectionListPageSizeChange"
+            @current-change="onProblemCollectionListPageChange"
           />
-        </template>
-        <template>
-          <div class="bd">
-            <v-pagination
-              :show-paging-count="3"
-              :total="problemCollectionListTotalItems"
-              :page-size="problemCollectionListPageSize"
-              :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
-              @page-change="onProblemCollectionListPageChange"
-              @page-size-change="onProblemCollectionListPageSizeChange"
-            />
-          </div>
-        </template>
+        </div>
+      </el-form-item>
+      <el-form-item label="允许的用户组">
+        <div class="operation-button">
+          <el-button type="primary" @click="openAddFromUserGroupListDialog">
+            <i class="el-icon-plus"/>&nbsp;添加用户组
+          </el-button>
+          <el-button
+            v-if="problemCategoryAllowUserGroupListSelection && problemCategoryAllowUserGroupListSelection.length > 0"
+            type="danger"
+            @click="onDeleteProblemCategoryAllowUserGroupListSelection"
+          >
+            <i class="el-icon-delete"/>&nbsp;移除所选{{ problemCategoryAllowUserGroupListSelection ? problemCategoryAllowUserGroupListSelection.length + '个' : '' }}个用户组的权限
+          </el-button>
+        </div>
+        <v-table
+          :width="100"
+          is-horizontal-resize
+          style="width:100%"
+          :is-loading="problemCategoryAllowUserGroupListIsLoading"
+          :columns="problemCategoryAllowUserGroupListTableConfig.columns"
+          :table-data="problemCategoryAllowUserGroupListTableConfig.tableData"
+          row-hover-color="#eee"
+          row-click-color="#edf7ff"
+          :select-all="onProblemCategoryAllowUserGroupListSelectAll"
+          :select-change="onProblemCategoryAllowUserGroupListSelectChange"
+        />
+        <div class="bd">
+          <el-pagination
+            background
+            :current-page="problemCategoryAllowUserGroupListPageNum"
+            :page-sizes="[10, 20, 30]"
+            :page-size="problemCategoryAllowUserGroupListPageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="problemCategoryAllowUserGroupListTotalItems"
+            @size-change="onProblemCategoryAllowUserGroupListPageSizeChange"
+            @current-change="onProblemCategoryAllowUserGroupListPageChange"
+          />
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSave">保存</el-button>
@@ -131,19 +166,21 @@
           />
         </el-table>
         <div class="bd">
-          <v-pagination
-            :show-paging-count="3"
-            :total="problemListTotalItems"
+          <el-pagination
+            background
+            :current-page="problemListPageNum"
+            :page-sizes="[10, 20, 30]"
             :page-size="problemListPageSize"
-            :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
-            @page-change="onProblemListPageChange"
-            @page-size-change="onProblemListPageSizeChange"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="problemListTotalItems"
+            @size-change="onProblemListPageSizeChange"
+            @current-change="onProblemListPageChange"
           />
         </div>
         <span slot="footer" class="dialog-footer">
-          <template v-if="selectedProblemIds.length !== 0"><p>将新增 <strong>{{ selectedProblemIds.length }}</strong> 道题目到题目集中</p></template>
+          <template v-if="selectedProblemIds && selectedProblemIds.length !== 0"><p>将新增 <strong>{{ selectedProblemIds.length }}</strong> 道题目到题目集中</p></template>
           <el-button
-            v-if="selectedProblemIds.length !== 0"
+            v-if="selectedProblemIds && selectedProblemIds.length !== 0"
             type="warning"
             @click="resetSelectedProblemIds"
           >重 置</el-button>
@@ -157,22 +194,94 @@
           >确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog
+        title="选择题目添加到题目集"
+        :visible.sync="addFromUserGroupListDialogVisible"
+        width="80%"
+      >
+        <el-table
+          ref="userGroupListTable"
+          :data="userGroupListTableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @select="onUserGroupListSelect"
+          @select-all="onUserGroupListSelectAll"
+        >
+          <el-table-column
+            type="selection"
+            align="center"
+            width="50"
+          />
+          <el-table-column
+            prop="id"
+            label="用户组ID"
+            align="center"
+            min-width="1"
+          />
+          <el-table-column
+            prop="name"
+            label="用户组名称"
+            min-width="1"
+            align="center"
+          />
+        </el-table>
+        <div class="bd">
+          <el-pagination
+            background
+            :current-page="userGroupListPageNum"
+            :page-sizes="[10, 20, 30]"
+            :page-size="userGroupListPageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="userGroupListTotalItems"
+            @size-change="onUserGroupPageSizeChange"
+            @current-change="onUserGroupListPageChange"
+          />
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <template v-if="selectedUserGroupIds && selectedUserGroupIds.length !== 0"><p>将新增 <strong>{{ selectedUserGroupIds.length }}</strong> 道题目到题目集中</p></template>
+          <el-button
+            v-if="selectedUserGroupIds && selectedUserGroupIds.length !== 0"
+            type="warning"
+            @click="resetSelectedUserGroupIds"
+          >重 置</el-button>
+          <el-button
+            type="danger"
+            @click="addFromUserGroupListDialogVisible = false"
+          >关 闭</el-button>
+          <el-button
+            type="primary"
+            @click="onAddUserGroup"
+          >确 定</el-button>
+        </span>
+      </el-dialog>
     </el-form>
   </div>
 </template>
 
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
-import { VTable, VPagination } from 'vue-easytable'
+import { VTable } from 'vue-easytable'
 import ConvertUtil from '@/utils/convert-util'
 import { getProblemCategoryDetail, updateProblemCategory } from '@/api/problem-category'
-import { getProblemCollectionList, updateProblemScore, getProblemIdsByProblemCategoryId, insertProblemCollectionInBulk, deleteProblemCollectionInBulk } from '@/api/problem-collection'
+import {
+  getProblemCollectionList,
+  updateProblemScore,
+  getProblemIdsByProblemCategoryId,
+  insertProblemCollectionInBulk,
+  deleteProblemCollectionInBulk
+} from '@/api/problem-collection'
 import { getProblemList } from '@/api/problem'
+import {
+  getUserGroupDetailByProblemCategoryId,
+  deleteProblemCategoryPermissionInBulk,
+  getUserGroupIdsByProblemCategoryId,
+  insertProblemCategoryPermissionInBulk
+} from '@/api/problem-category-permission'
+import { getUserGroupList } from '@/api/user-group'
 
 export default {
   components: {
-    VTable,
-    VPagination
+    VTable
   },
   data() {
     return {
@@ -206,8 +315,42 @@ export default {
         duration: [],
         viewAfterEnd: true
       },
+      addFromUserGroupListDialogVisible: false,
+      problemCategoryAllowUserGroupListTotalItems: 0,
+      problemCategoryAllowUserGroupListPageSize: 10,
+      problemCategoryAllowUserGroupListPageNum: 1,
+      problemCategoryAllowUserGroupListSelection: [],
+      // 题目集允许的用户组列表
+      problemCategoryAllowUserGroupListTableConfig: {
+        tableData: [],
+        columns: [
+          {
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            type: 'selection'
+          },
+          {
+            field: 'userGroupId',
+            title: '用户组ID',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          },
+          {
+            field: 'userGroupName',
+            title: '用户组名称',
+            width: 50,
+            titleAlign: 'center',
+            columnAlign: 'center',
+            isResize: true
+          }
+        ]
+      },
+      problemCategoryAllowUserGroupListIsLoading: false,
       problemCollectionListPageNum: 1,
-      problemCollectionListPageSize: 20,
+      problemCollectionListPageSize: 10,
       problemCollectionListTotalItems: 0,
       problemCollectionListIsLoading: false,
       problemCollectionTableConfig: {
@@ -271,7 +414,6 @@ export default {
       },
       problemCollectionProblemListSelection: [],
       addFromProblemListDialogVisible: false,
-      problemListIsLoading: false,
       problemListPageNum: 1,
       problemListPageSize: 10,
       problemListTotalItems: 0,
@@ -298,7 +440,13 @@ export default {
             }
           }
         ]
-      }
+      },
+      userGroupListPageNum: 1,
+      userGroupListPageSize: 10,
+      userGroupListTableData: [],
+      userGroupListTotalItems: 0,
+      selectedUserGroupIds: [],
+      categoryAllowUserGroupIds: []
     }
   },
   computed: {
@@ -309,8 +457,205 @@ export default {
   mounted: function() {
     this.getProblemCategoryDetail(this.problemCategoryId)
     this.getProblemCollectionList(this.problemCategoryId)
+    this.getProblemCategoryAllowUserGroupList(this.problemCategoryId)
   },
   methods: {
+    onAddUserGroup() {
+      if (this.selectedUserGroupIds && this.selectedUserGroupIds.length !== 0) {
+        this.handleResponse(insertProblemCategoryPermissionInBulk(this.problemCategoryId, this.selectedUserGroupIds), '添加用户组',
+          (res) => {
+            if (res.data.success && res.data.success.length === 0) {
+              this.$message.error('添加用户组失败，请稍后再试')
+            } else if ((res.data.fail && res.data.fail.length) > 0 || (res.data.duplicated && res.data.duplicated.length) > 0) {
+              let messageString = '成功执行添加操作'
+              if (res.data.fail.length > 0) {
+                messageString += '，部分用户组添加失败：' + res.data.fail
+              }
+              if (res.data.duplicated.length > 0) {
+                messageString += '，部分用户组已拥有题目集权限：' + res.data.duplicated
+              }
+              this.$message({
+                message: messageString,
+                type: 'warning'
+              })
+            } else {
+              this.$message.success('添加用户组成功')
+            }
+            this.addFromUserGroupListDialogVisible = false
+            this.selectedUserGroupIds.length = 0
+            this.getProblemCategoryAllowUserGroupList(this.problemCategoryId)
+          })
+      } else {
+        this.$message.error('请选择要赋予题目集权限的用户组')
+      }
+    },
+    onUserGroupListSelect(selection, row) {
+      const selected = selection.length && selection.indexOf(row) !== -1
+      if (selected) {
+        selection.forEach((userGroup) => {
+          if (this.categoryAllowUserGroupIds.indexOf(userGroup.id) === -1 && this.selectedUserGroupIds.indexOf(userGroup.id) === -1) {
+            this.selectedUserGroupIds.push(userGroup.id)
+          }
+        })
+      } else {
+        const rowInSelectedIndex = this.selectedUserGroupIds.indexOf(row.problemId)
+        if (rowInSelectedIndex !== -1) {
+          this.selectedUserGroupIds.splice(rowInSelectedIndex, 1)
+        }
+      }
+    },
+    onUserGroupListSelectAll(selection) {
+      if (selection.length > 0) {
+        // 全选
+        selection.forEach((userGroup) => {
+          if (this.categoryAllowUserGroupIds.indexOf(userGroup.id) === -1 && this.selectedUserGroupIds.indexOf(userGroup.id) === -1) {
+            this.selectedUserGroupIds.push(userGroup.id)
+          }
+        })
+      } else {
+        // 取消全选
+        this.problemListTableData.forEach((userGroup) => {
+          if (this.categoryAllowUserGroupIds.indexOf(userGroup.id) === -1) {
+            // 只移除不在题目集内的题目的选中状态
+            const tempIndex = this.selectedUserGroupIds.indexOf(userGroup.id)
+            if (tempIndex !== -1) {
+              this.selectedUserGroupIds.splice(tempIndex, 1)
+            }
+          } else {
+            // 确保已经在题目集内的题目依旧是选中状态
+            this.$refs.userGroupListTable.toggleRowSelection(userGroup, true)
+          }
+        })
+      }
+    },
+    resetSelectedUserGroupIds() {
+      this.selectedUserGroupIds.length = 0
+      this.refreshUserGroupList()
+    },
+    onUserGroupPageSizeChange(pageSize) {
+      this.userGroupListPageSize = pageSize
+      this.refreshUserGroupList()
+    },
+    onUserGroupListPageChange(pageNum) {
+      this.userGroupListPageNum = pageNum
+      this.refreshUserGroupList()
+    },
+    async getUserGroupList() {
+      await this.handleResponse(getUserGroupList(this.userGroupListPageNum, this.userGroupListPageSize), '获取用户组列表',
+        (res) => {
+          this.userGroupListTableData = res.data.records
+          this.userGroupListTotalItems = res.data.total
+        })
+    },
+    async getUserGroupIdsByProblemCategoryId(problemCategoryId) {
+      await this.handleResponse(getUserGroupIdsByProblemCategoryId(problemCategoryId), '获取有题目集权限的全部用户组',
+        (res) => {
+          this.categoryAllowUserGroupIds = res.data
+        })
+    },
+    async refreshUserGroupList() {
+      await this.getUserGroupList()
+      for (const userGroup of this.userGroupListTableData) {
+        if (this.categoryAllowUserGroupIds.indexOf(userGroup.id) !== -1 || this.selectedUserGroupIds.indexOf(userGroup.id) !== -1) {
+          this.$refs.userGroupListTable.toggleRowSelection(userGroup, true)
+        }
+      }
+    },
+    async openAddFromUserGroupListDialog() {
+      this.addFromUserGroupListDialogVisible = true
+      await this.getUserGroupIdsByProblemCategoryId(this.problemCategoryId)
+      await this.refreshUserGroupList()
+    },
+    onDeleteProblemCategoryAllowUserGroupListSelection() {
+      this.$confirm(`是否移除所选${this.problemCategoryAllowUserGroupListSelection ? this.problemCategoryAllowUserGroupListSelection.length + '个' : ''}用户组的权限?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (this.problemCategoryAllowUserGroupListSelection && this.problemCategoryAllowUserGroupListSelection.length > 0) {
+          this.handleResponse(deleteProblemCategoryPermissionInBulk(this.problemCategoryAllowUserGroupListSelection), '移除用户组权限',
+            (res) => {
+              if (res.data.success && res.data.success.length === 0) {
+                this.$message.error('从题目集中移除所选用户组的权限失败，请稍后再试')
+              } else if (res.data.fail && res.data.fail.length > 0) {
+                this.problemCategoryAllowUserGroupListSelection.length = 0
+                this.problemCategoryAllowUserGroupListPageNum = 1
+                this.$message({
+                  message: '成功执行移除操作，但部分用户组移除失败：' + res.data.fail,
+                  type: 'warning'
+                })
+              } else {
+                this.problemCategoryAllowUserGroupListSelection.length = 0
+                this.problemCategoryAllowUserGroupListPageNum = 1
+                this.$message.success('成功移除所选用户组的权限')
+              }
+              this.getProblemCategoryAllowUserGroupList(this.problemCategoryId)
+            })
+        } else {
+          this.$message.error('请检查是否选择了要移除的用户组')
+        }
+      })
+    },
+    onProblemCategoryAllowUserGroupListSelectAll(selection) {
+      if (selection.length > 0) {
+        // 全选
+        selection.forEach((userGroup) => {
+          if (this.problemCategoryAllowUserGroupListSelection.indexOf(userGroup.id) === -1) {
+            this.problemCategoryAllowUserGroupListSelection.push(userGroup.id)
+          }
+        })
+      } else {
+        // 取消全选
+        this.problemCategoryAllowUserGroupListTableConfig.tableData.forEach((userGroup) => {
+          const tempIndex = this.problemCategoryAllowUserGroupListSelection.indexOf(userGroup.id)
+          if (tempIndex !== -1) {
+            this.problemCategoryAllowUserGroupListSelection.splice(tempIndex, 1)
+          }
+        })
+      }
+    },
+    onProblemCategoryAllowUserGroupListSelectChange(selection, rowData) {
+      const selected = selection.length && selection.indexOf(rowData) !== -1
+      if (selected) {
+        selection.forEach((userGroup) => {
+          if (this.problemCategoryAllowUserGroupListSelection.indexOf(userGroup.id) === -1) {
+            this.problemCategoryAllowUserGroupListSelection.push(userGroup.id)
+          }
+        })
+      } else {
+        const rowInSelectedIndex = this.problemCategoryAllowUserGroupListSelection.indexOf(rowData.id)
+        if (rowInSelectedIndex !== -1) {
+          this.problemCategoryAllowUserGroupListSelection.splice(rowInSelectedIndex, 1)
+        }
+      }
+    },
+    onProblemCategoryAllowUserGroupListPageChange(pageNum) {
+      this.problemCategoryAllowUserGroupListPageNum = pageNum
+      this.getProblemCategoryAllowUserGroupList(this.problemCategoryId)
+    },
+    onProblemCategoryAllowUserGroupListPageSizeChange(pageSize) {
+      this.problemCategoryAllowUserGroupListPageSize = pageSize
+      this.getProblemCategoryAllowUserGroupList(this.problemCategoryId)
+    },
+    // 获取允许的用户组列表
+    getProblemCategoryAllowUserGroupList(problemCategoryId) {
+      this.problemCategoryAllowUserGroupListIsLoading = true
+      this.handleResponse(getUserGroupDetailByProblemCategoryId(problemCategoryId, this.problemCategoryAllowUserGroupListPageNum, this.problemCategoryAllowUserGroupListPageSize), '获取允许的用户组列表',
+        (res) => {
+          this.problemCategoryAllowUserGroupListTableConfig.tableData = res.data.records
+          this.problemCategoryAllowUserGroupListTableConfig.tableData.forEach((userGroup) => {
+            if (this.problemCategoryAllowUserGroupListSelection.indexOf(userGroup.id) !== -1) {
+              userGroup._checked = true
+            }
+          })
+          this.problemCategoryAllowUserGroupListTotalItems = res.data.total
+        },
+        null,
+        null,
+        () => {
+          this.problemCategoryAllowUserGroupListIsLoading = false
+        })
+    },
     // 获取题目集详情
     getProblemCategoryDetail(problemCategoryId) {
       this.handleResponse(getProblemCategoryDetail(problemCategoryId), '获取题目集详情',
@@ -327,6 +672,11 @@ export default {
       this.handleResponse(getProblemCollectionList(this.problemCollectionListPageNum, this.problemCollectionListPageSize, 'categoryId', problemCategoryId), '获取题目集的题目列表',
         (res) => {
           this.problemCollectionTableConfig.tableData = res.data.records
+          this.problemCollectionTableConfig.tableData.forEach((problem) => {
+            if (this.problemCollectionProblemListSelection.indexOf(problem.id) !== -1) {
+              problem._checked = true
+            }
+          })
           this.problemCollectionListTotalItems = res.data.total
         },
         null,
@@ -352,16 +702,10 @@ export default {
     },
     // 获取题目列表
     async getProblemList() {
-      this.problemListIsLoading = true
       await this.handleResponse(getProblemList(this.problemListPageNum, this.problemListPageSize), '获取题目列表',
         (res) => {
           this.problemListTableData = res.data.records
           this.problemListTotalItems = res.data.total
-        },
-        null,
-        null,
-        () => {
-          this.problemListIsLoading = false
         })
     },
     // 获取当前题目集包含的所有题目ID
@@ -373,15 +717,38 @@ export default {
     },
     // 题目集的题目列表全选事件，selection：已选项
     onProblemCollectionListSelectAll(selection) {
-      this.problemCollectionProblemListSelection = selection
+      if (selection.length > 0) {
+        // 全选
+        selection.forEach((problem) => {
+          if (this.problemCollectionProblemListSelection.indexOf(problem.id) === -1) {
+            this.problemCollectionProblemListSelection.push(problem.id)
+          }
+        })
+      } else {
+        // 取消全选
+        this.problemCollectionTableConfig.tableData.forEach((problem) => {
+          const tempIndex = this.problemCollectionProblemListSelection.indexOf(problem.id)
+          if (tempIndex !== -1) {
+            this.problemCollectionProblemListSelection.splice(tempIndex, 1)
+          }
+        })
+      }
     },
     // 题目集的题目列表选中某一项事件，selection：已选项；rowData：刚选择的项
     onProblemCollectionListSelectChange(selection, rowData) {
-      this.problemCollectionProblemListSelection = selection
-    },
-    // 题目集的题目列表选中项发生变化事件，selection：已选项
-    onProblemCollectionSelectGroupChange(selection) {
-      this.problemCollectionProblemListSelection = selection
+      const selected = selection.length && selection.indexOf(rowData) !== -1
+      if (selected) {
+        selection.forEach((problem) => {
+          if (this.problemCollectionProblemListSelection.indexOf(problem.id) === -1) {
+            this.problemCollectionProblemListSelection.push(problem.id)
+          }
+        })
+      } else {
+        const rowInSelectedIndex = this.problemCollectionProblemListSelection.indexOf(rowData.id)
+        if (rowInSelectedIndex !== -1) {
+          this.problemCollectionProblemListSelection.splice(rowInSelectedIndex, 1)
+        }
+      }
     },
     // 题目列表全选事件
     onProblemListSelectAll(selection) {
@@ -410,26 +777,26 @@ export default {
     },
     // 从题目集删除选中的题目事件
     onDeleteCollectionProblemSelection() {
-      this.$confirm('是否从题目集中移除选中的题目?', '提示', {
+      this.$confirm(`是否从题目集中移除所选的${this.problemCollectionProblemListSelection ? this.problemCollectionProblemListSelection.length + '个' : ''}题目?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         if (this.problemCollectionProblemListSelection && this.problemCollectionProblemListSelection.length > 0) {
-          const problemCollectionIds = []
-          for (const problem of this.problemCollectionProblemListSelection) {
-            problemCollectionIds.push(problem.id)
-          }
-          this.handleResponse(deleteProblemCollectionInBulk(problemCollectionIds), '删除题目',
+          this.handleResponse(deleteProblemCollectionInBulk(this.problemCollectionProblemListSelection), '删除题目',
             (res) => {
               if (res.data.success && res.data.success.length === 0) {
                 this.$message.error('从题目集中移除选中的题目失败，请稍后再试')
               } else if (res.data.fail && res.data.fail.length > 0) {
+                this.problemCollectionProblemListSelection.length = 0
+                this.problemCollectionListPageNum = 1
                 this.$message({
                   message: '成功执行移除操作，但部分题目移除失败：' + res.data.fail,
                   type: 'warning'
                 })
               } else {
+                this.problemCollectionProblemListSelection.length = 0
+                this.problemCollectionListPageNum = 1
                 this.$message.success('成功从题目集中移除选中的题目')
               }
               this.getProblemCollectionList(this.problemCategoryId)
@@ -570,6 +937,7 @@ export default {
   padding-top: 15px;
   text-align: center;
 }
+
 .operation-button {
   float: right;
   padding-bottom: 10px;

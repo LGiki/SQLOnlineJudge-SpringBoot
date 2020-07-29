@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jmu.system.mapper.ProblemCategoryPermissionMapper">
+    <select id="selectByProblemCategoryId" resultType="cn.edu.jmu.system.entity.dto.ProblemCategoryPermissionDto">
+        SELECT pcp.id as 'id', sug.id as 'userGroupId', sug.name as 'userGroupName'
+        FROM `problem_category_permission` AS pcp, `sys_user_groups` AS sug
+        WHERE pcp.problem_category_id = #{problemCategoryId} AND pcp.user_group_id = sug.id
+    </select>
+</mapper>

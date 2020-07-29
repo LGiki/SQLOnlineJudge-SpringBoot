@@ -14,7 +14,7 @@
             type="danger"
             @click="onDeleteUserCollectionSelection"
           >
-            <i class="el-icon-delete" />&nbsp;移除所选的{{ userCollectionUserListSelection.length }}个用户
+            <i class="el-icon-delete" />&nbsp;移除所选的{{ userCollectionUserListSelection ? userCollectionUserListSelection.length + '个' : '' }}用户
           </el-button>
         </div>
         <el-table
@@ -118,9 +118,9 @@
           />
         </div>
         <span slot="footer" class="dialog-footer">
-          <template v-if="selectedUserIds.length !== 0"><p>将新增 <strong>{{ selectedUserIds.length }}</strong> 个用户到用户组中</p></template>
+          <template v-if="selectedUserIds && selectedUserIds.length !== 0"><p>将新增 <strong>{{ selectedUserIds.length }}</strong> 个用户到用户组中</p></template>
           <el-button
-            v-if="selectedUserIds.length !== 0"
+            v-if="selectedUserIds && selectedUserIds.length !== 0"
             type="warning"
             @click="resetSelectedUserIds"
           >重 置</el-button>
@@ -331,7 +331,7 @@ export default {
     },
     // 从用户组中移除所选中的用户
     onDeleteUserCollectionSelection() {
-      this.$confirm('是否从用户组中移除选中的用户?', '提示', {
+      this.$confirm(`是否从用户组中移除所选的${this.userCollectionUserListSelection ? this.userCollectionUserListSelection.length + '个' : ''}用户?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -343,12 +343,14 @@ export default {
                 this.$message.error('从用户组中移除选中的用户失败，请稍后再试')
               } else if (res.data.fail && res.data.fail.length > 0) {
                 this.userCollectionUserListSelection.length = 0
+                this.userCollectionUserListPageNum = 1
                 this.$message({
                   message: '成功执行移除操作，但部分用户移除失败：' + res.data.fail,
                   type: 'warning'
                 })
               } else {
                 this.userCollectionUserListSelection.length = 0
+                this.userCollectionUserListPageNum = 1
                 this.$message.success('成功从用户组中移除选中的用户')
               }
               this.getUserCollectionUserList(this.userGroupId)

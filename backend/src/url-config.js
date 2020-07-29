@@ -56,7 +56,13 @@ const baseApiUrlConfig = {
   // 批量添加、删除用户组用户接口
   userCollectionBulk: '/user_group_collection/bulk',
   // 更新题目集的题目分值接口
-  problemCollectionUpdateProblemScore: '/problem_collection/update_score'
+  problemCollectionUpdateProblemScore: '/problem_collection/update_score',
+  // 通过题目集ID查询用户组ID列表接口 (题目集-用户组关系)
+  problemCategoryPermissionGetUserGroupIds: '/problem_category_perm/user_group_ids',
+  // 通过题目集ID查询用户组详情列表接口 (题目集-用户组关系)
+  problemCategoryPermissionGetUserGroupDetail: '/problem_category_perm/user_group',
+  // 批量添加、删除题目集-用户组关系接口
+  problemCategoryPermissionBulk: '/problem_category_perm/bulk'
 }
 const specialApiUrlConfig = {
   // 图片显示接口
