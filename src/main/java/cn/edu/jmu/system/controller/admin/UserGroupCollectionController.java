@@ -2,10 +2,12 @@ package cn.edu.jmu.system.controller.admin;
 
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
+import cn.edu.jmu.system.controller.handler.DeleteInBulkHandler;
 import cn.edu.jmu.system.entity.UserGroupCollection;
 import cn.edu.jmu.system.entity.dto.UserGroupCollectionDto;
 import cn.edu.jmu.system.service.UserGroupCollectionService;
 import cn.edu.jmu.system.service.UserGroupService;
+import cn.edu.jmu.system.service.UserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,9 @@ public class UserGroupCollectionController {
 
     @Resource
     private UserGroupService userGroupService;
+
+    @Resource
+    private UserService userService;
 
     @GetMapping(value = "/")
     public ResponseEntity<BasicResponse> getList(UserGroupCollection userGroupCollection, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -56,15 +61,19 @@ public class UserGroupCollectionController {
         UserGroupCollection userGroupCollection = new UserGroupCollection();
         userGroupCollection.setUserGroupId(userGroupId);
         for (Integer userId : userIds) {
-            if (userGroupCollectionService.isUserInUserGroupCollection(userId, userGroupId)) {
-                duplicatedIds.add(userId);
-            } else {
-                userGroupCollection.setUserId(userId);
-                if (userGroupCollectionService.save(userGroupCollection)) {
-                    successIds.add(userId);
+            if (userService.existById(userId)) {
+                if (userGroupCollectionService.isExistByUserIdAndUserGroupId(userId, userGroupId)) {
+                    duplicatedIds.add(userId);
                 } else {
-                    failIds.add(userId);
+                    userGroupCollection.setUserId(userId);
+                    if (userGroupCollectionService.save(userGroupCollection)) {
+                        successIds.add(userId);
+                    } else {
+                        failIds.add(userId);
+                    }
                 }
+            } else {
+                failIds.add(userId);
             }
         }
         HashMap<String, List<Integer>> responseHashMap = new HashMap<>(3);
@@ -76,22 +85,7 @@ public class UserGroupCollectionController {
 
     @DeleteMapping(value = "/bulk")
     public ResponseEntity<BasicResponse> deleteUserGroupCollectionInBulk(@RequestBody List<Integer> userGroupCollectionIds) {
-        if (userGroupCollectionIds.isEmpty()) {
-            return ResponseUtil.fail("请选择要删除的用户组关系");
-        }
-        List<Integer> successIds = new ArrayList<>();
-        List<Integer> failIds = new ArrayList<>();
-        for (Integer userGroupCollectionId : userGroupCollectionIds) {
-            if (userGroupCollectionService.removeById(userGroupCollectionId)) {
-                successIds.add(userGroupCollectionId);
-            } else {
-                failIds.add(userGroupCollectionId);
-            }
-        }
-        HashMap<String, List<Integer>> responseHashMap = new HashMap<>(2);
-        responseHashMap.put("success", successIds);
-        responseHashMap.put("fail", failIds);
-        return ResponseUtil.buildResponse("删除完成", responseHashMap);
+        return DeleteInBulkHandler.deleteInBulk(userGroupCollectionService, userGroupCollectionIds);
     }
 
     /**
@@ -103,7 +97,7 @@ public class UserGroupCollectionController {
     public ResponseEntity<BasicResponse> getUserIdsByUserGroupId(@PathVariable("userGroupId") Integer userGroupId) {
         if (!userGroupService.existById(userGroupId)) {
             return ResponseUtil.fail("该用户组不存在");
-        }else{
+        } else {
             return ResponseUtil.buildResponse("查询成功", userGroupCollectionService.getUserIdsByUserGroupId(userGroupId));
         }
     }

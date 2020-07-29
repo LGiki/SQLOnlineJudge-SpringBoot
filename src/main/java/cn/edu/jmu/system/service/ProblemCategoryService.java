@@ -22,6 +22,7 @@ public interface ProblemCategoryService extends IService<ProblemCategory> {
 
     /**
      * 创建题目集
+     *
      * @param problemCategory
      * @return
      */
@@ -37,6 +38,7 @@ public interface ProblemCategoryService extends IService<ProblemCategory> {
 
     /**
      * 题目集是否存在
+     *
      * @param id 题目集ID
      * @return Boolean 是否存在
      */

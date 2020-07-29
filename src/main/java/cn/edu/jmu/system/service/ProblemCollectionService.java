@@ -46,7 +46,7 @@ public interface ProblemCollectionService extends IService<ProblemCollection> {
      * @param problemCategoryId 题目集ID
      * @return Boolean 题目是否存在于题目集里
      */
-    Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId);
+    Boolean isExistByProblemIdAndProblemCategoryId(Integer problemId, Integer problemCategoryId);
 
     /**
      * 根据题目集ID获取该题目集的所有题目ID

@@ -3,10 +3,12 @@ package cn.edu.jmu.system.controller.admin;
 import cn.edu.jmu.common.response.BasicResponse;
 import cn.edu.jmu.common.util.ResponseUtil;
 import cn.edu.jmu.system.api.problemcollection.UpdateProblemScoreRequest;
+import cn.edu.jmu.system.controller.handler.DeleteInBulkHandler;
 import cn.edu.jmu.system.entity.ProblemCollection;
 import cn.edu.jmu.system.entity.dto.ProblemCollectionDto;
 import cn.edu.jmu.system.service.ProblemCategoryService;
 import cn.edu.jmu.system.service.ProblemCollectionService;
+import cn.edu.jmu.system.service.ProblemService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -31,6 +33,9 @@ public class ProblemCollectionController {
 
     @Resource
     ProblemCategoryService problemCategoryService;
+
+    @Resource
+    ProblemService problemService;
 
     @GetMapping("/")
     public ResponseEntity<BasicResponse> search(ProblemCollectionDto problemCollectionDto, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -82,15 +87,19 @@ public class ProblemCollectionController {
         ProblemCollection problemCollection = new ProblemCollection();
         problemCollection.setCategoryId(problemCategoryId);
         for (Integer problemId : problemIds) {
-            if (problemCollectionService.isProblemInProblemCollection(problemId, problemCategoryId)) {
-                duplicated.add(problemId);
-            } else {
-                problemCollection.setProblemId(problemId);
-                if (problemCollectionService.save(problemCollection)) {
-                    success.add(problemId);
+            if (problemService.existById(problemId)) {
+                if (problemCollectionService.isExistByProblemIdAndProblemCategoryId(problemId, problemCategoryId)) {
+                    duplicated.add(problemId);
                 } else {
-                    fail.add(problemId);
+                    problemCollection.setProblemId(problemId);
+                    if (problemCollectionService.save(problemCollection)) {
+                        success.add(problemId);
+                    } else {
+                        fail.add(problemId);
+                    }
                 }
+            } else {
+                fail.add(problemId);
             }
         }
         HashMap<String, List<Integer>> responseHashMap = new HashMap<>(3);
@@ -107,22 +116,7 @@ public class ProblemCollectionController {
      */
     @DeleteMapping("/bulk")
     public ResponseEntity<BasicResponse> deleteInBulk(@RequestBody List<Integer> problemCollectionIds) {
-        if (problemCollectionIds.isEmpty()) {
-            return ResponseUtil.fail("请选择要删除的题目");
-        }
-        List<Integer> success = new ArrayList<>();
-        List<Integer> fail = new ArrayList<>();
-        for (Integer problemCollectionId : problemCollectionIds) {
-            if (problemCollectionService.removeById(problemCollectionId)) {
-                success.add(problemCollectionId);
-            } else {
-                fail.add(problemCollectionId);
-            }
-        }
-        HashMap<String, List<Integer>> responseHashMap = new HashMap<>(2);
-        responseHashMap.put("success", success);
-        responseHashMap.put("fail", fail);
-        return ResponseUtil.buildResponse("删除完成", responseHashMap);
+        return DeleteInBulkHandler.deleteInBulk(problemCollectionService, problemCollectionIds);
     }
 
     @DeleteMapping("/{id}")

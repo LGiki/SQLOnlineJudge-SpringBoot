@@ -62,7 +62,7 @@ public class UserGroupCollectionServiceImpl extends ServiceImpl<UserGroupCollect
     }
 
     @Override
-    public Boolean isUserInUserGroupCollection(Integer userId, Integer userGroupId) {
+    public Boolean isExistByUserIdAndUserGroupId(Integer userId, Integer userGroupId) {
         return baseMapper.selectCount(Wrappers.<UserGroupCollection>lambdaQuery().eq(UserGroupCollection::getUserId, userId).eq(UserGroupCollection::getUserGroupId, userGroupId)) > 0;
     }
 

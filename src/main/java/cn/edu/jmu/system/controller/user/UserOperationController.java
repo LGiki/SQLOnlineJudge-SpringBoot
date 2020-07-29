@@ -192,7 +192,7 @@ public class UserOperationController {
     public ResponseEntity<BasicResponse> selectProblemByCategoryIdAndProblemId(@PathVariable("problemCategoryId") Integer problemCategoryId, @PathVariable("problemId") Integer problemId) {
         return ProblemCategoryStatusHandler.handle(problemCategoryId, problemCategoryService, () -> {
             // 判断题目ID是否在题目集里，如果在，则查询对应的题目信息，如果不在，则抛出错误
-            if (problemCollectionService.isProblemInProblemCollection(problemId, problemCategoryId)) {
+            if (problemCollectionService.isExistByProblemIdAndProblemCategoryId(problemId, problemCategoryId)) {
                 ProblemDetailToUserDto detailToUserDto = problemService.getToUserById(problemId);
                 if (detailToUserDto == null) {
                     return ResponseUtil.fail("无法找到该题目或题目对应的数据库信息不存在！");

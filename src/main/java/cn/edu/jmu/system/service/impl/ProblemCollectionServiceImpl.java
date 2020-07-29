@@ -92,7 +92,7 @@ public class ProblemCollectionServiceImpl extends ServiceImpl<ProblemCollectionM
     }
 
     @Override
-    public Boolean isProblemInProblemCollection(Integer problemId, Integer problemCategoryId) {
+    public Boolean isExistByProblemIdAndProblemCategoryId(Integer problemId, Integer problemCategoryId) {
         return baseMapper.selectCount(Wrappers.<ProblemCollection>lambdaQuery().eq(ProblemCollection::getProblemId, problemId).eq(ProblemCollection::getCategoryId, problemCategoryId)) > 0;
     }
 

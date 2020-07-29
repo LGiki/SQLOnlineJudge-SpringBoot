@@ -33,7 +33,7 @@ public interface UserGroupCollectionService extends IService<UserGroupCollection
      * @param userGroupId 用户组ID
      * @return Boolean 用户是否已在用户组关系中
      */
-    Boolean isUserInUserGroupCollection(Integer userId, Integer userGroupId);
+    Boolean isExistByUserIdAndUserGroupId(Integer userId, Integer userGroupId);
 
     /**
      * 查询某个UserGroupId下的用户数
