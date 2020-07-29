@@ -23,8 +23,8 @@
       <el-button v-if="inSearch" type="primary" @click="onCancelSearch">
         <i class="el-icon-close" />&nbsp;取消搜索
       </el-button>
-      <el-button type="danger" @click="onNewUserGroup">
-        <i class="el-icon-plus" />&nbsp;添加用户组
+      <el-button type="danger" @click="openAddUserGroupDialog">
+        <i class="el-icon-plus" />&nbsp;新建用户组
       </el-button>
     </div>
     <template>
@@ -59,7 +59,7 @@
 <script>
 import 'vue-easytable/libs/themes-base/index.css'
 import { VTable, VPagination } from 'vue-easytable'
-import { getUserGroupList, deleteUserGroup } from '@/api/user-group'
+import { getUserGroupList, deleteUserGroup, createUserGroup } from '@/api/user-group'
 
 export default {
   components: {
@@ -94,7 +94,7 @@ export default {
           {
             field: 'id',
             title: '用户组ID',
-            width: 50,
+            width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
             isResize: true
@@ -113,21 +113,10 @@ export default {
           {
             field: 'count',
             title: '用户数量',
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'description',
-            title: '用户组简介',
             width: 100,
             titleAlign: 'center',
             columnAlign: 'center',
-            isResize: true,
-            formatter: function(rowData, rowIndex, pagingIndex, field) {
-              return `<a href="#/user-group/edit/${rowData.id}" title="${rowData.description}">${rowData.description}</a>`
-            }
+            isResize: true
           },
           {
             field: 'action',
@@ -142,12 +131,30 @@ export default {
       }
     }
   },
-  created() {},
   mounted: function() {
     this.getUserGroupList()
   },
   methods: {
     rowClick(rowIndex, rowData, column) {
+    },
+    addUserGroup(userGroupName) {
+      this.handleResponse(createUserGroup(userGroupName), '新建用户组',
+        (res) => {
+          this.$message.success('新建用户组成功')
+          this.$router.push('/user-group/edit/' + res.data.id)
+        })
+    },
+    openAddUserGroupDialog() {
+      this.$prompt('请输入新用户组名称', '新建用户组', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        if (value) {
+          this.addUserGroup(value.trim())
+        } else {
+          this.$message.error('您输入的新用户组名称为空，请重新输入')
+        }
+      })
     },
     onSearch() {
       const keyword = this.searchKeyword.trim()
@@ -196,9 +203,6 @@ export default {
       } else if (params.type === 'edit') {
         this.$router.push({ path: '/user-group/edit/' + userGroupId })
       }
-    },
-    onNewUserGroup() {
-      this.$router.push({ path: '/user-group/add/' })
     },
     onCancelSearch() {
       this.inSearch = false

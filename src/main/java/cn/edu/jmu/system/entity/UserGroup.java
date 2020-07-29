@@ -18,21 +18,15 @@ public class UserGroup implements Serializable {
     private static final long serialVersionUID = 5404632345151826499L;
 
     /**
-     * ID
+     * 用户组ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * name
+     * 用户组名称
      */
     @NotBlank
     @TableField(value = "name")
     private String name;
-
-    /**
-     * description
-     */
-    @TableField(value = "description")
-    private String description;
 }

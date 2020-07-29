@@ -358,6 +358,9 @@ CREATE TABLE `sys_user_groups`
 INSERT INTO `sys_user_groups`
 VALUES (1, '计算1614', '计算机科学与技术16级4班');
 
+ALTER TABLE `sys_user_groups`
+    DROP COLUMN `description`;
+
 -- ----------------------------
 -- Table structure for sys_users
 -- ----------------------------
@@ -470,3 +473,14 @@ CREATE TABLE `user_group_collections` (
   CONSTRAINT `FK__sys_users` FOREIGN KEY (`user_id`) REFERENCES `sys_users` (`id`),
   CONSTRAINT `FK__sys_user_groups` FOREIGN KEY (`user_group_id`) REFERENCES `sys_user_groups` (`id`)
 ) COLLATE='utf8mb4_general_ci';
+
+CREATE TABLE `problem_category_permission` (
+   `id` INT NOT NULL AUTO_INCREMENT,
+   `problem_category_id` INT NOT NULL,
+   `user_group_id` INT NOT NULL,
+   PRIMARY KEY (`id`),
+   CONSTRAINT `FK_problem_category_id` FOREIGN KEY (`problem_category_id`) REFERENCES `problem_categories` (`id`),
+   CONSTRAINT `FK_user_group_id` FOREIGN KEY (`user_group_id`) REFERENCES `sys_user_groups` (`id`)
+)
+COMMENT='关联题目集ID和用户组ID'
+COLLATE='utf8mb4_general_ci';

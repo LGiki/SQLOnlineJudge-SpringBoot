@@ -1,11 +1,15 @@
 <template>
   <div class="app-container">
     <el-form ref="userGroupDetail" :model="userGroupDetail" :rules="checkRules" label-width="120px">
+      <el-form-item>
+        <el-alert
+          title="保存用户组之后才能向用户组内添加用户"
+          type="warning"
+          show-icon
+        />
+      </el-form-item>
       <el-form-item label="用户组名称" prop="name">
         <el-input v-model="userGroupDetail.name" placeholder="请输入用户组名称" />
-      </el-form-item>
-      <el-form-item label="用户组简介" prop="description">
-        <el-input v-model="userGroupDetail.description" placeholder="请输入用户组简介" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -30,8 +34,7 @@ export default {
         ]
       },
       userGroupDetail: {
-        name: '',
-        description: ''
+        name: ''
       }
     }
   },

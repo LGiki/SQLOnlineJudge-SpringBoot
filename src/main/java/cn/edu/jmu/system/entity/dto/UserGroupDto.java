@@ -25,12 +25,6 @@ public class UserGroupDto implements Serializable {
     private String name;
 
     /**
-     * 用户组简介
-     */
-    @Property(name = "description")
-    private String description;
-
-    /**
      * 用户组内的用户数
      */
     private Integer count;

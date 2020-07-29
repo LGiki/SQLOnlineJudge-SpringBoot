@@ -23,24 +23,22 @@ export function getUserGroupList(pageNum, pageSize, searchType, keyword) {
   })
 }
 
-export function createUserGroup(name, description) {
+export function createUserGroup(name) {
   return httpRequest({
     url: `${baseApiUrlConfig.userGroupBase}/`,
     method: 'post',
     data: {
-      name: name,
-      description: description
+      name: name
     }
   })
 }
 
-export function updateUserGroup(userGroupId, name, description) {
+export function updateUserGroup(userGroupId, name) {
   return httpRequest({
     url: `${baseApiUrlConfig.userGroupBase}/${userGroupId}`,
     method: 'put',
     data: {
-      name: name,
-      description: description
+      name: name
     }
   })
 }

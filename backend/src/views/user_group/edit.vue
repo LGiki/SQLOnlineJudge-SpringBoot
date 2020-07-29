@@ -4,9 +4,6 @@
       <el-form-item label="用户组名称" prop="name">
         <el-input v-model="userGroupDetail.name" placeholder="请输入用户组名称" />
       </el-form-item>
-      <el-form-item label="用户组简介" prop="description">
-        <el-input v-model="userGroupDetail.description" placeholder="请输入用户组简介" />
-      </el-form-item>
       <el-form-item label="用户组的用户列表">
         <div class="operation-button">
           <el-button type="primary" @click="openAddFromUserListDialog">
@@ -50,7 +47,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button @click="this.$router.back(-1)">取消</el-button>
+        <el-button @click="$router.back(-1)">取消</el-button>
       </el-form-item>
       <el-dialog
         title="选择用户添加到用户组"
@@ -145,8 +142,7 @@ export default {
         ]
       },
       userGroupDetail: {
-        name: '',
-        description: ''
+        name: ''
       },
       userListTableData: [],
       userListTotalItems: 0,
@@ -389,7 +385,7 @@ export default {
     onSubmit() {
       this.$refs.userGroupDetail.validate(valid => {
         if (valid) {
-          this.handleResponse(updateUserGroup(this.userGroupId, this.userGroupDetail.name.trim(), this.userGroupDetail.description.trim()), '更新用户组',
+          this.handleResponse(updateUserGroup(this.userGroupId, this.userGroupDetail.name.trim()), '更新用户组',
             (res) => {
               this.$message.success('更新用户组成功')
               this.$router.back(-1)
