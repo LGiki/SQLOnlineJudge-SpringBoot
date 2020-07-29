@@ -24,14 +24,14 @@
         <i class="el-icon-close" />&nbsp;取消搜索
       </el-button>
       <el-button type="danger" @click="onNewUser">
-        <i class="el-icon-plus" />&nbsp;添加用户
+        <i class="el-icon-plus" />&nbsp;新建用户
       </el-button>
       <el-button type="warning" @click="newUserBatchDialogVisible = true">
-        <i class="el-icon-plus" />&nbsp;批量添加用户
+        <i class="el-icon-plus" />&nbsp;批量新建用户
       </el-button>
-      <el-dialog title="批量添加用户" :visible.sync="newUserBatchDialogVisible" width="60%">
+      <el-dialog title="批量新建用户" :visible.sync="newUserBatchDialogVisible" width="60%">
         <el-tabs v-model="activeName" type="card">
-          <el-tab-pane label="根据学号批量添加" name="addByStudentNo">
+          <el-tab-pane label="根据学号批量新建" name="addByStudentNo">
             <el-form
               ref="newUserBatchByStudentNoData"
               :model="newUserBatchByStudentNoData"

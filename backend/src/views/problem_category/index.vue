@@ -24,7 +24,7 @@
         <i class="el-icon-close" />&nbsp;取消搜索
       </el-button>
       <el-button type="danger" @click="onNewProblemCollection">
-        <i class="el-icon-plus" />&nbsp;添加题目集
+        <i class="el-icon-plus" />&nbsp;新建题目集
       </el-button>
     </div>
     <template>

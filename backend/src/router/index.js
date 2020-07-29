@@ -36,7 +36,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -76,7 +75,7 @@ export const constantRoutes = [
         path: 'add',
         name: 'Add Database',
         component: () => import('@/views/database/edit'),
-        meta: { title: '添加数据库' },
+        meta: { title: '新建数据库' },
         hidden: true
       }
     ]
@@ -104,7 +103,7 @@ export const constantRoutes = [
         path: 'add',
         name: 'Add problem',
         component: () => import('@/views/problem/edit'),
-        meta: { title: '添加题目' },
+        meta: { title: '新建题目' },
         hidden: true
       }
     ]
@@ -130,9 +129,9 @@ export const constantRoutes = [
       },
       {
         path: 'add',
-        name: 'Add problem collection',
+        name: 'Create problem collection',
         component: () => import('@/views/problem_category/add'),
-        meta: { title: '添加题目集' },
+        meta: { title: '新建题目集' },
         hidden: true
       }
     ]
@@ -159,9 +158,9 @@ export const constantRoutes = [
       },
       {
         path: 'add',
-        name: 'Add Users',
+        name: 'Create Users',
         component: () => import('@/views/user/add'),
-        meta: { title: '添加用户' },
+        meta: { title: '新建用户' },
         hidden: true
       }
     ]
@@ -188,9 +187,9 @@ export const constantRoutes = [
       },
       {
         path: 'add',
-        name: 'Add UserGroup',
+        name: 'Create UserGroup',
         component: () => import('@/views/user_group/add'),
-        meta: { title: '添加用户组' },
+        meta: { title: '新建用户组' },
         hidden: true
       }
     ]
@@ -220,7 +219,7 @@ export const constantRoutes = [
         path: 'add',
         name: 'Add Admin',
         component: () => import('@/views/admin/add'),
-        meta: { title: '添加管理员' },
+        meta: { title: '新建管理员' },
         hidden: true
       }
     ]
