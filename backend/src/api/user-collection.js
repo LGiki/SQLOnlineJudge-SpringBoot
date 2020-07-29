@@ -1,7 +1,7 @@
 import httpRequest from '@/utils/request'
 import { baseApiUrlConfig } from '@/url-config'
 
-export function getUserCollectionList(pageNum, pageSize, searchType, keyword) {
+export function getUserCollectionUserList(pageNum, pageSize, searchType, keyword) {
   const params = {
     pageNum: pageNum,
     pageSize: pageSize

@@ -14,36 +14,54 @@
             type="danger"
             @click="onDeleteUserCollectionSelection"
           >
-            <i class="el-icon-delete" />&nbsp;从用户组中移除所选用户
+            <i class="el-icon-delete" />&nbsp;移除所选的{{ userCollectionUserListSelection.length }}个用户
           </el-button>
         </div>
-        <template>
-          <v-table
-            :width="350"
-            is-horizontal-resize
-            style="width:100%"
-            :is-loading="userCollectionListIsLoading"
-            :columns="userCollectionTableConfig.columns"
-            :table-data="userCollectionTableConfig.tableData"
-            row-hover-color="#eee"
-            row-click-color="#edf7ff"
-            :select-all="onUserCollectionListSelectAll"
-            :select-change="onUserCollectionListSelectChange"
-            :select-group-change="onUserCollectionSelectGroupChange"
+        <el-table
+          ref="userCollectionUserListTable"
+          :data="userCollectionUserListTableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @select="onUserCollectionUserListSelect"
+          @select-all="onUserCollectionUserListSelectAll"
+        >
+          <el-table-column
+            type="selection"
+            align="center"
+            width="50"
           />
-        </template>
-        <template>
-          <div class="bd">
-            <v-pagination
-              :show-paging-count="3"
-              :total="userCollectionListTotalItems"
-              :page-size="userCollectionListPageSize"
-              :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
-              @page-change="onUserCollectionListPageChange"
-              @page-size-change="onUserCollectionListPageSizeChange"
-            />
-          </div>
-        </template>
+          <el-table-column
+            prop="id"
+            label="用户ID"
+            align="center"
+            width="100"
+          />
+          <el-table-column
+            prop="username"
+            label="用户名"
+            align="center"
+            min-width="3"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            prop="studentNo"
+            label="学号"
+            min-width="3"
+            align="center"
+          />
+        </el-table>
+        <div class="bd">
+          <el-pagination
+            background
+            :current-page="userCollectionUserListPageNum"
+            :page-sizes="[10, 20, 30]"
+            :page-size="userCollectionUserListPageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="userCollectionUserListTotalItems"
+            @size-change="onUserCollectionUserListPageSizeChange"
+            @current-change="onUserCollectionUserListPageChange"
+          />
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -74,27 +92,29 @@
             width="100"
           />
           <el-table-column
-            prop="studentNo"
-            label="学号"
-            min-width="3"
-            align="center"
-          />
-          <el-table-column
             prop="username"
             label="用户名"
             align="center"
             min-width="3"
             :show-overflow-tooltip="true"
           />
+          <el-table-column
+            prop="studentNo"
+            label="学号"
+            min-width="3"
+            align="center"
+          />
         </el-table>
         <div class="bd">
-          <v-pagination
-            :show-paging-count="3"
-            :total="userListTotalItems"
+          <el-pagination
+            background
+            :current-page="userListPageNum"
+            :page-sizes="[10, 20, 30]"
             :page-size="userListPageSize"
-            :layout="['total', 'sizer', 'prev', 'pager', 'next', 'jumper']"
-            @page-change="onUserListPageChange"
-            @page-size-change="onUserListPageSizeChange"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="userListTotalItems"
+            @size-change="onUserListPageSizeChange"
+            @current-change="onUserListPageChange"
           />
         </div>
         <span slot="footer" class="dialog-footer">
@@ -119,17 +139,11 @@
 </template>
 
 <script>
-import 'vue-easytable/libs/themes-base/index.css'
-import { VPagination, VTable } from 'vue-easytable'
 import { getUserGroupDetail, updateUserGroup } from '@/api/user-group'
-import { getUserCollectionList, getUserIdsByUserGroupId, insertUserGroupCollectionInBulk, deleteUserGroupCollectionInBulk } from '@/api/user-collection'
+import { getUserCollectionUserList, getUserIdsByUserGroupId, insertUserGroupCollectionInBulk, deleteUserGroupCollectionInBulk } from '@/api/user-collection'
 import { getUserList } from '@/api/user'
 
 export default {
-  components: {
-    VTable,
-    VPagination
-  },
   data() {
     return {
       checkRules: {
@@ -153,45 +167,10 @@ export default {
       selectedUserIds: [],
       addFromUserListDialogVisible: false,
       userCollectionUserListSelection: [],
-      userCollectionListPageNum: 1,
-      userCollectionListPageSize: 20,
-      userCollectionListTotalItems: 0,
-      userCollectionListIsLoading: false,
-      userCollectionTableConfig: {
-        tableData: [],
-        columns: [
-          {
-            width: 50,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            type: 'selection'
-          },
-          {
-            field: 'userId',
-            title: '用户ID',
-            width: 100,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'username',
-            title: '用户名',
-            width: 100,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          },
-          {
-            field: 'studentNo',
-            title: '学号',
-            width: 100,
-            titleAlign: 'center',
-            columnAlign: 'center',
-            isResize: true
-          }
-        ]
-      }
+      userCollectionUserListPageNum: 1,
+      userCollectionUserListPageSize: 20,
+      userCollectionUserListTotalItems: 0,
+      userCollectionUserListTableData: [],
     }
   },
   computed: {
@@ -201,9 +180,40 @@ export default {
   },
   mounted: function() {
     this.getUserGroupDetail(this.userGroupId)
-    this.getUserCollectionList(this.userGroupId)
+    this.getUserCollectionUserList(this.userGroupId)
   },
   methods: {
+    onUserCollectionUserListSelect(selection, row) {
+      const selected = selection.length && selection.indexOf(row) !== -1
+      if (selected) {
+        selection.forEach((user) => {
+          if (this.userCollectionUserListSelection.indexOf(user.id) === -1) {
+            this.userCollectionUserListSelection.push(user.id)
+          }
+        })
+      } else {
+        const rowInSelectedIndex = this.userCollectionUserListSelection.indexOf(row.id)
+        if (rowInSelectedIndex !== -1) {
+          this.userCollectionUserListSelection.splice(rowInSelectedIndex, 1)
+        }
+      }
+    },
+    onUserCollectionUserListSelectAll(selection) {
+      if (selection.length > 0) {
+        selection.forEach((user) => {
+          if (this.userCollectionUserListSelection.indexOf(user.id) === -1) {
+            this.userCollectionUserListSelection.push(user.id)
+          }
+        })
+      } else {
+        this.userCollectionUserListTableData.forEach((user) => {
+          const tempIndex = this.userCollectionUserListSelection.indexOf(user.id)
+          if (tempIndex !== -1) {
+            this.selectedUserIds.splice(tempIndex, 1)
+          }
+        })
+      }
+    },
     async getUserIdsByUserGroupId(userGroupId) {
       await this.handleResponse(getUserIdsByUserGroupId(userGroupId), '获取用户组包含的全部用户ID',
         (res) => {
@@ -286,7 +296,7 @@ export default {
             }
             this.addFromUserListDialogVisible = false
             this.selectedUserIds.length = 0
-            this.getUserCollectionList(this.userGroupId)
+            this.getUserCollectionUserList(this.userGroupId)
           })
       } else {
         this.$message.error('请选择要添加到用户组的用户')
@@ -327,59 +337,49 @@ export default {
         type: 'warning'
       }).then(() => {
         if (this.userCollectionUserListSelection && this.userCollectionUserListSelection.length > 0) {
-          const userGroupCollectionIds = []
-          for (const userGroupCollection of this.userCollectionUserListSelection) {
-            userGroupCollectionIds.push(userGroupCollection.id)
-          }
-          this.handleResponse(deleteUserGroupCollectionInBulk(userGroupCollectionIds), '从用户组中移除选中的用户',
+          this.handleResponse(deleteUserGroupCollectionInBulk(this.userCollectionUserListSelection), '从用户组中移除选中的用户',
             (res) => {
               if (res.data.success && res.data.success.length === 0) {
                 this.$message.error('从用户组中移除选中的用户失败，请稍后再试')
               } else if (res.data.fail && res.data.fail.length > 0) {
+                this.userCollectionUserListSelection.length = 0
                 this.$message({
                   message: '成功执行移除操作，但部分用户移除失败：' + res.data.fail,
                   type: 'warning'
                 })
-                this.userCollectionUserListSelection.length = 0
               } else {
-                this.$message.success('成功从题目集中移除选中的题目')
                 this.userCollectionUserListSelection.length = 0
+                this.$message.success('成功从用户组中移除选中的用户')
               }
-              this.getUserCollectionList(this.userGroupId)
+              this.getUserCollectionUserList(this.userGroupId)
             })
         } else {
-          this.$message.error('请检查是否选择了要删除的题目')
+          this.$message.error('请检查是否选择了要移除的用户')
         }
       })
     },
-    onUserCollectionListSelectAll(selection) {
-      this.userCollectionUserListSelection = selection
+    onUserCollectionUserListPageChange(pageNum) {
+      this.userCollectionUserListPageNum = pageNum
+      this.getUserCollectionUserList(this.userGroupId)
     },
-    onUserCollectionListSelectChange(selection, rowData) {
-      this.userCollectionUserListSelection = selection
+    onUserCollectionUserListPageSizeChange(pageSize) {
+      this.userCollectionUserListPageSize = pageSize
+      this.getUserCollectionUserList(this.userGroupId)
     },
-    onUserCollectionSelectGroupChange(selection) {
-      this.userCollectionUserListSelection = selection
-    },
-    onUserCollectionListPageChange(pageNum) {
-      this.userCollectionListPageNum = pageNum
-      this.getUserCollectionList()
-    },
-    onUserCollectionListPageSizeChange(pageSize) {
-      this.userCollectionListPageSize = pageSize
-      this.getUserCollectionList()
-    },
-    getUserCollectionList(userGroupId) {
-      this.userCollectionListIsLoading = true
-      this.handleResponse(getUserCollectionList(this.userCollectionListPageNum, this.userCollectionListPageSize, 'userGroupId', userGroupId), '获取用户组的用户列表',
+    getUserCollectionUserList(userGroupId) {
+      this.handleResponse(getUserCollectionUserList(this.userCollectionUserListPageNum, this.userCollectionUserListPageSize, 'userGroupId', userGroupId), '获取用户组的用户列表',
         (res) => {
-          this.userCollectionTableConfig.tableData = res.data.records
-          this.userCollectionListTotalItems = res.data.total
+          this.userCollectionUserListTableData = res.data.records
+          this.userCollectionUserListTotalItems = res.data.total
         },
         null,
         null,
         () => {
-          this.userCollectionListIsLoading = false
+          this.userCollectionUserListTableData.forEach((user) => {
+            if (this.userCollectionUserListSelection.indexOf(user.id) !== -1) {
+              this.$refs.userCollectionUserListTable.toggleRowSelection(user, true)
+            }
+          })
         })
     },
     onSubmit() {
