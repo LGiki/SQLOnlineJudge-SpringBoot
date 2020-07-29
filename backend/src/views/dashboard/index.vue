@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">Welcome to SQL Online Judge</div>
+    <div class="dashboard-text">{{ welcome }}，欢迎使用SQL考试系统</div>
     <panel-group />
   </div>
 </template>
@@ -13,13 +13,23 @@ export default {
   components: {
     PanelGroup
   },
-  data() {
-    return {
-      systemDetail: {
-        databaseCount: 0,
-        problemCount: 0,
-        userCount: 0,
-        solutionCount: 0
+  computed: {
+    welcome() {
+      const currentHours = new Date().getHours()
+      if (currentHours < 6) {
+        return '凌晨好'
+      } else if (currentHours < 9) {
+        return '早上好'
+      } else if (currentHours < 12) {
+        return '上午好'
+      } else if (currentHours < 14) {
+        return '中午好'
+      } else if (currentHours < 17) {
+        return '下午好'
+      } else if (currentHours < 18) {
+        return '傍晚好'
+      } else {
+        return '晚上好'
       }
     }
   }
@@ -31,6 +41,7 @@ export default {
   &-container {
     margin: 30px;
   }
+
   &-text {
     font-size: 45px;
     line-height: 60px;
@@ -39,7 +50,7 @@ export default {
 }
 
 .dashboard-text {
-  color: #304156;
-  text-shadow: 2px 2px 2px #ccc;
+  color: #474b4c;
+  text-shadow: 3px 3px 6px #ddd;
 }
 </style>
