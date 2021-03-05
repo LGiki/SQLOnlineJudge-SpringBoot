@@ -1,4 +1,4 @@
-const apiHost = 'http://127.0.0.1:8080'
+const apiHost = process.env.VUE_APP_API_HOST ? process.env.VUE_APP_API_HOST : 'http://127.0.0.1:8080'
 const baseUrl = `${apiHost}/api/admin`
 const baseApiUrlConfig = {
   // 管理员登录
@@ -68,4 +68,4 @@ const specialApiUrlConfig = {
   // 图片显示接口
   getImage: apiHost + '/api/public/image'
 }
-export { baseUrl, baseApiUrlConfig, specialApiUrlConfig }
+export {baseUrl, baseApiUrlConfig, specialApiUrlConfig}

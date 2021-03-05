@@ -1,4 +1,4 @@
-const ApiHost = "http://127.0.0.1:8080";
+const ApiHost = process.env.VUE_APP_API_HOST ? process.env.VUE_APP_API_HOST : 'http://127.0.0.1:8080';
 const BaseUrl = ApiHost + "/api/user";
 const Url = {
   // 用户登录接口
