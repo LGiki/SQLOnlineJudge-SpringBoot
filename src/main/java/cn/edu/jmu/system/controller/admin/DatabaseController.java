@@ -109,8 +109,8 @@ public class DatabaseController {
             return ResponseUtil.fail("数据库ID不存在");
         }
         // 更新数据库信息
+        databaseDto.setId(databaseId);
         Database database = DatabaseConverter.toEntity(databaseDto);
-        database.setId(databaseId);
         JudgeResultJson judgeResultJson = databaseService.add(databaseDto);
         if ("1".equals(judgeResultJson.getCode())) {
             return ResponseUtil.fail("建表失败," + judgeResultJson.getMessage());
