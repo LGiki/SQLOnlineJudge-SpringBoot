@@ -26,11 +26,6 @@ def create_database(SQLITE_DIR, database_id, create_table, test_data):
         sqlite_cursor.executescript(create_table)
         sqlite_cursor.executescript(test_data)
         sqlite_conn.commit()
-        # 新数据库创建成功了才将旧数据库删除
-        if os.path.exists(sqlite_db_file_path):
-            os.remove(sqlite_db_file_path)
-        shutil.copyfile(sqlite_db_file_path_temp, sqlite_db_file_path)
-        os.remove(sqlite_db_file_path_temp)
     except BaseException as e:
         sqlite_cursor.close()
         sqlite_conn.close()
@@ -38,6 +33,12 @@ def create_database(SQLITE_DIR, database_id, create_table, test_data):
         return False, str(e)
     sqlite_cursor.close()
     sqlite_conn.close()
+    # 新数据库创建成功了才将旧数据库删除
+    if os.path.exists(sqlite_db_file_path_temp):
+        if os.path.exists(sqlite_db_file_path):
+            os.remove(sqlite_db_file_path)
+        shutil.copyfile(sqlite_db_file_path_temp, sqlite_db_file_path)
+        os.remove(sqlite_db_file_path_temp)
     return True, None
 
 
